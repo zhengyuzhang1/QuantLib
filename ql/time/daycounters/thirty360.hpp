@@ -59,34 +59,34 @@ namespace QuantLib {
       private:
         class US_Impl : public DayCounter::Impl {
           public:
-            std::string name() const { return std::string("30/360 (Bond Basis)");}
+            std::string name() const override { return std::string("30/360 (Bond Basis)");}
             Date::serial_type dayCount(const Date& d1,
-                                       const Date& d2) const;
+                                       const Date& d2) const override;
             Time yearFraction(const Date& d1,
                               const Date& d2,
                               const Date&, 
-                              const Date&) const {
+                              const Date&) const override {
                 return dayCount(d1,d2)/360.0; }
         };
         class EU_Impl : public DayCounter::Impl {
           public:
-            std::string name() const { return std::string("30E/360 (Eurobond Basis)");}
+            std::string name() const override { return std::string("30E/360 (Eurobond Basis)");}
             Date::serial_type dayCount(const Date& d1,
-                                       const Date& d2) const;
+                                       const Date& d2) const override;
             Time yearFraction(const Date& d1,
                               const Date& d2,
                               const Date&,
-                              const Date&) const {
+                              const Date&) const override {
                 return dayCount(d1,d2)/360.0; }
         };
         class IT_Impl : public DayCounter::Impl {
           public:
-            std::string name() const { return std::string("30/360 (Italian)");}
-            Date::serial_type dayCount(const Date& d1, const Date& d2) const;
+            std::string name() const override { return std::string("30/360 (Italian)");}
+            Date::serial_type dayCount(const Date& d1, const Date& d2) const override;
             Time yearFraction(const Date& d1,
                               const Date& d2,
                               const Date&,
-                              const Date&) const {
+                              const Date&) const override {
                 return dayCount(d1,d2)/360.0; }
         };
         static ext::shared_ptr<DayCounter::Impl> implementation(

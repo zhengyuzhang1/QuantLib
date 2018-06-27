@@ -64,10 +64,10 @@ namespace QuantLib {
       public:
         GaussNonCentralChiSquaredPolynomial(Real nu, Real lambda);
 
-        Real mu_0() const;
-        Real alpha(Size i) const;
-        Real beta(Size i) const;
-        Real w(Real x) const;
+        Real mu_0() const override;
+        Real alpha(Size i) const override;
+        Real beta(Size i) const override;
+        Real w(Real x) const override;
 
 #ifdef MULTIPRECISION_NON_CENTRAL_CHI_SQUARED_QUADRATURE
         typedef boost::multiprecision::number<

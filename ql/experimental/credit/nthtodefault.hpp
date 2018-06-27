@@ -85,7 +85,7 @@ namespace QuantLib {
                 Real nominal,
                 bool settlePremiumAccrual);
 
-        bool isExpired() const;
+        bool isExpired() const override;
 
         // inspectors
         Rate premium() const { return premiumRate_; }
@@ -105,11 +105,11 @@ namespace QuantLib {
         Real protectionLegNPV() const;
         Real errorEstimate() const;
 
-        void setupArguments(PricingEngine::arguments*) const;
-        void fetchResults(const PricingEngine::results*) const;
+        void setupArguments(PricingEngine::arguments*) const override;
+        void fetchResults(const PricingEngine::results*) const override;
       private:
 
-        void setupExpired() const;
+        void setupExpired() const override;
 
         ext::shared_ptr<Basket> basket_;
         Size n_;
@@ -138,7 +138,7 @@ namespace QuantLib {
         arguments() : side(Protection::Side(-1)),
                       premiumRate(Null<Real>()),
                       upfrontRate(Null<Real>()) {}
-        void validate() const;
+        void validate() const override;
 
         ext::shared_ptr<Basket> basket;
         Protection::Side side;
@@ -153,7 +153,7 @@ namespace QuantLib {
 
     class NthToDefault::results : public Instrument::results {
     public:
-        void reset();
+        void reset() override;
         Real premiumValue;
         Real protectionValue;
         Real upfrontPremiumValue;

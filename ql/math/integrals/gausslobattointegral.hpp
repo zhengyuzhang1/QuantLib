@@ -57,7 +57,7 @@ namespace QuantLib {
 
       protected:
         Real integrate (const boost::function<Real (Real)>& f,
-                        Real a, Real b) const;
+                        Real a, Real b) const override;
 
         Real adaptivGaussLobattoStep(const boost::function<Real (Real)>& f,
                                      Real a, Real b, Real fa, Real fb,

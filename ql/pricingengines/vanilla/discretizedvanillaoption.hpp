@@ -37,13 +37,13 @@ namespace QuantLib {
                                  const StochasticProcess& process,
                                  const TimeGrid& grid = TimeGrid());
 
-        void reset(Size size);
+        void reset(Size size) override;
 
-        std::vector<Time> mandatoryTimes() const {
+        std::vector<Time> mandatoryTimes() const override {
             return stoppingTimes_;
         }
       protected:
-        void postAdjustValuesImpl();
+        void postAdjustValuesImpl() override;
       private:
         void applySpecificCondition();
         VanillaOption::arguments arguments_;

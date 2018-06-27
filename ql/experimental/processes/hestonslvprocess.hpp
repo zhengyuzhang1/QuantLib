@@ -36,22 +36,22 @@ namespace QuantLib {
             const ext::shared_ptr<HestonProcess>& hestonProcess,
             const ext::shared_ptr<LocalVolTermStructure>& leverageFct);
 
-        Size size()    const { return Size(2); }
-        Size factors() const { return Size(2); }
+        Size size()    const override { return Size(2); }
+        Size factors() const override { return Size(2); }
 
-        void update();
+        void update() override;
 
-        Disposable<Array> initialValues() const {
+        Disposable<Array> initialValues() const override {
             return hestonProcess_->initialValues();
         }
-        Disposable<Array> apply(const Array& x0, const Array& dx) const {
+        Disposable<Array> apply(const Array& x0, const Array& dx) const override {
             return hestonProcess_->apply(x0, dx);
         }
 
-        Disposable<Array> drift(Time t, const Array& x) const;
-        Disposable<Matrix> diffusion(Time t, const Array& x) const;
+        Disposable<Array> drift(Time t, const Array& x) const override;
+        Disposable<Matrix> diffusion(Time t, const Array& x) const override;
         Disposable<Array> evolve(Time t0, const Array& x0,
-                                 Time dt, const Array& dw) const;
+                                 Time dt, const Array& dw) const override;
 
         Real v0()    const { return v0_; }
         Real rho()   const { return rho_; }
@@ -70,7 +70,7 @@ namespace QuantLib {
             return hestonProcess_->riskFreeRate();
         }
 
-        Time time(const Date& d) const { return hestonProcess_->time(d); }
+        Time time(const Date& d) const override { return hestonProcess_->time(d); }
 
       private:
         Real kappa_, theta_, sigma_, rho_, v0_;

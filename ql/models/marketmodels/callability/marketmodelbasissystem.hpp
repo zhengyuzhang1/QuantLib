@@ -30,7 +30,7 @@ namespace QuantLib {
       public:
         // possibly different for each exercise
         virtual std::vector<Size> numberOfFunctions() const = 0;
-        std::vector<Size> numberOfData() const {
+        std::vector<Size> numberOfData() const override {
             return numberOfFunctions();
         }
         #if defined(QL_USE_STD_UNIQUE_PTR)

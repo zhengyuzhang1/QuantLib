@@ -42,12 +42,12 @@ namespace QuantLib {
                          const std::vector<Real>& sabrParameters,
                          const DayCounter& dc = Actual365Fixed(),
                          const Real shift = 0.0);
-        Real minStrike () const { return -shift_; }
-        Real maxStrike () const { return QL_MAX_REAL; }
-        Real atmLevel() const { return forward_; }
+        Real minStrike () const override { return -shift_; }
+        Real maxStrike () const override { return QL_MAX_REAL; }
+        Real atmLevel() const override { return forward_; }
       protected:
-        Real varianceImpl(Rate strike) const;
-        Volatility volatilityImpl(Rate strike) const;
+        Real varianceImpl(Rate strike) const override;
+        Volatility volatilityImpl(Rate strike) const override;
       private:
         Real alpha_, beta_, nu_, rho_, forward_, shift_;
     };

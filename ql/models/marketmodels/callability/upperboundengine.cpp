@@ -51,7 +51,7 @@ namespace QuantLib {
                 clear();
             }
 
-            void reset() {
+            void reset() override {
                 CallSpecifiedMultiProduct::reset();
                 disableCallability();
                 for (Size i=0; i<lastSavedStep_; ++i)
@@ -65,7 +65,7 @@ namespace QuantLib {
             bool nextTimeStep(
                     const CurveState& currentState,
                     std::vector<Size>& numberCashFlowsThisStep,
-                    std::vector<std::vector<CashFlow> >& cashFlowsGenerated) {
+                    std::vector<std::vector<CashFlow> >& cashFlowsGenerated) override {
                 if (recording_)
                     savedStates_.push_back(currentState);
                 return CallSpecifiedMultiProduct::nextTimeStep(
@@ -74,7 +74,7 @@ namespace QuantLib {
                                                      cashFlowsGenerated);
             }
 
-            QL_UNIQUE_OR_AUTO_PTR<MarketModelMultiProduct> clone() const {
+            QL_UNIQUE_OR_AUTO_PTR<MarketModelMultiProduct> clone() const override {
                 return QL_UNIQUE_OR_AUTO_PTR<MarketModelMultiProduct>(
                                                    new DecoratedHedge(*this));
             }

@@ -54,7 +54,7 @@ namespace QuantLib {
             const ext::shared_ptr<LocalVolTermStructure>& leverageFct
                 = ext::shared_ptr<LocalVolTermStructure>());
 
-        void calculate() const;
+        void calculate() const override;
 
       private:
         const Size tGrid_, xGrid_, vGrid_, dampingSteps_;

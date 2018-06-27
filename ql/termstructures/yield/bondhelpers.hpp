@@ -50,8 +50,8 @@ namespace QuantLib {
                    bool useCleanPrice = true);
         //! \name RateHelper interface
         //@{
-        Real impliedQuote() const;
-        void setTermStructure(YieldTermStructure*);
+        Real impliedQuote() const override;
+        void setTermStructure(YieldTermStructure*) override;
         //@}
         //! \name Additional inspectors
         //@{
@@ -60,7 +60,7 @@ namespace QuantLib {
         //@}
         //! \name Visitability
         //@{
-        void accept(AcyclicVisitor&);
+        void accept(AcyclicVisitor&) override;
         //@}
       protected:
         ext::shared_ptr<Bond> bond_;
@@ -92,7 +92,7 @@ namespace QuantLib {
         //@}
         //! \name Visitability
         //@{
-        void accept(AcyclicVisitor&);
+        void accept(AcyclicVisitor&) override;
         //@}
       protected:
         ext::shared_ptr<FixedRateBond> fixedRateBond_;
@@ -142,7 +142,7 @@ namespace QuantLib {
         //@}
         //! \name Visitability
         //@{
-        void accept(AcyclicVisitor&);
+        void accept(AcyclicVisitor&) override;
         //@}
       protected:
         ext::shared_ptr<CPIBond> cpiBond_;

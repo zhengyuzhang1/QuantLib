@@ -35,13 +35,13 @@ namespace QuantLib {
                                                                 argument_type;
         typedef LogGrid grid_type;
         PdeBSM(const argument_type & process) : process_(process) {};
-        virtual Real diffusion(Time t, Real x) const {
+        Real diffusion(Time t, Real x) const override {
             return process_->diffusion(t, x);
         }
-        virtual Real drift(Time t, Real x) const {
+        Real drift(Time t, Real x) const override {
             return process_->drift(t, x);
         }
-        virtual Real discount(Time t, Real) const {
+        Real discount(Time t, Real) const override {
             if (std::fabs(t) < 1e-8) t = 0;
             return process_->riskFreeRate()->
                 forwardRate(t,t,Continuous,NoFrequency,true);

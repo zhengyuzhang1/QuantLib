@@ -56,7 +56,7 @@ namespace QuantLib {
                   const Handle<YieldTermStructure>& yieldTS,
                   Natural settlementDays = 0,
                   Calendar calendar = Calendar());
-        virtual ~RiskyBond() {}
+        ~RiskyBond() override {}
         virtual std::vector<ext::shared_ptr<CashFlow> > cashflows() const = 0;
         std::vector<ext::shared_ptr<CashFlow> > expectedCashflows();
         virtual Real notional(Date date = Date::minDate()) const = 0;
@@ -73,11 +73,11 @@ namespace QuantLib {
         Real recoveryRate() const;
         //! \name Instrument interface
         //@{
-        bool isExpired() const;
+        bool isExpired() const override;
         //@}
     protected:
-        void setupExpired() const;
-        void performCalculations() const;
+        void setupExpired() const override;
+        void performCalculations() const override;
     private:
         std::string name_;
         Currency ccy_;
@@ -127,12 +127,12 @@ namespace QuantLib {
                        const std::vector<Real>& notionals,
                        const Handle<YieldTermStructure>& yieldTS,
                        Natural settlementDays = 0);
-        std::vector<ext::shared_ptr<CashFlow> > cashflows() const;
-        Real notional(Date date = Date::minDate()) const;
-        Date effectiveDate() const;
-        Date maturityDate() const;
-        std::vector<ext::shared_ptr<CashFlow> > interestFlows() const;
-        std::vector<ext::shared_ptr<CashFlow> > notionalFlows() const;
+        std::vector<ext::shared_ptr<CashFlow> > cashflows() const override;
+        Real notional(Date date = Date::minDate()) const override;
+        Date effectiveDate() const override;
+        Date maturityDate() const override;
+        std::vector<ext::shared_ptr<CashFlow> > interestFlows() const override;
+        std::vector<ext::shared_ptr<CashFlow> > notionalFlows() const override;
     private:
         Schedule schedule_;
         Real rate_;
@@ -161,12 +161,12 @@ namespace QuantLib {
                           std::vector<Real> notionals,
                           Handle<YieldTermStructure> yieldTS,
                           Natural settlementDays = 0);
-        std::vector<ext::shared_ptr<CashFlow> > cashflows() const;
-        Real notional(Date date = Date::minDate()) const;
-        Date effectiveDate() const;
-        Date maturityDate() const;
-        std::vector<ext::shared_ptr<CashFlow> > interestFlows() const;
-        std::vector<ext::shared_ptr<CashFlow> > notionalFlows() const;
+        std::vector<ext::shared_ptr<CashFlow> > cashflows() const override;
+        Real notional(Date date = Date::minDate()) const override;
+        Date effectiveDate() const override;
+        Date maturityDate() const override;
+        std::vector<ext::shared_ptr<CashFlow> > interestFlows() const override;
+        std::vector<ext::shared_ptr<CashFlow> > notionalFlows() const override;
     private:
         Schedule schedule_;
         ext::shared_ptr<IborIndex> index_;

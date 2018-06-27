@@ -59,7 +59,7 @@ namespace QuantLib {
         //@}
         //! \name Visitability
         //@{
-        virtual void accept(AcyclicVisitor&);
+        void accept(AcyclicVisitor&) override;
         //@}
       private:
         ext::shared_ptr<SwapSpreadIndex> index_;
@@ -87,7 +87,7 @@ namespace QuantLib {
                       index, gearing, spread, refPeriodStart, refPeriodEnd,
                       dayCounter, isInArrears)), cap, floor) {}
 
-        virtual void accept(AcyclicVisitor& v) {
+        void accept(AcyclicVisitor& v) override {
             Visitor<CappedFlooredCmsSpreadCoupon>* v1 =
                 dynamic_cast<Visitor<CappedFlooredCmsSpreadCoupon>*>(&v);
             if (v1 != 0)

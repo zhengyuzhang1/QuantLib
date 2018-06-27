@@ -54,11 +54,11 @@ namespace QuantLib {
                            SobolRsg::DirectionIntegers directionIntegers
                                                         = SobolRsg::Jaeckel);
 
-        Real nextPath();
-        Real nextStep(std::vector<Real>&);
+        Real nextPath() override;
+        Real nextStep(std::vector<Real>&) override;
 
-        Size numberOfFactors() const;
-        Size numberOfSteps() const;
+        Size numberOfFactors() const override;
+        Size numberOfSteps() const override;
         
         // test interface
         const std::vector<std::vector<Size> >& orderedIndices() const;
@@ -84,7 +84,7 @@ namespace QuantLib {
                            SobolRsg::DirectionIntegers directionIntegers
                                                          = SobolRsg::Jaeckel);
         ext::shared_ptr<BrownianGenerator> create(Size factors,
-                                                    Size steps) const;
+                                                    Size steps) const override;
       private:
         SobolBrownianGenerator::Ordering ordering_;
         unsigned long seed_;

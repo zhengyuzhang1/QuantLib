@@ -42,41 +42,41 @@ namespace QuantLib {
             :decoratedInterp_(decoratedInterpolation){
                 calculate();
             }
-            Real xMin() const {
+            Real xMin() const override {
                 return decoratedInterp_->xMin();
             }
-            Real xMax() const {
+            Real xMax() const override {
                 return decoratedInterp_->xMax();
             }
-            std::vector<Real> xValues() const {
+            std::vector<Real> xValues() const override {
                 return decoratedInterp_->xValues();
             }
-            Size locateX(Real x) const {
+            Size locateX(Real x) const override {
                 return decoratedInterp_->locateX(x);
             }
-            Real yMin() const {
+            Real yMin() const override {
                 return decoratedInterp_->yMin();
             }
-            Real yMax() const {
+            Real yMax() const override {
                 return decoratedInterp_->yMax();
             }
-            std::vector<Real> yValues() const {
+            std::vector<Real> yValues() const override {
                 return decoratedInterp_->yValues();
             }
-            Size locateY(Real y) const {
+            Size locateY(Real y) const override {
                 return decoratedInterp_->locateY(y);
             }
-            const Matrix& zData() const {
+            const Matrix& zData() const override {
                 return decoratedInterp_->zData();
             }
-            bool isInRange(Real x, Real y) const {
+            bool isInRange(Real x, Real y) const override {
                 return decoratedInterp_->isInRange(x,y);
             }
             void update() {
                 decoratedInterp_->update();
             }
-            void calculate() {}
-            Real value(Real x, Real y) const {
+            void calculate() override {}
+            Real value(Real x, Real y) const override {
                 x = bindX(x);
                 y = bindY(y);
                 return (*decoratedInterp_)(x,y);

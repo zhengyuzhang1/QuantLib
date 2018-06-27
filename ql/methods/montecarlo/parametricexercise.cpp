@@ -30,8 +30,8 @@ namespace QuantLib {
             ValueEstimate(const std::vector<NodeData>& simulationData,
                           const ParametricExercise& exercise,
                           Size exerciseIndex);
-            Real value(const Array& parameters) const;
-            Disposable<Array> values(const Array&) const {
+            Real value(const Array& parameters) const override;
+            Disposable<Array> values(const Array&) const override {
                 QL_FAIL("values method not implemented");
             }
         private:

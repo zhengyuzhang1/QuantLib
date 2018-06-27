@@ -55,7 +55,7 @@ namespace QuantLib {
                   = ext::shared_ptr<PowerShape>(),
               const FdmSchemeDesc& schemeDesc=FdmSchemeDesc::Hundsdorfer());
 
-        void calculate() const;
+        void calculate() const override;
 
       private:
         const ext::shared_ptr<KlugeExtOUProcess> klugeOUProcess_;

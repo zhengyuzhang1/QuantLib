@@ -57,15 +57,15 @@ namespace QuantLib {
                        const Currency& currency);
         //! \name Index interface
         //@{
-        std::string name() const;
+        std::string name() const override;
 
         /*! Inflation indices do not have fixing calendars.  An
             inflation index value is valid for every day (including
             weekends) of a calendar period.  I.e. it uses the
             NullCalendar as its fixing calendar.
         */
-        Calendar fixingCalendar() const;
-        bool isValidFixingDate(const Date&) const { return true; }
+        Calendar fixingCalendar() const override;
+        bool isValidFixingDate(const Date&) const override { return true; }
 
         /*! Forecasting index values requires an inflation term
             structure.  The inflation term structure (ITS) defines the
@@ -79,7 +79,7 @@ namespace QuantLib {
             the index 3 months before.
         */
         Rate fixing(const Date& fixingDate,
-                    bool forecastTodaysFixing = false) const = 0;
+                    bool forecastTodaysFixing = false) const override = 0;
 
         /*! this method creates all the "fixings" for the relevant
             period of the index.  E.g. for monthly indices it will put
@@ -87,12 +87,12 @@ namespace QuantLib {
         */
         void addFixing(const Date& fixingDate,
                        Rate fixing,
-                       bool forceOverwrite = false);
+                       bool forceOverwrite = false) override;
         //@}
 
         //! \name Observer interface
         //@{
-        void update();
+        void update() override;
         //@}
 
         //! \name Inspectors
@@ -153,7 +153,7 @@ namespace QuantLib {
                      the Index interface) is currently ignored.
         */
         Rate fixing(const Date& fixingDate,
-                    bool forecastTodaysFixing = false) const;
+                    bool forecastTodaysFixing = false) const override;
         //@}
         //! \name Other methods
         //@{
@@ -190,7 +190,7 @@ namespace QuantLib {
                      the Index interface) is currently ignored.
         */
         Rate fixing(const Date& fixingDate,
-                    bool forecastTodaysFixing = false) const;
+                    bool forecastTodaysFixing = false) const override;
 
         //@}
         //! \name Other methods

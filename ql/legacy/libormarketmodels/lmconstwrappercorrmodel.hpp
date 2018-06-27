@@ -36,28 +36,28 @@ namespace QuantLib {
           corrModel_(corrModel) {
         }
 
-        Size factors() const {
+        Size factors() const override {
             return corrModel_->factors();
         }
 
         Disposable<Matrix> correlation(
-            Time t, const Array& x = Null<Array>()) const {
+            Time t, const Array& x = Null<Array>()) const override {
             return corrModel_->correlation(t, x);
         }
         Disposable<Matrix> pseudoSqrt(
-            Time t, const Array& x = Null<Array>()) const {
+            Time t, const Array& x = Null<Array>()) const override {
             return corrModel_->pseudoSqrt(t, x);
         }
         Real correlation(
-            Size i, Size j, Time t, const Array& x = Null<Array>()) const {
+            Size i, Size j, Time t, const Array& x = Null<Array>()) const override {
             return corrModel_->correlation(i, j, t, x);
         }
-        bool isTimeIndependent() const{
+        bool isTimeIndependent() const override{
             return corrModel_->isTimeIndependent();
         }
 
     protected:
-        void generateArguments() {}
+        void generateArguments() override {}
 
         const ext::shared_ptr<LmCorrelationModel> corrModel_;
     };

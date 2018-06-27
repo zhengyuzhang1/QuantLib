@@ -87,7 +87,7 @@ namespace QuantLib {
             const Interpolator& interpolator);
         //! \name TermStructure interface
         //@{
-        Date maxDate() const;
+        Date maxDate() const override;
         //@}
         //! \name other inspectors
         //@{
@@ -125,8 +125,8 @@ namespace QuantLib {
         //! \name DefaultProbabilityTermStructure implementation
         //@{
         //! Returns the deterministic hazard rate component.
-        Real hazardRateImpl(Time) const;
-        Probability survivalProbabilityImpl(Time) const;
+        Real hazardRateImpl(Time) const override;
+        Probability survivalProbabilityImpl(Time) const override;
     public:
         using DefaultProbabilityTermStructure::hazardRate;
     protected:
@@ -136,7 +136,7 @@ namespace QuantLib {
         \f$ P_{surv}(\tau>tTarget|F_{tFwd}) \f$
         */
         Probability conditionalSurvivalProbabilityImpl(Time tFwd, Time tTarget, 
-            Real yVal) const;
+            Real yVal) const override;
         //@}
     protected:
         mutable std::vector<Date> dates_;

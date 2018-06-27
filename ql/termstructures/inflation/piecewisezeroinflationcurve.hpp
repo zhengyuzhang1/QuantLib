@@ -70,8 +70,8 @@ namespace QuantLib {
         //@}
         //! \name Inflation interface
         //@{
-        Date baseDate() const;
-        Date maxDate() const;
+        Date baseDate() const override;
+        Date maxDate() const override;
         //@
         //! \name Inspectors
         //@{
@@ -82,11 +82,11 @@ namespace QuantLib {
         //@}
         //! \name Observer interface
         //@{
-        void update();
+        void update() override;
         //@}
       private:
         // methods
-        void performCalculations() const;
+        void performCalculations() const override;
         // data members
         std::vector<ext::shared_ptr<typename Traits::helper> > instruments_;
         Real accuracy_;

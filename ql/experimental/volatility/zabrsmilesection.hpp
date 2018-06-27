@@ -54,18 +54,18 @@ template <typename Evaluation> class ZabrSmileSection : public SmileSection {
                      const std::vector<Real> &moneyness = std::vector<Real>(),
                      const Size fdRefinement = 5);
 
-    Real minStrike() const { return 0.0; }
-    Real maxStrike() const { return QL_MAX_REAL; }
-    Real atmLevel() const { return model_->forward(); }
+    Real minStrike() const override { return 0.0; }
+    Real maxStrike() const override { return QL_MAX_REAL; }
+    Real atmLevel() const override { return model_->forward(); }
     Real optionPrice(Rate strike, Option::Type type = Option::Call,
-                     Real discount = 1.0) const {
+                     Real discount = 1.0) const override {
         return optionPrice(strike, type, discount, Evaluation());
     }
 
     ext::shared_ptr<ZabrModel> model() { return model_; }
 
   protected:
-    Volatility volatilityImpl(Rate strike) const {
+    Volatility volatilityImpl(Rate strike) const override {
         return volatilityImpl(strike, Evaluation());
     }
 

@@ -153,7 +153,7 @@ namespace QuantLib {
         */
         class WesternImpl : public Impl {
           public:
-            bool isWeekend(Weekday) const;
+            bool isWeekend(Weekday) const override;
             //! expressed relative to first day of year
             static Day easterMonday(Year);
         };
@@ -164,7 +164,7 @@ namespace QuantLib {
         */
         class OrthodoxImpl : public Impl {
           public:
-            bool isWeekend(Weekday) const;
+            bool isWeekend(Weekday) const override;
             //! expressed relative to first day of year
             static Day easterMonday(Year);
         };

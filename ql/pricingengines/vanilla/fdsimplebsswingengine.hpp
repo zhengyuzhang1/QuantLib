@@ -43,7 +43,7 @@ namespace QuantLib {
                   Size tGrid = 50, Size xGrid = 100,
                   const FdmSchemeDesc& schemeDesc = FdmSchemeDesc::Douglas());
     
-        void calculate() const;
+        void calculate() const override;
     
       private:
         const ext::shared_ptr<GeneralizedBlackScholesProcess> process_;

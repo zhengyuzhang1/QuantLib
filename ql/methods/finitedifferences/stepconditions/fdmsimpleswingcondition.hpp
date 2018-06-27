@@ -39,7 +39,7 @@ namespace QuantLib {
                   Size swingDirection,
                   Size minExercises = 0);
     
-        void applyTo(Array& a, Time t) const;
+        void applyTo(Array& a, Time t) const override;
     
       private:
         const std::vector<Time> exerciseTimes_;

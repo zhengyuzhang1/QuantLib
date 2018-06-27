@@ -47,10 +47,10 @@ namespace QuantLib {
           accrualFactor_(accrualFactor) {}
         //! \name Payoff interface
         //@{
-        std::string name() const;
-        Real operator()(Real forward) const;
-        std::string description() const;
-        virtual void accept(AcyclicVisitor&);
+        std::string name() const override;
+        Real operator()(Real forward) const override;
+        std::string description() const override;
+        void accept(AcyclicVisitor&) override;
         //@}
       protected:
         Real type1_ ,type2_;
@@ -72,7 +72,7 @@ namespace QuantLib {
                             accrualFactor) {}
         //! \name Payoff interface
         //@{
-        std::string name() const { return "Ratchet";}
+        std::string name() const override { return "Ratchet";}
         //@}
     };    
 
@@ -89,7 +89,7 @@ namespace QuantLib {
                             accrualFactor) {}
         //! \name Payoff interface
         //@{
-        std::string name() const { return "Sticky";}
+        std::string name() const override { return "Sticky";}
         //@}
     };
 
@@ -107,7 +107,7 @@ namespace QuantLib {
                                     accrualFactor) {}
         //! \name Payoff interface
         //@{
-        std::string name() const { return "RatchetMax";}
+        std::string name() const override { return "RatchetMax";}
         //@}
     };    
 
@@ -125,7 +125,7 @@ namespace QuantLib {
                                     accrualFactor) {}
         //! \name Payoff interface
         //@{
-        std::string name() const { return "RatchetMin";}
+        std::string name() const override { return "RatchetMin";}
         //@}
     };    
 
@@ -143,7 +143,7 @@ namespace QuantLib {
                                     accrualFactor) {}
         //! \name Payoff interface
         //@{
-        std::string name() const { return "StickyMax";}
+        std::string name() const override { return "StickyMax";}
         //@}
     };    
 
@@ -161,7 +161,7 @@ namespace QuantLib {
                                     accrualFactor) {}
         //! \name Payoff interface
         //@{
-        std::string name() const { return "StickyMin";}
+        std::string name() const override { return "StickyMin";}
         //@}
     };    
 

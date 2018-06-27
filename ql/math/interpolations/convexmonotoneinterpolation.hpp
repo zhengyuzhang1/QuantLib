@@ -207,14 +207,14 @@ namespace QuantLib {
                             "Too many existing helpers have been supplied");
             }
 
-            void update();
+            void update() override;
 
-            Real value(Real x) const;
-            Real primitive(Real x) const;
-            Real derivative(Real) const {
+            Real value(Real x) const override;
+            Real primitive(Real x) const override;
+            Real derivative(Real) const override {
                 QL_FAIL("Convex-monotone spline derivative not implemented");
             }
-            Real secondDerivative(Real) const {
+            Real secondDerivative(Real) const override {
                 QL_FAIL("Convex-monotone spline second derivative "
                         "not implemented");
             }
@@ -247,13 +247,13 @@ namespace QuantLib {
                 QL_REQUIRE(quadraticity < 1.0 && quadraticity > 0.0,
                            "Quadratic value must lie between 0 and 1"); }
 
-            Real value(Real x) const {
+            Real value(Real x) const override {
                 return( quadraticity_*quadraticHelper_->value(x) + (1.0-quadraticity_)*convMonoHelper_->value(x) );
             }
-            Real primitive(Real x) const {
+            Real primitive(Real x) const override {
                 return( quadraticity_*quadraticHelper_->primitive(x) + (1.0-quadraticity_)*convMonoHelper_->primitive(x) );
             }
-            Real fNext() const {
+            Real fNext() const override {
                 return( quadraticity_*quadraticHelper_->fNext() + (1.0-quadraticity_)*convMonoHelper_->fNext() );
             }
 
@@ -269,13 +269,13 @@ namespace QuantLib {
             : value_(value), prevPrimitive_(prevPrimitive), xPrev_(xPrev)
             {}
 
-            Real value(Real) const {
+            Real value(Real) const override {
                 return value_;
             }
-            Real primitive(Real x) const {
+            Real primitive(Real x) const override {
                 return prevPrimitive_ + (x-xPrev_)*value_;
             }
-            Real fNext() const {
+            Real fNext() const override {
                 return value_;
             }
           private:
@@ -295,7 +295,7 @@ namespace QuantLib {
               prevPrimitive_(prevPrimitive)
             {}
 
-            Real value(Real x) const {
+            Real value(Real x) const override {
                 Real xVal = (x-xPrev_)/xScaling_;
                 if (xVal <= eta2_) {
                     return( fAverage_ + gPrev_ );
@@ -304,7 +304,7 @@ namespace QuantLib {
                 }
             }
 
-            Real primitive(Real x) const {
+            Real primitive(Real x) const override {
                 Real xVal = (x-xPrev_)/xScaling_;
                 if (xVal <= eta2_) {
                     return( prevPrimitive_ + xScaling_*(fAverage_*xVal + gPrev_*xVal) );
@@ -313,7 +313,7 @@ namespace QuantLib {
                             (1.0/3.0*(xVal*xVal*xVal - eta2_*eta2_*eta2_) - eta2_*xVal*xVal + eta2_*eta2_*xVal) ) );
                 }
             }
-            Real fNext() const {
+            Real fNext() const override {
                 return(fAverage_+gNext_);
             }
           private:
@@ -330,7 +330,7 @@ namespace QuantLib {
                 gNext_(gNext), fAverage_(fAverage), eta3_(eta3), prevPrimitive_(prevPrimitive)
             {}
 
-            Real value(Real x) const {
+            Real value(Real x) const override {
                 Real xVal = (x-xPrev_)/xScaling_;
                 if (xVal <= eta3_) {
                     return( fAverage_ + gNext_ + (gPrev_-gNext_) / (eta3_*eta3_) * (eta3_-xVal)*(eta3_-xVal) );
@@ -339,7 +339,7 @@ namespace QuantLib {
                 }
             }
 
-            Real primitive(Real x) const {
+            Real primitive(Real x) const override {
                 Real xVal = (x-xPrev_)/xScaling_;
                 if (xVal <= eta3_) {
                     return( prevPrimitive_ + xScaling_ * (fAverage_*xVal + gNext_*xVal + (gPrev_-gNext_)/(eta3_*eta3_) *
@@ -349,7 +349,7 @@ namespace QuantLib {
                             (1.0/3.0 * eta3_*eta3_*eta3_)) );
                 }
             }
-            Real fNext() const {
+            Real fNext() const override {
                 return(fAverage_+gNext_);
             }
           private:
@@ -367,7 +367,7 @@ namespace QuantLib {
                 A_ = -0.5*(eta4_*gPrev_ + (1-eta4_)*gNext_);
             }
 
-            Real value(Real x) const {
+            Real value(Real x) const override {
                 Real xVal = (x-xPrev_)/xScaling_;
                 if (xVal <= eta4_) {
                     return(fAverage_ + A_ + (gPrev_-A_)*(eta4_-xVal)*(eta4_-xVal)/(eta4_*eta4_) );
@@ -376,7 +376,7 @@ namespace QuantLib {
                 }
             }
 
-            Real primitive(Real x) const {
+            Real primitive(Real x) const override {
                 Real xVal = (x-xPrev_)/xScaling_;
                 Real retVal;
                 if (xVal <= eta4_) {
@@ -389,7 +389,7 @@ namespace QuantLib {
                 }
                 return retVal;
             }
-            Real fNext() const {
+            Real fNext() const override {
                 return(fAverage_+gNext_);
             }
           protected:
@@ -424,7 +424,7 @@ namespace QuantLib {
                 }
             }
 
-            Real value(Real x) const {
+            Real value(Real x) const override {
                 if (!splitRegion_)
                     return ConvexMonotone4Helper::value(x);
 
@@ -440,7 +440,7 @@ namespace QuantLib {
                 }
             }
 
-            Real primitive(Real x) const {
+            Real primitive(Real x) const override {
                 if (!splitRegion_)
                     return ConvexMonotone4Helper::primitive(x);
 
@@ -472,13 +472,13 @@ namespace QuantLib {
             xPrev_(xPrev), fGrad_((fNext-fPrev)/(xNext-xPrev)),fNext_(fNext)
             {}
 
-            Real value(Real x) const {
+            Real value(Real x) const override {
                 return (fPrev_ + (x-xPrev_)*fGrad_);
             }
-            Real primitive(Real x) const {
+            Real primitive(Real x) const override {
                 return (prevPrimitive_+(x-xPrev_)*(fPrev_+0.5*(x-xPrev_)*fGrad_));
             }
-            Real fNext()  const {
+            Real fNext()  const override {
                 return fNext_;
             }
           private:
@@ -500,17 +500,17 @@ namespace QuantLib {
                 xScaling_ = xNext_-xPrev_;
             }
 
-            Real value(Real x) const {
+            Real value(Real x) const override {
                 Real xVal = (x-xPrev_)/xScaling_;
                 return( a_*xVal*xVal + b_*xVal + c_ );
             }
 
-            Real primitive(Real x) const {
+            Real primitive(Real x) const override {
                 Real xVal = (x-xPrev_)/xScaling_;
                 return( prevPrimitive_ + xScaling_ * (a_/3*xVal*xVal + b_/2*xVal + c_) * xVal );
             }
 
-            Real fNext() const {
+            Real fNext() const override {
                 return fNext_;
             }
           private:
@@ -557,7 +557,7 @@ namespace QuantLib {
                 }
             }
 
-            Real value(Real x) const {
+            Real value(Real x) const override {
                 Real xVal = (x - x1_) / (x4_-x1_);
                 if (splitRegion_) {
                     if (x <= x2_) {
@@ -572,7 +572,7 @@ namespace QuantLib {
                 return c_ + b_*xVal + a_*xVal*xVal;
             }
 
-            Real primitive(Real x) const {
+            Real primitive(Real x) const override {
                 Real xVal = (x - x1_) / (x4_-x1_);
                 if (splitRegion_) {
                     if (x < x2_) {
@@ -586,7 +586,7 @@ namespace QuantLib {
                 return primitive1_ + xScaling_ * (a_/3*xVal*xVal+ b_/2*xVal+c_)*xVal;
             }
 
-            Real fNext() const {
+            Real fNext() const override {
                 return fNext_;
             }
 

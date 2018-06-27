@@ -44,12 +44,12 @@ namespace QuantLib {
         Vasicek(Rate r0 = 0.05,
                 Real a = 0.1, Real b = 0.05, Real sigma = 0.01,
                 Real lambda = 0.0);
-        virtual Real discountBondOption(Option::Type type,
+        Real discountBondOption(Option::Type type,
                                         Real strike,
                                         Time maturity,
-                                        Time bondMaturity) const;
+                                        Time bondMaturity) const override;
 
-        virtual ext::shared_ptr<ShortRateDynamics> dynamics() const;
+        ext::shared_ptr<ShortRateDynamics> dynamics() const override;
 
         Real a() const { return a_(0.0); }
         Real b() const { return b_(0.0); }
@@ -57,8 +57,8 @@ namespace QuantLib {
         Real sigma() const { return sigma_(0.0); }
 
       protected:
-        virtual Real A(Time t, Time T) const;
-        virtual Real B(Time t, Time T) const;
+        Real A(Time t, Time T) const override;
+        Real B(Time t, Time T) const override;
 
         Real r0_;
         Parameter& a_;
@@ -84,10 +84,10 @@ namespace QuantLib {
                              new OrnsteinUhlenbeckProcess(a, sigma, r0 - b))),
           b_(b) {}
 
-        virtual Real variable(Time, Rate r) const {
+        Real variable(Time, Rate r) const override {
             return r - b_;
         }
-        virtual Real shortRate(Time, Real x) const {
+        Real shortRate(Time, Real x) const override {
             return x + b_;
         }
       private:

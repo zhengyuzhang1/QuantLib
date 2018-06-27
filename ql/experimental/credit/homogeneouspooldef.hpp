@@ -43,7 +43,7 @@ namespace QuantLib {
     template<class copulaPolicy>
     class HomogeneousPoolLossModel : public DefaultLossModel {
     private:
-        void resetModel();
+        void resetModel() override;
     public:
         HomogeneousPoolLossModel(
             const ext::shared_ptr<ConstantLossLatentmodel<copulaPolicy> >& 
@@ -62,7 +62,7 @@ namespace QuantLib {
     protected:
         Distribution lossDistrib(const Date& d) const;
     public:
-        Real expectedTrancheLoss(const Date& d) const {
+        Real expectedTrancheLoss(const Date& d) const override {
             return lossDistrib(d).cumulativeExcessProbability(attachAmount_, 
                 detachAmount_);
             // This one if the distribution is over the whole loss structure:
@@ -72,12 +72,12 @@ namespace QuantLib {
                 detach_ * notional_);
             */
         }
-        Real percentile(const Date& d, Real percentile) const {
+        Real percentile(const Date& d, Real percentile) const override {
             Real portfLoss = lossDistrib(d).confidenceLevel(percentile);
             return std::min(std::max(portfLoss - attachAmount_, 0.), 
                 detachAmount_ - attachAmount_);
         }
-        Real expectedShortfall(const Date& d, Probability percentile) const {
+        Real expectedShortfall(const Date& d, Probability percentile) const override {
             Distribution dist = lossDistrib(d);
             dist.tranche(attachAmount_, detachAmount_);
             return dist.expectedShortfall(percentile);

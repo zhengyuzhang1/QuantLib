@@ -48,7 +48,7 @@ namespace QuantLib {
                                       Frequency frequency,
                                       bool indexIsInterpolated);
 
-        virtual ~YoYOptionletVolatilitySurface() {}
+        ~YoYOptionletVolatilitySurface() override {}
 
         //! \name Volatility (only)
         //@{
@@ -103,9 +103,9 @@ namespace QuantLib {
         //! \name Limits
         //@{
         //! the minimum strike for which the term structure can return vols
-        virtual Real minStrike() const = 0;
+        Real minStrike() const override = 0;
         //! the maximum strike for which the term structure can return vols
-        virtual Real maxStrike() const = 0;
+        Real maxStrike() const override = 0;
         //@}
 
         // acts as zero time value for boostrapping
@@ -154,20 +154,20 @@ namespace QuantLib {
                                        Rate minStrike = -1.0,  // -100%
                                        Rate maxStrike = 100.0);  // +10,000%
         //@}
-        virtual ~ConstantYoYOptionletVolatility() {}
+        ~ConstantYoYOptionletVolatility() override {}
 
         //! \name Limits
         //@{
-        virtual Date maxDate() const { return Date::maxDate(); }
+        Date maxDate() const override { return Date::maxDate(); }
         //! the minimum strike for which the term structure can return vols
-        virtual Real minStrike() const { return minStrike_; }
+        Real minStrike() const override { return minStrike_; }
         //! the maximum strike for which the term structure can return vols
-        virtual Real maxStrike() const { return maxStrike_; }
+        Real maxStrike() const override { return maxStrike_; }
         //@}
 
     protected:
         //! implements the actual volatility calculation in derived classes
-        virtual Volatility volatilityImpl(Time length, Rate strike) const;
+        Volatility volatilityImpl(Time length, Rate strike) const override;
 
         Volatility volatility_;
         Rate minStrike_, maxStrike_;

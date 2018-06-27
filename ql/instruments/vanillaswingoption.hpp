@@ -61,8 +61,8 @@ namespace QuantLib {
           minExerciseRights_(minExerciseRights),
           maxExerciseRights_(maxExerciseRights) {}
 
-        bool isExpired() const;
-        void setupArguments(PricingEngine::arguments*) const;
+        bool isExpired() const override;
+        void setupArguments(PricingEngine::arguments*) const override;
         
       private:
         const Size minExerciseRights_, maxExerciseRights_;
@@ -72,7 +72,7 @@ namespace QuantLib {
         : public virtual PricingEngine::arguments {
       public:
         arguments() {}
-        void validate() const;
+        void validate() const override;
 
         Size minExerciseRights, maxExerciseRights;
         ext::shared_ptr<StrikedTypePayoff> payoff;

@@ -70,7 +70,7 @@ namespace QuantLib {
             Real detachmentRatio = 1.0,
             const ext::shared_ptr<Claim>& claim =
                 ext::shared_ptr<Claim>(new FaceValueClaim()));
-        void update() {
+        void update() override {
             computeBasket();
             LazyObject::update();
         }
@@ -279,7 +279,7 @@ namespace QuantLib {
         //@}
       private:
         // LazyObject interface
-         void performCalculations() const;
+         void performCalculations() const override;
 
         std::vector<Real> notionals_;
         ext::shared_ptr<Pool> pool_;

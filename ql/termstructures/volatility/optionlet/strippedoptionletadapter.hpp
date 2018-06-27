@@ -45,34 +45,34 @@ namespace QuantLib {
 
         //! \name TermStructure interface
         //@{
-        Date maxDate() const;
+        Date maxDate() const override;
         //@}
         //! \name VolatilityTermStructure interface
         //@{
-        Rate minStrike() const;
-        Rate maxStrike() const;
+        Rate minStrike() const override;
+        Rate maxStrike() const override;
         //@} 
         //! \name LazyObject interface
         //@{
-        void update();
-        void performCalculations() const;
+        void update() override;
+        void performCalculations() const override;
         ext::shared_ptr< OptionletStripper > optionletStripper() const;
         //@}
         //! \name Observer interface
         //@{
-        void deepUpdate();
+        void deepUpdate() override;
         //@}
 
-        VolatilityType volatilityType() const;
-        Real displacement() const;
+        VolatilityType volatilityType() const override;
+        Real displacement() const override;
 
       protected:
         //! \name OptionletVolatilityStructure interface
         //@{
         ext::shared_ptr<SmileSection> smileSectionImpl(
-                                                Time optionTime) const;
+                                                Time optionTime) const override;
         Volatility volatilityImpl(Time length,
-                                  Rate strike) const;
+                                  Rate strike) const override;
         //@} 
     private:
         const ext::shared_ptr<StrippedOptionletBase> optionletStripper_;

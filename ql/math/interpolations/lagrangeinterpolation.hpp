@@ -57,7 +57,7 @@ namespace QuantLib {
                 #endif
             }
 
-            void update() {
+            void update() override {
                 const Real cM1 = 4.0/(*(this->xEnd_-1) - *(this->xBegin_));
 
                 for (Size i=0; i < n_; ++i) {
@@ -72,11 +72,11 @@ namespace QuantLib {
                 }
             }
 
-            Real value(Real x) const {
+            Real value(Real x) const override {
                 return _value(this->yBegin_, x);
             }
 
-            Real derivative(Real x) const {
+            Real derivative(Real x) const override {
                 Real n=0.0, d=0.0, nd=0.0, dd=0.0;
                 for (Size i=0; i < n_; ++i) {
                     const Real x_i = this->xBegin_[i];
@@ -101,16 +101,16 @@ namespace QuantLib {
                 return (nd * d - n * dd)/(d*d);
             }
 
-            Real primitive(Real) const {
+            Real primitive(Real) const override {
                 QL_FAIL("LagrangeInterpolation primitive is not implemented");
             }
 
-            Real secondDerivative(Real) const {
+            Real secondDerivative(Real) const override {
                 QL_FAIL("LagrangeInterpolation secondDerivative "
                         "is not implemented");
             }
 
-            Real value(const Array& y, Real x) const {
+            Real value(const Array& y, Real x) const override {
                 return _value(y.begin(), x);
             }
 

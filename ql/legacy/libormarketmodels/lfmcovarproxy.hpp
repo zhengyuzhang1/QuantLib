@@ -42,9 +42,9 @@ namespace QuantLib {
         ext::shared_ptr<LmCorrelationModel> correlationModel() const;
 
         Disposable<Matrix> diffusion(
-            Time t, const Array& x = Null<Array>()) const;
+            Time t, const Array& x = Null<Array>()) const override;
         Disposable<Matrix> covariance(
-            Time t, const Array& x = Null<Array>()) const;
+            Time t, const Array& x = Null<Array>()) const override;
 
         using LfmCovarianceParameterization::integratedCovariance;
         virtual Real integratedCovariance(

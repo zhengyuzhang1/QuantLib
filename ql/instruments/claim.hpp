@@ -31,11 +31,11 @@ namespace QuantLib {
     //! Claim associated to a default event
     class Claim : public Observable, public Observer {
       public:
-        virtual ~Claim() {}
+        ~Claim() override {}
         virtual Real amount(const Date& defaultDate,
                             Real notional,
                             Real recoveryRate) const = 0;
-        void update() { notifyObservers(); }
+        void update() override { notifyObservers(); }
     };
 
 
@@ -44,7 +44,7 @@ namespace QuantLib {
       public:
         Real amount(const Date& d,
                     Real notional,
-                    Real recoveryRate) const;
+                    Real recoveryRate) const override;
     };
 
     //! Claim on the notional of a reference security, including accrual
@@ -54,7 +54,7 @@ namespace QuantLib {
                           const ext::shared_ptr<Bond>& referenceSecurity);
         Real amount(const Date& d,
                     Real notional,
-                    Real recoveryRate) const;
+                    Real recoveryRate) const override;
       private:
         ext::shared_ptr<Bond> referenceSecurity_;
     };

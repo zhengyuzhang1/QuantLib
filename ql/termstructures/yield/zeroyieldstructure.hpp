@@ -83,7 +83,7 @@ namespace QuantLib {
         /*! Returns the discount factor for the given date calculating it
             from the zero yield.
         */
-        DiscountFactor discountImpl(Time) const;
+        DiscountFactor discountImpl(Time) const override;
         //@}
     };
 

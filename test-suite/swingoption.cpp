@@ -238,8 +238,8 @@ namespace {
         VanillaForwardPayoff(Option::Type type, Real strike)
           : StrikedTypePayoff(type, strike) {}
 
-        std::string name() const { return "ForwardTypePayoff";}
-        Real operator()(Real price) const {
+        std::string name() const override { return "ForwardTypePayoff";}
+        Real operator()(Real price) const override {
             switch (type_) {
               case Option::Call:
                 return price-strike_;

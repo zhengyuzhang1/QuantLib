@@ -98,7 +98,7 @@ namespace QuantLib {
                 localOptimizer.reset(new LevenbergMarquardt);
         }
 
-        EndCriteria::Type minimize(Problem &P, const EndCriteria &endCriteria);
+        EndCriteria::Type minimize(Problem &P, const EndCriteria &endCriteria) override;
     private:
         Sampler sampler_;
         Probability probability_;

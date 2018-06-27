@@ -98,7 +98,7 @@ namespace QuantLib {
      // this class template always to be fully specialized:
      private:
          IntegrationBase() {}
-     virtual ~IntegrationBase() {} 
+     ~IntegrationBase() override {} 
     };
     //@}
     
@@ -125,16 +125,16 @@ namespace QuantLib {
         IntegrationBase(Size dimension, Size order) 
         : GaussianQuadMultidimIntegrator(dimension, order) {}
         Real integrate(const boost::function<Real (
-            const std::vector<Real>& arg)>& f) const {
+            const std::vector<Real>& arg)>& f) const override {
                 return GaussianQuadMultidimIntegrator::integrate<Real>(f);
         }
         Disposable<std::vector<Real> > integrateV(
             const boost::function<Disposable<std::vector<Real> >  (
-                const std::vector<Real>& arg)>& f) const {
+                const std::vector<Real>& arg)>& f) const override {
                 return GaussianQuadMultidimIntegrator::
                     integrate<Disposable<std::vector<Real> > >(f);
         }
-        virtual ~IntegrationBase() {}
+        ~IntegrationBase() override {}
     };
 
     #endif
@@ -148,11 +148,11 @@ namespace QuantLib {
         : MultidimIntegral(integrators), 
           a_(integrators.size(),a), b_(integrators.size(),b) {}
         Real integrate(const boost::function<Real (
-            const std::vector<Real>& arg)>& f) const {
+            const std::vector<Real>& arg)>& f) const override {
                 return MultidimIntegral::operator ()(f, a_, b_);
         }
         // disposable vector version here....
-        virtual ~IntegrationBase() {}
+        ~IntegrationBase() override {}
         const std::vector<Real> a_, b_;
     };
 
@@ -290,7 +290,7 @@ namespace QuantLib {
         : public virtual Observer , public virtual Observable 
     {//observer if factors as quotes
     public:
-        void update();
+        void update() override;
         //! \name Copula interface.
         //@{
         typedef copulaPolicyImpl copulaType;

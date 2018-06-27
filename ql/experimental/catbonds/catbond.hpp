@@ -47,10 +47,10 @@ namespace QuantLib {
                 : Bond(settlementDays, calendar, issueDate), 
                   notionalRisk_(notionalRisk)
         {}
-        virtual ~CatBond() {}
+        ~CatBond() override {}
 
-        virtual void setupArguments(PricingEngine::arguments*) const;
-        virtual void fetchResults(const PricingEngine::results*) const;
+        void setupArguments(PricingEngine::arguments*) const override;
+        void fetchResults(const PricingEngine::results*) const override;
 
         Real lossProbability() { return lossProbability_; }
         Real expectedLoss() { return expectedLoss_; }
@@ -67,7 +67,7 @@ namespace QuantLib {
       public:
         Date startDate;
         ext::shared_ptr<NotionalRisk> notionalRisk;
-        void validate() const;
+        void validate() const override;
     };
 
     //! results for a cat bond calculation

@@ -69,12 +69,12 @@ namespace QuantLib {
             const Real shift1 = Null<Real>(), const Real shift2 = Null<Real>());
 
         /* */
-        virtual Real swapletPrice() const;
-        virtual Rate swapletRate() const;
-        virtual Real capletPrice(Rate effectiveCap) const;
-        virtual Rate capletRate(Rate effectiveCap) const;
-        virtual Real floorletPrice(Rate effectiveFloor) const;
-        virtual Rate floorletRate(Rate effectiveFloor) const;
+        Real swapletPrice() const override;
+        Rate swapletRate() const override;
+        Real capletPrice(Rate effectiveCap) const override;
+        Rate capletRate(Rate effectiveCap) const override;
+        Real floorletPrice(Rate effectiveFloor) const override;
+        Rate floorletRate(Rate effectiveFloor) const override;
         /* */
         void flushCache();
 
@@ -82,7 +82,7 @@ namespace QuantLib {
         class PrivateObserver : public Observer {
           public:
             explicit PrivateObserver(LognormalCmsSpreadPricer *t) : t_(t) {}
-            void update() { t_->flushCache(); }
+            void update() override { t_->flushCache(); }
 
           private:
             LognormalCmsSpreadPricer *t_;
@@ -93,7 +93,7 @@ namespace QuantLib {
         typedef std::map<std::pair<std::string, Date>, std::pair<Real, Real> >
         CacheType;
 
-        void initialize(const FloatingRateCoupon &coupon);
+        void initialize(const FloatingRateCoupon &coupon) override;
         Real optionletPrice(Option::Type optionType, Real strike) const;
 
         Real integrand(const Real) const;

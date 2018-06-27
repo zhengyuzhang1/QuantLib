@@ -54,17 +54,17 @@ namespace QuantLib {
             bool vegaWeightedSmileFit);
         //! \name LazyObject interface
         //@{
-        void performCalculations() const;
+        void performCalculations() const override;
         //@}
         //! \name SwaptionVolatilityCube inspectors
         //@{
         const Matrix& volSpreads(Size i) const { return volSpreadsMatrix_[i]; }
         ext::shared_ptr<SmileSection> smileSectionImpl(
                                               const Date& optionDate,
-                                              const Period& swapTenor) const;
+                                              const Period& swapTenor) const override;
         ext::shared_ptr<SmileSection> smileSectionImpl(
                                               Time optionTime,
-                                              Time swapLength) const;
+                                              Time swapLength) const override;
         //@}
       private:
         mutable std::vector<Interpolation2D> volSpreadsInterpolator_;

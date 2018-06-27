@@ -38,9 +38,9 @@ namespace QuantLib {
             const ext::shared_ptr<GeneralizedBlackScholesProcess>& process);
 
         // x = ln(S)
-        Real pdf(Real x, Time t) const;
-        Real cdf(Real x, Time t) const;
-        Real invcdf(Real q, Time t) const;
+        Real pdf(Real x, Time t) const override;
+        Real cdf(Real x, Time t) const override;
+        Real invcdf(Real q, Time t) const override;
 
     private:
         std::pair<Real, Volatility> distributionParams(Real x, Time t) const;

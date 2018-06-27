@@ -46,8 +46,8 @@ namespace QuantLib {
                                     Handle<YieldTermStructure>());
         //! \name InterestRateIndex interface
         //@{
-        Date maturityDate(const Date& valueDate) const;
-        Rate forecastFixing(const Date& fixingDate) const;
+        Date maturityDate(const Date& valueDate) const override;
+        Rate forecastFixing(const Date& fixingDate) const override;
         // @}
         //! \name Inspectors
         //@{
@@ -97,7 +97,7 @@ namespace QuantLib {
                                     Handle<YieldTermStructure>());
         //! returns a copy of itself linked to a different forwarding curve
         ext::shared_ptr<IborIndex> clone(
-                                   const Handle<YieldTermStructure>& h) const;
+                                   const Handle<YieldTermStructure>& h) const override;
     };
 
 

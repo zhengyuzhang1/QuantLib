@@ -54,7 +54,7 @@ namespace QuantLib {
         ext::shared_ptr<VarianceGammaProcess> process() const { return process_; }
 
     protected:
-        void generateArguments();
+        void generateArguments() override;
         ext::shared_ptr<VarianceGammaProcess> process_;
     };
 

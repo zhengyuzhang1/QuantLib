@@ -39,7 +39,7 @@ namespace QuantLib {
                   const ext::shared_ptr<FdmInnerValueCalculator>& calculator,
                   Real changeRate);
 
-        void applyTo(Array& a, Time t) const;
+        void applyTo(Array& a, Time t) const override;
 
       private:
         const std::vector<Time> exerciseTimes_;

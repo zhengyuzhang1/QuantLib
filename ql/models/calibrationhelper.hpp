@@ -53,7 +53,7 @@ namespace QuantLib {
             registerWith(termStructure_);
         }
 
-        void performCalculations() const {
+        void performCalculations() const override {
             marketValue_ = blackPrice(volatility_->value());
         }
 

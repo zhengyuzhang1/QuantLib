@@ -53,7 +53,7 @@ namespace QuantLib {
         }
       private:
         mutable SampledCurve prices_;
-        void calculate() const;
+        void calculate() const override;
     };
 
 

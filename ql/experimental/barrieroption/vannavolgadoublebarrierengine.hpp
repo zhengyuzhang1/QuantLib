@@ -84,7 +84,7 @@ namespace QuantLib {
                    registerWith(foreignTS_);
              }
 
-           virtual void calculate() const {
+           void calculate() const override {
 
                using std::sqrt;
 

@@ -41,12 +41,12 @@ namespace QuantLib {
         gamma_(gamma), rho_(rho),
         s0_(s0), r_(r) { }
 
-        Date maxDate()   const { return Date::maxDate(); }
-        Rate minStrike() const { return 0.0; }
-        Rate maxStrike() const { return QL_MAX_REAL; }
+        Date maxDate()   const override { return Date::maxDate(); }
+        Rate minStrike() const override { return 0.0; }
+        Rate maxStrike() const override { return QL_MAX_REAL; }
 
       protected:
-        Volatility blackVolImpl(Time t, Real strike) const {
+        Volatility blackVolImpl(Time t, Real strike) const override {
             const Real fwd = s0_*std::exp(r_*t);
             return sabrVolatility(strike, fwd, t, alpha_, beta_, gamma_, rho_);
         }

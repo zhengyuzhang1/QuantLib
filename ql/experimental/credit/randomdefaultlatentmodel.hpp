@@ -111,14 +111,14 @@ namespace QuantLib {
         : seed_(seed), numFactors_(numFactors), numLMVars_(numLMVars),
           nSims_(nSims), copula_(copula) {}
 
-        void update() {
+        void update() override {
             simsBuffer_.clear();
             // tell basket to notify instruments, etc, we are invalid
             if(!basket_.empty()) basket_->notifyObservers();
             LazyObject::update();
         }
 
-        void performCalculations() const {
+        void performCalculations() const override {
             static_cast<const derivedRandomLM<copulaPolicy, USNG>* >(
                 this)->initDates();//in update?
             copulasRng_ = ext::make_shared<copulaRNG_type>(copula_, seed_);
@@ -162,7 +162,7 @@ namespace QuantLib {
         /*! Returns the probaility of having a given or larger number of
         defaults in the basket portfolio at a given time.
         */
-        virtual Probability probAtLeastNEvents(Size n, const Date& d) const;
+        Probability probAtLeastNEvents(Size n, const Date& d) const override;
         /*! Order of results refers to the simulated (super)pool not the
         basket's pool.
         Notice that this statistic suffers from heavy dispersion. To see
@@ -174,19 +174,19 @@ namespace QuantLib {
         Chen, Z., Glasserman, P. 'Fast pricing of basket default swaps' in
         Operations Research Vol. 56, No. 2, March/April 2008, pp. 286-303
         */
-        virtual Disposable<std::vector<Probability> > probsBeingNthEvent(Size n,
-            const Date& d) const;
+        Disposable<std::vector<Probability> > probsBeingNthEvent(Size n,
+            const Date& d) const override;
         //! Pearsons' default probability correlation.
-        virtual Real defaultCorrelation(const Date& d, Size iName,
-            Size jName) const;
-        virtual Real expectedTrancheLoss(const Date& d) const;
+        Real defaultCorrelation(const Date& d, Size iName,
+            Size jName) const override;
+        Real expectedTrancheLoss(const Date& d) const override;
         virtual std::pair<Real, Real> expectedTrancheLossInterval(const Date& d,
             Probability confidencePerc) const;
-        virtual Disposable<std::map<Real, Probability> >
-            lossDistribution(const Date& d) const;
+        Disposable<std::map<Real, Probability> >
+            lossDistribution(const Date& d) const override;
         virtual Histogram computeHistogram(const Date& d) const;
-        virtual Real expectedShortfall(const Date& d, Real percent) const;
-        virtual Real percentile(const Date& d, Real percentile) const;
+        Real expectedShortfall(const Date& d, Real percent) const override;
+        Real percentile(const Date& d, Real percentile) const override;
         /*! Returns the VaR value for a given percentile and the 95 confidence
         interval of that value. */
         virtual boost::tuples::tuple<Real, Real, Real> percentileAndInterval(
@@ -194,8 +194,8 @@ namespace QuantLib {
         /*! Distributes the total VaR amount along the portfolio counterparties.
             The passed loss amount is in loss units.
         */
-        virtual Disposable<std::vector<Real> > splitVaRLevel(const Date& date,
-            Real loss) const;
+        Disposable<std::vector<Real> > splitVaRLevel(const Date& date,
+            Real loss) const override;
         /*! Distributes the total VaR amount along the portfolio
             counterparties.
 
@@ -208,7 +208,7 @@ namespace QuantLib {
             const Date& date, Real loss, Probability confInterval) const;
         //@}
     public:
-        virtual ~RandomLM() {}
+        ~RandomLM() override {}
     private:
         BigNatural seed_;
     protected:
@@ -896,7 +896,7 @@ namespace QuantLib {
             return recoveries_[evt.nameIdx];
         }
         Real expectedRecovery(const Date&, Size iName,
-                    const DefaultProbKey&) const {
+                    const DefaultProbKey&) const override {
             // deterministic
             return recoveries_[iName];
         }
@@ -909,7 +909,7 @@ namespace QuantLib {
         //invoking duck typing on the variable name or a handle to the basket)
         Size basketSize() const { return model_->size(); }
     private:
-        void resetModel() /*const*/ {
+        void resetModel() override /*const*/ {
             /* Explore: might save recalculation if the basket is the same
             (some situations, like BC or control variates) in that case do not
             update, only reset the model's basket.

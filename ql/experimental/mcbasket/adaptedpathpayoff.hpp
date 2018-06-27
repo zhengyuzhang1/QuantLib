@@ -66,11 +66,11 @@ namespace QuantLib {
             Size maximumTimeRead_;
         };
 
-        virtual void value(const Matrix       & path, 
+        void value(const Matrix       & path, 
                            const std::vector<Handle<YieldTermStructure> > & forwardTermStructures,
                            Array              & payments, 
                            Array              & exercises, 
-                           std::vector<Array> & states) const;
+                           std::vector<Array> & states) const override;
 
     protected:
 

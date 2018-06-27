@@ -36,13 +36,13 @@ namespace QuantLib {
                                                                 argument_type;
         typedef TransformedGrid grid_type;
         PdeShortRate(const argument_type& d) : dynamics_(d) {}
-        virtual Real diffusion(Time t, Real x) const {
+        Real diffusion(Time t, Real x) const override {
             return dynamics_->process()->diffusion(t, x);
         }
-        virtual Real drift(Time t, Real x) const {
+        Real drift(Time t, Real x) const override {
             return dynamics_->process()->drift(t, x);
         }
-        virtual Real discount(Time t, Real x) const {
+        Real discount(Time t, Real x) const override {
             return dynamics_->shortRate(t,x);
         }
       private:

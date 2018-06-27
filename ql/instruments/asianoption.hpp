@@ -46,7 +46,7 @@ namespace QuantLib {
                 Average::Type averageType,
                 const ext::shared_ptr<StrikedTypePayoff>& payoff,
                 const ext::shared_ptr<Exercise>& exercise);
-        void setupArguments(PricingEngine::arguments*) const;
+        void setupArguments(PricingEngine::arguments*) const override;
       protected:
         Average::Type averageType_;
     };
@@ -64,7 +64,7 @@ namespace QuantLib {
                 const std::vector<Date>& fixingDates,
                 const ext::shared_ptr<StrikedTypePayoff>& payoff,
                 const ext::shared_ptr<Exercise>& exercise);
-        void setupArguments(PricingEngine::arguments*) const;
+        void setupArguments(PricingEngine::arguments*) const override;
       protected:
         Average::Type averageType_;
         Real runningAccumulator_;
@@ -79,7 +79,7 @@ namespace QuantLib {
         arguments() : averageType(Average::Type(-1)),
                       runningAccumulator(Null<Real>()),
                       pastFixings(Null<Size>()) {}
-        void validate() const;
+        void validate() const override;
         Average::Type averageType;
         Real runningAccumulator;
         Size pastFixings;
@@ -91,7 +91,7 @@ namespace QuantLib {
         : public OneAssetOption::arguments {
       public:
         arguments() : averageType(Average::Type(-1)) {}
-        void validate() const;
+        void validate() const override;
         Average::Type averageType;
     };
 

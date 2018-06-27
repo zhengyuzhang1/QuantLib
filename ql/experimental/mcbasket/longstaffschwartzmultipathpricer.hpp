@@ -61,7 +61,7 @@ namespace QuantLib {
             Size ,
             LsmBasisSystem::PolynomType );
 
-        Real operator()(const MultiPath& multiPath) const;
+        Real operator()(const MultiPath& multiPath) const override;
         virtual void calibrate();
 
       protected:

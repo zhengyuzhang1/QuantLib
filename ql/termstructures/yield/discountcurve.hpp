@@ -63,7 +63,7 @@ namespace QuantLib {
             const Interpolator& interpolator);
         //! \name TermStructure interface
         //@{
-        Date maxDate() const;
+        Date maxDate() const override;
         //@}
         //! \name other inspectors
         //@{
@@ -94,7 +94,7 @@ namespace QuantLib {
             const Interpolator& interpolator = Interpolator());
         //! \name YieldTermStructure implementation
         //@{
-        DiscountFactor discountImpl(Time) const;
+        DiscountFactor discountImpl(Time) const override;
         //@}
         mutable std::vector<Date> dates_;
       private:

@@ -107,16 +107,16 @@ namespace QuantLib {
             considered income.
         */
         Real spotIncome(const Handle<YieldTermStructure>& incomeDiscountCurve)
-            const;
+            const override;
 
         //!  NPV of underlying bond
-        Real spotValue() const;
+        Real spotValue() const override;
 
         //@}
 
       protected:
         ext::shared_ptr<FixedRateBond> fixedCouponBond_;
-        void performCalculations() const;
+        void performCalculations() const override;
     };
 
 }

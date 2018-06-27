@@ -46,11 +46,11 @@ namespace QuantLib {
             const Matrix& correlation = Matrix(), Size factors = 1);
 
         Disposable<Matrix> diffusion (
-            Time t, const Array& x = Null<Array>()) const;
+            Time t, const Array& x = Null<Array>()) const override;
         Disposable<Matrix> covariance(
-            Time t, const Array& x = Null<Array>()) const;
+            Time t, const Array& x = Null<Array>()) const override;
         Disposable<Matrix> integratedCovariance(
-            Time t, const Array& x = Null<Array>()) const;
+            Time t, const Array& x = Null<Array>()) const override;
 
       protected:
         Size nextIndexReset(Time t) const;

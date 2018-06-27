@@ -220,10 +220,10 @@ namespace QuantLib {
             explicit FdmSchemeWrapper(T* scheme)
             : scheme_(scheme) { }
 
-            void step(Array& a, Time t) {
+            void step(Array& a, Time t) override {
                 scheme_->step(a, t);
             }
-            void setStep(Time dt) {
+            void setStep(Time dt) override {
                 scheme_->setStep(dt);
             }
 

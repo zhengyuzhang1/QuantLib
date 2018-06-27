@@ -86,7 +86,7 @@ namespace {
         : PlainVanillaPayoff(type, strike),
           g_(g) { }
 
-        Real operator()(Real x) const {
+        Real operator()(Real x) const override {
             return PlainVanillaPayoff::operator()(g_(x));
         }
 
@@ -315,7 +315,7 @@ namespace {
                 calibrationDates_.begin(), c.begin(), c.end());
         }
 
-        Real value(const Array& params) const {
+        Real value(const Array& params) const override {
             const Array diff = values(params);
 
             Real retVal = 0.0;
@@ -325,7 +325,7 @@ namespace {
             return retVal;
         }
 
-        Disposable<Array> values(const Array& params) const {
+        Disposable<Array> values(const Array& params) const override {
             const Real theta = params[0];
             const Real kappa = params[1];
             const Real sigma = params[2];
@@ -459,7 +459,7 @@ namespace {
       private:
         class Impl : public Constraint::Impl {
           public:
-            bool test(const Array& params) const {
+            bool test(const Array& params) const override {
                 const Real theta = params[0];
                 const Real kappa = params[1];
                 const Real sigma = params[2];
@@ -469,13 +469,13 @@ namespace {
                         && x0 > 1e-4);
             }
 
-            Array upperBound(const Array& params) const {
+            Array upperBound(const Array& params) const override {
                 const Real upper[] = { 1.0, 1.0, 1.0, 2.0 };
 
                 return Array(upper, upper + 4);
             }
 
-            Array lowerBound(const Array& params) const {
+            Array lowerBound(const Array& params) const override {
                 const Real lower[] = { 0.001, 0.001, 0.001, 1e-4 };
 
                 return Array(lower, lower + 4);

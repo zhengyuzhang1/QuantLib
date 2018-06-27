@@ -49,8 +49,8 @@ namespace QuantLib {
                       const Spread overnightSpread = 0.0);
         //! \name RateHelper interface
         //@{
-        Real impliedQuote() const;
-        void setTermStructure(YieldTermStructure*);
+        Real impliedQuote() const override;
+        void setTermStructure(YieldTermStructure*) override;
         //@}
         //! \name inspectors
         //@{
@@ -58,10 +58,10 @@ namespace QuantLib {
         //@}
         //! \name Visitability
         //@{
-        void accept(AcyclicVisitor&);
+        void accept(AcyclicVisitor&) override;
         //@}
     protected:
-        void initializeDates();
+        void initializeDates() override;
 
         Natural settlementDays_;
         Period tenor_;
@@ -96,12 +96,12 @@ namespace QuantLib {
                     bool telescopicValueDates = false);
         //! \name RateHelper interface
         //@{
-        Real impliedQuote() const;
-        void setTermStructure(YieldTermStructure*);
+        Real impliedQuote() const override;
+        void setTermStructure(YieldTermStructure*) override;
         //@}
         //! \name Visitability
         //@{
-        void accept(AcyclicVisitor&);
+        void accept(AcyclicVisitor&) override;
         //@}
     protected:
         ext::shared_ptr<OvernightIndexedSwap> swap_;

@@ -34,9 +34,9 @@ namespace QuantLib {
     class Stock : public Instrument {
       public:
         Stock(const Handle<Quote>& quote);
-        bool isExpired() const { return false; }
+        bool isExpired() const override { return false; }
       protected:
-        void performCalculations() const;
+        void performCalculations() const override;
       private:
         Handle<Quote> quote_;
     };

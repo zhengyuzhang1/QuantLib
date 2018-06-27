@@ -72,7 +72,7 @@ namespace QuantLib {
         const ext::shared_ptr<InterestRateIndex>& index() const;
         //! \name Visitability
         //@{
-        virtual void accept(AcyclicVisitor&);
+        void accept(AcyclicVisitor&) override;
         //@}
       protected:
         ext::shared_ptr<InterestRateIndex> index_;

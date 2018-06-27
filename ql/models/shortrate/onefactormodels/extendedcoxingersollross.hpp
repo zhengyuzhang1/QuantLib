@@ -51,18 +51,18 @@ namespace QuantLib {
                               Real x0 = 0.05,
                               bool withFellerConstraint = true);
 
-        ext::shared_ptr<Lattice> tree(const TimeGrid& grid) const;
+        ext::shared_ptr<Lattice> tree(const TimeGrid& grid) const override;
 
-        ext::shared_ptr<ShortRateDynamics> dynamics() const;
+        ext::shared_ptr<ShortRateDynamics> dynamics() const override;
 
         Real discountBondOption(Option::Type type,
                                 Real strike,
                                 Time maturity,
-                                Time bondMaturity) const;
+                                Time bondMaturity) const override;
 
       protected:
-        void generateArguments();
-        Real A(Time t, Time T) const;
+        void generateArguments() override;
+        Real A(Time t, Time T) const override;
 
       private:
         class Dynamics;
@@ -90,10 +90,10 @@ namespace QuantLib {
                  Real x0)
         : CoxIngersollRoss::Dynamics(theta, k, sigma, x0), phi_(phi) {}
 
-        virtual Real variable(Time t, Rate r) const {
+        Real variable(Time t, Rate r) const override {
             return std::sqrt(r - phi_(t));
         }
-        virtual Real shortRate(Time t, Real y) const {
+        Real shortRate(Time t, Real y) const override {
             return y*y + phi_(t);
         }
       private:
@@ -120,7 +120,7 @@ namespace QuantLib {
             : termStructure_(termStructure),
               theta_(theta), k_(k), sigma_(sigma), x0_(x0) {}
 
-            Real value(const Array&, Time t) const {
+            Real value(const Array&, Time t) const override {
                 Rate forwardRate =
                     termStructure_->forwardRate(t, t, Continuous, NoFrequency);
                 Real h = std::sqrt(k_*k_ + 2.0*sigma_*sigma_);

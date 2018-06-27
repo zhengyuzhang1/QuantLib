@@ -75,7 +75,7 @@ namespace QuantLib {
       private:
         Natural calibrationImpl_(Natural numberOfFactors, 
                                  Natural maxIterations,
-                                 Real tolerance);
+                                 Real tolerance) override;
         // input
         std::vector<Real> alphaInitial_, alphaMax_, alphaMin_;
         bool maximizeHomogeneity_;

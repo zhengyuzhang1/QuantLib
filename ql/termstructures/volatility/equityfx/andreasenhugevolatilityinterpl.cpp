@@ -143,7 +143,7 @@ namespace QuantLib {
             return -mapT_.apply(c);
         }
 
-        Disposable<Array> values(const Array& sig) const {
+        Disposable<Array> values(const Array& sig) const override {
             Array newNPVs = solveFor(dT_, sig, previousNPVs_);
 
             const std::vector<Real>& gridPoints =
@@ -193,7 +193,7 @@ namespace QuantLib {
       : putCostFct_(putCostFct),
         callCostFct_(callCostFct) { }
 
-        Disposable<Array> values(const Array& sig) const {
+        Disposable<Array> values(const Array& sig) const override {
             if (putCostFct_ && callCostFct_) {
                 const Array pv = putCostFct_->values(sig);
                 const Array cv = callCostFct_->values(sig);

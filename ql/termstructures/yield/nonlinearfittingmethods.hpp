@@ -55,13 +55,13 @@ namespace QuantLib {
                                   const Array& weights,
                                   const Array& l2);
         #if defined(QL_USE_STD_UNIQUE_PTR)
-        std::unique_ptr<FittedBondDiscountCurve::FittingMethod> clone() const;
+        std::unique_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
         #else
-        std::auto_ptr<FittedBondDiscountCurve::FittingMethod> clone() const;
+        std::auto_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
         #endif
       private:
-        Size size() const;
-        DiscountFactor discountFunction(const Array& x, Time t) const;
+        Size size() const override;
+        DiscountFactor discountFunction(const Array& x, Time t) const override;
     };
 
 
@@ -84,13 +84,13 @@ namespace QuantLib {
                             const Array& l2 = Array());
         NelsonSiegelFitting(const Array& weights, const Array& l2);
         #if defined(QL_USE_STD_UNIQUE_PTR)
-        std::unique_ptr<FittedBondDiscountCurve::FittingMethod> clone() const;
+        std::unique_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
         #else
-        std::auto_ptr<FittedBondDiscountCurve::FittingMethod> clone() const;
+        std::auto_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
         #endif
       private:
-        Size size() const;
-        DiscountFactor discountFunction(const Array& x, Time t) const;
+        Size size() const override;
+        DiscountFactor discountFunction(const Array& x, Time t) const override;
     };
 
 
@@ -115,13 +115,13 @@ namespace QuantLib {
                         const Array& l2 = Array());
         SvenssonFitting(const Array& weights, const Array& l2);
         #if defined(QL_USE_STD_UNIQUE_PTR)
-        std::unique_ptr<FittedBondDiscountCurve::FittingMethod> clone() const;
+        std::unique_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
         #else
-        std::auto_ptr<FittedBondDiscountCurve::FittingMethod> clone() const;
+        std::auto_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
         #endif
       private:
-        Size size() const;
-        DiscountFactor discountFunction(const Array& x, Time t) const;
+        Size size() const override;
+        DiscountFactor discountFunction(const Array& x, Time t) const override;
     };
 
 
@@ -160,13 +160,13 @@ namespace QuantLib {
         //! cubic B-spline basis functions
         Real basisFunction(Integer i, Time t) const;
         #if defined(QL_USE_STD_UNIQUE_PTR)
-        std::unique_ptr<FittedBondDiscountCurve::FittingMethod> clone() const;
+        std::unique_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
         #else
-        std::auto_ptr<FittedBondDiscountCurve::FittingMethod> clone() const;
+        std::auto_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
         #endif
       private:
-        Size size() const;
-        DiscountFactor discountFunction(const Array& x, Time t) const;
+        Size size() const override;
+        DiscountFactor discountFunction(const Array& x, Time t) const override;
         BSpline splines_;
         Size size_;
         //! N_th basis function coefficient to solve for when d(0)=1
@@ -198,13 +198,13 @@ namespace QuantLib {
                                 const Array& weights,
                                 const Array& l2);
         #if defined(QL_USE_STD_UNIQUE_PTR)
-        std::unique_ptr<FittedBondDiscountCurve::FittingMethod> clone() const;
+        std::unique_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
         #else
-        std::auto_ptr<FittedBondDiscountCurve::FittingMethod> clone() const;
+        std::auto_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
         #endif
       private:
-        Size size() const;
-        DiscountFactor discountFunction(const Array& x, Time t) const;
+        Size size() const override;
+        DiscountFactor discountFunction(const Array& x, Time t) const override;
         Size size_;
     };
 
@@ -218,15 +218,15 @@ namespace QuantLib {
          SpreadFittingMethod(ext::shared_ptr<FittingMethod> method,
                         Handle<YieldTermStructure> discountCurve);
         #if defined(QL_USE_STD_UNIQUE_PTR)
-        std::unique_ptr<FittedBondDiscountCurve::FittingMethod> clone() const;
+        std::unique_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
         #else
-        std::auto_ptr<FittedBondDiscountCurve::FittingMethod> clone() const;
+        std::auto_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
         #endif
     protected:
-        void init();
+        void init() override;
       private:
-        Size size() const;
-        DiscountFactor discountFunction(const Array& x, Time t) const;
+        Size size() const override;
+        DiscountFactor discountFunction(const Array& x, Time t) const override;
         // underlying parametric method
         ext::shared_ptr<FittingMethod> method_;
         // adjustment in case underlying discount curve has different reference date

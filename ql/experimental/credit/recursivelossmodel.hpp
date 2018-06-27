@@ -85,7 +85,7 @@ namespace QuantLib {
             //const Date& date,
             const std::vector<Real>& mktFactor) const;
     protected:
-        void resetModel();
+        void resetModel() override;
     public:
         /*  Expected tranche Loss calculation.
             This is computed from the first equation on page 70 (not numbered)
@@ -102,16 +102,16 @@ namespace QuantLib {
             and this is the way it is integrated here. The recursion formula 
             makes it easier this way.
         */
-       Real expectedTrancheLoss(const Date& date) const;
+       Real expectedTrancheLoss(const Date& date) const override;
        Disposable<std::vector<Real> > lossProbability(const Date& date) const;
        // REMEBER THIS HAS TO BE MOVED TO A DISTRIBUTION OBJECT.............
        Disposable<std::map<Real, Probability> > lossDistribution(
-           const Date& d) const;
+           const Date& d) const override;
        // INTEGRATE THEN SEARCH RATHER THAN SEARCH AND THEN INTEGRATE:
        // Here I am not using a search because the point might not be attainable
        //  (loss distrib is not continuous) 
-       Real percentile(const Date& d, Real percentile) const;
-       Real expectedShortfall(const Date& d, Real perctl) const;
+       Real percentile(const Date& d, Real percentile) const override;
+       Real expectedShortfall(const Date& d, Real perctl) const override;
     protected:
         const ext::shared_ptr<ConstantLossLatentmodel<copulaPolicy> > copula_;
     private:

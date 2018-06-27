@@ -40,7 +40,7 @@ namespace QuantLib {
         Real operator()(Problem& P,             // Optimization problem
                         EndCriteria::Type& ecType,
                         const EndCriteria&,
-                        const Real t_ini);      // initial value of line-search step
+                        const Real t_ini) override;      // initial value of line-search step
 
       private:
         Real alpha_, beta_;

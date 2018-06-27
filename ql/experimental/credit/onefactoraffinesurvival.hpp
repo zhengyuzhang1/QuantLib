@@ -77,7 +77,7 @@ namespace QuantLib {
         //! \name TermStructure interface
         //@{
         // overwrite on mkt models (e.g. bootstraps)
-        Date maxDate() const {
+        Date maxDate() const override {
             return Date::maxDate();
         }
 
@@ -137,8 +137,8 @@ namespace QuantLib {
     protected:
         //! \name DefaultProbabilityTermStructure implementation
         //@{
-        Probability survivalProbabilityImpl(Time) const;
-        Real defaultDensityImpl(Time) const;
+        Probability survivalProbabilityImpl(Time) const override;
+        Real defaultDensityImpl(Time) const override;
         //@}
         // avoid call super
         // \todo addd date overload
@@ -146,7 +146,7 @@ namespace QuantLib {
                 Time tFwd, Time tgt, Real yVal) const;
 
         // HazardRateStructure interface
-        Real hazardRateImpl(Time t) const{
+        Real hazardRateImpl(Time t) const override{
             // no deterministic component
             return 0.;
         }

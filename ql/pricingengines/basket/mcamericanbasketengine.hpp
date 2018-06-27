@@ -60,7 +60,7 @@ namespace QuantLib {
                                Size nCalibrationSamples = Null<Size>());
       protected:
         ext::shared_ptr<LongstaffSchwartzPathPricer<MultiPath> >
-            lsmPathPricer() const;
+            lsmPathPricer() const override;
     };
 
 
@@ -100,10 +100,10 @@ namespace QuantLib {
                                  LsmBasisSystem::PolynomType
                                  polynomType = LsmBasisSystem::Monomial);
 
-        Array state(const MultiPath& path, Size t) const;
-        Real operator()(const MultiPath& path, Size t) const;
+        Array state(const MultiPath& path, Size t) const override;
+        Real operator()(const MultiPath& path, Size t) const override;
 
-        std::vector<boost::function1<Real, Array> > basisSystem() const;
+        std::vector<boost::function1<Real, Array> > basisSystem() const override;
 
       protected:
         Real payoff(const Array& state) const;

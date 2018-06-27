@@ -42,8 +42,8 @@ namespace QuantLib {
           load_      (load),
           changeRate_(changeRate) {}
 
-        bool isExpired() const;
-        void setupArguments(PricingEngine::arguments*) const;
+        bool isExpired() const override;
+        void setupArguments(PricingEngine::arguments*) const override;
 
       private:
         const Real capacity_;
@@ -55,7 +55,7 @@ namespace QuantLib {
         : public virtual PricingEngine::arguments {
       public:
         arguments() {}
-        void validate() const {
+        void validate() const override {
             QL_REQUIRE(payoff, "no payoff given");
             QL_REQUIRE(exercise, "no exercise given");
 

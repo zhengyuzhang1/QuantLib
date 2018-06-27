@@ -48,16 +48,16 @@ namespace QuantLib {
                                             Size factors = Null<Size>());
 
         Disposable<Matrix> correlation(
-            Time t, const Array& x = Null<Array>()) const;
+            Time t, const Array& x = Null<Array>()) const override;
         Disposable<Matrix> pseudoSqrt(
-            Time t, const Array& x = Null<Array>()) const;
-        Real correlation(Size i, Size j, Time t, const Array& x) const;
+            Time t, const Array& x = Null<Array>()) const override;
+        Real correlation(Size i, Size j, Time t, const Array& x) const override;
 
-        Size factors() const;
-        bool isTimeIndependent() const;
+        Size factors() const override;
+        bool isTimeIndependent() const override;
 
       protected:
-        void generateArguments();
+        void generateArguments() override;
 
       private:
         Matrix corrMatrix_, pseudoSqrt_;

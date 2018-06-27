@@ -55,7 +55,7 @@ namespace QuantLib {
                                                      zData) {
                 calculate();
             }
-            void calculate() {
+            void calculate() override {
                 splines_.resize(this->zData_.rows());
                 for (Size i=0; i<(this->zData_.rows()); ++i)
                     splines_[i] = CubicInterpolation(
@@ -65,7 +65,7 @@ namespace QuantLib {
                                 CubicInterpolation::SecondDerivative, 0.0,
                                 CubicInterpolation::SecondDerivative, 0.0);
             }
-            Real value(Real x, Real y) const {
+            Real value(Real x, Real y) const override {
                 std::vector<Real> section(splines_.size());
                 for (Size i=0; i<splines_.size(); i++)
                     section[i]=splines_[i](x,true);
@@ -78,7 +78,7 @@ namespace QuantLib {
                 return spline(y,true);
             }
             
-            Real derivativeX(Real x, Real y) const {
+            Real derivativeX(Real x, Real y) const override {
                 std::vector<Real> section(this->zData_.columns());
                 for (Size i=0; i < section.size(); ++i) {
                     section[i] = value(this->xBegin_[i], y);
@@ -92,7 +92,7 @@ namespace QuantLib {
                     CubicInterpolation::SecondDerivative, 0.0).derivative(x);
             }
             
-            Real secondDerivativeX(Real x, Real y) const {
+            Real secondDerivativeX(Real x, Real y) const override {
                 std::vector<Real> section(this->zData_.columns());
                 for (Size i=0; i < section.size(); ++i) {
                     section[i] = value(this->xBegin_[i], y);
@@ -107,7 +107,7 @@ namespace QuantLib {
                                                           .secondDerivative(x);
             }
 
-            Real derivativeY(Real x, Real y) const {
+            Real derivativeY(Real x, Real y) const override {
                 std::vector<Real> section(splines_.size());
                 for (Size i=0; i<splines_.size(); i++)
                     section[i]=splines_[i](x,true);
@@ -120,7 +120,7 @@ namespace QuantLib {
                     CubicInterpolation::SecondDerivative, 0.0).derivative(y);
             }
 
-            Real secondDerivativeY(Real x, Real y) const {
+            Real secondDerivativeY(Real x, Real y) const override {
                 std::vector<Real> section(splines_.size());
                 for (Size i=0; i<splines_.size(); i++)
                     section[i]=splines_[i](x,true);
@@ -134,7 +134,7 @@ namespace QuantLib {
                                                         .secondDerivative(y);
             }
             
-            Real derivativeXY(Real x, Real y) const {
+            Real derivativeXY(Real x, Real y) const override {
                 std::vector<Real> section(this->zData_.columns());
                 for (Size i=0; i < section.size(); ++i) {
                     section[i] = derivativeY(this->xBegin_[i], y);

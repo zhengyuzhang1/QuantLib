@@ -62,7 +62,7 @@ namespace QuantLib {
       private:
         Natural calibrationImpl_(Natural numberOfFactors,
                                  Natural ,
-                                 Real );
+                                 Real ) override;
         // input
         std::vector<Real> alpha_;
         bool lowestRoot_, useFullApprox_;

@@ -146,23 +146,23 @@ namespace QuantLib {
         //      ConstantLossLatentmodel<copulaPolicy>::probsBeingNthEvent(n, d);
         //}
         Real defaultCorrelation(const Date& d, Size iName, 
-            Size jName) const {
+            Size jName) const override {
             return 
               ConstantLossLatentmodel<copulaPolicy>::defaultCorrelation(d, 
                 iName, jName);
         }
-        Probability probAtLeastNEvents(Size n, const Date& d) const {
+        Probability probAtLeastNEvents(Size n, const Date& d) const override {
             return 
               ConstantLossLatentmodel<copulaPolicy>::probAtLeastNEvents(n, d);
         }
         Real expectedRecovery(const Date& d, Size iName, 
-            const DefaultProbKey& k) const {
+            const DefaultProbKey& k) const override {
                 return 
                     ConstantLossLatentmodel<copulaPolicy>::expectedRecovery(d, 
                         iName, k);
         }
     private:
-        virtual void resetModel() {
+        void resetModel() override {
             // update the default latent model we derive from
             DefaultLatentModel<copulaPolicy>::resetBasket(
                 DefaultLossModel::basket_.currentLink());// forces interface

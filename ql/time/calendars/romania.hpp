@@ -54,8 +54,8 @@ namespace QuantLib {
       private:
         class Impl : public Calendar::OrthodoxImpl {
           public:
-            std::string name() const { return "Romania"; }
-            bool isBusinessDay(const Date&) const;
+            std::string name() const override { return "Romania"; }
+            bool isBusinessDay(const Date&) const override;
         };
       public:
         Romania();

@@ -76,7 +76,7 @@ namespace QuantLib {
             const Handle<Quote>& correlQuote,
             const std::vector<Real>& recoveries);
 
-        void update() {
+        void update() override {
             sqrt1minuscorrel_ = std::sqrt(1.-correl_->value());
             beta_ = std::sqrt(correl_->value());
             biphi_ = BivariateCumulativeNormalDistribution(
@@ -85,7 +85,7 @@ namespace QuantLib {
             if(!basket_.empty()) basket_->notifyObservers();
         }
     private:
-        void resetModel() { }
+        void resetModel() override { }
         /*! @param attachLimit as a fraction of the underlying live portfolio 
         notional 
         */
@@ -95,7 +95,7 @@ namespace QuantLib {
             Real averageRR, // << at the given date 'd'
             Real attachLimit, Real detachLimit) const;
     public:
-        Real expectedTrancheLoss(const Date& d) const {
+        Real expectedTrancheLoss(const Date& d) const override {
             //can calls to Basket::remainingNotional(d) be cached?<<<<<<<<<<<<<
             const Real remainingfullNot = basket_->remainingNotional(d);
             Real averageRR = averageRecovery(d);
@@ -119,7 +119,7 @@ namespace QuantLib {
             not portfolio as a fraction of the remaining(live) tranche
             (i.e. a_remaining=0% and det_remaining=100%)
         */
-        Real probOverLoss(const Date& d, Real remainingLossFraction) const;
+        Real probOverLoss(const Date& d, Real remainingLossFraction) const override;
 
         //! Returns the ESF as an absolute amount (rather than a fraction)
         /* The way it is implemented here is a transformation from ETL to ESF
@@ -127,19 +127,19 @@ namespace QuantLib {
         to the Basket/DefaultLossModel class. 
         TO DO: Implement the inverse transformation
         */
-        Real expectedShortfall(const Date& d, Probability perctl) const;
+        Real expectedShortfall(const Date& d, Probability perctl) const override;
     protected:
         // This is wrong, it is not accounting for the current defaults ....
         // returns the loss value in actual loss units, returns the loss value 
         // for the underlying portfolio, untranched
         Real percentilePortfolioLossFraction(const Date& d, Real perctl) const;
         Real expectedRecovery(const Date& d, Size iName, 
-            const DefaultProbKey& ik) const { 
+            const DefaultProbKey& ik) const override { 
                 return rrQuotes_[iName].currentLink()->value();
         }
     public:
         // same as percentilePortfolio but tranched
-        Real percentile(const Date& d, Real perctl) const {
+        Real percentile(const Date& d, Real perctl) const override {
             const Real remainingNot = basket_->remainingNotional(d);
             Real remainingAttachAmount = basket_->remainingAttachmentAmount();
             Real remainingDetachAmount = basket_->remainingDetachmentAmount();

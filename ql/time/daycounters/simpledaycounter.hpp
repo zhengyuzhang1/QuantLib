@@ -47,13 +47,13 @@ namespace QuantLib {
       private:
         class Impl : public DayCounter::Impl {
           public:
-            std::string name() const { return "Simple"; }
+            std::string name() const override { return "Simple"; }
             Date::serial_type dayCount(const Date& d1,
-                                       const Date& d2) const;
+                                       const Date& d2) const override;
             Time yearFraction(const Date& d1,
                               const Date& d2,
                               const Date&,
-                              const Date&) const;
+                              const Date&) const override;
         };
       public:
         SimpleDayCounter()

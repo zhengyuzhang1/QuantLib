@@ -146,11 +146,11 @@ public:
     typedef boost::function<Disposable<Array>(const Array&)> ArrayFunc;
     TestFunction(const RealFunc & f, const ArrayFunc & fs = ArrayFunc()) : f_(f), fs_(fs) {}
     TestFunction(Real(*f)(const Array&), Disposable<Array>(*fs)(const Array&) = NULL) : f_(f), fs_(fs) {}
-    virtual ~TestFunction(){}
-    virtual Real value(const Array& x) const {
+    ~TestFunction() override{}
+    Real value(const Array& x) const override {
         return f_(x);
     }
-    virtual Disposable<Array> values(const Array& x) const {
+    Disposable<Array> values(const Array& x) const override {
         if(fs_.empty())
             throw std::runtime_error("Invalid function");
         return fs_(x);

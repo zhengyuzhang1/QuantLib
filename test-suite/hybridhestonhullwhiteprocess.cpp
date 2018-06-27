@@ -1197,7 +1197,7 @@ namespace {
             explicit Impl(Real equityShortRateCorr)
             : equityShortRateCorr_(equityShortRateCorr) {}
 
-            bool test(const Array& params) const {
+            bool test(const Array& params) const override {
                 const Real rho = params[3];
 
                 return (  square<Real>()(rho)

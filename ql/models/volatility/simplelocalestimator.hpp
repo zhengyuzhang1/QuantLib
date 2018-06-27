@@ -40,7 +40,7 @@ namespace QuantLib {
         SimpleLocalEstimator(Real y) :
         yearFraction_(y) {}
         TimeSeries<Volatility>
-        calculate(const TimeSeries<Real> &quoteSeries) {
+        calculate(const TimeSeries<Real> &quoteSeries) override {
             TimeSeries<Volatility> retval;
             TimeSeries<Real>::const_iterator prev, next, cur, start;
             start = quoteSeries.begin();

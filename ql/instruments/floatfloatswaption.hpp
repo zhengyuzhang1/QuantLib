@@ -46,8 +46,8 @@ namespace QuantLib {
                            const ext::shared_ptr<Exercise> &exercise);
         //! \name Instrument interface
         //@{
-        bool isExpired() const;
-        void setupArguments(PricingEngine::arguments *) const;
+        bool isExpired() const override;
+        void setupArguments(PricingEngine::arguments *) const override;
         //@}
         //! \name Inspectors
         //@{
@@ -74,7 +74,7 @@ namespace QuantLib {
       public:
         arguments() {}
         ext::shared_ptr<FloatFloatSwap> swap;
-        void validate() const;
+        void validate() const override;
     };
 
     //! base class for cms swaption engines

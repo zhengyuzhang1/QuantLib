@@ -132,7 +132,7 @@ namespace QuantLib {
         Real conditionalRecovery(Real latentVarSample, Size iName, 
             const Date& d) const;
     private:
-        void resetModel() {
+        void resetModel() override {
             /* Explore: might save recalculation if the basket is the same 
             (some situations, like BC or control variates) in that case do not 
             update, only reset the copula's basket.

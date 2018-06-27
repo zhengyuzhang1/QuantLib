@@ -40,34 +40,34 @@ namespace QuantLib {
         }
         //! \name TermStructure interface
         //@{
-        const Date& referenceDate() const {
+        const Date& referenceDate() const override {
             return blackVarianceCurve_->referenceDate();
         }
-        Calendar calendar() const {
+        Calendar calendar() const override {
             return blackVarianceCurve_->calendar();
         }
-        DayCounter dayCounter() const {
+        DayCounter dayCounter() const override {
             return blackVarianceCurve_->dayCounter();
         }
-        Date maxDate() const {
+        Date maxDate() const override {
             return blackVarianceCurve_->maxDate();
         }
         //@}
         //! \name VolatilityTermStructure interface
         //@{
-        Real minStrike() const {
+        Real minStrike() const override {
             return QL_MIN_REAL;
         }
-        Real maxStrike() const {
+        Real maxStrike() const override {
             return QL_MAX_REAL;
         }
         //@}
         //! \name Visitability
         //@{
-        virtual void accept(AcyclicVisitor&);
+        void accept(AcyclicVisitor&) override;
         //@}
       protected:
-        Volatility localVolImpl(Time, Real) const;
+        Volatility localVolImpl(Time, Real) const override;
       private:
         Handle<BlackVarianceCurve> blackVarianceCurve_;
     };

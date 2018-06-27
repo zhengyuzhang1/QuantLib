@@ -164,7 +164,7 @@ namespace QuantLib {
         //@}
         //! \name TermStructure interface
         //@{
-        Date maxDate() const;
+        Date maxDate() const override;
         //@}
         //! \name base_curve interface
         //@{
@@ -175,17 +175,24 @@ namespace QuantLib {
         //@}
         //! \name Observer interface
         //@{
-        void update();
+        void update() override;
         //@}
       private:
         //! \name LazyObject interface
         //@{
-        void performCalculations() const;
+        void performCalculations() const override;
         //@}
         // methods
-        Probability survivalProbabilityImpl(Time) const;
-        Real defaultDensityImpl(Time) const;
-        Real hazardRateImpl(Time) const;
+        Probability survivalProbabilityImpl(Time) const override;
+        Real defaultDensityImpl(Time) const override;
+        #if defined(__clang__)
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Winconsistent-missing-override"
+        #endif
+        Real hazardRateImpl(Time) const; // NOLINT
+        #if defined(__clang__)
+        #pragma clang diagnostic pop
+        #endif
         // data members
         std::vector<ext::shared_ptr<typename Traits::helper> > instruments_;
         Real accuracy_;

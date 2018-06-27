@@ -110,7 +110,7 @@ namespace QuantLib {
             return probability_;
         }
 
-        void calculate() const;
+        void calculate() const override;
 
       private:
         Handle<DefaultProbabilityTermStructure> probability_;

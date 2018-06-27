@@ -42,7 +42,7 @@ class PiecewiseIntegral : public Integrator {
                       const bool avoidCriticalPoints = true);
 
   protected:
-    Real integrate(const boost::function<Real(Real)> &f, Real a, Real b) const;
+    Real integrate(const boost::function<Real(Real)> &f, Real a, Real b) const override;
 
   private:
     Real integrate_h(const boost::function<Real(Real)> &f, Real a,

@@ -35,7 +35,7 @@ namespace QuantLib {
             const Handle<YieldTermStructure>& h = Handle<YieldTermStructure>());
 
         ext::shared_ptr<IborIndex> clone(
-                        const Handle<YieldTermStructure>& forwarding) const;
+                        const Handle<YieldTermStructure>& forwarding) const override;
     };
 
 }

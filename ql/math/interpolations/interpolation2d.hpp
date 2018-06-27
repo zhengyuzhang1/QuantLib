@@ -81,28 +81,28 @@ namespace QuantLib {
                            "not enough y points to interpolate: at least 2 "
                            "required, " << yEnd_-yBegin_ << " provided");
             }
-            Real xMin() const {
+            Real xMin() const override {
                 return *xBegin_;
             }
-            Real xMax() const {
+            Real xMax() const override {
                 return *(xEnd_-1);
             }
-            std::vector<Real> xValues() const {
+            std::vector<Real> xValues() const override {
                 return std::vector<Real>(xBegin_,xEnd_);
             }
-            Real yMin() const {
+            Real yMin() const override {
                 return *yBegin_;
             }
-            Real yMax() const {
+            Real yMax() const override {
                 return *(yEnd_-1);
             }
-            std::vector<Real> yValues() const {
+            std::vector<Real> yValues() const override {
                 return std::vector<Real>(yBegin_,yEnd_);
             }
-            const Matrix& zData() const {
+            const Matrix& zData() const override {
                 return zData_;
             }
-            bool isInRange(Real x, Real y) const {
+            bool isInRange(Real x, Real y) const override {
                 #if defined(QL_EXTRA_SAFETY_CHECKS)
                 for (I1 i=xBegin_, j=xBegin_+1; j!=xEnd_; ++i, ++j)
                     QL_REQUIRE(*j > *i, "unsorted x values");
@@ -121,7 +121,7 @@ namespace QuantLib {
                 return (y >= y1 && y <= y2) || close(y,y1) || close(y,y2);
             }
           protected:
-            Size locateX(Real x) const {
+            Size locateX(Real x) const override {
                 #if defined(QL_EXTRA_SAFETY_CHECKS)
                 for (I1 i=xBegin_, j=xBegin_+1; j!=xEnd_; ++i, ++j)
                     QL_REQUIRE(*j > *i, "unsorted x values");
@@ -133,7 +133,7 @@ namespace QuantLib {
                 else
                     return std::upper_bound(xBegin_,xEnd_-1,x)-xBegin_-1;
             }
-            Size locateY(Real y) const {
+            Size locateY(Real y) const override {
                 #if defined(QL_EXTRA_SAFETY_CHECKS)
                 for (I2 k=yBegin_, l=yBegin_+1; l!=yEnd_; ++k, ++l)
                     QL_REQUIRE(*l > *k, "unsorted y values");

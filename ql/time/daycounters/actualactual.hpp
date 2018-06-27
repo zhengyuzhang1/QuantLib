@@ -58,35 +58,35 @@ namespace QuantLib {
             explicit ISMA_Impl(const Schedule& schedule)
             : schedule_(schedule) {}
 
-            std::string name() const {
+            std::string name() const override {
                 return std::string("Actual/Actual (ISMA)");
             }
             Time yearFraction(const Date& d1,
                               const Date& d2,
                               const Date& refPeriodStart,
-                              const Date& refPeriodEnd) const;
+                              const Date& refPeriodEnd) const override;
           private:
             Schedule schedule_;
         };
         class ISDA_Impl : public DayCounter::Impl {
           public:
-            std::string name() const {
+            std::string name() const override {
                 return std::string("Actual/Actual (ISDA)");
             }
             Time yearFraction(const Date& d1,
                               const Date& d2,
                               const Date&,
-                              const Date&) const;
+                              const Date&) const override;
         };
         class AFB_Impl : public DayCounter::Impl {
           public:
-            std::string name() const {
+            std::string name() const override {
                 return std::string("Actual/Actual (AFB)");
             }
             Time yearFraction(const Date& d1,
                               const Date& d2,
                               const Date&,
-                              const Date&) const;
+                              const Date&) const override;
         };
         static ext::shared_ptr<DayCounter::Impl> implementation(
                                                                Convention c, 

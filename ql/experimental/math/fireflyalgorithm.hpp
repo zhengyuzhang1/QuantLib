@@ -94,7 +94,7 @@ namespace QuantLib {
             Size Mde = 0, Real mutationFactor = 1.0,
             Real crossoverFactor = 0.5, unsigned long seed = SeedGenerator::instance().get());
         void startState(Problem &P, const EndCriteria &endCriteria);
-        EndCriteria::Type minimize(Problem &P, const EndCriteria &endCriteria);
+        EndCriteria::Type minimize(Problem &P, const EndCriteria &endCriteria) override;
 
       protected:
         std::vector<Array> x_, xI_, xRW_; 
@@ -150,7 +150,7 @@ namespace QuantLib {
           ExponentialIntensity(Real beta0, Real betaMin, Real gamma)
               : beta0_(beta0), betaMin_(betaMin), gamma_(gamma) {}
       protected:
-          Real intensityImpl(Real valueX, Real valueY, Real d){
+          Real intensityImpl(Real valueX, Real valueY, Real d) override{
               return (beta0_ - betaMin_)*std::exp(-gamma_*d) + betaMin_;
           }
           Real beta0_, betaMin_, gamma_;
@@ -164,7 +164,7 @@ namespace QuantLib {
         InverseLawSquareIntensity(Real beta0, Real betaMin)
             : beta0_(beta0), betaMin_(betaMin) {}
     protected:
-        Real intensityImpl(Real valueX, Real valueY, Real d) {
+        Real intensityImpl(Real valueX, Real valueY, Real d) override {
             return (beta0_ - betaMin_)/(d+ QL_EPSILON) + betaMin_;
         }
         Real beta0_, betaMin_;
@@ -217,11 +217,11 @@ namespace QuantLib {
             walkRandom_(base_generator_type(seed), dist, 1, Array(1, 1.0), seed),
             delta_(delta) {}
     protected:
-        void walkImpl(Array & xRW) {
+        void walkImpl(Array & xRW) override {
             walkRandom_.nextReal(&xRW[0]);
             xRW *= delta_;
         }
-        void init(FireflyAlgorithm *fa) {
+        void init(FireflyAlgorithm *fa) override {
             FireflyAlgorithm::RandomWalk::init(fa);
             walkRandom_.setDimension(N_, *lX_, *uX_);
         }
@@ -261,7 +261,7 @@ namespace QuantLib {
         DecreasingGaussianWalk(Real sigma, Real delta = 0.9, unsigned long seed = SeedGenerator::instance().get()):
             GaussianWalk(sigma, delta, seed), delta0_(delta){}
       protected:
-        void walkImpl(Array & xRW) {
+        void walkImpl(Array & xRW) override {
             iteration_++;
             if (iteration_ > Mfa_) {
                 //Every time all the fireflies have been processed
@@ -271,7 +271,7 @@ namespace QuantLib {
             }
             GaussianWalk::walkImpl(xRW);
         }
-        void init(FireflyAlgorithm *fa) {
+        void init(FireflyAlgorithm *fa) override {
             GaussianWalk::init(fa);
             iteration_ = 0;
             delta_ = delta0_;

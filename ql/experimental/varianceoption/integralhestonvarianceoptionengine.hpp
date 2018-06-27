@@ -39,7 +39,7 @@ namespace QuantLib {
       public:
         explicit IntegralHestonVarianceOptionEngine(
                     const ext::shared_ptr<HestonProcess>&);
-        void calculate() const;
+        void calculate() const override;
       private:
         ext::shared_ptr<HestonProcess> process_;
     };

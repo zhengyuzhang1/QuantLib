@@ -40,7 +40,7 @@ namespace QuantLib {
 
     class NoOffset : public EventPaymentOffset {
       public:
-        virtual Date paymentDate(const Date& eventDate) { return eventDate; }
+        Date paymentDate(const Date& eventDate) override { return eventDate; }
     };
 
     class NotionalPath {
@@ -78,8 +78,8 @@ namespace QuantLib {
         : NotionalRisk(paymentOffset) , threshold_(threshold)
         {}
 
-        virtual void updatePath(const std::vector<std::pair<Date, Real> >  &events, 
-                                NotionalPath &path) const;
+        void updatePath(const std::vector<std::pair<Date, Real> >  &events, 
+                                NotionalPath &path) const override;
       protected:
         Real threshold_;
     };
@@ -95,7 +95,7 @@ namespace QuantLib {
             QL_REQUIRE(attachement<exhaustion, "exhaustion level needs to be greater than attachement");
         }
 
-        virtual void updatePath(const std::vector<std::pair<Date, Real> >  &events, NotionalPath &path) const
+        void updatePath(const std::vector<std::pair<Date, Real> >  &events, NotionalPath &path) const override
         {
             path.reset();
             Real losses = 0;

@@ -141,7 +141,7 @@ namespace QuantLib {
                            Size steps,
                            Real strike);
       protected:
-        Real upStep(Time stepTime) const;
+        Real upStep(Time stepTime) const override;
     };
 
 
@@ -155,8 +155,8 @@ namespace QuantLib {
                                   Size steps,
                                   Real strike);
       protected:
-          Real dxStep(Time stepTime) const;
-          Real probUp(Time stepTime) const;
+          Real dxStep(Time stepTime) const override;
+          Real probUp(Time stepTime) const override;
     };
 
 
@@ -173,7 +173,7 @@ namespace QuantLib {
                         Real strike);
 
       protected:
-          Real upStep(Time stepTime) const;
+          Real upStep(Time stepTime) const override;
     };
 
 
@@ -187,8 +187,8 @@ namespace QuantLib {
                            Size steps,
                            Real strike);
     protected:
-        Real dxStep(Time stepTime) const;
-        Real probUp(Time stepTime) const;
+        Real dxStep(Time stepTime) const override;
+        Real probUp(Time stepTime) const override;
     };
 
 

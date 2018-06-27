@@ -42,7 +42,7 @@ namespace QuantLib {
         AmericanCondition(const Array& intrinsicValues)
             : StandardCurveDependentStepCondition(intrinsicValues) {};
     private:
-        Real applyToValue(Real current, Real intrinsic) const {
+        Real applyToValue(Real current, Real intrinsic) const override {
             return std::max(current, intrinsic);
         }
     };

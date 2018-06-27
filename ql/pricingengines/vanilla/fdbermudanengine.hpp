@@ -44,7 +44,7 @@ namespace QuantLib {
              bool timeDependent = false)
         : FDMultiPeriodEngine<Scheme>(process, timeSteps,
                                       gridPoints, timeDependent) {}
-        void calculate() const {
+        void calculate() const override {
             this->setupArguments(&arguments_);
             FDMultiPeriodEngine<Scheme>::calculate(&results_);
         }
@@ -52,12 +52,12 @@ namespace QuantLib {
         using FDMultiPeriodEngine<Scheme>::calculate;
 
         Real extraTermInBermudan ;
-        void initializeStepCondition() const {
+        void initializeStepCondition() const override {
             this->stepCondition_ =
                 ext::shared_ptr<StandardStepCondition>(
                                                   new NullCondition<Array>());
         };
-        void executeIntermediateStep(Size ) const {
+        void executeIntermediateStep(Size ) const override {
             Size size = this->intrinsicValues_.size();
             for (Size j=0; j<size; j++) {
                 this->prices_.value(j) =

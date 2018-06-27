@@ -37,7 +37,7 @@ namespace {
     class UpdateCounter : public Observer {
       public:
         UpdateCounter() : counter_(0) {}
-        void update() {
+        void update() override {
             ++counter_;
         }
         Size counter() { return counter_; }

@@ -54,7 +54,7 @@ namespace QuantLib {
         //@{
         Disposable<Array> getUpdatedDirection(const Problem &P,
                                               Real gold2,
-                                              const Array& oldGradient);
+                                              const Array& oldGradient) override;
         //@}
     };
 

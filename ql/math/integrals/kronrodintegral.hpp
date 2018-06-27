@@ -59,7 +59,7 @@ namespace QuantLib {
       protected:
         Real integrate(const boost::function<Real (Real)>& f,
                        Real a,
-                       Real b) const;
+                       Real b) const override;
       private:
         Real relativeAccuracy_;
     };
@@ -90,7 +90,7 @@ namespace QuantLib {
       protected:
           Real integrate(const boost::function<Real (Real)>& f,
                          Real a,
-                         Real b) const;
+                         Real b) const override;
       private:
           Real integrateRecursively(const boost::function<Real (Real)>& f,
                                     Real a,

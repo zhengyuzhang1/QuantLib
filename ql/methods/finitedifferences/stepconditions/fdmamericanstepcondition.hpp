@@ -39,7 +39,7 @@ namespace QuantLib {
             const ext::shared_ptr<FdmInnerValueCalculator> & calculator);
 
         void applyTo(Array& a,
-                     Time) const;
+                     Time) const override;
 
       private:
         const ext::shared_ptr<FdmMesher> mesher_;

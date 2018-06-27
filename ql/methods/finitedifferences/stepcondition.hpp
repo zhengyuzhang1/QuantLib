@@ -44,7 +44,7 @@ namespace QuantLib {
     class CurveDependentStepCondition :
         public StepCondition<array_type> {
       public:
-        void applyTo(Array &a, Time) const {
+        void applyTo(Array &a, Time) const override {
             //#pragma omp parallel for
             for (Size i = 0; i < a.size(); i++) {
                 a[i] =
@@ -83,7 +83,7 @@ namespace QuantLib {
             ArrayWrapper (const array_type &a)
             : value_(a) {}
 
-            Real getValue(const array_type&, int i) {
+            Real getValue(const array_type&, int i) override {
                 return value_[i];
             }
         };
@@ -97,7 +97,7 @@ namespace QuantLib {
             PayoffWrapper (Option::Type type, Real strike)
                 : payoff_(new PlainVanillaPayoff(type, strike)) {};
             Real getValue(const array_type &a,
-                          int i) {
+                          int i) override {
                 return (*payoff_)(a[i]);
             }
         };
@@ -109,7 +109,7 @@ namespace QuantLib {
     template <class array_type>
     class NullCondition : public StepCondition<array_type> {
       public:
-        void applyTo(array_type&, Time) const {}
+        void applyTo(array_type&, Time) const override {}
     };
 
 }

@@ -47,10 +47,10 @@ namespace QuantLib {
                        Time resTime,
                        Rate rate);
         void applyTo(Array& a,
-                     Time t) const;
+                     Time t) const override;
       private:
-        virtual Real applyToValue(Real current,
-                                  Real intrinsic) const {
+        Real applyToValue(Real current,
+                                  Real intrinsic) const override {
             return std::max(current, disc_ * intrinsic );
         }
         Time resTime_;

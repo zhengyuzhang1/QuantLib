@@ -41,11 +41,11 @@ namespace QuantLib {
     private:
         class Impl : public DayCounter::Impl {
         public:
-            std::string name() const { return std::string("Actual/365 (NL)"); }
+            std::string name() const override { return std::string("Actual/365 (NL)"); }
 
             // Returns the exact number of days between 2 dates, excluding leap days
             Date::serial_type dayCount(const Date& d1,
-                                       const Date& d2) const {
+                                       const Date& d2) const override {
 
                 static const Integer MonthOffset[] = {
                     0,  31,  59,  90, 120, 151,  // Jan - Jun
@@ -72,7 +72,7 @@ namespace QuantLib {
             Time yearFraction(const Date& d1,
                               const Date& d2,
                               const Date& d3,
-                              const Date& d4) const {
+                              const Date& d4) const override {
                 return dayCount(d1, d2)/365.0;
             }
         };

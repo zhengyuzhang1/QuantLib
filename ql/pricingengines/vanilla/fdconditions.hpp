@@ -41,7 +41,7 @@ namespace QuantLib {
              bool timeDependent = false)
         : baseEngine(process, timeSteps, gridPoints, timeDependent) {}
       protected:
-        void initializeStepCondition() const {
+        void initializeStepCondition() const override {
             baseEngine::stepCondition_ =
                 ext::shared_ptr<StandardStepCondition>(
                   new AmericanCondition(baseEngine::intrinsicValues_.values()));
@@ -57,7 +57,7 @@ namespace QuantLib {
              bool timeDependent = false)
         : baseEngine(process, timeSteps, gridPoints, timeDependent) {}
       protected:
-        void initializeStepCondition() const {
+        void initializeStepCondition() const override {
             Time residualTime = baseEngine::getResidualTime();
             Rate riskFreeRate = baseEngine::process_->riskFreeRate()
                 ->zeroRate(residualTime, Continuous);

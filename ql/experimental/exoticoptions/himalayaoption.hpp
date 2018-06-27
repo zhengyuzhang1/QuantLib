@@ -49,7 +49,7 @@ namespace QuantLib {
         HimalayaOption(const std::vector<Date>& fixingDates,
                        Real strike);
 
-        void setupArguments(PricingEngine::arguments*) const;
+        void setupArguments(PricingEngine::arguments*) const override;
       private:
         std::vector<Date> fixingDates_;
     };
@@ -57,7 +57,7 @@ namespace QuantLib {
     class HimalayaOption::arguments : public MultiAssetOption::arguments {
       public:
         arguments();
-        void validate() const;
+        void validate() const override;
         std::vector<Date> fixingDates;
     };
 

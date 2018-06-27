@@ -50,12 +50,12 @@ namespace QuantLib {
                                        Real a, Real b, Real c, Real d);
 
         Disposable<Array> volatility(
-             Time t, const Array& x = Null<Array>()) const;
+             Time t, const Array& x = Null<Array>()) const override;
         Volatility volatility(
-             Size i, Time t, const Array& x = Null<Array>()) const;
+             Size i, Time t, const Array& x = Null<Array>()) const override;
 
         Real integratedVariance(Size i, Size j, Time u,
-                                const Array& x = Null<Array>()) const;
+                                const Array& x = Null<Array>()) const override;
     };
 
 }

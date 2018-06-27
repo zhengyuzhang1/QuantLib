@@ -70,31 +70,31 @@ namespace QuantLib {
                                    const Real shift = 0.0);
         //! \name TermStructure interface
         //@{
-        Date maxDate() const;
+        Date maxDate() const override;
         //@}
         //! \name VolatilityTermStructure interface
         //@{
-        Real minStrike() const;
-        Real maxStrike() const;
+        Real minStrike() const override;
+        Real maxStrike() const override;
         //@}
         //! \name SwaptionVolatilityStructure interface
         //@{
-        const Period& maxSwapTenor() const;
+        const Period& maxSwapTenor() const override;
         //@}
         //! volatility type
-        VolatilityType volatilityType() const;
+        VolatilityType volatilityType() const override;
       protected:
         ext::shared_ptr<SmileSection> smileSectionImpl(const Date&,
-                                                         const Period&) const;
+                                                         const Period&) const override;
         ext::shared_ptr<SmileSection> smileSectionImpl(Time,
-                                                         Time) const;
+                                                         Time) const override;
         Volatility volatilityImpl(const Date&,
                                   const Period&,
-                                  Rate) const;
+                                  Rate) const override;
         Volatility volatilityImpl(Time,
                                   Time,
-                                  Rate) const;
-        Real shiftImpl(Time optionTime, Time swapLength) const;
+                                  Rate) const override;
+        Real shiftImpl(Time optionTime, Time swapLength) const override;
       private:
         Handle<Quote> volatility_;
         Period maxSwapTenor_;

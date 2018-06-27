@@ -59,9 +59,9 @@ namespace QuantLib {
       private:
         class SseImpl : public Calendar::Impl {
           public:
-            std::string name() const { return "Shanghai stock exchange"; }
-            bool isWeekend(Weekday) const;
-            bool isBusinessDay(const Date&) const;
+            std::string name() const override { return "Shanghai stock exchange"; }
+            bool isWeekend(Weekday) const override;
+            bool isBusinessDay(const Date&) const override;
         };
 
         class IbImpl : public Calendar::Impl {
@@ -69,9 +69,9 @@ namespace QuantLib {
             IbImpl() {
                 sseImpl = ext::shared_ptr<Calendar::Impl>(new China::SseImpl);
             }
-            std::string name() const { return "China inter bank market";}
-            bool isWeekend(Weekday) const;
-            bool isBusinessDay(const Date&) const;
+            std::string name() const override { return "China inter bank market";}
+            bool isWeekend(Weekday) const override;
+            bool isBusinessDay(const Date&) const override;
           private:
             ext::shared_ptr<Calendar::Impl> sseImpl;
         };

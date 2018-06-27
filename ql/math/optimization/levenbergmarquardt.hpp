@@ -52,9 +52,9 @@ namespace QuantLib {
                            Real xtol = 1.0e-8,
                            Real gtol = 1.0e-8,
                            bool useCostFunctionsJacobian = false);
-        virtual EndCriteria::Type minimize(Problem& P,
+        EndCriteria::Type minimize(Problem& P,
                                            const EndCriteria& endCriteria //= EndCriteria()
-                                           );
+                                           ) override;
                                            //      = EndCriteria(400, 1.0e-8, 1.0e-8)
         virtual Integer getInfo() const;
         void fcn(int m,

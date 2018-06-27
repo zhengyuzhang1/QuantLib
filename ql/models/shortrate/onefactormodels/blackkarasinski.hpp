@@ -44,11 +44,11 @@ namespace QuantLib {
         BlackKarasinski(const Handle<YieldTermStructure>& termStructure,
                         Real a = 0.1, Real sigma = 0.1);
 
-        ext::shared_ptr<ShortRateDynamics> dynamics() const {
+        ext::shared_ptr<ShortRateDynamics> dynamics() const override {
             QL_FAIL("no defined process for Black-Karasinski");
         }
 
-        ext::shared_ptr<Lattice> tree(const TimeGrid& grid) const;
+        ext::shared_ptr<Lattice> tree(const TimeGrid& grid) const override;
 
       private:
         class Dynamics;
@@ -79,11 +79,11 @@ namespace QuantLib {
                                  new OrnsteinUhlenbeckProcess(alpha, sigma))),
           fitting_(fitting) {}
 
-        Real variable(Time t, Rate r) const {
+        Real variable(Time t, Rate r) const override {
             return std::log(r) - fitting_(t);
         }
 
-        Real shortRate(Time t, Real x) const {
+        Real shortRate(Time t, Real x) const override {
             return std::exp(x + fitting_(t));
         }
       private:

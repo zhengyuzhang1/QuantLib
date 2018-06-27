@@ -46,9 +46,9 @@ namespace QuantLib {
         : FDMultiPeriodEngine<Scheme>(process, timeSteps,
                                       gridPoints, timeDependent) {}
       protected:
-        virtual void setupArguments(const PricingEngine::arguments*) const;
-        virtual void setGridLimits() const = 0;
-        virtual void executeIntermediateStep(Size step) const = 0;
+        void setupArguments(const PricingEngine::arguments*) const override;
+        void setGridLimits() const override = 0;
+        void executeIntermediateStep(Size step) const override = 0;
         Real getDividendAmount(Size i) const {
             const Dividend *dividend =
                 dynamic_cast<const Dividend *>(this->events_[i].get());
@@ -92,8 +92,8 @@ namespace QuantLib {
         : FDDividendEngineBase<Scheme>(process, timeSteps,
                                        gridPoints, timeDependent) {}
       private:
-        void setGridLimits() const;
-        void executeIntermediateStep(Size step) const;
+        void setGridLimits() const override;
+        void executeIntermediateStep(Size step) const override;
     };
 
     //! Finite-differences engine for dividend options using shifted dividends

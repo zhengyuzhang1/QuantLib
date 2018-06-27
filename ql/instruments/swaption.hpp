@@ -75,8 +75,8 @@ namespace QuantLib {
                  Settlement::Type delivery = Settlement::Physical);
         //! \name Instrument interface
         //@{
-        bool isExpired() const;
-        void setupArguments(PricingEngine::arguments*) const;
+        bool isExpired() const override;
+        void setupArguments(PricingEngine::arguments*) const override;
         //@}
         //! \name Inspectors
         //@{
@@ -111,7 +111,7 @@ namespace QuantLib {
         arguments() : settlementType(Settlement::Physical) {}
         ext::shared_ptr<VanillaSwap> swap;
         Settlement::Type settlementType;
-        void validate() const;
+        void validate() const override;
     };
 
     //! base class for swaption engines

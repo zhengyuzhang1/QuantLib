@@ -91,7 +91,7 @@ namespace QuantLib {
                           Futures::Type type = Futures::IMM);
         //! \name RateHelper interface
         //@{
-        Real impliedQuote() const;
+        Real impliedQuote() const override;
         //@}
         //! \name FuturesRateHelper inspectors
         //@{
@@ -99,7 +99,7 @@ namespace QuantLib {
         //@}
         //! \name Visitability
         //@{
-        void accept(AcyclicVisitor&);
+        void accept(AcyclicVisitor&) override;
         //@}
       private:
         Time yearFraction_;
@@ -130,15 +130,15 @@ namespace QuantLib {
                           const ext::shared_ptr<IborIndex>& iborIndex);
         //! \name RateHelper interface
         //@{
-        Real impliedQuote() const;
-        void setTermStructure(YieldTermStructure*);
+        Real impliedQuote() const override;
+        void setTermStructure(YieldTermStructure*) override;
         //@}
         //! \name Visitability
         //@{
-        void accept(AcyclicVisitor&);
+        void accept(AcyclicVisitor&) override;
         //@}
       private:
-        void initializeDates();
+        void initializeDates() override;
         Date fixingDate_;
         ext::shared_ptr<IborIndex> iborIndex_;
         RelinkableHandle<YieldTermStructure> termStructureHandle_;
@@ -210,15 +210,15 @@ namespace QuantLib {
                       Date customPillarDate = Date());
         //! \name RateHelper interface
         //@{
-        Real impliedQuote() const;
-        void setTermStructure(YieldTermStructure*);
+        Real impliedQuote() const override;
+        void setTermStructure(YieldTermStructure*) override;
         //@}
         //! \name Visitability
         //@{
-        void accept(AcyclicVisitor&);
+        void accept(AcyclicVisitor&) override;
         //@}
       private:
-        void initializeDates();
+        void initializeDates() override;
         Date fixingDate_;
         Period periodToStart_;
         Pillar::Choice pillarChoice_;
@@ -285,8 +285,8 @@ namespace QuantLib {
                        Date customPillarDate = Date());
         //! \name RateHelper interface
         //@{
-        Real impliedQuote() const;
-        void setTermStructure(YieldTermStructure*);
+        Real impliedQuote() const override;
+        void setTermStructure(YieldTermStructure*) override;
         //@}
         //! \name SwapRateHelper inspectors
         //@{
@@ -296,10 +296,10 @@ namespace QuantLib {
         //@}
         //! \name Visitability
         //@{
-        void accept(AcyclicVisitor&);
+        void accept(AcyclicVisitor&) override;
         //@}
       protected:
-        void initializeDates();
+        void initializeDates() override;
         Natural settlementDays_;
         Period tenor_;
         Pillar::Choice pillarChoice_;
@@ -333,15 +333,15 @@ namespace QuantLib {
                           const ext::shared_ptr<IborIndex>& index);
         //! \name RateHelper interface
         //@{
-        Real impliedQuote() const;
-        void setTermStructure(YieldTermStructure*);
+        Real impliedQuote() const override;
+        void setTermStructure(YieldTermStructure*) override;
         //@}
         //! \name Visitability
         //@{
-        void accept(AcyclicVisitor&);
+        void accept(AcyclicVisitor&) override;
         //@}
     protected:
-        void initializeDates();
+        void initializeDates() override;
         Period tenor_;
         Natural settlementDays_;
         Calendar calendar_;
@@ -404,8 +404,8 @@ namespace QuantLib {
                          const Calendar& tradingCalendar = Calendar());
         //! \name RateHelper interface
         //@{
-        Real impliedQuote() const;
-        void setTermStructure(YieldTermStructure*);
+        Real impliedQuote() const override;
+        void setTermStructure(YieldTermStructure*) override;
         //@}
         //! \name FxSwapRateHelper inspectors
         //@{
@@ -422,10 +422,10 @@ namespace QuantLib {
         //@}
         //! \name Visitability
         //@{
-        void accept(AcyclicVisitor&);
+        void accept(AcyclicVisitor&) override;
         //@}
     private:
-        void initializeDates();
+        void initializeDates() override;
         Handle<Quote> spot_;
         Period tenor_;
         Natural fixingDays_;

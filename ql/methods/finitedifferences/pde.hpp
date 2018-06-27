@@ -62,13 +62,13 @@ namespace QuantLib {
             drift_ = pde.drift(t, x);
             discount_ = pde.discount(t, x);
         }
-        virtual Real diffusion(Time, Real) const {
+        Real diffusion(Time, Real) const override {
             return diffusion_;
         }
-        virtual Real drift(Time, Real) const {
+        Real drift(Time, Real) const override {
             return drift_;
         }
-        virtual Real discount(Time, Real) const {
+        Real discount(Time, Real) const override {
           return discount_;
         }
     private:
@@ -84,7 +84,7 @@ namespace QuantLib {
         GenericTimeSetter(const Array &grid, T process) :
             grid_(grid), pde_(process) {}
         void setTime(Time t,
-                     TridiagonalOperator &L) const {
+                     TridiagonalOperator &L) const override {
             pde_.generateOperator(t, grid_, L);
         }
     private:

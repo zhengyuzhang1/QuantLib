@@ -50,7 +50,7 @@ namespace QuantLib {
 
       protected:
         Real integrate(const boost::function<Real (Real)>& f,
-                       Real a, Real b) const;
+                       Real a, Real b) const override;
       private:
         const Type type_;
         const Real t_;

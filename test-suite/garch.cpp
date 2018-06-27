@@ -33,8 +33,8 @@ namespace {
 
     class DummyOptimizationMethod : public OptimizationMethod {
       public:
-        virtual EndCriteria::Type minimize(Problem& P,
-                                           const EndCriteria& endCriteria) {
+        EndCriteria::Type minimize(Problem& P,
+                                           const EndCriteria& endCriteria) override {
             P.setFunctionValue(P.value(P.currentValue()));
             return EndCriteria::None;
         }

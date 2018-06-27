@@ -43,11 +43,11 @@ namespace QuantLib {
                   const Handle<YieldTermStructure>& termStructure,
                   CalibrationHelper::CalibrationErrorType errorType
                                     = CalibrationHelper::RelativePriceError);
-        virtual void addTimesTo(std::list<Time>& times) const;
-        virtual Real modelValue() const;
-        virtual Real blackPrice(Volatility volatility) const;
+        void addTimesTo(std::list<Time>& times) const override;
+        Real modelValue() const override;
+        Real blackPrice(Volatility volatility) const override;
       private:
-        void performCalculations() const;
+        void performCalculations() const override;
         mutable ext::shared_ptr<Cap> cap_;
         const Period length_;
         const ext::shared_ptr<IborIndex> index_;

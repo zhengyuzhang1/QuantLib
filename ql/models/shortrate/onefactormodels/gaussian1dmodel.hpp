@@ -188,7 +188,7 @@ class Gaussian1dModel : public TermStructureConsistentModel, public LazyObject {
         registerWith(Settings::instance().evaluationDate());
     }
 
-    virtual ~Gaussian1dModel() {}
+    ~Gaussian1dModel() override {}
 
     virtual Real
     numeraireImpl(const Time t, const Real y,
@@ -197,7 +197,7 @@ class Gaussian1dModel : public TermStructureConsistentModel, public LazyObject {
     virtual Real zerobondImpl(const Time T, const Time t, const Real y,
                               const Handle<YieldTermStructure> &yts) const = 0;
 
-    void performCalculations() const {
+    void performCalculations() const override {
         evaluationDate_ = Settings::instance().evaluationDate();
         enforcesTodaysHistoricFixings_ =
             Settings::instance().enforcesTodaysHistoricFixings();

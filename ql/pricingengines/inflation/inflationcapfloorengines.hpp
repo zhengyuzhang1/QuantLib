@@ -52,7 +52,7 @@ namespace QuantLib {
 
         void setVolatility(const Handle<YoYOptionletVolatilitySurface>& vol);
 
-        void calculate() const;
+        void calculate() const override;
     protected:
         //! descendents only need to implement this
         virtual Real optionletImpl(Option::Type type, Rate strike,
@@ -74,9 +74,9 @@ namespace QuantLib {
 
     protected:
 
-        virtual Real optionletImpl(Option::Type, Real strike,
+        Real optionletImpl(Option::Type, Real strike,
                                    Real forward, Real stdDev,
-                                   Real d) const;
+                                   Real d) const override;
 
     };
 
@@ -90,9 +90,9 @@ namespace QuantLib {
                     const Handle<YoYOptionletVolatilitySurface>&);
     protected:
 
-        virtual Real optionletImpl(Option::Type, Real strike,
+        Real optionletImpl(Option::Type, Real strike,
                                    Real forward, Real stdDev,
-                                   Real d) const;
+                                   Real d) const override;
 
     };
 
@@ -107,9 +107,9 @@ namespace QuantLib {
 
     protected:
 
-        virtual Real optionletImpl(Option::Type, Real strike,
+        Real optionletImpl(Option::Type, Real strike,
                                    Real forward, Real stdDev,
-                                   Real d) const;
+                                   Real d) const override;
 
     };
 

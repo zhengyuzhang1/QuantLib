@@ -61,7 +61,7 @@ namespace QuantLib {
              Size maxSamples,
              BigNatural seed);
       protected:
-        ext::shared_ptr<path_pricer_type> pathPricer() const;
+        ext::shared_ptr<path_pricer_type> pathPricer() const override;
     };
 
 
@@ -72,7 +72,7 @@ namespace QuantLib {
                                DiscountFactor discount,
                                Real runningProduct = 1.0,
                                Size pastFixings = 0);
-        Real operator()(const Path& path) const;
+        Real operator()(const Path& path) const override;
       private:
         PlainVanillaPayoff payoff_;
         DiscountFactor discount_;

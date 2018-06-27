@@ -37,7 +37,7 @@ namespace QuantLib {
         IntegralCDOEngine(const Handle<YieldTermStructure>& discountCurve, 
                           Period stepSize = 3*Months) 
         : stepSize_(stepSize), discountCurve_(discountCurve) {}
-        void calculate() const;
+        void calculate() const override;
     protected:
         Period stepSize_;
         Handle<YieldTermStructure> discountCurve_;

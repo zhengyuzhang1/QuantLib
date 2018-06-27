@@ -51,7 +51,7 @@ namespace QuantLib {
 
       protected:
         Real integrate(const boost::function<Real (Real)>& f,
-                       Real a, Real b) const;
+                       Real a, Real b) const override;
     };
 
     class DiscreteSimpsonIntegrator: public Integrator {
@@ -61,7 +61,7 @@ namespace QuantLib {
 
       protected:
         Real integrate(const boost::function<Real (Real)>& f,
-                       Real a, Real b) const;
+                       Real a, Real b) const override;
     };
 }
 #endif

@@ -286,7 +286,7 @@ namespace {
         : PlainVanillaPayoff(type, strike),
           g_(g) { }
 
-        Real operator()(Real x) const {
+        Real operator()(Real x) const override {
             return PlainVanillaPayoff::operator()(g_(x));
         }
 

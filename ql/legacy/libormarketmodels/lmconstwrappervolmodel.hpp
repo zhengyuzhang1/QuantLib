@@ -38,7 +38,7 @@ namespace QuantLib {
         }
 
         Disposable<Array> volatility(
-            Time t, const Array& x = Null<Array>()) const {
+            Time t, const Array& x = Null<Array>()) const override {
             return volaModel_->volatility(t, x);
         }
         Volatility volatility(
@@ -46,7 +46,7 @@ namespace QuantLib {
             return volaModel_->volatility(i, t, x);
         }
         Real integratedVariance(Size i, Size j, Time u,
-                                        const Array& x = Null<Array>()) const {
+                                        const Array& x = Null<Array>()) const override {
             return volaModel_->integratedVariance(i, j, u, x);
         }
 
@@ -55,7 +55,7 @@ namespace QuantLib {
 
       private:
         using LmVolatilityModel::volatility;
-        void generateArguments() {}
+        void generateArguments() override {}
     };
 
 }

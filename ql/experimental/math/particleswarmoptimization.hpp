@@ -105,7 +105,7 @@ namespace QuantLib {
             Real omega, Real c1, Real c2,
             unsigned long seed = SeedGenerator::instance().get());
         void startState(Problem &P, const EndCriteria &endCriteria);
-        EndCriteria::Type minimize(Problem &P, const EndCriteria &endCriteria);
+        EndCriteria::Type minimize(Problem &P, const EndCriteria &endCriteria) override;
 
       protected:
         std::vector<Array> X_, V_, pBX_, gBX_;
@@ -154,11 +154,11 @@ namespace QuantLib {
     */
     class TrivialInertia : public ParticleSwarmOptimization::Inertia {
       public:
-        inline void setSize(Size M, Size N, Real c0, const EndCriteria &endCriteria) {
+        inline void setSize(Size M, Size N, Real c0, const EndCriteria &endCriteria) override {
             c0_ = c0;
             M_ = M;
         }
-        inline void setValues() {
+        inline void setValues() override {
             for (Size i = 0; i < M_; i++) {
                 (*V_)[i] *= c0_;
             }
@@ -178,11 +178,11 @@ namespace QuantLib {
             : threshhold_(threshhold), rng_(seed) {
             QL_REQUIRE(threshhold_ >= 0.0 && threshhold_ < 1.0, "Threshhold must be a Real in [0, 1)");
         }
-        inline void setSize(Size M, Size N, Real c0, const EndCriteria &endCriteria) {
+        inline void setSize(Size M, Size N, Real c0, const EndCriteria &endCriteria) override {
             M_ = M;
             c0_ = c0;
         }
-        inline void setValues() {
+        inline void setValues() override {
             for (Size i = 0; i < M_; i++) {
                 Real val = c0_*(threshhold_ + (1.0 - threshhold_)*rng_.nextReal());
                 (*V_)[i] *= val;
@@ -204,13 +204,13 @@ namespace QuantLib {
             : threshhold_(threshhold) {
             QL_REQUIRE(threshhold_ >= 0.0 && threshhold_ < 1.0, "Threshhold must be a Real in [0, 1)");
         }
-        inline void setSize(Size M, Size N, Real c0, const EndCriteria &endCriteria) {
+        inline void setSize(Size M, Size N, Real c0, const EndCriteria &endCriteria) override {
             N_ = N;
             c0_ = c0;
             iteration_ = 0;
             maxIterations_ = endCriteria.maxIterations();
         }
-        inline void setValues() {
+        inline void setValues() override {
             Real c0 = c0_*(threshhold_ + (1.0 - threshhold_)*(maxIterations_ - iteration_) / maxIterations_);
             for (Size i = 0; i < M_; i++) {
                 (*V_)[i] *= c0;
@@ -230,14 +230,14 @@ namespace QuantLib {
         AdaptiveInertia(Real minInertia, Real maxInertia, Size sh = 5, Size sl = 2)
             :minInertia_(minInertia), maxInertia_(maxInertia),
             sh_(sh), sl_(sl) {};
-        inline void setSize(Size M, Size N, Real c0, const EndCriteria &endCriteria) {
+        inline void setSize(Size M, Size N, Real c0, const EndCriteria &endCriteria) override {
             M_ = M;
             c0_ = c0;
             adaptiveCounter = 0;
             best_ = QL_MAX_REAL;
             started_ = false;
         }
-        void setValues();
+        void setValues() override;
       private:
         Real c0_, best_;
         Real minInertia_, maxInertia_;
@@ -261,13 +261,13 @@ namespace QuantLib {
             :rng_(seed), flight_(base_generator_type(seed), LevyFlightDistribution(1.0, alpha),
                 1, Array(1, 1.0), seed),
             threshhold_(threshhold) {};
-        inline void setSize(Size M, Size N, Real c0, const EndCriteria &endCriteria) {
+        inline void setSize(Size M, Size N, Real c0, const EndCriteria &endCriteria) override {
             M_ = M;
             N_ = N;
             c0_ = c0;
             adaptiveCounter_ = std::vector<Size>(M_, 0);
         }
-        inline void setValues() {
+        inline void setValues() override {
             for (Size i = 0; i < M_; i++) {
                 if ((*pBF_)[i] < personalBestF_[i]) {
                     personalBestF_[i] = (*pBF_)[i];
@@ -288,7 +288,7 @@ namespace QuantLib {
             }
         }
       protected:
-        void init(ParticleSwarmOptimization *pso) {
+        void init(ParticleSwarmOptimization *pso) override {
             ParticleSwarmOptimization::Inertia::init(pso);
             personalBestF_ = *pBF_;
             flight_.setDimension(N_, *lX_, *uX_);
@@ -337,8 +337,8 @@ namespace QuantLib {
     */
     class GlobalTopology : public ParticleSwarmOptimization::Topology {
       public:
-        inline void setSize(Size M) { M_ = M; }
-        inline void findSocialBest() {
+        inline void setSize(Size M) override { M_ = M; }
+        inline void findSocialBest() override {
             Real bestF = (*pBF_)[0];
             Size bestP = 0;
             for (Size i = 1; i < M_; i++) {
@@ -370,11 +370,11 @@ namespace QuantLib {
         KNeighbors(Size K = 1) :K_(K) {
             QL_REQUIRE(K > 0, "Neighbors need to be larger than 0");
         }
-        inline void setSize(Size M) {
+        inline void setSize(Size M) override {
             M_ = M;
             QL_ENSURE(K_ < M, "Number of neighbors need to be smaller than total particles in swarm");
         }
-        void findSocialBest();
+        void findSocialBest() override;
 
       private:
         Size K_, M_;
@@ -395,8 +395,8 @@ namespace QuantLib {
         ClubsTopology(Size defaultClubs, Size totalClubs,
             Size maxClubs, Size minClubs,
             Size resetIteration, unsigned long seed = SeedGenerator::instance().get());
-        void setSize(Size M);
-        void findSocialBest();
+        void setSize(Size M) override;
+        void findSocialBest() override;
 
       private:
         Size totalClubs_, maxClubs_, minClubs_, defaultClubs_;

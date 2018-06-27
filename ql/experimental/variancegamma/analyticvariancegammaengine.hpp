@@ -40,7 +40,7 @@ namespace QuantLib {
         VarianceGammaEngine(
             const ext::shared_ptr<VarianceGammaProcess>&,
             Real absoluteError = 1e-5);
-        void calculate() const;
+        void calculate() const override;
     private:
         ext::shared_ptr<VarianceGammaProcess> process_;
         Real absErr_;

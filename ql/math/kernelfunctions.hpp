@@ -49,7 +49,7 @@ namespace QuantLib {
             normFact_ = M_SQRT2*M_SQRTPI;
         }
 
-        Real operator()(Real x) const{
+        Real operator()(Real x) const override{
             return nd_(x)*normFact_;
         }
 

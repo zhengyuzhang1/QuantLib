@@ -67,15 +67,15 @@ namespace QuantLib {
              boost::optional<bool> antitheticVariateCalibration = boost::none,
              BigNatural seedCalibration = Null<Size>());
 
-        void calculate() const;
+        void calculate() const override;
         
       protected:
         ext::shared_ptr<LongstaffSchwartzPathPricer<Path> >
-            lsmPathPricer() const;
+            lsmPathPricer() const override;
 
-        Real controlVariateValue() const;
-        ext::shared_ptr<PricingEngine> controlPricingEngine() const;
-        ext::shared_ptr<PathPricer<Path> > controlPathPricer() const;
+        Real controlVariateValue() const override;
+        ext::shared_ptr<PricingEngine> controlPricingEngine() const override;
+        ext::shared_ptr<PathPricer<Path> > controlPathPricer() const override;
 
       private:
         const Size polynomOrder_;
@@ -88,10 +88,10 @@ namespace QuantLib {
                            Size polynomOrder,
                            LsmBasisSystem::PolynomType polynomType);
 
-        Real state(const Path& path, Size t) const;
-        Real operator()(const Path& path, Size t) const;
+        Real state(const Path& path, Size t) const override;
+        Real operator()(const Path& path, Size t) const override;
 
-        std::vector<boost::function1<Real, Real> > basisSystem() const;
+        std::vector<boost::function1<Real, Real> > basisSystem() const override;
 
       protected:
         Real payoff(Real state) const;

@@ -72,7 +72,7 @@ namespace QuantLib {
         boost::function<Real(Time, Real)> g() const;
 
       protected:
-        void performCalculations() const;
+        void performCalculations() const override;
 
       private:
         class MappingFunction : public std::binary_function<Time, Real, Real> {

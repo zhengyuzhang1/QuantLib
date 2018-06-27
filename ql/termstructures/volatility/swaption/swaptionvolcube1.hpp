@@ -132,13 +132,13 @@ namespace QuantLib {
             const Real cutoffStrike = 0.0001);
         //! \name LazyObject interface
         //@{
-        void performCalculations() const;
+        void performCalculations() const override;
         //@}
         //! \name SwaptionVolatilityCube interface
         //@{
         ext::shared_ptr<SmileSection> smileSectionImpl(
                                               Time optionTime,
-                                              Time swapLength) const;
+                                              Time swapLength) const override;
         //@}
         //! \name Other inspectors
         //@{
@@ -174,7 +174,7 @@ namespace QuantLib {
         std::vector<Real> spreadVolInterpolation(const Date& atmOptionDate,
                                                  const Period& atmSwapTenor) const;
       private:
-        Size requiredNumberOfStrikes() const { return 1; }
+        Size requiredNumberOfStrikes() const override { return 1; }
         mutable Cube marketVolCube_;
         mutable Cube volCubeAtmCalibrated_;
         mutable Cube sparseParameters_;
@@ -198,7 +198,7 @@ namespace QuantLib {
           public:
             explicit PrivateObserver(SwaptionVolCube1x<Model> *v)
                 : v_(v) {}
-            void update() {
+            void update() override {
                 v_->setParameterGuess();
                 v_->update();
             }

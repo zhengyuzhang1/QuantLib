@@ -93,7 +93,7 @@ namespace QuantLib {
     private:
         virtual void setupInterpolation() ;
     public:
-        Size correlationSize() const {return 1;}
+        Size correlationSize() const override {return 1;}
         //! Implicit correlation for the given loss interval.
         Real ImplicitCorrelation(Real, Real);
 
@@ -103,11 +103,11 @@ namespace QuantLib {
         void checkInputs(Size volRows, Size volsColumns) const;
         void registerWithMarketData();
 
-        void update();
+        void update() override;
         void updateMatrix() const;
 
         // TermStructure interface
-        Date maxDate() const {
+        Date maxDate() const override {
             return trancheDates_.back();
         }
         Real correlation(const Date& d, Real lossLevel, 

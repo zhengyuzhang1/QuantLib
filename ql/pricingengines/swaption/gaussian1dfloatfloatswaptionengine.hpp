@@ -94,7 +94,7 @@ namespace QuantLib {
                 registerWith(oas_);
         }
 
-        void calculate() const;
+        void calculate() const override;
 
         Handle<YieldTermStructure> discountingCurve() const {
             return discountCurve_.empty() ? model_->termStructure()
@@ -102,10 +102,10 @@ namespace QuantLib {
         }
 
       protected:
-        Real underlyingNpv(const Date &expiry, const Real y) const;
-        VanillaSwap::Type underlyingType() const;
-        const Date underlyingLastDate() const;
-        const Disposable<Array> initialGuess(const Date &expiry) const;
+        Real underlyingNpv(const Date &expiry, const Real y) const override;
+        VanillaSwap::Type underlyingType() const override;
+        const Date underlyingLastDate() const override;
+        const Disposable<Array> initialGuess(const Date &expiry) const override;
 
       private:
         const int integrationPoints_;

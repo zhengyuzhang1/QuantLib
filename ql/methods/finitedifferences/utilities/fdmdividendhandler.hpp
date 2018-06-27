@@ -42,7 +42,7 @@ namespace QuantLib {
                            const DayCounter& dayCounter,
                            Size equityDirection);
         
-        void applyTo(Array& a, Time t) const;
+        void applyTo(Array& a, Time t) const override;
  
         const std::vector<Time>& dividendTimes() const;
         const std::vector<Date>& dividendDates() const;

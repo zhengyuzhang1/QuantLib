@@ -47,7 +47,7 @@ namespace QuantLib {
         explicit GarmanKlassAbstract(Real y) :
         yearFraction_(y) {}
         TimeSeries<Volatility>
-        calculate(const TimeSeries<IntervalPrice> &quoteSeries) {
+        calculate(const TimeSeries<IntervalPrice> &quoteSeries) override {
             TimeSeries<Volatility> retval;
             TimeSeries<IntervalPrice>::const_iterator prev, next, cur, start;
             start = quoteSeries.begin();
@@ -66,7 +66,7 @@ namespace QuantLib {
         GarmanKlassSimpleSigma(Real y) :
             GarmanKlassAbstract(y) {};
     protected:
-        Real calculatePoint(const IntervalPrice &p) {
+        Real calculatePoint(const IntervalPrice &p) override {
             Real c = std::log(p.close()/p.open());
             return c*c;
         }
@@ -85,7 +85,7 @@ namespace QuantLib {
                              Real a) :
         T(y), f_(marketOpenFraction), a_(a) {};
         TimeSeries<Volatility>
-        calculate(const TimeSeries<IntervalPrice> &quoteSeries) {
+        calculate(const TimeSeries<IntervalPrice> &quoteSeries) override {
             TimeSeries<Volatility> retval;
             TimeSeries<IntervalPrice>::const_iterator prev, next, cur, start;
             start = quoteSeries.begin();
@@ -122,7 +122,7 @@ namespace QuantLib {
         ParkinsonSigma(Real y) :
             GarmanKlassAbstract(y) {};
     protected:
-        Real calculatePoint(const IntervalPrice &p) {
+        Real calculatePoint(const IntervalPrice &p) override {
             Real u = std::log(p.high()/p.open());
             Real d = std::log(p.low()/p.open());
             return (u - d)*(u-d) / 4.0 / std::log(2.0);
@@ -147,7 +147,7 @@ namespace QuantLib {
         GarmanKlassSigma4(Real y) :
             GarmanKlassAbstract(y) {};
     protected:
-        Real calculatePoint(const IntervalPrice &p) {
+        Real calculatePoint(const IntervalPrice &p) override {
             Real u = std::log(p.high()/p.open());
             Real d = std::log(p.low()/p.open());
             Real c = std::log(p.close()/p.open());
@@ -163,7 +163,7 @@ namespace QuantLib {
         GarmanKlassSigma5(Real y) :
             GarmanKlassAbstract(y) {};
     protected:
-        Real calculatePoint(const IntervalPrice &p) {
+        Real calculatePoint(const IntervalPrice &p) override {
             Real u = std::log(p.high()/p.open());
             Real d = std::log(p.low()/p.open());
             Real c = std::log(p.close()/p.open());

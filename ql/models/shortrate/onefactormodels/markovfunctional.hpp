@@ -309,7 +309,7 @@ namespace QuantLib {
             OptimizationMethod &method, const EndCriteria &endCriteria,
             const Constraint &constraint = Constraint(),
             const std::vector<Real> &weights = std::vector<Real>(),
-            const std::vector<bool> &fixParameters = std::vector<bool>()) {
+            const std::vector<bool> &fixParameters = std::vector<bool>()) override {
 
             CalibratedModel::calibrate(helper, method, endCriteria, constraint,
                                        weights, fixParameters.size() == 0
@@ -317,7 +317,7 @@ namespace QuantLib {
                                                     : fixParameters);
         }
 
-        void update() {
+        void update() override {
             LazyObject::update();
         }
 
@@ -337,12 +337,12 @@ namespace QuantLib {
       protected:
 
         Real numeraireImpl(const Time t, const Real y,
-                           const Handle<YieldTermStructure> &yts) const;
+                           const Handle<YieldTermStructure> &yts) const override;
 
         Real zerobondImpl(const Time T, const Time t, const Real y,
-                          const Handle<YieldTermStructure> &yts) const;
+                          const Handle<YieldTermStructure> &yts) const override;
 
-        void generateArguments() {
+        void generateArguments() override {
             // if calculate triggers performCalculations, updateNumeraireTabulations
             // is called twice. If we can not check the lazy object status this seem
             // hard to avoid though.
@@ -351,7 +351,7 @@ namespace QuantLib {
             notifyObservers();
         }
 
-        void performCalculations() const {
+        void performCalculations() const override {
             Gaussian1dModel::performCalculations();
             updateTimes();
             updateSmiles();

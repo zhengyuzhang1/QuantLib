@@ -53,7 +53,7 @@ namespace QuantLib {
             const ext::shared_ptr<HestonModel>& model,
             Real gaussLobattoEps = 1e-6,
             Size gaussLobattoIntegrationOrder = 10000ul);
-        void calculate() const;
+        void calculate() const override;
 
 
         // probability in x_t = ln(s_t)

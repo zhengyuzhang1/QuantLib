@@ -59,7 +59,7 @@ namespace QuantLib {
       private:
         Natural calibrationImpl_(Natural numberOfFactors, 
                                  Natural maxIterations,
-                                 Real tolerance);
+                                 Real tolerance) override;
         // input
         Real caplet0Swaption1Priority_;
         // results

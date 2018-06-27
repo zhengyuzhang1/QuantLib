@@ -69,7 +69,7 @@ namespace QuantLib {
             : scheme_(ConstantBudget), lambda_(lambda), T0_(T0), epsilon_(0.0),
               alpha_(alpha), K_(K), rng_(rng) {}
 
-        EndCriteria::Type minimize(Problem &P, const EndCriteria &ec);
+        EndCriteria::Type minimize(Problem &P, const EndCriteria &ec) override;
 
       private:
 

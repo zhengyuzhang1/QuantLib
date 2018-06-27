@@ -61,11 +61,11 @@ namespace QuantLib {
            Real eta = 0.01,
            Real rho = -0.75);
 
-        ext::shared_ptr<ShortRateDynamics> dynamics() const;
+        ext::shared_ptr<ShortRateDynamics> dynamics() const override;
 
-        virtual Real discountBond(Time now,
+        Real discountBond(Time now,
                                   Time maturity,
-                                  Array factors) const {
+                                  Array factors) const override {
             QL_REQUIRE(factors.size()>1,
                        "g2 model needs two factors to compute discount bond");
             return discountBond(now, maturity, factors[0], factors[1]);
@@ -76,14 +76,14 @@ namespace QuantLib {
         Real discountBondOption(Option::Type type,
                                 Real strike,
                                 Time maturity,
-                                Time bondMaturity) const;
+                                Time bondMaturity) const override;
 
         Real swaption(const Swaption::arguments& arguments,
                       Rate fixedRate,
                       Real range,
                       Size intervals) const;
 
-        DiscountFactor discount(Time t) const {
+        DiscountFactor discount(Time t) const override {
             return termStructure()->discount(t);
         }
 
@@ -94,7 +94,7 @@ namespace QuantLib {
         Real rho() const { return rho_(0.0); }
 
       protected:
-        void generateArguments();
+        void generateArguments() override;
 
         Real A(Time t, Time T) const;
         Real B(Real x, Time t) const;
@@ -133,9 +133,9 @@ namespace QuantLib {
                                       new OrnsteinUhlenbeckProcess(b, eta)),
                             rho),
           fitting_(fitting) {}
-        virtual Rate shortRate(Time t,
+        Rate shortRate(Time t,
                                Real x,
-                               Real y) const {
+                               Real y) const override {
             return fitting_(t) + x + y;
         }
       private:
@@ -165,7 +165,7 @@ namespace QuantLib {
             : termStructure_(termStructure),
               a_(a), sigma_(sigma), b_(b), eta_(eta), rho_(rho) {}
 
-            Real value(const Array&, Time t) const {
+            Real value(const Array&, Time t) const override {
                 Rate forward = termStructure_->forwardRate(t, t,
                                                            Continuous,
                                                            NoFrequency);

@@ -37,7 +37,7 @@ namespace QuantLib {
     private:
         class Impl : public Parameter::Impl {
         public:
-            virtual Real value(const Array&, Time t) const {
+            Real value(const Array&, Time t) const override {
                 return interpolator_(t);
             }
             void reset(const Interpolation &interp) {
@@ -107,12 +107,12 @@ namespace QuantLib {
                 speed,vol,speedtraits,voltraits,f,fInverse);
         }
 
-        ext::shared_ptr<ShortRateDynamics> dynamics() const {
+        ext::shared_ptr<ShortRateDynamics> dynamics() const override {
             QL_FAIL("no defined process for generalized Hull-White model, "
                     "use HWdynamics()");
         }
 
-        ext::shared_ptr<Lattice> tree(const TimeGrid& grid)const;
+        ext::shared_ptr<Lattice> tree(const TimeGrid& grid)const override;
 
         //Analytical calibration of HW
 
@@ -127,7 +127,7 @@ namespace QuantLib {
         Real discountBondOption(Option::Type type,
                                 Real strike,
                                 Time maturity,
-                                Time bondMaturity) const;
+                                Time bondMaturity) const override;
 
         //! vector to pass to 'calibrate' to fit only volatility
         std::vector<bool> fixedReversion() const;
@@ -136,9 +136,9 @@ namespace QuantLib {
         //Analytical calibration of HW
         Real a() const { return a_(0.0); }
         Real sigma() const { return sigma_(0.0); }
-        void generateArguments();
-        virtual Real A(Time t, Time T) const;
-        virtual Real B(Time t, Time T) const;
+        void generateArguments() override;
+        Real A(Time t, Time T) const override;
+        Real B(Time t, Time T) const override;
         Real V(Time t, Time T) const;
 
       private:
@@ -260,11 +260,11 @@ namespace QuantLib {
             _fInverse_=identity();
         }
 
-        Real variable(Time t, Rate r) const {
+        Real variable(Time t, Rate r) const override {
             return _f_(r) - fitting_(t);
         }
 
-        Real shortRate(Time t, Real x) const {
+        Real shortRate(Time t, Real x) const override {
             return _fInverse_(x + fitting_(t));
         }
 
@@ -293,7 +293,7 @@ namespace QuantLib {
                  Real a, Real sigma)
             : termStructure_(termStructure), a_(a), sigma_(sigma) {}
 
-            Real value(const Array&, Time t) const {
+            Real value(const Array&, Time t) const override {
                 Rate forwardRate =
                     termStructure_->forwardRate(t, t, Continuous, NoFrequency);
                 Real temp = a_ < std::sqrt(QL_EPSILON) ?
@@ -362,7 +362,7 @@ namespace QuantLib {
             : Interpolation::templateImpl<I1,I2>(xBegin, xEnd, yBegin,
                                     LinearFlat::requiredPoints),
               primitiveConst_(xEnd-xBegin), s_(xEnd-xBegin) {}
-            void update() {
+            void update() override {
                 primitiveConst_[0] = 0.0;
                 for (Size i=1; i<Size(this->xEnd_-this->xBegin_); ++i) {
                     Real dx = this->xBegin_[i]-this->xBegin_[i-1];
@@ -371,7 +371,7 @@ namespace QuantLib {
                         + dx*(this->yBegin_[i-1] +0.5*dx*s_[i-1]);
                 }
             }
-            Real value(Real x) const {
+            Real value(Real x) const override {
                 if (x <= this->xMin())
                     return this->yBegin_[0];
                 if (x >= this->xMax())
@@ -379,19 +379,19 @@ namespace QuantLib {
                 Size i = this->locate(x);
                 return this->yBegin_[i] + (x-this->xBegin_[i])*s_[i];
             }
-            Real primitive(Real x) const {
+            Real primitive(Real x) const override {
                 Size i = this->locate(x);
                 Real dx = x-this->xBegin_[i];
                 return primitiveConst_[i] +
                     dx*(this->yBegin_[i] + 0.5*dx*s_[i]);
             }
-            Real derivative(Real x) const {
+            Real derivative(Real x) const override {
                 if (!this->isInRange(x))
                     return 0;
                 Size i = this->locate(x);
                 return s_[i];
             }
-            Real secondDerivative(Real) const {
+            Real secondDerivative(Real) const override {
                 return 0.0;
             }
           private:

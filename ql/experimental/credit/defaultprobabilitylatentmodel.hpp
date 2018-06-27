@@ -128,7 +128,7 @@ namespace QuantLib {
                 inverseCumulativeY(prob, iName), iName, mktFactors);
         }
     protected:
-        void update() {
+        void update() override {
             if(basket_) basket_->notifyObservers();
             LatentModel<copulaPolicy>::update();
         }
@@ -201,7 +201,7 @@ namespace QuantLib {
             const std::vector<Real>& mktFactors) const;
         //! access to integration:
         const ext::shared_ptr<LMIntegration>& 
-            integration() const { return integration_; }
+            integration() const override { return integration_; }
     public:
         /*! Computes the unconditional probability of default of a given name. 
         Trivial method for testing
