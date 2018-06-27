@@ -25,6 +25,7 @@
 #include <ql/math/integrals/kronrodintegral.hpp>
 #include <ql/termstructures/volatility/swaption/swaptionvolcube.hpp>
 #include <ql/pricingengines/blackformula.hpp>
+#include <utility>
 
 
 using std::sqrt;
@@ -44,12 +45,12 @@ namespace QuantLib {
     LognormalCmsSpreadPricer::LognormalCmsSpreadPricer(
         const ext::shared_ptr<CmsCouponPricer> cmsPricer,
         const Handle<Quote> &correlation,
-        const Handle<YieldTermStructure> &couponDiscountCurve,
+        Handle<YieldTermStructure> couponDiscountCurve,
         const Size integrationPoints,
         const boost::optional<VolatilityType> volatilityType,
         const Real shift1, const Real shift2)
         : CmsSpreadCouponPricer(correlation), cmsPricer_(cmsPricer),
-          couponDiscountCurve_(couponDiscountCurve) {
+          couponDiscountCurve_(std::move(couponDiscountCurve)) {
 
         registerWith(correlation);
         if (!couponDiscountCurve_.empty())

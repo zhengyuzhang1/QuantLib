@@ -40,7 +40,7 @@ namespace QuantLib {
     class PerturbativeBarrierOptionEngine : public BarrierOption::engine  {
       public:
         PerturbativeBarrierOptionEngine(
-                     const ext::shared_ptr<GeneralizedBlackScholesProcess>&,
+                     ext::shared_ptr<GeneralizedBlackScholesProcess> ,
                      Natural order = 1,
                      bool zeroGamma = false);
         void calculate() const override;

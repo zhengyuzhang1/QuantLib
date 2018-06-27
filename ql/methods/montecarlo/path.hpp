@@ -28,6 +28,7 @@
 
 #include <ql/timegrid.hpp>
 #include <ql/math/array.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -38,7 +39,7 @@ namespace QuantLib {
     */
     class Path {
       public:
-        Path(const TimeGrid& timeGrid,
+        Path(TimeGrid  timeGrid,
              const Array& values = Array());
         //! \name inspectors
         //@{
@@ -79,8 +80,8 @@ namespace QuantLib {
 
     // inline definitions
 
-    inline Path::Path(const TimeGrid& timeGrid, const Array& values)
-    : timeGrid_(timeGrid), values_(values) {
+    inline Path::Path(TimeGrid  timeGrid, const Array& values)
+    : timeGrid_(std::move(timeGrid)), values_(values) {
         if (values_.empty())
             values_ = Array(timeGrid_.size());
         QL_REQUIRE(values_.size() == timeGrid_.size(),

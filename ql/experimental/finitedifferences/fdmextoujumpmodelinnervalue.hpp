@@ -29,6 +29,7 @@
 #include <ql/methods/finitedifferences/meshers/fdmmesher.hpp>
 #include <ql/methods/finitedifferences/operators/fdmlinearopiterator.hpp>
 #include <ql/methods/finitedifferences/utilities/fdminnervaluecalculator.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -36,13 +37,13 @@ namespace QuantLib {
       public:
         typedef std::vector<std::pair<Time, Real> > Shape;
 
-        FdmExtOUJumpModelInnerValue(const ext::shared_ptr<Payoff>& payoff,
-                                    const ext::shared_ptr<FdmMesher>& mesher,
-                                    const ext::shared_ptr<Shape>& shape =
+        FdmExtOUJumpModelInnerValue(ext::shared_ptr<Payoff>  payoff,
+                                    ext::shared_ptr<FdmMesher>  mesher,
+                                    ext::shared_ptr<Shape>  shape =
                                                     ext::shared_ptr<Shape>())
-        : payoff_(payoff),
-          mesher_(mesher),
-          shape_ (shape) { }
+        : payoff_(std::move(payoff)),
+          mesher_(std::move(mesher)),
+          shape_ (std::move(shape)) { }
 
         Real innerValue(const FdmLinearOpIterator& iter, Time t) override {
             const Real x = mesher_->location(iter, 0);

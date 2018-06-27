@@ -59,7 +59,7 @@ namespace QuantLib {
     class ExtOUWithJumpsProcess : public StochasticProcess {
       public:
         ExtOUWithJumpsProcess(
-            const ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess>& process,
+            ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess>  process,
             Real Y0, Real beta, Real jumpIntensity, Real eta);
         
         Size size() const override;

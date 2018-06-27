@@ -22,6 +22,7 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 #include <ql/models/marketmodels/curvestate.hpp>
 #include <ql/models/marketmodels/utilities.hpp>
 #include <ql/auto_ptr.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -286,9 +287,9 @@ namespace QuantLib {
         const std::vector<Real>& accruals,
         const std::vector<Time>& paymentTimes,
         Rate strike,
-        const std::vector<std::pair<Size, Size> >& startsAndEnds) 
+        std::vector<std::pair<Size, Size> >  startsAndEnds) 
         : underlyingCaplets_(rateTimes, accruals, paymentTimes, strike),numberRates_(accruals.size()),
-        startsAndEnds_(startsAndEnds)
+        startsAndEnds_(std::move(startsAndEnds))
     {
         for (Size j=0; j < startsAndEnds_.size(); ++j)
         {

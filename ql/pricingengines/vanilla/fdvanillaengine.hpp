@@ -33,6 +33,7 @@
 #include <ql/processes/blackscholesprocess.hpp>
 #include <ql/math/sampledcurve.hpp>
 #include <ql/payoff.hpp>
+#include <utility>
 
 
 namespace QuantLib {
@@ -46,10 +47,10 @@ namespace QuantLib {
     class FDVanillaEngine {
       public:
         FDVanillaEngine(
-             const ext::shared_ptr<GeneralizedBlackScholesProcess>& process,
+             ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
              Size timeSteps, Size gridPoints,
              bool timeDependent = false)
-        : process_(process), timeSteps_(timeSteps), gridPoints_(gridPoints),
+        : process_(std::move(process)), timeSteps_(timeSteps), gridPoints_(gridPoints),
           timeDependent_(timeDependent),
           intrinsicValues_(gridPoints), BCs_(2) {}
         virtual ~FDVanillaEngine() {}

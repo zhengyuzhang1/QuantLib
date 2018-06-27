@@ -37,16 +37,16 @@ namespace QuantLib {
     /*! \ingroup capfloorengines */
     class BlackCapFloorEngine : public CapFloor::engine {
       public:
-        BlackCapFloorEngine(const Handle<YieldTermStructure>& discountCurve,
+        BlackCapFloorEngine(Handle<YieldTermStructure>  discountCurve,
                             Volatility vol,
                             const DayCounter& dc = Actual365Fixed(),
                             Real displacement = 0.0);
-        BlackCapFloorEngine(const Handle<YieldTermStructure>& discountCurve,
+        BlackCapFloorEngine(Handle<YieldTermStructure>  discountCurve,
                             const Handle<Quote>& vol,
                             const DayCounter& dc = Actual365Fixed(),
                             Real displacement = 0.0);
-        BlackCapFloorEngine(const Handle< YieldTermStructure > &discountCurve,
-                            const Handle< OptionletVolatilityStructure > &vol,
+        BlackCapFloorEngine(Handle< YieldTermStructure > discountCurve,
+                            Handle< OptionletVolatilityStructure > vol,
                             Real displacement = Null< Real >());
         void calculate() const override;
         Handle<YieldTermStructure> termStructure() { return discountCurve_; }

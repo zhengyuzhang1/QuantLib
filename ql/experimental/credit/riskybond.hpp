@@ -49,11 +49,11 @@ namespace QuantLib {
             the issuer has survived, divide the npv by
             \f[(1-P_{def}(T_{npv}))\f]
         */
-        RiskyBond(const std::string& name,
-                  const Currency& ccy,
+        RiskyBond(std::string  name,
+                  Currency  ccy,
                   Real recoveryRate,
-                  const Handle<DefaultProbabilityTermStructure>& defaultTS,
-                  const Handle<YieldTermStructure>& yieldTS,
+                  Handle<DefaultProbabilityTermStructure>  defaultTS,
+                  Handle<YieldTermStructure>  yieldTS,
                   Natural settlementDays = 0,
                   Calendar calendar = Calendar());
         ~RiskyBond() override {}
@@ -122,9 +122,9 @@ namespace QuantLib {
                        const Handle<DefaultProbabilityTermStructure>& defaultTS,
                        const Schedule& schedule, 
                        Real rate,
-                       const DayCounter& dayCounter,
+                       DayCounter  dayCounter,
                        BusinessDayConvention paymentConvention,
-                       const std::vector<Real>& notionals,
+                       std::vector<Real>  notionals,
                        const Handle<YieldTermStructure>& yieldTS,
                        Natural settlementDays = 0);
         std::vector<ext::shared_ptr<CashFlow> > cashflows() const override;

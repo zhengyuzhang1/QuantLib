@@ -31,18 +31,19 @@
 #pragma GCC diagnostic pop
 #endif
 #include <boost/function.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     ImplicitEulerScheme::ImplicitEulerScheme(
-        const ext::shared_ptr<FdmLinearOpComposite>& map,
+        ext::shared_ptr<FdmLinearOpComposite>  map,
         const bc_set& bcSet,
         Real relTol,
         SolverType solverType)
     : dt_        (Null<Real>()),
       iterations_(ext::make_shared<Size>(0u)),
       relTol_    (relTol),
-      map_       (map),
+      map_       (std::move(map)),
       bcSet_     (bcSet),
       solverType_(solverType){
     }

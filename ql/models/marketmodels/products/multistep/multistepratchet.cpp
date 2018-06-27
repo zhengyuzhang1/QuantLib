@@ -22,11 +22,12 @@
 #include <ql/models/marketmodels/utilities.hpp>
 #include <ql/auto_ptr.hpp>
 #include <cmath>
+#include <utility>
 
 namespace QuantLib {
 
     MultiStepRatchet::MultiStepRatchet(const std::vector<Time>& rateTimes,
-                                 const std::vector<Real>& accruals,
+                                 std::vector<Real>  accruals,
                                  const std::vector<Time>& paymentTimes,
                                  Real gearingOfFloor,
                                  Real gearingOfFixing,
@@ -35,7 +36,7 @@ namespace QuantLib {
                                  Real initialFloor,
                                  bool payer)
     : MultiProductMultiStep(rateTimes),
-      accruals_(accruals), paymentTimes_(paymentTimes),
+      accruals_(std::move(accruals)), paymentTimes_(paymentTimes),
       gearingOfFloor_(gearingOfFloor), gearingOfFixing_(gearingOfFixing),
       spreadOfFloor_(spreadOfFloor), spreadOfFixing_(spreadOfFixing),
       multiplier_(payer ? 1.0 : -1.0),

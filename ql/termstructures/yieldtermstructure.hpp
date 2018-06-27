@@ -49,17 +49,17 @@ namespace QuantLib {
         */
         //@{
         YieldTermStructure(const DayCounter& dc = DayCounter(),
-                           const std::vector<Handle<Quote> >& jumps = std::vector<Handle<Quote> >(),
+                           std::vector<Handle<Quote> >  jumps = std::vector<Handle<Quote> >(),
                            const std::vector<Date>& jumpDates = std::vector<Date>());
         YieldTermStructure(const Date& referenceDate,
                            const Calendar& cal = Calendar(),
                            const DayCounter& dc = DayCounter(),
-                           const std::vector<Handle<Quote> >& jumps = std::vector<Handle<Quote> >(),
+                           std::vector<Handle<Quote> >  jumps = std::vector<Handle<Quote> >(),
                            const std::vector<Date>& jumpDates = std::vector<Date>());
         YieldTermStructure(Natural settlementDays,
                            const Calendar& cal,
                            const DayCounter& dc = DayCounter(),
-                           const std::vector<Handle<Quote> >& jumps = std::vector<Handle<Quote> >(),
+                           std::vector<Handle<Quote> >  jumps = std::vector<Handle<Quote> >(),
                            const std::vector<Date>& jumpDates = std::vector<Date>());
         //@}
 

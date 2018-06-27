@@ -25,6 +25,7 @@
 #include <ql/math/matrixutilities/pseudosqrt.hpp>
 #include <ql/math/interpolations/linearinterpolation.hpp>
 #include <ql/models/marketmodels/correlations/expcorrelations.hpp>
+#include <utility>
 
 using std::vector;
 
@@ -149,12 +150,12 @@ namespace QuantLib {
     FlatVolFactory::FlatVolFactory(
                                 Real longTermCorrelation,
                                 Real beta,
-                                const vector<Time>& times,
-                                const vector<Volatility>& vols,
-                                const Handle<YieldTermStructure>& yieldCurve,
+                                vector<Time>  times,
+                                vector<Volatility>  vols,
+                                Handle<YieldTermStructure>  yieldCurve,
                                 Spread displacement)
     : longTermCorrelation_(longTermCorrelation), beta_(beta),
-      times_(times), vols_(vols), yieldCurve_(yieldCurve),
+      times_(std::move(times)), vols_(std::move(vols)), yieldCurve_(std::move(yieldCurve)),
       displacement_(displacement) {
         volatility_ = LinearInterpolation(times_.begin(), times_.end(),
                                           vols_.begin());

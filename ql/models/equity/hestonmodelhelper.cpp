@@ -25,13 +25,14 @@
 #include <ql/instruments/payoffs.hpp>
 #include <ql/quotes/simplequote.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 
 namespace QuantLib {
 
     HestonModelHelper::HestonModelHelper(
                             const Period& maturity,
-                            const Calendar& calendar,
+                            Calendar  calendar,
                             const Real s0,
                             const Real strikePrice,
                             const Handle<Quote>& volatility,
@@ -39,7 +40,7 @@ namespace QuantLib {
                             const Handle<YieldTermStructure>& dividendYield,
                             CalibrationHelper::CalibrationErrorType errorType)
     : CalibrationHelper(volatility, riskFreeRate, errorType),
-      maturity_(maturity), calendar_(calendar),
+      maturity_(maturity), calendar_(std::move(calendar)),
       s0_(Handle<Quote>(ext::make_shared<SimpleQuote>(s0))),
       strikePrice_(strikePrice), dividendYield_(dividendYield) {
         registerWith(dividendYield);
@@ -47,7 +48,7 @@ namespace QuantLib {
 
     HestonModelHelper::HestonModelHelper(
                             const Period& maturity,
-                            const Calendar& calendar,
+                            Calendar  calendar,
                             const Handle<Quote>& s0,
                             const Real strikePrice,
                             const Handle<Quote>& volatility,
@@ -55,7 +56,7 @@ namespace QuantLib {
                             const Handle<YieldTermStructure>& dividendYield,
                             CalibrationHelper::CalibrationErrorType errorType)
     : CalibrationHelper(volatility, riskFreeRate, errorType),
-      maturity_(maturity), calendar_(calendar), s0_(s0),
+      maturity_(maturity), calendar_(std::move(calendar)), s0_(s0),
       strikePrice_(strikePrice), dividendYield_(dividendYield) {
         registerWith(s0);
         registerWith(dividendYield);

@@ -27,6 +27,7 @@
 #include <ql/pricingengines/blackformula.hpp>
 #include <ql/math/matrix.hpp>
 #include <ql/time/calendars/nullcalendar.hpp>
+#include <utility>
 
 using std::pow;
 using std::log;
@@ -35,19 +36,19 @@ using std::sqrt;
 namespace QuantLib {
 
     VannaVolgaBarrierEngine::VannaVolgaBarrierEngine(
-            const Handle<DeltaVolQuote>& atmVol,
-            const Handle<DeltaVolQuote>& vol25Put,
-            const Handle<DeltaVolQuote>& vol25Call,
-            const Handle<Quote>& spotFX,
-            const Handle<YieldTermStructure>& domesticTS,
-            const Handle<YieldTermStructure>& foreignTS,
+            Handle<DeltaVolQuote>  atmVol,
+            Handle<DeltaVolQuote>  vol25Put,
+            Handle<DeltaVolQuote>  vol25Call,
+            Handle<Quote>  spotFX,
+            Handle<YieldTermStructure>  domesticTS,
+            Handle<YieldTermStructure>  foreignTS,
             const bool adaptVanDelta,
             const Real bsPriceWithSmile
             )
     : GenericEngine<DividendBarrierOption::arguments,
                     DividendBarrierOption::results>(),
-      atmVol_(atmVol), vol25Put_(vol25Put), vol25Call_(vol25Call), T_(atmVol_->maturity()),
-      spotFX_(spotFX), domesticTS_(domesticTS), foreignTS_(foreignTS),
+      atmVol_(std::move(atmVol)), vol25Put_(std::move(vol25Put)), vol25Call_(std::move(vol25Call)), T_(atmVol_->maturity()),
+      spotFX_(std::move(spotFX)), domesticTS_(std::move(domesticTS)), foreignTS_(std::move(foreignTS)),
       adaptVanDelta_(adaptVanDelta), bsPriceWithSmile_(bsPriceWithSmile)
       {
           QL_REQUIRE(vol25Put_->delta() == -0.25, "25 delta put is required by vanna volga method");

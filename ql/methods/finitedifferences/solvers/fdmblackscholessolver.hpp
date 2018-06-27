@@ -39,9 +39,9 @@ namespace QuantLib {
     class FdmBlackScholesSolver : public LazyObject {
       public:
         FdmBlackScholesSolver(
-            const Handle<GeneralizedBlackScholesProcess>& process,
+            Handle<GeneralizedBlackScholesProcess>  process,
             Real strike,
-            const FdmSolverDesc& solverDesc,
+            FdmSolverDesc  solverDesc,
             const FdmSchemeDesc& schemeDesc = FdmSchemeDesc::Douglas(),
             bool localVol = false,
             Real illegalLocalVolOverwrite = -Null<Real>());

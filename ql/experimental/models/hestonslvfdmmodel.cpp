@@ -48,6 +48,7 @@
 #include <boost/assign/std/vector.hpp>
 
 #include <functional>
+#include <utility>
 
 using namespace boost::assign;
 
@@ -268,17 +269,17 @@ namespace QuantLib {
     }
 
     HestonSLVFDMModel::HestonSLVFDMModel(
-        const Handle<LocalVolTermStructure>& localVol,
-        const Handle<HestonModel>& hestonModel,
+        Handle<LocalVolTermStructure>  localVol,
+        Handle<HestonModel>  hestonModel,
         const Date& endDate,
-        const HestonSLVFokkerPlanckFdmParams& params,
+        HestonSLVFokkerPlanckFdmParams  params,
         const bool logging,
-        const std::vector<Date>& mandatoryDates)
-    : localVol_(localVol),
-      hestonModel_(hestonModel),
+        std::vector<Date>  mandatoryDates)
+    : localVol_(std::move(localVol)),
+      hestonModel_(std::move(hestonModel)),
       endDate_(endDate),
-      params_(params),
-      mandatoryDates_(mandatoryDates),
+      params_(std::move(params)),
+      mandatoryDates_(std::move(mandatoryDates)),
       logging_(logging) {
 
         registerWith(localVol_);

@@ -35,9 +35,9 @@ namespace QuantLib {
 
     class FdmQuantoHelper : public Observable {
     public:
-        FdmQuantoHelper(const ext::shared_ptr<YieldTermStructure> & rTS,
-                        const ext::shared_ptr<YieldTermStructure> & fTS,
-                        const ext::shared_ptr<BlackVolTermStructure> & fxVolTS,
+        FdmQuantoHelper(ext::shared_ptr<YieldTermStructure>  rTS,
+                        ext::shared_ptr<YieldTermStructure>  fTS,
+                        ext::shared_ptr<BlackVolTermStructure>  fxVolTS,
                         Real equityFxCorrelation,
                         Real exchRateATMlevel);
 

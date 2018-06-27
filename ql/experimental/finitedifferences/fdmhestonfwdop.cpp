@@ -32,6 +32,7 @@
 #include <ql/experimental/finitedifferences/modtriplebandlinearop.hpp>
 #include <boost/unordered/unordered_map.hpp>
 #include <cmath>
+#include <utility>
 
 using std::exp;
 
@@ -41,7 +42,7 @@ namespace QuantLib {
             const ext::shared_ptr<FdmMesher>& mesher,
             const ext::shared_ptr<HestonProcess>& process,
             FdmSquareRootFwdOp::TransformationType type,
-            const ext::shared_ptr<LocalVolTermStructure>& leverageFct)
+            ext::shared_ptr<LocalVolTermStructure>  leverageFct)
     : type_(type),
       kappa_(process->kappa()),
       theta_(process->theta()),
@@ -67,7 +68,7 @@ namespace QuantLib {
             : SecondOrderMixedDerivativeOp(0, 1, mesher)
               .mult(rho_*sigma_*mesher->locations(1))
            )),
-	   leverageFct_(leverageFct),
+	   leverageFct_(std::move(leverageFct)),
 	   mesher_(mesher)
     {
         const ext::shared_ptr<FdmLinearOpLayout> layout = mesher->layout();

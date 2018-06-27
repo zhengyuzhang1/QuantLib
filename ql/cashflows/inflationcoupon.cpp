@@ -21,6 +21,7 @@
 #include <ql/indexes/inflationindex.hpp>
 #include <ql/cashflows/inflationcouponpricer.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -30,16 +31,16 @@ namespace QuantLib {
                                     const Date& startDate,
                                     const Date& endDate,
                                     Natural fixingDays,
-                                    const ext::shared_ptr<InflationIndex>& index,
+                                    ext::shared_ptr<InflationIndex>  index,
                                     const Period& observationLag,
-                                    const DayCounter& dayCounter,
+                                    DayCounter  dayCounter,
                                     const Date& refPeriodStart,
                                     const Date& refPeriodEnd,
                                     const Date& exCouponDate
                                     )
     : Coupon(paymentDate, nominal,
              startDate, endDate, refPeriodStart,refPeriodEnd,exCouponDate),  // ref period is before lag
-      index_(index), observationLag_(observationLag), dayCounter_(dayCounter),
+      index_(std::move(index)), observationLag_(observationLag), dayCounter_(std::move(dayCounter)),
       fixingDays_(fixingDays)
     {
         registerWith(index_);

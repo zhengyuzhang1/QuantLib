@@ -19,13 +19,14 @@
 
 #include <ql/models/marketmodels/models/alphaformconcrete.hpp>
 #include <cmath>
+#include <utility>
 
 namespace QuantLib {
 
     AlphaFormInverseLinear::AlphaFormInverseLinear(
-                                                const std::vector<Time>& times,
+                                                std::vector<Time>  times,
                                                 Real alpha )
-    : times_(times), alpha_(alpha) {}
+    : times_(std::move(times)), alpha_(alpha) {}
 
     Real AlphaFormInverseLinear::operator()(Integer i) const {
         return 1.0/(1.0+alpha_*times_[i]);
@@ -37,9 +38,9 @@ namespace QuantLib {
 
 
     AlphaFormLinearHyperbolic::AlphaFormLinearHyperbolic(
-                                                const std::vector<Time>& times,
+                                                std::vector<Time>  times,
                                                 Real alpha )
-    : times_(times), alpha_(alpha) {}
+    : times_(std::move(times)), alpha_(alpha) {}
 
     Real AlphaFormLinearHyperbolic::operator()(Integer i) const {
         Real at = alpha_*times_[i];

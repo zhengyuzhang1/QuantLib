@@ -120,16 +120,16 @@ namespace QuantLib {
         */
         CDO (Real attachment,
              Real detachment,
-             const std::vector<Real>& nominals,
+             std::vector<Real>  nominals,
              const std::vector<Handle<DefaultProbabilityTermStructure> >& basket,
-             const Handle<OneFactorCopula>& copula,
+             Handle<OneFactorCopula>  copula,
              bool protectionSeller,
-             const Schedule& premiumSchedule,
+             Schedule  premiumSchedule,
              Rate premiumRate,
-             const DayCounter& dayCounter,
+             DayCounter  dayCounter,
              Rate recoveryRate,
              Rate upfrontPremiumRate,
-             const Handle<YieldTermStructure>& yieldTS,
+             Handle<YieldTermStructure>  yieldTS,
              Size nBuckets,
              const Period& integrationStep = Period(10, Years));
 

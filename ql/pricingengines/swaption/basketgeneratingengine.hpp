@@ -34,6 +34,7 @@
 #include <ql/cashflows/fixedratecoupon.hpp>
 #include <ql/cashflows/iborcoupon.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -72,10 +73,10 @@ namespace QuantLib {
 
       protected:
 
-        BasketGeneratingEngine(const ext::shared_ptr<Gaussian1dModel> &model,
-                               const Handle<Quote> &oas,
-                               const Handle<YieldTermStructure> &discountCurve)
-            : onefactormodel_(model), oas_(oas), discountCurve_(discountCurve) {
+        BasketGeneratingEngine(ext::shared_ptr<Gaussian1dModel> model,
+                               Handle<Quote> oas,
+                               Handle<YieldTermStructure> discountCurve)
+            : onefactormodel_(std::move(model)), oas_(std::move(oas)), discountCurve_(std::move(discountCurve)) {
         }
 
         virtual ~BasketGeneratingEngine() {}
@@ -103,11 +104,11 @@ namespace QuantLib {
           public:
             MatchHelper(const VanillaSwap::Type type, const Real npv,
                         const Real delta, const Real gamma,
-                        const ext::shared_ptr<Gaussian1dModel> &model,
-                        const ext::shared_ptr<SwapIndex> &indexBase,
+                        ext::shared_ptr<Gaussian1dModel> model,
+                        ext::shared_ptr<SwapIndex> indexBase,
                         const Date &expiry, const Real maxMaturity,
                         const Real h)
-                : type_(type), mdl_(model), indexBase_(indexBase),
+                : type_(type), mdl_(std::move(model)), indexBase_(std::move(indexBase)),
                   expiry_(expiry), maxMaturity_(maxMaturity), npv_(npv),
                   delta_(delta), gamma_(gamma), h_(h) {}
 

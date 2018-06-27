@@ -22,6 +22,7 @@
 #include <ql/experimental/credit/recoveryratequote.hpp>
 #include <ql/patterns/visitor.hpp>
 #include <ql/settings.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -92,12 +93,12 @@ namespace QuantLib {
 
     DefaultEvent::DefaultEvent(const Date& creditEventDate,
                                const DefaultType& atomicEvType,
-                               const Currency& curr,
+                               Currency  curr,
                                Seniority bondsSen,
                                // Settlement information:
                                const Date& settleDate,
                                const std::map<Seniority, Real>& recoveryRates)
-    : bondsCurrency_(curr),
+    : bondsCurrency_(std::move(curr)),
       defaultDate_(creditEventDate),
       eventType_(atomicEvType),
       bondsSeniority_(bondsSen),
@@ -114,12 +115,12 @@ namespace QuantLib {
 
     DefaultEvent::DefaultEvent(const Date& creditEventDate,
                                const DefaultType& atomicEvType,
-                               const Currency& curr,
+                               Currency  curr,
                                Seniority bondsSen,
                                // Settlement information:
                                const Date& settleDate,
                                Real recoveryRate)
-    : bondsCurrency_(curr),
+    : bondsCurrency_(std::move(curr)),
       defaultDate_(creditEventDate),
       eventType_(atomicEvType),
       bondsSeniority_(bondsSen),

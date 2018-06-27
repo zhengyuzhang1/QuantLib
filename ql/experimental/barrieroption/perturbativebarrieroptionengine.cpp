@@ -27,6 +27,7 @@
 #include <boost/function.hpp>
 #include <cmath>
 #include <algorithm>
+#include <utility>
 
 using namespace std;
 
@@ -1504,10 +1505,10 @@ namespace QuantLib {
 
 
     PerturbativeBarrierOptionEngine::PerturbativeBarrierOptionEngine(
-             const ext::shared_ptr<GeneralizedBlackScholesProcess>& process,
+             ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
              Natural order,
              bool zeroGamma)
-    : process_(process), order_(order), zeroGamma_(zeroGamma) {
+    : process_(std::move(process)), order_(order), zeroGamma_(zeroGamma) {
         registerWith(process_);
     }
 

@@ -20,6 +20,7 @@
 #include <ql/methods/finitedifferences/operators/fdmlinearoplayout.hpp>
 #include <ql/methods/finitedifferences/utilities/fdminnervaluecalculator.hpp>
 #include <ql/methods/finitedifferences/stepconditions/fdmbermudanstepcondition.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -27,10 +28,10 @@ namespace QuantLib {
             const std::vector<Date>& exerciseDates,
             const Date& referenceDate,
             const DayCounter& dayCounter,
-            const ext::shared_ptr<FdmMesher> & mesher,
-            const ext::shared_ptr<FdmInnerValueCalculator> & calculator)
-    : mesher_    (mesher),
-      calculator_(calculator) {
+            ext::shared_ptr<FdmMesher>  mesher,
+            ext::shared_ptr<FdmInnerValueCalculator>  calculator)
+    : mesher_    (std::move(mesher)),
+      calculator_(std::move(calculator)) {
     
         exerciseTimes_.reserve(exerciseDates.size());
         for (std::vector<Date>::const_iterator iter = exerciseDates.begin();

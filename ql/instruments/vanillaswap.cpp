@@ -27,25 +27,26 @@
 #include <ql/cashflows/couponpricer.hpp>
 #include <ql/indexes/iborindex.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     VanillaSwap::VanillaSwap(
                      Type type,
                      Real nominal,
-                     const Schedule& fixedSchedule,
+                     Schedule  fixedSchedule,
                      Rate fixedRate,
-                     const DayCounter& fixedDayCount,
-                     const Schedule& floatSchedule,
-                     const ext::shared_ptr<IborIndex>& iborIndex,
+                     DayCounter  fixedDayCount,
+                     Schedule  floatSchedule,
+                     ext::shared_ptr<IborIndex>  iborIndex,
                      Spread spread,
-                     const DayCounter& floatingDayCount,
+                     DayCounter  floatingDayCount,
                      boost::optional<BusinessDayConvention> paymentConvention)
     : Swap(2), type_(type), nominal_(nominal),
-      fixedSchedule_(fixedSchedule), fixedRate_(fixedRate),
-      fixedDayCount_(fixedDayCount),
-      floatingSchedule_(floatSchedule), iborIndex_(iborIndex), spread_(spread),
-      floatingDayCount_(floatingDayCount) {
+      fixedSchedule_(std::move(fixedSchedule)), fixedRate_(fixedRate),
+      fixedDayCount_(std::move(fixedDayCount)),
+      floatingSchedule_(std::move(floatSchedule)), iborIndex_(std::move(iborIndex)), spread_(spread),
+      floatingDayCount_(std::move(floatingDayCount)) {
 
         if (paymentConvention)
             paymentConvention_ = *paymentConvention;

@@ -21,17 +21,18 @@
 #include <ql/models/marketmodels/utilities.hpp>
 #include <ql/models/marketmodels/curvestate.hpp>
 #include <ql/auto_ptr.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     MultiStepCoterminalSwaps::MultiStepCoterminalSwaps(
         const std::vector<Time>& rateTimes,
-        const std::vector<Real>& fixedAccruals,
-        const std::vector<Real>& floatingAccruals,
+        std::vector<Real>  fixedAccruals,
+        std::vector<Real>  floatingAccruals,
         const std::vector<Time>& paymentTimes,
         Real fixedRate)
     : MultiProductMultiStep(rateTimes),
-      fixedAccruals_(fixedAccruals), floatingAccruals_(floatingAccruals),
+      fixedAccruals_(std::move(fixedAccruals)), floatingAccruals_(std::move(floatingAccruals)),
       paymentTimes_(paymentTimes), fixedRate_(fixedRate) {
         checkIncreasingTimes(paymentTimes);
 

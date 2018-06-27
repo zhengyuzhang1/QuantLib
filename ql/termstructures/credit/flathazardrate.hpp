@@ -37,14 +37,14 @@ namespace QuantLib {
         //! \name Constructors
         //@{
         FlatHazardRate(const Date& referenceDate,
-                       const Handle<Quote>& hazardRate,
+                       Handle<Quote>  hazardRate,
                        const DayCounter&);
         FlatHazardRate(const Date& referenceDate,
                        Rate hazardRate,
                        const DayCounter&);
         FlatHazardRate(Natural settlementDays,
                        const Calendar& calendar,
-                       const Handle<Quote>& hazardRate,
+                       Handle<Quote>  hazardRate,
                        const DayCounter&);
         FlatHazardRate(Natural settlementDays,
                        const Calendar& calendar,

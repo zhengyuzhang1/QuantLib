@@ -26,6 +26,7 @@
 #ifndef QL_PATCH_SOLARIS
 
 #include <ql/experimental/credit/syntheticcdo.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -45,8 +46,8 @@ namespace QuantLib {
     class MidPointCDOEngine : public SyntheticCDO::engine {
     public:
         explicit MidPointCDOEngine(
-            const Handle<YieldTermStructure>& discountCurve)
-        : discountCurve_(discountCurve) {}
+            Handle<YieldTermStructure>  discountCurve)
+        : discountCurve_(std::move(discountCurve)) {}
         void calculate() const override;
     protected:
         Handle<YieldTermStructure> discountCurve_;

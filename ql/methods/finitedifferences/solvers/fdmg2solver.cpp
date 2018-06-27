@@ -25,15 +25,16 @@
 #include <ql/methods/finitedifferences/solvers/fdmg2solver.hpp>
 #include <ql/methods/finitedifferences/operators/fdmg2op.hpp>
 #include <ql/methods/finitedifferences/stepconditions/fdmsnapshotcondition.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FdmG2Solver::FdmG2Solver(
-        const Handle<G2>& model,
-        const FdmSolverDesc& solverDesc,
+        Handle<G2>  model,
+        FdmSolverDesc  solverDesc,
         const FdmSchemeDesc& schemeDesc)
-    : model_(model),
-      solverDesc_(solverDesc),
+    : model_(std::move(model)),
+      solverDesc_(std::move(solverDesc)),
       schemeDesc_(schemeDesc) {
         registerWith(model_);
     }

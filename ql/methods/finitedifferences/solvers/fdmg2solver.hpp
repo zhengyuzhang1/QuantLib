@@ -36,8 +36,8 @@ namespace QuantLib {
     class FdmG2Solver : public LazyObject {
       public:
         FdmG2Solver(
-            const Handle<G2>& model,
-            const FdmSolverDesc& solverDesc,
+            Handle<G2>  model,
+            FdmSolverDesc  solverDesc,
             const FdmSchemeDesc& schemeDesc = FdmSchemeDesc::Hundsdorfer());
 
         Real valueAt(Real x, Real y) const;

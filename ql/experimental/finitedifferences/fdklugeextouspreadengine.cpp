@@ -33,24 +33,25 @@
 #include <ql/methods/finitedifferences/meshers/fdmsimpleprocess1dmesher.hpp>
 #include <ql/experimental/finitedifferences/fdklugeextouspreadengine.hpp>
 #include <ql/experimental/finitedifferences/fdmspreadpayoffinnervalue.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FdKlugeExtOUSpreadEngine::FdKlugeExtOUSpreadEngine(
-        const ext::shared_ptr<KlugeExtOUProcess>& klugeOUProcess,
-        const ext::shared_ptr<YieldTermStructure>& rTS,
+        ext::shared_ptr<KlugeExtOUProcess>  klugeOUProcess,
+        ext::shared_ptr<YieldTermStructure>  rTS,
         Size tGrid, Size xGrid, Size yGrid, Size uGrid,
-        const ext::shared_ptr<GasShape>& gasShape,
-        const ext::shared_ptr<PowerShape>& powerShape,
+        ext::shared_ptr<GasShape>  gasShape,
+        ext::shared_ptr<PowerShape>  powerShape,
         const FdmSchemeDesc& schemeDesc)
-    : klugeOUProcess_(klugeOUProcess),
-      rTS_  (rTS),
+    : klugeOUProcess_(std::move(klugeOUProcess)),
+      rTS_  (std::move(rTS)),
       tGrid_(tGrid),
       xGrid_(xGrid),
       yGrid_(yGrid),
       uGrid_(uGrid),
-      gasShape_(gasShape),
-      powerShape_(powerShape),
+      gasShape_(std::move(gasShape)),
+      powerShape_(std::move(powerShape)),
       schemeDesc_(schemeDesc) {
     }
 

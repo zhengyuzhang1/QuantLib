@@ -32,6 +32,7 @@
 #include <ql/termstructures/yield/flatforward.hpp>
 #include <ql/termstructures/volatility/equityfx/blackconstantvol.hpp>
 #include <ql/instruments/payoffs.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -45,9 +46,9 @@ namespace QuantLib {
     class BinomialConvertibleEngine : public ConvertibleBond::option::engine {
       public:
         BinomialConvertibleEngine(
-             const ext::shared_ptr<GeneralizedBlackScholesProcess>& process,
+             ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
              Size timeSteps)
-        : process_(process), timeSteps_(timeSteps) {
+        : process_(std::move(process)), timeSteps_(timeSteps) {
             QL_REQUIRE(timeSteps>0,
                        "timeSteps must be positive, " << timeSteps <<
                        " not allowed");

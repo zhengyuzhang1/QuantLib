@@ -44,7 +44,7 @@ namespace QuantLib {
     class HistoricalRatesAnalysis {
       public:
         HistoricalRatesAnalysis(
-                const ext::shared_ptr<SequenceStatistics>& stats,
+                ext::shared_ptr<SequenceStatistics>  stats,
                 const Date& startDate,
                 const Date& endDate,
                 const Period& step,

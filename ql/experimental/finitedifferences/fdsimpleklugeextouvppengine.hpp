@@ -43,10 +43,10 @@ namespace QuantLib {
         typedef FdmExtOUJumpModelInnerValue::Shape Shape;
 
         FdSimpleKlugeExtOUVPPEngine(
-            const ext::shared_ptr<KlugeExtOUProcess>& process,
-            const ext::shared_ptr<YieldTermStructure>& rTS,
-            const ext::shared_ptr<Shape>& fuelShape,
-            const ext::shared_ptr<Shape>& powerShape,
+            ext::shared_ptr<KlugeExtOUProcess>  process,
+            ext::shared_ptr<YieldTermStructure>  rTS,
+            ext::shared_ptr<Shape>  fuelShape,
+            ext::shared_ptr<Shape>  powerShape,
             Real fuelCostAddon,
             Size tGrid = 1 , Size xGrid = 50,
             Size yGrid = 10, Size gGrid = 20,

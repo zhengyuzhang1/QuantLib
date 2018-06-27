@@ -55,9 +55,9 @@ namespace QuantLib {
                               BroadieKayaExactSchemeLaguerre,
                               BroadieKayaExactSchemeTrapezoidal };
 
-        HestonProcess(const Handle<YieldTermStructure>& riskFreeRate,
-                      const Handle<YieldTermStructure>& dividendYield,
-                      const Handle<Quote>& s0,
+        HestonProcess(Handle<YieldTermStructure>  riskFreeRate,
+                      Handle<YieldTermStructure>  dividendYield,
+                      Handle<Quote>  s0,
                       Real v0, Real kappa,
                       Real theta, Real sigma, Real rho,
                       Discretization d = QuadraticExponentialMartingale);

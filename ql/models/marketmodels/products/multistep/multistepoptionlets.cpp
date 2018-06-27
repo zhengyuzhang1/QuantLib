@@ -23,16 +23,17 @@
 #include <ql/models/marketmodels/utilities.hpp>
 #include <ql/payoff.hpp>
 #include <ql/auto_ptr.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     MultiStepOptionlets::MultiStepOptionlets(
                       const std::vector<Time>& rateTimes,
-                      const std::vector<Real>& accruals,
+                      std::vector<Real>  accruals,
                       const std::vector<Time>& paymentTimes,
-                      const std::vector<ext::shared_ptr<Payoff> >& payoffs)
-    : MultiProductMultiStep(rateTimes), accruals_(accruals),
-      paymentTimes_(paymentTimes), payoffs_(payoffs) {
+                      std::vector<ext::shared_ptr<Payoff> >  payoffs)
+    : MultiProductMultiStep(rateTimes), accruals_(std::move(accruals)),
+      paymentTimes_(paymentTimes), payoffs_(std::move(payoffs)) {
         checkIncreasingTimes(paymentTimes);
     }
 

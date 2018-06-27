@@ -22,6 +22,7 @@
 #include <ql/indexes/inflationindex.hpp>
 #include <ql/cashflows/simplecashflow.hpp>
 #include <ql/cashflows/indexedcashflow.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -35,9 +36,9 @@ namespace QuantLib {
         Real nominal,
         const Date& startDate,  // start date of contract (only)
         const Date& maturity,   // this is pre-adjustment!
-        const Calendar& fixCalendar,
+        Calendar  fixCalendar,
         BusinessDayConvention fixConvention,
-        const DayCounter& dayCounter,
+        DayCounter  dayCounter,
         Rate fixedRate,
         const ext::shared_ptr<ZeroInflationIndex> &infIndex,
         const Period& observationLag,
@@ -46,11 +47,11 @@ namespace QuantLib {
         BusinessDayConvention infConvention)
     : Swap(2), type_(type), nominal_(nominal),
       startDate_(startDate), maturityDate_(maturity),
-      fixCalendar_(fixCalendar), fixConvention_(fixConvention),
+      fixCalendar_(std::move(fixCalendar)), fixConvention_(fixConvention),
       fixedRate_(fixedRate), infIndex_(infIndex),
       observationLag_(observationLag), adjustInfObsDates_(adjustInfObsDates),
-      infCalendar_(infCalendar), infConvention_(infConvention),
-      dayCounter_(dayCounter) {
+      infCalendar_(std::move(infCalendar)), infConvention_(infConvention),
+      dayCounter_(std::move(dayCounter)) {
         // first check compatibility of index and swap definitions
         if (infIndex_->interpolated()) {
             Period pShift(infIndex_->frequency());

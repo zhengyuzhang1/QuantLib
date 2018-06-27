@@ -24,14 +24,15 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 #include <ql/models/marketmodels/curvestate.hpp>
 #include <ql/models/marketmodels/marketmodel.hpp>
 #include <algorithm>
+#include <utility>
 
 namespace QuantLib {
 
-    PathwiseAccountingEngine::PathwiseAccountingEngine(const ext::shared_ptr<LogNormalFwdRateEuler>& evolver, // method relies heavily on LMM Euler
+    PathwiseAccountingEngine::PathwiseAccountingEngine(ext::shared_ptr<LogNormalFwdRateEuler>  evolver, // method relies heavily on LMM Euler
         const Clone<MarketModelPathwiseMultiProduct>& product,
-        const ext::shared_ptr<MarketModel>& pseudoRootStructure, // we need pseudo-roots and displacements
+        ext::shared_ptr<MarketModel>  pseudoRootStructure, // we need pseudo-roots and displacements
         Real initialNumeraireValue)
-        : evolver_(evolver), product_(product),pseudoRootStructure_(pseudoRootStructure),
+        : evolver_(std::move(evolver)), product_(product),pseudoRootStructure_(std::move(pseudoRootStructure)),
         initialNumeraireValue_(initialNumeraireValue),
         numberProducts_(product->numberOfProducts()),
         doDeflation_(!product->alreadyDeflated()),
@@ -325,12 +326,12 @@ namespace QuantLib {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     PathwiseVegasAccountingEngine::PathwiseVegasAccountingEngine(
-        const ext::shared_ptr<LogNormalFwdRateEuler>& evolver, // method relies heavily on LMM Euler
+        ext::shared_ptr<LogNormalFwdRateEuler>  evolver, // method relies heavily on LMM Euler
         const Clone<MarketModelPathwiseMultiProduct>& product,
-        const ext::shared_ptr<MarketModel>& pseudoRootStructure, // we need pseudo-roots and displacements
+        ext::shared_ptr<MarketModel>  pseudoRootStructure, // we need pseudo-roots and displacements
         const std::vector<std::vector<Matrix> >& vegaBumps,
         Real initialNumeraireValue)
-        : evolver_(evolver), product_(product),pseudoRootStructure_(pseudoRootStructure),
+        : evolver_(std::move(evolver)), product_(product),pseudoRootStructure_(std::move(pseudoRootStructure)),
         initialNumeraireValue_(initialNumeraireValue),
         numberProducts_(product->numberOfProducts()),
         doDeflation_(!product->alreadyDeflated()),
@@ -715,14 +716,14 @@ namespace QuantLib {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     PathwiseVegasOuterAccountingEngine::PathwiseVegasOuterAccountingEngine(
-        const ext::shared_ptr<LogNormalFwdRateEuler>& evolver, // method relies heavily on LMM Euler
+        ext::shared_ptr<LogNormalFwdRateEuler>  evolver, // method relies heavily on LMM Euler
         const Clone<MarketModelPathwiseMultiProduct>& product,
-        const ext::shared_ptr<MarketModel>& pseudoRootStructure, // we need pseudo-roots and displacements
+        ext::shared_ptr<MarketModel>  pseudoRootStructure, // we need pseudo-roots and displacements
         const std::vector<std::vector<Matrix> >& vegaBumps,
         Real initialNumeraireValue)
-        : evolver_(evolver), 
+        : evolver_(std::move(evolver)), 
         product_(product),
-        pseudoRootStructure_(pseudoRootStructure),
+        pseudoRootStructure_(std::move(pseudoRootStructure)),
         vegaBumps_(vegaBumps),
         initialNumeraireValue_(initialNumeraireValue),
         numberProducts_(product->numberOfProducts()),

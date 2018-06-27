@@ -37,6 +37,7 @@
 #include <ql/experimental/math/tcopulapolicy.hpp>
 
 #include <ql/math/randomnumbers/mt19937uniformrng.hpp>
+#include <utility>
 
 /* Intended to replace
     ql\experimental\credit\randomdefaultmodel.Xpp
@@ -105,11 +106,11 @@ namespace QuantLib {
     protected:
         RandomLM(Size numFactors,
             Size numLMVars,
-            const copulaPolicy& copula,
+            copulaPolicy  copula,
             Size nSims,
             BigNatural seed)
         : seed_(seed), numFactors_(numFactors), numLMVars_(numLMVars),
-          nSims_(nSims), copula_(copula) {}
+          nSims_(nSims), copula_(std::move(copula)) {}
 
         void update() override {
             simsBuffer_.clear();

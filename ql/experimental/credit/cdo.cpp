@@ -19,6 +19,7 @@
 
 #include <ql/experimental/credit/cdo.hpp>
 #include <ql/event.hpp>
+#include <utility>
 
 using namespace std;
 
@@ -26,28 +27,28 @@ namespace QuantLib {
 
     CDO::CDO (Real attachment,
               Real detachment,
-              const vector<Real>& nominals,
+              vector<Real>  nominals,
               const vector<Handle<DefaultProbabilityTermStructure> >& basket,
-              const Handle<OneFactorCopula>& copula,
+              Handle<OneFactorCopula>  copula,
               bool protectionSeller,
-              const Schedule& premiumSchedule,
+              Schedule  premiumSchedule,
               Rate premiumRate,
-              const DayCounter& dayCounter,
+              DayCounter  dayCounter,
               Rate recoveryRate,
               Rate upfrontPremiumRate,
-              const Handle<YieldTermStructure>& yieldTS,
+              Handle<YieldTermStructure>  yieldTS,
               Size nBuckets,
               const Period& integrationStep)
     : attachment_(attachment), detachment_(detachment),
-      nominals_(nominals), basket_(basket),
-      copula_(copula),
+      nominals_(std::move(nominals)), basket_(basket),
+      copula_(std::move(copula)),
       protectionSeller_(protectionSeller),
-      premiumSchedule_(premiumSchedule),
+      premiumSchedule_(std::move(premiumSchedule)),
       premiumRate_(premiumRate),
-      dayCounter_(dayCounter),
+      dayCounter_(std::move(dayCounter)),
       recoveryRate_(recoveryRate),
       upfrontPremiumRate_(upfrontPremiumRate),
-      yieldTS_(yieldTS),
+      yieldTS_(std::move(yieldTS)),
       nBuckets_(nBuckets),
       integrationStep_(integrationStep) {
 

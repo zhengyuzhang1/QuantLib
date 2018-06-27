@@ -43,8 +43,8 @@ namespace QuantLib {
       public:
         SquareRootCLVModel(
             const ext::shared_ptr<GeneralizedBlackScholesProcess>& bsProcess,
-            const ext::shared_ptr<SquareRootProcess>& sqrtProcess,
-            const std::vector<Date>& maturityDates,
+            ext::shared_ptr<SquareRootProcess>  sqrtProcess,
+            std::vector<Date>  maturityDates,
             Size lagrangeOrder,
             Real pMax = Null<Real>(),
             Real pMin = Null<Real>());

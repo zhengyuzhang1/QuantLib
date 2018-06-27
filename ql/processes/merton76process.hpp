@@ -40,9 +40,9 @@ namespace QuantLib {
             const Handle<YieldTermStructure>& dividendTS,
             const Handle<YieldTermStructure>& riskFreeTS,
             const Handle<BlackVolTermStructure>& blackVolTS,
-            const Handle<Quote>& jumpInt,
-            const Handle<Quote>& logJMean,
-            const Handle<Quote>& logJVol,
+            Handle<Quote>  jumpInt,
+            Handle<Quote>  logJMean,
+            Handle<Quote>  logJVol,
             const ext::shared_ptr<discretization>& d =
                   ext::shared_ptr<discretization>(new EulerDiscretization));
         //! \name StochasticProcess1D interface

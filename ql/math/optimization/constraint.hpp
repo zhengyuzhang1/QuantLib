@@ -26,6 +26,7 @@
 #define quantlib_optimization_constraint_h
 
 #include <ql/math/array.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -72,7 +73,7 @@ namespace QuantLib {
         Real update(Array& p,
                     const Array& direction,
                     Real beta);
-        Constraint(const ext::shared_ptr<Impl>& impl =
+        Constraint(ext::shared_ptr<Impl>  impl =
                                                    ext::shared_ptr<Impl>());
     };
 
@@ -151,9 +152,9 @@ namespace QuantLib {
       private:
         class Impl : public Constraint::Impl {
           public:
-            Impl(const Constraint& c1,
-                 const Constraint& c2)
-            : c1_(c1), c2_(c2) {}
+            Impl(Constraint  c1,
+                 Constraint  c2)
+            : c1_(std::move(c1)), c2_(std::move(c2)) {}
             bool test(const Array& params) const override {
                 return c1_.test(params) && c2_.test(params);
             }

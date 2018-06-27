@@ -28,6 +28,7 @@
 #include <ql/methods/lattices/lattice.hpp>
 #include <ql/methods/lattices/trinomialtree.hpp>
 #include <ql/math/matrix.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -41,7 +42,7 @@ namespace QuantLib {
     class TreeLattice2D : public TreeLattice<Impl> {
       public:
         TreeLattice2D(const ext::shared_ptr<T>& tree1,
-                      const ext::shared_ptr<T>& tree2,
+                      ext::shared_ptr<T>  tree2,
                       Real correlation);
 
         Size size(Size i) const;
@@ -69,10 +70,10 @@ namespace QuantLib {
 
     template <class Impl, class T>
     TreeLattice2D<Impl,T>::TreeLattice2D(const ext::shared_ptr<T>& tree1,
-                                         const ext::shared_ptr<T>& tree2,
+                                         ext::shared_ptr<T> tree2,
                                          Real correlation)
     : TreeLattice<Impl>(tree1->timeGrid(), T::branches*T::branches),
-      tree1_(tree1), tree2_(tree2), m_(T::branches,T::branches),
+      tree1_(tree1), tree2_(std::move(tree2)), m_(T::branches,T::branches),
       rho_(std::fabs(correlation)) {
 
         // what happens here?

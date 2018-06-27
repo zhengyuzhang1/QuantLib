@@ -19,20 +19,21 @@
 
 #include <ql/experimental/volatility/svismilesection.hpp>
 #include <ql/experimental/volatility/sviinterpolation.hpp>
+#include <utility>
 
 namespace QuantLib {
 
 SviSmileSection::SviSmileSection(
-    Time timeToExpiry, Rate forward, const std::vector<Real> &sviParams)
+    Time timeToExpiry, Rate forward, std::vector<Real> sviParams)
     : SmileSection(timeToExpiry, DayCounter()), forward_(forward),
-      params_(sviParams) {
+      params_(std::move(sviParams)) {
     init();
 }
 
 SviSmileSection::SviSmileSection(
-    const Date &d, Rate forward, const std::vector<Real> &sviParams,
+    const Date &d, Rate forward, std::vector<Real> sviParams,
     const DayCounter &dc)
-    : SmileSection(d, dc, Date()), forward_(forward), params_(sviParams) {
+    : SmileSection(d, dc, Date()), forward_(forward), params_(std::move(sviParams)) {
     init();
 }
 

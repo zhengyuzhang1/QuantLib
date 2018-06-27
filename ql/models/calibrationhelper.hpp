@@ -30,6 +30,7 @@
 #include <ql/termstructures/volatility/volatilitytype.hpp>
 #include <ql/patterns/lazyobject.hpp>
 #include <list>
+#include <utility>
 
 namespace QuantLib {
 
@@ -40,13 +41,13 @@ namespace QuantLib {
       public:
         enum CalibrationErrorType {
                             RelativePriceError, PriceError, ImpliedVolError};
-        CalibrationHelper(const Handle<Quote>& volatility,
-                          const Handle<YieldTermStructure>& termStructure,
+        CalibrationHelper(Handle<Quote>  volatility,
+                          Handle<YieldTermStructure>  termStructure,
                           CalibrationErrorType calibrationErrorType
                                                          = RelativePriceError,
                           const VolatilityType type = ShiftedLognormal,
                           const Real shift = 0.0)
-        : volatility_(volatility), termStructure_(termStructure),
+        : volatility_(std::move(volatility)), termStructure_(std::move(termStructure)),
           volatilityType_(type), shift_(shift),
           calibrationErrorType_(calibrationErrorType) {
             registerWith(volatility_);

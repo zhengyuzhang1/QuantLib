@@ -48,7 +48,7 @@ namespace QuantLib {
         public VanillaOption::engine {
     public:
         FFTEngine(
-            const ext::shared_ptr<StochasticProcess1D>&process, Real logStrikeSpacing);
+            ext::shared_ptr<StochasticProcess1D> process, Real logStrikeSpacing);
         void calculate() const override;
         void update() override;
 

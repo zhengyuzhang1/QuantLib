@@ -81,7 +81,7 @@ namespace QuantLib {
     */
     class YoYInflationCouponPricer : public InflationCouponPricer {
     public:
-        YoYInflationCouponPricer(const Handle<YoYOptionletVolatilitySurface>& capletVol
+        YoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface>  capletVol
                                  = Handle<YoYOptionletVolatilitySurface>());
 
         virtual Handle<YoYOptionletVolatilitySurface> capletVolatility() const{

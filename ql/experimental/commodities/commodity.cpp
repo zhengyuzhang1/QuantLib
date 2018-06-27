@@ -19,12 +19,13 @@
 
 #include <ql/experimental/commodities/commodity.hpp>
 #include <iomanip>
+#include <utility>
 
 namespace QuantLib {
 
     Commodity::Commodity(
-                      const ext::shared_ptr<SecondaryCosts>& secondaryCosts)
-    : secondaryCosts_(secondaryCosts) {}
+                      ext::shared_ptr<SecondaryCosts>  secondaryCosts)
+    : secondaryCosts_(std::move(secondaryCosts)) {}
 
     const SecondaryCostAmounts& Commodity::secondaryCostAmounts() const {
         return secondaryCostAmounts_;

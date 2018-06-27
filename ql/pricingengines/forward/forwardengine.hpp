@@ -32,6 +32,7 @@
 #include <ql/termstructures/yield/impliedtermstructure.hpp>
 #include <ql/instruments/payoffs.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -50,7 +51,7 @@ namespace QuantLib {
                                VanillaOption::results> {
       public:
         ForwardVanillaEngine(
-                    const ext::shared_ptr<GeneralizedBlackScholesProcess>&);
+                    ext::shared_ptr<GeneralizedBlackScholesProcess> );
         void calculate() const override;
       protected:
         void setup() const;
@@ -66,8 +67,8 @@ namespace QuantLib {
 
     template <class Engine>
     ForwardVanillaEngine<Engine>::ForwardVanillaEngine(
-        const ext::shared_ptr<GeneralizedBlackScholesProcess>& process)
-    : process_(process) {
+        ext::shared_ptr<GeneralizedBlackScholesProcess>  process)
+    : process_(std::move(process)) {
         registerWith(process_);
     }
 

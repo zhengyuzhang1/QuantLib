@@ -20,25 +20,26 @@
 #include <ql/experimental/volatility/sviinterpolatedsmilesection.hpp>
 #include <ql/settings.hpp>
 #include <ql/quotes/simplequote.hpp>
+#include <utility>
 
 namespace QuantLib {
 
 SviInterpolatedSmileSection::SviInterpolatedSmileSection(
-    const Date &optionDate, const Handle<Quote> &forward,
+    const Date &optionDate, Handle<Quote> forward,
     const std::vector<Rate> &strikes, bool hasFloatingStrikes,
-    const Handle<Quote> &atmVolatility,
+    Handle<Quote> atmVolatility,
     const std::vector<Handle<Quote> > &volHandles, Real a, Real b, Real sigma,
     Real rho, Real m, bool isAFixed, bool isBFixed, bool isSigmaFixed,
     bool isRhoFixed, bool isMFixed, bool vegaWeighted,
-    const ext::shared_ptr<EndCriteria> &endCriteria,
-    const ext::shared_ptr<OptimizationMethod> &method, const DayCounter &dc)
-    : SmileSection(optionDate, dc), forward_(forward),
-      atmVolatility_(atmVolatility), volHandles_(volHandles), strikes_(strikes),
+    ext::shared_ptr<EndCriteria> endCriteria,
+    ext::shared_ptr<OptimizationMethod> method, const DayCounter &dc)
+    : SmileSection(optionDate, dc), forward_(std::move(forward)),
+      atmVolatility_(std::move(atmVolatility)), volHandles_(volHandles), strikes_(strikes),
       actualStrikes_(strikes), hasFloatingStrikes_(hasFloatingStrikes),
       vols_(volHandles.size()), a_(a), b_(b), sigma_(sigma), rho_(rho), m_(m),
       isAFixed_(isAFixed), isBFixed_(isBFixed), isSigmaFixed_(isSigmaFixed),
       isRhoFixed_(isRhoFixed), isMFixed_(isMFixed), vegaWeighted_(vegaWeighted),
-      endCriteria_(endCriteria), method_(method) {
+      endCriteria_(std::move(endCriteria)), method_(std::move(method)) {
 
     LazyObject::registerWith(forward_);
     LazyObject::registerWith(atmVolatility_);
@@ -52,8 +53,8 @@ SviInterpolatedSmileSection::SviInterpolatedSmileSection(
     const Volatility &atmVolatility, const std::vector<Volatility> &volHandles,
     Real a, Real b, Real sigma, Real rho, Real m, bool isAFixed, bool isBFixed,
     bool isSigmaFixed, bool isRhoFixed, bool isMFixed, bool vegaWeighted,
-    const ext::shared_ptr<EndCriteria> &endCriteria,
-    const ext::shared_ptr<OptimizationMethod> &method, const DayCounter &dc)
+    ext::shared_ptr<EndCriteria> endCriteria,
+    ext::shared_ptr<OptimizationMethod> method, const DayCounter &dc)
     : SmileSection(optionDate, dc),
       forward_(
           Handle<Quote>(ext::shared_ptr<Quote>(new SimpleQuote(forward)))),
@@ -64,7 +65,7 @@ SviInterpolatedSmileSection::SviInterpolatedSmileSection(
       vols_(volHandles.size()), a_(a), b_(b), sigma_(sigma), rho_(rho), m_(m),
       isAFixed_(isAFixed), isBFixed_(isBFixed), isSigmaFixed_(isSigmaFixed),
       isRhoFixed_(isRhoFixed), isMFixed_(isMFixed), vegaWeighted_(vegaWeighted),
-      endCriteria_(endCriteria), method_(method) {
+      endCriteria_(std::move(endCriteria)), method_(std::move(method)) {
 
     for (Size i = 0; i < volHandles_.size(); ++i)
         volHandles_[i] = Handle<Quote>(

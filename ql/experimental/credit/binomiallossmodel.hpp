@@ -30,6 +30,7 @@
 #include <boost/bind.hpp>
 #include <algorithm>
 #include <numeric>
+#include <utility>
 
 namespace QuantLib {
 
@@ -65,8 +66,8 @@ namespace QuantLib {
     public:
         typedef typename LLM::copulaType copulaType;
         explicit BinomialLossModel(
-            const ext::shared_ptr<LLM>& copula)
-        : copula_(copula) { }
+            ext::shared_ptr<LLM>  copula)
+        : copula_(std::move(copula)) { }
     private:
         void resetModel() override {
             /* say there are defaults and these havent settled... and this is 

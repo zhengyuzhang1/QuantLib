@@ -44,9 +44,9 @@ namespace QuantLib {
     class PathwiseAccountingEngine 
     {
       public:
-        PathwiseAccountingEngine(const ext::shared_ptr<LogNormalFwdRateEuler>& evolver, // method relies heavily on LMM Euler
+        PathwiseAccountingEngine(ext::shared_ptr<LogNormalFwdRateEuler>  evolver, // method relies heavily on LMM Euler
                          const Clone<MarketModelPathwiseMultiProduct>& product,
-                         const ext::shared_ptr<MarketModel>& pseudoRootStructure, // we need pseudo-roots and displacements
+                         ext::shared_ptr<MarketModel>  pseudoRootStructure, // we need pseudo-roots and displacements
                          Real initialNumeraireValue);
 
         void multiplePathValues(SequenceStatisticsInc& stats,
@@ -113,9 +113,9 @@ namespace QuantLib {
     class PathwiseVegasAccountingEngine 
     {
       public:
-        PathwiseVegasAccountingEngine(const ext::shared_ptr<LogNormalFwdRateEuler>& evolver, // method relies heavily on LMM Euler
+        PathwiseVegasAccountingEngine(ext::shared_ptr<LogNormalFwdRateEuler>  evolver, // method relies heavily on LMM Euler
                          const Clone<MarketModelPathwiseMultiProduct>& product,
-                         const ext::shared_ptr<MarketModel>& pseudoRootStructure, // we need pseudo-roots and displacements
+                         ext::shared_ptr<MarketModel>  pseudoRootStructure, // we need pseudo-roots and displacements
                          const std::vector<std::vector<Matrix> >& VegaBumps, 
                          Real initialNumeraireValue);
 
@@ -192,9 +192,9 @@ namespace QuantLib {
     class PathwiseVegasOuterAccountingEngine 
     {
       public:
-        PathwiseVegasOuterAccountingEngine(const ext::shared_ptr<LogNormalFwdRateEuler>& evolver, // method relies heavily on LMM Euler
+        PathwiseVegasOuterAccountingEngine(ext::shared_ptr<LogNormalFwdRateEuler>  evolver, // method relies heavily on LMM Euler
                          const Clone<MarketModelPathwiseMultiProduct>& product,
-                         const ext::shared_ptr<MarketModel>& pseudoRootStructure, // we need pseudo-roots and displacements
+                         ext::shared_ptr<MarketModel>  pseudoRootStructure, // we need pseudo-roots and displacements
                          const std::vector<std::vector<Matrix> >& VegaBumps, 
                          Real initialNumeraireValue);
 

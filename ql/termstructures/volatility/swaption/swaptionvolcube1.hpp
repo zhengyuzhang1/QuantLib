@@ -37,6 +37,7 @@
 #include <ql/math/interpolations/backwardflatlinearinterpolation.hpp>
 #include <ql/math/interpolations/bilinearinterpolation.hpp>
 #include <ql/quote.hpp>
+#include <utility>
 
 
 #ifndef SWAPTIONVOLCUBE_VEGAWEIGHTED_TOL
@@ -117,13 +118,13 @@ namespace QuantLib {
             const ext::shared_ptr<SwapIndex>& swapIndexBase,
             const ext::shared_ptr<SwapIndex>& shortSwapIndexBase,
             bool vegaWeightedSmileFit,
-            const std::vector<std::vector<Handle<Quote> > >& parametersGuess,
-            const std::vector<bool>& isParameterFixed,
+            std::vector<std::vector<Handle<Quote> > >  parametersGuess,
+            std::vector<bool>  isParameterFixed,
             bool isAtmCalibrated,
-            const ext::shared_ptr<EndCriteria>& endCriteria
+            ext::shared_ptr<EndCriteria>  endCriteria
                 = ext::shared_ptr<EndCriteria>(),
             Real maxErrorTolerance = Null<Real>(),
-            const ext::shared_ptr<OptimizationMethod>& optMethod
+            ext::shared_ptr<OptimizationMethod>  optMethod
                 = ext::shared_ptr<OptimizationMethod>(),
             const Real errorAccept = Null<Real>(),
             const bool useMaxError = false,
@@ -223,21 +224,21 @@ namespace QuantLib {
         const ext::shared_ptr<SwapIndex> &swapIndexBase,
         const ext::shared_ptr<SwapIndex> &shortSwapIndexBase,
         bool vegaWeightedSmileFit,
-        const std::vector<std::vector<Handle<Quote> > > &parametersGuess,
-        const std::vector<bool> &isParameterFixed, bool isAtmCalibrated,
-        const ext::shared_ptr<EndCriteria> &endCriteria,
+        std::vector<std::vector<Handle<Quote> > > parametersGuess,
+        std::vector<bool> isParameterFixed, bool isAtmCalibrated,
+        ext::shared_ptr<EndCriteria> endCriteria,
         Real maxErrorTolerance,
-        const ext::shared_ptr<OptimizationMethod> &optMethod,
+        ext::shared_ptr<OptimizationMethod> optMethod,
         const Real errorAccept, const bool useMaxError, const Size maxGuesses,
         const bool backwardFlat,
         const Real cutoffStrike)
         : SwaptionVolatilityCube(atmVolStructure, optionTenors, swapTenors,
                                  strikeSpreads, volSpreads, swapIndexBase,
                                  shortSwapIndexBase, vegaWeightedSmileFit),
-          parametersGuessQuotes_(parametersGuess),
-          isParameterFixed_(isParameterFixed),
-          isAtmCalibrated_(isAtmCalibrated), endCriteria_(endCriteria),
-          optMethod_(optMethod),
+          parametersGuessQuotes_(std::move(parametersGuess)),
+          isParameterFixed_(std::move(isParameterFixed)),
+          isAtmCalibrated_(isAtmCalibrated), endCriteria_(std::move(endCriteria)),
+          optMethod_(std::move(optMethod)),
           useMaxError_(useMaxError), maxGuesses_(maxGuesses),
           backwardFlat_(backwardFlat), cutoffStrike_(cutoffStrike) {
 

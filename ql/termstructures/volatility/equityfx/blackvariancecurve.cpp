@@ -20,6 +20,7 @@
 
 #include <ql/termstructures/volatility/equityfx/blackvariancecurve.hpp>
 #include <ql/math/interpolations/linearinterpolation.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -27,10 +28,10 @@ namespace QuantLib {
                                  const Date& referenceDate,
                                  const std::vector<Date>& dates,
                                  const std::vector<Volatility>& blackVolCurve,
-                                 const DayCounter& dayCounter,
+                                 DayCounter  dayCounter,
                                  bool forceMonotoneVariance)
     : BlackVarianceTermStructure(referenceDate),
-      dayCounter_(dayCounter), maxDate_(dates.back()) {
+      dayCounter_(std::move(dayCounter)), maxDate_(dates.back()) {
 
         QL_REQUIRE(dates.size()==blackVolCurve.size(),
                    "mismatch between date vector and black vol vector");

@@ -22,6 +22,7 @@
 #include <ql/instruments/makeois.hpp>
 #include <ql/pricingengines/swap/discountingswapengine.hpp>
 #include <ql/utilities/null_deleter.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -29,22 +30,22 @@ namespace QuantLib {
                     Natural settlementDays,
                     const Period& tenor, // swap maturity
                     const Handle<Quote>& fixedRate,
-                    const ext::shared_ptr<OvernightIndex>& overnightIndex,
-                    const Handle<YieldTermStructure>& discount,
+                    ext::shared_ptr<OvernightIndex>  overnightIndex,
+                    Handle<YieldTermStructure>  discount,
                     bool telescopicValueDates,
                     Natural paymentLag,
                     BusinessDayConvention paymentConvention,
                     Frequency paymentFrequency,
-                    const Calendar& paymentCalendar,
+                    Calendar  paymentCalendar,
                     const Period& forwardStart, 
                     const Spread overnightSpread)
     : RelativeDateRateHelper(fixedRate),
       settlementDays_(settlementDays), tenor_(tenor),
-      overnightIndex_(overnightIndex), discountHandle_(discount),
+      overnightIndex_(std::move(overnightIndex)), discountHandle_(std::move(discount)),
       telescopicValueDates_(telescopicValueDates),
       paymentLag_(paymentLag), paymentConvention_(paymentConvention),
       paymentFrequency_(paymentFrequency),
-      paymentCalendar_(paymentCalendar),
+      paymentCalendar_(std::move(paymentCalendar)),
       forwardStart_(forwardStart), overnightSpread_(overnightSpread) {
         registerWith(overnightIndex_);
         registerWith(discountHandle_);
@@ -113,9 +114,9 @@ namespace QuantLib {
                     const Date& endDate,
                     const Handle<Quote>& fixedRate,
                     const ext::shared_ptr<OvernightIndex>& overnightIndex,
-                    const Handle<YieldTermStructure>& discount,
+                    Handle<YieldTermStructure>  discount,
                     bool telescopicValueDates)
-        : RateHelper(fixedRate), discountHandle_(discount),
+        : RateHelper(fixedRate), discountHandle_(std::move(discount)),
           telescopicValueDates_(telescopicValueDates) {
 
         registerWith(overnightIndex);

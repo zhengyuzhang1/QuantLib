@@ -28,18 +28,19 @@
 #include <ql/methods/finitedifferences/dplusdminus.hpp>
 #include <ql/instruments/vanillaoption.hpp>
 #include <ql/pricingengines/vanilla/analyticeuropeanengine.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     ContinuousArithmeticAsianVecerEngine::ContinuousArithmeticAsianVecerEngine(
-         const ext::shared_ptr<GeneralizedBlackScholesProcess>& process,
-         const Handle<Quote>& currentAverage,
+         ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
+         Handle<Quote>  currentAverage,
          Date startDate,
          Size timeSteps,
          Size assetSteps,
          Real z_min,
          Real z_max )
-        : process_(process), currentAverage_(currentAverage),
+        : process_(std::move(process)), currentAverage_(std::move(currentAverage)),
           startDate_(startDate),z_min_(z_min),z_max_(z_max),
           timeSteps_(timeSteps),assetSteps_(assetSteps){
         registerWith(process_);

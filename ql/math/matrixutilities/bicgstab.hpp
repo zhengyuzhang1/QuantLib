@@ -40,8 +40,8 @@ namespace QuantLib {
       public:
         typedef boost::function1<Disposable<Array> , const Array& > MatrixMult;
         
-        BiCGstab(const MatrixMult& A, Size maxIter, Real relTol,
-                 const MatrixMult& preConditioner = MatrixMult());
+        BiCGstab(MatrixMult  A, Size maxIter, Real relTol,
+                 MatrixMult  preConditioner = MatrixMult());
         
         BiCGStabResult solve(const Array& b, const Array& x0 = Array()) const;
         

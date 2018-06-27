@@ -50,9 +50,9 @@ namespace QuantLib {
     class VarianceGammaProcess : public StochasticProcess1D {
     public:
 
-        VarianceGammaProcess(const Handle<Quote>& s0,
-            const Handle<YieldTermStructure>& dividendYield,
-            const Handle<YieldTermStructure>& riskFreeRate,
+        VarianceGammaProcess(Handle<Quote>  s0,
+            Handle<YieldTermStructure>  dividendYield,
+            Handle<YieldTermStructure>  riskFreeRate,
             Real sigma, Real nu, Real theta);
 
         Real x0() const override;

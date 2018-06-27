@@ -22,6 +22,7 @@
 #include <ql/termstructures/volatility/swaption/swaptionconstantvol.hpp>
 #include <ql/termstructures/volatility/flatsmilesection.hpp>
 #include <ql/quotes/simplequote.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -30,12 +31,12 @@ namespace QuantLib {
                                                     Natural settlementDays,
                                                     const Calendar& cal,
                                                     BusinessDayConvention bdc,
-                                                    const Handle<Quote>& vol,
+                                                    Handle<Quote>  vol,
                                                     const DayCounter& dc,
                                                     const VolatilityType type,
                                                     const Real shift)
     : SwaptionVolatilityStructure(settlementDays, cal, bdc, dc),
-      volatility_(vol), maxSwapTenor_(100*Years), volatilityType_(type), shift_(shift) {
+      volatility_(std::move(vol)), maxSwapTenor_(100*Years), volatilityType_(type), shift_(shift) {
         registerWith(volatility_);
     }
 
@@ -44,12 +45,12 @@ namespace QuantLib {
                                                     const Date& referenceDate,
                                                     const Calendar& cal,
                                                     BusinessDayConvention bdc,
-                                                    const Handle<Quote>& vol,
+                                                    Handle<Quote>  vol,
                                                     const DayCounter& dc,
                                                     const VolatilityType type,
                                                     const Real shift)
     : SwaptionVolatilityStructure(referenceDate, cal, bdc, dc),
-      volatility_(vol), maxSwapTenor_(100*Years), volatilityType_(type), shift_(shift) {
+      volatility_(std::move(vol)), maxSwapTenor_(100*Years), volatilityType_(type), shift_(shift) {
         registerWith(volatility_);
     }
 

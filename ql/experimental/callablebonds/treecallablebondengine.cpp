@@ -20,26 +20,27 @@
 #include <ql/models/shortrate/onefactormodel.hpp>
 #include <ql/experimental/callablebonds/treecallablebondengine.hpp>
 #include <ql/experimental/callablebonds/discretizedcallablefixedratebond.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     TreeCallableFixedRateBondEngine::TreeCallableFixedRateBondEngine(
                                const ext::shared_ptr<ShortRateModel>& model,
                                const Size timeSteps,
-                               const Handle<YieldTermStructure>& termStructure)
+                               Handle<YieldTermStructure>  termStructure)
     : LatticeShortRateModelEngine<CallableBond::arguments,
                                   CallableBond::results>(model, timeSteps),
-      termStructure_(termStructure) {
+      termStructure_(std::move(termStructure)) {
         registerWith(termStructure_);
     }
 
     TreeCallableFixedRateBondEngine::TreeCallableFixedRateBondEngine(
                                const ext::shared_ptr<ShortRateModel>& model,
                                const TimeGrid& timeGrid,
-                               const Handle<YieldTermStructure>& termStructure)
+                               Handle<YieldTermStructure>  termStructure)
     : LatticeShortRateModelEngine<CallableBond::arguments,
                                   CallableBond::results>(model, timeGrid),
-      termStructure_(termStructure) {
+      termStructure_(std::move(termStructure)) {
         registerWith(termStructure_);
     }
 

@@ -28,6 +28,7 @@
 #include <ql/instruments/makecapfloor.hpp>
 #include <ql/pricingengines/capfloor/blackcapfloorengine.hpp>
 #include <ql/indexes/iborindex.hpp>
+#include <utility>
 
 
 namespace QuantLib {
@@ -159,9 +160,9 @@ namespace QuantLib {
 
     OptionletStripper2::ObjectiveFunction::ObjectiveFunction(
             const ext::shared_ptr<OptionletStripper1>& optionletStripper1,
-            const ext::shared_ptr<CapFloor>& cap,
+            ext::shared_ptr<CapFloor>  cap,
             Real targetValue)
-    : cap_(cap),
+    : cap_(std::move(cap)),
       targetValue_(targetValue)
     {
         ext::shared_ptr<OptionletVolatilityStructure> adapter(new

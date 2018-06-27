@@ -72,9 +72,9 @@ namespace QuantLib {
                                    Real nominal,
                                    const Date& startDate,   // start date of contract (only)
                                    const Date& maturity,    // this is pre-adjustment!
-                                   const Calendar& fixCalendar,
+                                   Calendar  fixCalendar,
                                    BusinessDayConvention fixConvention,
-                                   const DayCounter& dayCounter,
+                                   DayCounter  dayCounter,
                                    Rate fixedRate,
                                    const ext::shared_ptr<ZeroInflationIndex> &infIndex,
                                    const Period& observationLag,

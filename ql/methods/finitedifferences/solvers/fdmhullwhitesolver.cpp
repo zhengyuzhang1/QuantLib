@@ -25,15 +25,16 @@
 #include <ql/methods/finitedifferences/solvers/fdmhullwhitesolver.hpp>
 #include <ql/methods/finitedifferences/operators/fdmhullwhiteop.hpp>
 #include <ql/methods/finitedifferences/stepconditions/fdmsnapshotcondition.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FdmHullWhiteSolver::FdmHullWhiteSolver(
-        const Handle<HullWhite>& model,
-        const FdmSolverDesc& solverDesc,
+        Handle<HullWhite>  model,
+        FdmSolverDesc  solverDesc,
         const FdmSchemeDesc& schemeDesc)
-    : model_(model),
-      solverDesc_(solverDesc),
+    : model_(std::move(model)),
+      solverDesc_(std::move(solverDesc)),
       schemeDesc_(schemeDesc) {
         registerWith(model_);
     }

@@ -34,7 +34,7 @@ namespace QuantLib {
       public:
         LongstaffSchwartzExerciseStrategy(
                      const Clone<MarketModelBasisSystem>& basisSystem,
-                     const std::vector<std::vector<Real> >& basisCoefficients,
+                     std::vector<std::vector<Real> >  basisCoefficients,
                      const EvolutionDescription& evolution,
                      const std::vector<Size>& numeraires,
                      const Clone<MarketModelExerciseValue>& exercise,

@@ -29,6 +29,7 @@
 #include <ql/experimental/shortrate/generalizedornsteinuhlenbeckprocess.hpp>
 #include <ql/processes/ornsteinuhlenbeckprocess.hpp>
 #include <ql/math/interpolation.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -237,24 +238,24 @@ namespace QuantLib {
     class GeneralizedHullWhite::Dynamics
         : public GeneralizedHullWhite::ShortRateDynamics {
       public:
-        Dynamics(const Parameter& fitting,
+        Dynamics(Parameter  fitting,
                  const boost::function<Real (Time)>& alpha,
                  const boost::function<Real (Time)>& sigma,
-                 const boost::function<Real(Real)>& f,
-                 const boost::function<Real(Real)>& fInverse)
+                 boost::function<Real(Real)>  f,
+                 boost::function<Real(Real)>  fInverse)
         : ShortRateDynamics(ext::shared_ptr<StochasticProcess1D>(
                       new GeneralizedOrnsteinUhlenbeckProcess(alpha, sigma))),
-          fitting_(fitting),
-          _f_(f), _fInverse_(fInverse) {}
+          fitting_(std::move(fitting)),
+          _f_(std::move(f)), _fInverse_(std::move(fInverse)) {}
 
         //classical HW dynamics
-        Dynamics(const Parameter& fitting,
+        Dynamics(Parameter  fitting,
                  Real a,
                  Real sigma)
         : GeneralizedHullWhite::ShortRateDynamics(
               ext::shared_ptr<StochasticProcess1D>(
                       new OrnsteinUhlenbeckProcess(a, sigma))),
-          fitting_(fitting) {
+          fitting_(std::move(fitting)) {
 
             _f_=identity();
             _fInverse_=identity();
@@ -289,9 +290,9 @@ namespace QuantLib {
       private:
         class Impl : public Parameter::Impl {
           public:
-            Impl(const Handle<YieldTermStructure>& termStructure,
+            Impl(Handle<YieldTermStructure>  termStructure,
                  Real a, Real sigma)
-            : termStructure_(termStructure), a_(a), sigma_(sigma) {}
+            : termStructure_(std::move(termStructure)), a_(a), sigma_(sigma) {}
 
             Real value(const Array&, Time t) const override {
                 Rate forwardRate =

@@ -22,15 +22,16 @@
 #include <ql/models/marketmodels/utilities.hpp>
 #include <ql/instruments/payoffs.hpp>
 #include <ql/auto_ptr.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     MultiStepCoterminalSwaptions::MultiStepCoterminalSwaptions(
                     const std::vector<Time>& rateTimes,
                     const std::vector<Time>& paymentTimes,
-                    const std::vector<ext::shared_ptr<StrikedTypePayoff> >& payoffs)
+                    std::vector<ext::shared_ptr<StrikedTypePayoff> >  payoffs)
     : MultiProductMultiStep(rateTimes),
-      paymentTimes_(paymentTimes), payoffs_(payoffs) {
+      paymentTimes_(paymentTimes), payoffs_(std::move(payoffs)) {
         checkIncreasingTimes(paymentTimes);
 
         lastIndex_ = rateTimes.size()-1;

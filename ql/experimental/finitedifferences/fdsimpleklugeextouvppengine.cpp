@@ -42,6 +42,7 @@
 #include <ql/experimental/finitedifferences/fdmexpextouinnervaluecalculator.hpp>
 
 #include <list>
+#include <utility>
 
 namespace QuantLib {
 
@@ -50,12 +51,12 @@ namespace QuantLib {
 
           public:
             FdmSparkSpreadInnerValue(
-                const ext::shared_ptr<BasketPayoff>& basketPayoff,
-                const ext::shared_ptr<FdmInnerValueCalculator>& fuelPrice,
-                const ext::shared_ptr<FdmInnerValueCalculator>& powerPrice)
-            : basketPayoff_(basketPayoff),
-              fuelPrice_(fuelPrice),
-              powerPrice_(powerPrice) { }
+                ext::shared_ptr<BasketPayoff>  basketPayoff,
+                ext::shared_ptr<FdmInnerValueCalculator>  fuelPrice,
+                ext::shared_ptr<FdmInnerValueCalculator>  powerPrice)
+            : basketPayoff_(std::move(basketPayoff)),
+              fuelPrice_(std::move(fuelPrice)),
+              powerPrice_(std::move(powerPrice)) { }
 
             Real innerValue(const FdmLinearOpIterator& iter, Time t) override {
                 Array s(2);
@@ -77,18 +78,18 @@ namespace QuantLib {
 
 
     FdSimpleKlugeExtOUVPPEngine::FdSimpleKlugeExtOUVPPEngine(
-        const ext::shared_ptr<KlugeExtOUProcess>& process,
-        const ext::shared_ptr<YieldTermStructure>& rTS,
-        const ext::shared_ptr<Shape>& fuelShape,
-        const ext::shared_ptr<Shape>& powerShape,
+        ext::shared_ptr<KlugeExtOUProcess>  process,
+        ext::shared_ptr<YieldTermStructure>  rTS,
+        ext::shared_ptr<Shape>  fuelShape,
+        ext::shared_ptr<Shape>  powerShape,
         Real fuelCostAddon,
         Size tGrid, Size xGrid, Size yGrid, Size gGrid,
         const FdmSchemeDesc& schemeDesc)
-    : process_      (process),
-      rTS_          (rTS),
+    : process_      (std::move(process)),
+      rTS_          (std::move(rTS)),
       fuelCostAddon_(fuelCostAddon),
-      fuelShape_     (fuelShape),
-      powerShape_   (powerShape),
+      fuelShape_     (std::move(fuelShape)),
+      powerShape_   (std::move(powerShape)),
       tGrid_        (tGrid),
       xGrid_        (xGrid),
       yGrid_        (yGrid),

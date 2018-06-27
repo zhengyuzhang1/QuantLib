@@ -19,15 +19,16 @@
 
 #include <ql/experimental/varianceoption/varianceoption.hpp>
 #include <ql/event.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     VarianceOption::VarianceOption(
-                          const ext::shared_ptr<Payoff>& payoff,
+                          ext::shared_ptr<Payoff>  payoff,
                           Real notional,
                           const Date& startDate,
                           const Date& maturityDate)
-    : payoff_(payoff), notional_(notional),
+    : payoff_(std::move(payoff)), notional_(notional),
       startDate_(startDate), maturityDate_(maturityDate) {}
 
     void VarianceOption::setupArguments(PricingEngine::arguments* args) const {

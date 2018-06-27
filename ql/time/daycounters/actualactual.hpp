@@ -26,6 +26,7 @@
 
 #include <ql/time/daycounter.hpp>
 #include <ql/time/schedule.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -55,8 +56,8 @@ namespace QuantLib {
       private:
         class ISMA_Impl : public DayCounter::Impl {
           public:
-            explicit ISMA_Impl(const Schedule& schedule)
-            : schedule_(schedule) {}
+            explicit ISMA_Impl(Schedule  schedule)
+            : schedule_(std::move(schedule)) {}
 
             std::string name() const override {
                 return std::string("Actual/Actual (ISMA)");

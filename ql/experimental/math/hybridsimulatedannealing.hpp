@@ -30,6 +30,7 @@ Mathl. Comput. Modelling, 967-973, 1989
 #include <ql/math/optimization/constraint.hpp>
 #include <ql/experimental/math/hybridsimulatedannealingfunctors.hpp>
 #include <ql/math/optimization/levenbergmarquardt.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -78,7 +79,7 @@ namespace QuantLib {
 
         HybridSimulatedAnnealing(const Sampler &sampler,
             const Probability &probability,
-            const Temperature &temperature,
+            Temperature temperature,
             const Reannealing &reannealing = ReannealingTrivial(),
             Real startTemperature = 200.0,
             Real endTemperature = 0.01,
@@ -89,7 +90,7 @@ namespace QuantLib {
             = ext::shared_ptr<OptimizationMethod>(),
             LocalOptimizeScheme optimizeScheme = EveryBestPoint)
             : sampler_(sampler), probability_(probability),
-            temperature_(temperature), reannealing_(reannealing),
+            temperature_(std::move(temperature)), reannealing_(reannealing),
             startTemperature_(startTemperature), endTemperature_(endTemperature),
             reAnnealSteps_(reAnnealSteps == 0 ? QL_MAX_INTEGER : reAnnealSteps), resetScheme_(resetScheme),
             resetSteps_(resetSteps == 0 ? QL_MAX_INTEGER : resetSteps), localOptimizer_(localOptimizer),

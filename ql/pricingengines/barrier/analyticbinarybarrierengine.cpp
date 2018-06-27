@@ -22,6 +22,7 @@
 #include <ql/math/distributions/normaldistribution.hpp>
 #include <ql/instruments/vanillaoption.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -56,8 +57,8 @@ namespace QuantLib {
 
 
     AnalyticBinaryBarrierEngine::AnalyticBinaryBarrierEngine(
-              const ext::shared_ptr<GeneralizedBlackScholesProcess>& process)
-    : process_(process) {
+              ext::shared_ptr<GeneralizedBlackScholesProcess>  process)
+    : process_(std::move(process)) {
         registerWith(process_);
     }
 

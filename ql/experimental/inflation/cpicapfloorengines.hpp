@@ -42,7 +42,7 @@ namespace QuantLib {
     class InterpolatingCPICapFloorEngine : public CPICapFloor::engine {
         public:
         explicit InterpolatingCPICapFloorEngine(
-                                  const Handle<CPICapFloorTermPriceSurface>&);
+                                  Handle<CPICapFloorTermPriceSurface> );
 
         void calculate() const override;
         virtual std::string name() const { return "InterpolatingCPICapFloorEngine"; }

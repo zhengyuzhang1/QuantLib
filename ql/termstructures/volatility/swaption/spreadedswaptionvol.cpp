@@ -21,15 +21,16 @@
 #include <ql/termstructures/volatility/swaption/spreadedswaptionvol.hpp>
 #include <ql/termstructures/volatility/spreadedsmilesection.hpp>
 #include <ql/quote.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     SpreadedSwaptionVolatility::SpreadedSwaptionVolatility(
                             const Handle<SwaptionVolatilityStructure>& baseVol,
-                            const Handle<Quote>& spread)
+                            Handle<Quote>  spread)
     : SwaptionVolatilityStructure(baseVol->businessDayConvention(),
                                   baseVol->dayCounter()),
-      baseVol_(baseVol), spread_(spread) {
+      baseVol_(baseVol), spread_(std::move(spread)) {
           enableExtrapolation(baseVol->allowsExtrapolation());
           registerWith(baseVol_);
           registerWith(spread_);

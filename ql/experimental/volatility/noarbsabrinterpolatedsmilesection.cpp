@@ -20,32 +20,33 @@
 #include <ql/experimental/volatility/noarbsabrinterpolatedsmilesection.hpp>
 #include <ql/settings.hpp>
 #include <ql/quotes/simplequote.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     NoArbSabrInterpolatedSmileSection::NoArbSabrInterpolatedSmileSection(
                 const Date& optionDate,
-                const Handle<Quote>& forward,
+                Handle<Quote>  forward,
                 const std::vector<Rate>& strikes,
                 bool hasFloatingStrikes,
-                const Handle<Quote>& atmVolatility,
+                Handle<Quote>  atmVolatility,
                 const std::vector<Handle<Quote> >& volHandles,
                 Real alpha, Real beta, Real nu, Real rho,
                 bool isAlphaFixed, bool isBetaFixed,
                 bool isNuFixed, bool isRhoFixed,
                 bool vegaWeighted,
-                const ext::shared_ptr<EndCriteria>& endCriteria,
-                const ext::shared_ptr<OptimizationMethod>& method,
+                ext::shared_ptr<EndCriteria>  endCriteria,
+                ext::shared_ptr<OptimizationMethod>  method,
                 const DayCounter& dc)
          : SmileSection(optionDate, dc),
-           forward_(forward), atmVolatility_(atmVolatility),
+           forward_(std::move(forward)), atmVolatility_(std::move(atmVolatility)),
            volHandles_(volHandles), strikes_(strikes), actualStrikes_(strikes),
            hasFloatingStrikes_(hasFloatingStrikes), vols_(volHandles.size()),
            alpha_(alpha), beta_(beta), nu_(nu), rho_(rho),
            isAlphaFixed_(isAlphaFixed), isBetaFixed_(isBetaFixed),
            isNuFixed_(isNuFixed), isRhoFixed_(isRhoFixed),
            vegaWeighted_(vegaWeighted),
-           endCriteria_(endCriteria), method_(method) {
+           endCriteria_(std::move(endCriteria)), method_(std::move(method)) {
 
             LazyObject::registerWith(forward_);
             LazyObject::registerWith(atmVolatility_);
@@ -64,8 +65,8 @@ namespace QuantLib {
                bool isAlphaFixed, bool isBetaFixed,
                bool isNuFixed, bool isRhoFixed,
                bool vegaWeighted,
-               const ext::shared_ptr<EndCriteria>& endCriteria,
-               const ext::shared_ptr<OptimizationMethod>& method,
+               ext::shared_ptr<EndCriteria>  endCriteria,
+               ext::shared_ptr<OptimizationMethod>  method,
                const DayCounter& dc)
          : SmileSection(optionDate, dc),
            forward_(Handle<Quote>(ext::shared_ptr<Quote>(new SimpleQuote(forward)))),
@@ -76,7 +77,7 @@ namespace QuantLib {
            isAlphaFixed_(isAlphaFixed), isBetaFixed_(isBetaFixed),
            isNuFixed_(isNuFixed), isRhoFixed_(isRhoFixed),
            vegaWeighted_(vegaWeighted),
-           endCriteria_(endCriteria), method_(method) {
+           endCriteria_(std::move(endCriteria)), method_(std::move(method)) {
 
             for (Size i=0; i<volHandles_.size(); ++i)
                 volHandles_[i] = Handle<Quote>(ext::shared_ptr<Quote>(new

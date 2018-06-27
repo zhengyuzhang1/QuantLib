@@ -42,6 +42,7 @@
 #include <ql/math/optimization/projectedcostfunction.hpp>
 #include <ql/math/optimization/constraint.hpp>
 #include <ql/math/randomnumbers/haltonrsg.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -52,12 +53,12 @@ template <typename Model> class XABRCoeffHolder {
     XABRCoeffHolder(const Time t, const Real &forward,
                     const std::vector<Real>& params,
                     const std::vector<bool>& paramIsFixed,
-                    const std::vector<Real>& addParams)
+                    std::vector<Real>  addParams)
         : t_(t), forward_(forward), params_(params),
           paramIsFixed_(paramIsFixed.size(), false),
           weights_(std::vector<Real>()), error_(Null<Real>()),
           maxError_(Null<Real>()), XABREndCriteria_(EndCriteria::None),
-          addParams_(addParams) {
+          addParams_(std::move(addParams)) {
         QL_REQUIRE(t > 0.0, "expiry time must be positive: " << t
                                                              << " not allowed");
         QL_REQUIRE(params.size() == Model().dimension(),
@@ -106,13 +107,13 @@ class XABRInterpolationImpl : public Interpolation::templateImpl<I1, I2>,
         const I1 &xBegin, const I1 &xEnd, const I2 &yBegin, Time t,
         const Real &forward, const std::vector<Real>& params,
         const std::vector<bool>& paramIsFixed, bool vegaWeighted,
-        const ext::shared_ptr<EndCriteria> &endCriteria,
-        const ext::shared_ptr<OptimizationMethod> &optMethod,
+        ext::shared_ptr<EndCriteria> endCriteria,
+        ext::shared_ptr<OptimizationMethod> optMethod,
         const Real errorAccept, const bool useMaxError, const Size maxGuesses,
         const std::vector<Real>& addParams = std::vector<Real>())
         : Interpolation::templateImpl<I1, I2>(xBegin, xEnd, yBegin, 1),
           XABRCoeffHolder<Model>(t, forward, params, paramIsFixed, addParams),
-          endCriteria_(endCriteria), optMethod_(optMethod),
+          endCriteria_(std::move(endCriteria)), optMethod_(std::move(optMethod)),
           errorAccept_(errorAccept), useMaxError_(useMaxError),
           maxGuesses_(maxGuesses), vegaWeighted_(vegaWeighted) {
         // if no optimization method or endCriteria is provided, we provide one

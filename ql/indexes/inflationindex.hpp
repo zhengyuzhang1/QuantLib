@@ -48,13 +48,13 @@ namespace QuantLib {
          give the previous period's value)
          and enables storage of the most recent uninterpolated value.
          */
-        InflationIndex(const std::string& familyName,
-                       const Region& region,
+        InflationIndex(std::string  familyName,
+                       Region  region,
                        bool revised,
                        bool interpolated,
                        Frequency frequency,
                        const Period& availabilitiyLag,
-                       const Currency& currency);
+                       Currency  currency);
         //! \name Index interface
         //@{
         std::string name() const override;
@@ -144,7 +144,7 @@ namespace QuantLib {
                            Frequency frequency,
                            const Period& availabilityLag,
                            const Currency& currency,
-                           const Handle<ZeroInflationTermStructure>& ts =
+                           Handle<ZeroInflationTermStructure>  ts =
                                         Handle<ZeroInflationTermStructure>());
 
         //! \name Index interface
@@ -182,7 +182,7 @@ namespace QuantLib {
                           Frequency frequency,
                           const Period& availabilityLag,
                           const Currency& currency,
-                          const Handle<YoYInflationTermStructure>& ts =
+                          Handle<YoYInflationTermStructure>  ts =
                                 Handle<YoYInflationTermStructure>());
         //! \name Index interface
         //@{

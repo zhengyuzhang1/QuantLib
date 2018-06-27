@@ -19,6 +19,7 @@
 
 #include <ql/termstructures/volatility/capfloor/constantcapfloortermvol.hpp>
 #include <ql/quotes/simplequote.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -27,10 +28,10 @@ namespace QuantLib {
                                                     Natural settlementDays,
                                                     const Calendar& cal,
                                                     BusinessDayConvention bdc,
-                                                    const Handle<Quote>& vol,
+                                                    Handle<Quote>  vol,
                                                     const DayCounter& dc)
     : CapFloorTermVolatilityStructure(settlementDays, cal, bdc, dc),
-      volatility_(vol) {
+      volatility_(std::move(vol)) {
         registerWith(volatility_);
     }
 
@@ -39,10 +40,10 @@ namespace QuantLib {
                                                     const Date& referenceDate,
                                                     const Calendar& cal,
                                                     BusinessDayConvention bdc,
-                                                    const Handle<Quote>& vol,
+                                                    Handle<Quote>  vol,
                                                     const DayCounter& dc)
     : CapFloorTermVolatilityStructure(referenceDate, cal, bdc, dc),
-      volatility_(vol) {
+      volatility_(std::move(vol)) {
         registerWith(volatility_);
     }
 

@@ -22,22 +22,23 @@
 #include <ql/models/marketmodels/utilities.hpp>
 #include <ql/instruments/payoffs.hpp>
 #include <ql/auto_ptr.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     MultiStepPeriodCapletSwaptions::MultiStepPeriodCapletSwaptions(const std::vector<Time>& rateTimes,
                                      const std::vector<Time>& forwardOptionPaymentTimes,
                                      const std::vector<Time>& swaptionPaymentTimes,
-                                     const std::vector<ext::shared_ptr<StrikedTypePayoff> >& forwardPayOffs,
-                                     const std::vector<ext::shared_ptr<StrikedTypePayoff> >& swapPayOffs,
+                                     std::vector<ext::shared_ptr<StrikedTypePayoff> >  forwardPayOffs,
+                                     std::vector<ext::shared_ptr<StrikedTypePayoff> >  swapPayOffs,
                                      Size period,
                                      Size offset)
     : MultiProductMultiStep(rateTimes),
       paymentTimes_(forwardOptionPaymentTimes),
       forwardOptionPaymentTimes_(forwardOptionPaymentTimes),
       swaptionPaymentTimes_(swaptionPaymentTimes),
-      forwardPayOffs_(forwardPayOffs),
-      swapPayOffs_(swapPayOffs),
+      forwardPayOffs_(std::move(forwardPayOffs)),
+      swapPayOffs_(std::move(swapPayOffs)),
       period_(period),
       offset_(offset)
       {

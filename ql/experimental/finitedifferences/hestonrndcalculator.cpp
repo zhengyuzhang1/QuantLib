@@ -38,6 +38,7 @@
 #endif
 
 #include <complex>
+#include <utility>
 
 namespace QuantLib {
 
@@ -119,9 +120,9 @@ namespace {
 
 
     HestonRNDCalculator::HestonRNDCalculator(
-        const ext::shared_ptr<HestonProcess>& hestonProcess,
+        ext::shared_ptr<HestonProcess>  hestonProcess,
         Real integrationEps, Size maxIntegrationIterations)
-    : hestonProcess_(hestonProcess),
+    : hestonProcess_(std::move(hestonProcess)),
       x0_(std::log(hestonProcess_->s0()->value())),
       integrationEps_(integrationEps),
       maxIntegrationIterations_(maxIntegrationIterations) { }

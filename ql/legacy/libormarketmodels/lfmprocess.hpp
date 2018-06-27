@@ -59,7 +59,7 @@ namespace QuantLib {
       public:
 
         LiborForwardModelProcess(Size size,
-                                 const ext::shared_ptr<IborIndex>& index);
+                                 ext::shared_ptr<IborIndex>  index);
 
         Disposable<Array>  initialValues() const override;
         Disposable<Array>  drift(Time t, const Array& x) const override;

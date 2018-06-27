@@ -33,6 +33,7 @@
 #include <ql/patterns/visitor.hpp>
 #include <ql/quotes/simplequote.hpp>
 #include <ql/settings.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -61,7 +62,7 @@ namespace QuantLib {
     template <class TS>
     class BootstrapHelper : public Observer, public Observable {
       public:
-        explicit BootstrapHelper(const Handle<Quote>& quote);
+        explicit BootstrapHelper(Handle<Quote>  quote);
         explicit BootstrapHelper(Real quote);
         ~BootstrapHelper() override {}
         //! \name BootstrapHelper interface
@@ -147,8 +148,8 @@ namespace QuantLib {
     // template definitions
 
     template <class TS>
-    BootstrapHelper<TS>::BootstrapHelper(const Handle<Quote>& quote)
-    : quote_(quote), termStructure_(0) {
+    BootstrapHelper<TS>::BootstrapHelper(Handle<Quote>  quote)
+    : quote_(std::move(quote)), termStructure_(0) {
         registerWith(quote_);
     }
 

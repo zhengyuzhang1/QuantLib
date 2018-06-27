@@ -22,6 +22,7 @@
 
 #include <ql/models/model.hpp>
 #include <ql/methods/finitedifferences/utilities/fdmaffinemodeltermstructure.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -31,11 +32,11 @@ namespace QuantLib {
         const DayCounter& dayCounter,
         const Date& referenceDate,
         const Date& modelReferenceDate,
-        const ext::shared_ptr<AffineModel>& model)
+        ext::shared_ptr<AffineModel>  model)
     : YieldTermStructure(referenceDate, cal, dayCounter),
       r_(r),
       t_(dayCounter.yearFraction(modelReferenceDate, referenceDate)),
-      model_(model) {
+      model_(std::move(model)) {
         registerWith(model_);
     }
 

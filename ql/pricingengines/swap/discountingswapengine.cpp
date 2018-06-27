@@ -21,15 +21,16 @@
 #include <ql/pricingengines/swap/discountingswapengine.hpp>
 #include <ql/cashflows/cashflows.hpp>
 #include <ql/utilities/dataformatters.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     DiscountingSwapEngine::DiscountingSwapEngine(
-                            const Handle<YieldTermStructure>& discountCurve,
+                            Handle<YieldTermStructure>  discountCurve,
                             boost::optional<bool> includeSettlementDateFlows,
                             Date settlementDate,
                             Date npvDate)
-    : discountCurve_(discountCurve),
+    : discountCurve_(std::move(discountCurve)),
       includeSettlementDateFlows_(includeSettlementDateFlows),
       settlementDate_(settlementDate), npvDate_(npvDate) {
         registerWith(discountCurve_);

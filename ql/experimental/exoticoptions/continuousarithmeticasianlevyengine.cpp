@@ -21,16 +21,17 @@
 #include <ql/pricingengines/blackcalculator.hpp>
 #include <ql/math/distributions/normaldistribution.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 using namespace std;
 
 namespace QuantLib {
 
     ContinuousArithmeticAsianLevyEngine::ContinuousArithmeticAsianLevyEngine(
-            const ext::shared_ptr<GeneralizedBlackScholesProcess>& process,
-            const Handle<Quote>& currentAverage,
+            ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
+            Handle<Quote>  currentAverage,
             Date startDate)
-    : process_(process), currentAverage_(currentAverage),
+    : process_(std::move(process)), currentAverage_(std::move(currentAverage)),
       startDate_(startDate) {
         registerWith(process_);
         registerWith(currentAverage_);

@@ -30,6 +30,7 @@
 #include <ql/indexes/iborindex.hpp>
 #include <ql/experimental/catbonds/catrisk.hpp>
 #include <ql/experimental/catbonds/riskynotional.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -45,7 +46,7 @@ namespace QuantLib {
                 const Date& issueDate,
                 ext::shared_ptr<NotionalRisk> notionalRisk)       
                 : Bond(settlementDays, calendar, issueDate), 
-                  notionalRisk_(notionalRisk)
+                  notionalRisk_(std::move(notionalRisk))
         {}
         ~CatBond() override {}
 

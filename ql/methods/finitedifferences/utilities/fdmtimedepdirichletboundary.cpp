@@ -27,26 +27,27 @@
 #include <ql/methods/finitedifferences/utilities/fdmtimedepdirichletboundary.hpp>
 
 #include <algorithm>
+#include <utility>
 
 namespace QuantLib {
 
     FdmTimeDepDirichletBoundary::FdmTimeDepDirichletBoundary(
         const ext::shared_ptr<FdmMesher>& mesher,
-        const boost::function<Real (Real)>& valueOnBoundary,
+        boost::function<Real (Real)>  valueOnBoundary,
         Size direction, Side side)
     : indices_(FdmIndicesOnBoundary(mesher->layout(),
                                     direction, side).getIndices()),
-      valueOnBoundary_(valueOnBoundary),
+      valueOnBoundary_(std::move(valueOnBoundary)),
       values_(indices_.size()) {
     }
 
     FdmTimeDepDirichletBoundary::FdmTimeDepDirichletBoundary(
         const ext::shared_ptr<FdmMesher>& mesher,
-        const boost::function<Disposable<Array> (Real)>& valuesOnBoundary,
+        boost::function<Disposable<Array> (Real)>  valuesOnBoundary,
         Size direction, Side side)
     : indices_(FdmIndicesOnBoundary(mesher->layout(),
                                     direction, side).getIndices()),
-      valuesOnBoundary_(valuesOnBoundary),
+      valuesOnBoundary_(std::move(valuesOnBoundary)),
       values_(indices_.size()) {
     }
 

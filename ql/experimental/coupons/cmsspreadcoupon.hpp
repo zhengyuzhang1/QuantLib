@@ -27,6 +27,7 @@
 #include <ql/cashflows/couponpricer.hpp>
 #include <ql/experimental/coupons/swapspreadindex.hpp>
 #include <ql/time/schedule.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -100,8 +101,8 @@ namespace QuantLib {
     //! helper class building a sequence of capped/floored cms-spread-rate coupons
     class CmsSpreadLeg {
       public:
-        CmsSpreadLeg(const Schedule& schedule,
-               const ext::shared_ptr<SwapSpreadIndex>& swapSpreadIndex);
+        CmsSpreadLeg(Schedule  schedule,
+               ext::shared_ptr<SwapSpreadIndex>  swapSpreadIndex);
         CmsSpreadLeg& withNotionals(Real notional);
         CmsSpreadLeg& withNotionals(const std::vector<Real>& notionals);
         CmsSpreadLeg& withPaymentDayCounter(const DayCounter&);
@@ -137,8 +138,8 @@ namespace QuantLib {
     class CmsSpreadCouponPricer : public FloatingRateCouponPricer {
       public:
         explicit CmsSpreadCouponPricer(
-                           const Handle<Quote> &correlation = Handle<Quote>())
-        : correlation_(correlation) {
+                           Handle<Quote> correlation = Handle<Quote>())
+        : correlation_(std::move(correlation)) {
             registerWith(correlation_);
         }
 

@@ -42,6 +42,7 @@
 #include <boost/math/special_functions/fpclassify.hpp>
 
 #include <limits>
+#include <utility>
 
 namespace QuantLib {
 
@@ -188,10 +189,10 @@ namespace QuantLib {
     class CombinedCostFunction : public CostFunction {
       public:
         CombinedCostFunction(
-            const ext::shared_ptr<AndreasenHugeCostFunction>& putCostFct,
-            const ext::shared_ptr<AndreasenHugeCostFunction>& callCostFct)
-      : putCostFct_(putCostFct),
-        callCostFct_(callCostFct) { }
+            ext::shared_ptr<AndreasenHugeCostFunction>  putCostFct,
+            ext::shared_ptr<AndreasenHugeCostFunction>  callCostFct)
+      : putCostFct_(std::move(putCostFct)),
+        callCostFct_(std::move(callCostFct)) { }
 
         Disposable<Array> values(const Array& sig) const override {
             if (putCostFct_ && callCostFct_) {
@@ -233,25 +234,25 @@ namespace QuantLib {
 
     AndreasenHugeVolatilityInterpl::AndreasenHugeVolatilityInterpl(
         const CalibrationSet& calibrationSet,
-        const Handle<Quote>& spot,
-        const Handle<YieldTermStructure>& rTS,
-        const Handle<YieldTermStructure>& qTS,
+        Handle<Quote>  spot,
+        Handle<YieldTermStructure>  rTS,
+        Handle<YieldTermStructure>  qTS,
         InterpolationType interplationType,
         CalibrationType calibrationType,
         Size nGridPoints,
         Real _minStrike,
         Real _maxStrike,
-        const ext::shared_ptr<OptimizationMethod>& optimizationMethod,
+        ext::shared_ptr<OptimizationMethod>  optimizationMethod,
         const EndCriteria& endCriteria)
-    : spot_(spot),
-      rTS_(rTS),
-      qTS_(qTS),
+    : spot_(std::move(spot)),
+      rTS_(std::move(rTS)),
+      qTS_(std::move(qTS)),
       interpolationType_(interplationType),
       calibrationType_(calibrationType),
       nGridPoints_(nGridPoints),
       minStrike_(_minStrike),
       maxStrike_(_maxStrike),
-      optimizationMethod_(optimizationMethod),
+      optimizationMethod_(std::move(optimizationMethod)),
       endCriteria_(endCriteria) {
         QL_REQUIRE(nGridPoints > 2 && calibrationSet.size() > 0,
                 "undefined grid or calibration set");

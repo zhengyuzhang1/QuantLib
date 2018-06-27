@@ -34,7 +34,7 @@ namespace QuantLib {
     class HestonModelHelper : public CalibrationHelper {
       public:
         HestonModelHelper(const Period& maturity,
-                          const Calendar& calendar,
+                          Calendar  calendar,
                           const Real s0,
                           const Real strikePrice,
                           const Handle<Quote>& volatility,
@@ -44,7 +44,7 @@ namespace QuantLib {
                                     = CalibrationHelper::RelativePriceError);
 
         HestonModelHelper(const Period& maturity,
-                          const Calendar& calendar,
+                          Calendar  calendar,
                           const Handle<Quote>& s0,
                           const Real strikePrice,
                           const Handle<Quote>& volatility,

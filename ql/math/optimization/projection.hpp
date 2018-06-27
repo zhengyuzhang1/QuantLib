@@ -33,7 +33,7 @@ namespace QuantLib {
     class Projection {
       public:
         Projection(const Array &parameterValues,
-                   const std::vector<bool> &fixParameters = std::vector<bool>());
+                   std::vector<bool> fixParameters = std::vector<bool>());
 
         //! returns the subset of free parameters corresponding
         // to set of parameters

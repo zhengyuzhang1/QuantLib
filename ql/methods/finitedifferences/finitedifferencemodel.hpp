@@ -27,6 +27,7 @@
 #include <ql/methods/finitedifferences/stepcondition.hpp>
 #include <ql/methods/finitedifferences/boundarycondition.hpp>
 #include <ql/methods/finitedifferences/operatortraits.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -43,18 +44,18 @@ namespace QuantLib {
         // constructors
         FiniteDifferenceModel(const operator_type& L,
                               const bc_set& bcs,
-                              const std::vector<Time>& stoppingTimes =
+                              std::vector<Time>  stoppingTimes =
                                                           std::vector<Time>())
-        : evolver_(L,bcs), stoppingTimes_(stoppingTimes) {
+        : evolver_(L,bcs), stoppingTimes_(std::move(stoppingTimes)) {
             std::sort(stoppingTimes_.begin(), stoppingTimes_.end());
             std::vector<Time>::iterator last =
                 std::unique(stoppingTimes_.begin(), stoppingTimes_.end());
             stoppingTimes_.erase(last, stoppingTimes_.end());
         }
-        FiniteDifferenceModel(const Evolver& evolver,
-                              const std::vector<Time>& stoppingTimes =
+        FiniteDifferenceModel(Evolver  evolver,
+                              std::vector<Time>  stoppingTimes =
                                                           std::vector<Time>())
-        : evolver_(evolver), stoppingTimes_(stoppingTimes) {
+        : evolver_(std::move(evolver)), stoppingTimes_(std::move(stoppingTimes)) {
             std::sort(stoppingTimes_.begin(), stoppingTimes_.end());
             std::vector<Time>::iterator last =
                 std::unique(stoppingTimes_.begin(), stoppingTimes_.end());

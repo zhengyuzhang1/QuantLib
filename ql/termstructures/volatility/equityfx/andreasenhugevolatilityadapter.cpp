@@ -22,14 +22,15 @@
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/termstructures/volatility/equityfx/andreasenhugevolatilityinterpl.hpp>
 #include <ql/termstructures/volatility/equityfx/andreasenhugevolatilityadapter.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     AndreasenHugeVolatilityAdapter::AndreasenHugeVolatilityAdapter(
-        const ext::shared_ptr<AndreasenHugeVolatilityInterpl>& volInterpl,
+        ext::shared_ptr<AndreasenHugeVolatilityInterpl>  volInterpl,
         Real eps)
     : eps_(eps),
-      volInterpl_(volInterpl) { }
+      volInterpl_(std::move(volInterpl)) { }
 
     Real AndreasenHugeVolatilityAdapter::blackVarianceImpl(Time t, Real strike)
     const {

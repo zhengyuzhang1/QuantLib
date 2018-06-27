@@ -27,18 +27,19 @@
 #include <ql/cashflows/couponpricer.hpp>
 #include <ql/termstructures/volatility/equityfx/blackvoltermstructure.hpp>
 #include <ql/quote.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     class BlackIborQuantoCouponPricer : public BlackIborCouponPricer {
       public:
         BlackIborQuantoCouponPricer(
-             const Handle<BlackVolTermStructure>& fxRateBlackVolatility,
-             const Handle<Quote>& underlyingFxCorrelation,
+             Handle<BlackVolTermStructure>  fxRateBlackVolatility,
+             Handle<Quote>  underlyingFxCorrelation,
              const Handle<OptionletVolatilityStructure>& capletVolatility)
         : BlackIborCouponPricer(capletVolatility),
-          fxRateBlackVolatility_(fxRateBlackVolatility),
-          underlyingFxCorrelation_(underlyingFxCorrelation) {
+          fxRateBlackVolatility_(std::move(fxRateBlackVolatility)),
+          underlyingFxCorrelation_(std::move(underlyingFxCorrelation)) {
             registerWith(fxRateBlackVolatility_);
             registerWith(underlyingFxCorrelation_);
         }

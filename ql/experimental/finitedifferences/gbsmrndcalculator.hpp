@@ -34,7 +34,7 @@ namespace QuantLib {
     class GBSMRNDCalculator : public RiskNeutralDensityCalculator {
     public:
         explicit GBSMRNDCalculator(
-            const ext::shared_ptr<GeneralizedBlackScholesProcess>& process);
+            ext::shared_ptr<GeneralizedBlackScholesProcess>  process);
 
         Real pdf(Real s, Time t) const override;
         Real cdf(Real s, Time t) const override;

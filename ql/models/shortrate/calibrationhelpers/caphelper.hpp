@@ -35,10 +35,10 @@ namespace QuantLib {
       public:
         CapHelper(const Period& length,
                   const Handle<Quote>& volatility,
-                  const ext::shared_ptr<IborIndex>& index,
+                  ext::shared_ptr<IborIndex>  index,
                   // data for ATM swap-rate calculation
                   Frequency fixedLegFrequency,
-                  const DayCounter& fixedLegDayCounter,
+                  DayCounter  fixedLegDayCounter,
                   bool includeFirstSwaplet,
                   const Handle<YieldTermStructure>& termStructure,
                   CalibrationHelper::CalibrationErrorType errorType

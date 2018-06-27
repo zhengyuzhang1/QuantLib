@@ -41,12 +41,12 @@ namespace QuantLib {
                                 // (e.g. bps = 10,000)
                  YoYInflationCapFloor::Type capFloorType,
                  Period &lag,
-                 const DayCounter& yoyDayCounter,
-                 const Calendar& paymentCalendar,
+                 DayCounter  yoyDayCounter,
+                 Calendar  paymentCalendar,
                  Natural fixingDays,
-                 const ext::shared_ptr<YoYInflationIndex>& index,
+                 ext::shared_ptr<YoYInflationIndex>  index,
                  Rate strike, Size n,
-                 const ext::shared_ptr<YoYInflationCapFloorEngine> &pricer);
+                 ext::shared_ptr<YoYInflationCapFloorEngine> pricer);
         void setTermStructure(YoYOptionletVolatilitySurface*) override;
         Real impliedQuote() const override;
       protected:

@@ -38,8 +38,8 @@ namespace QuantLib {
     class MakeYoYInflationCapFloor {
     public:
         MakeYoYInflationCapFloor(YoYInflationCapFloor::Type capFloorType,
-                        const Size& length, const Calendar& cal,
-                        const ext::shared_ptr<YoYInflationIndex>& index,
+                        const Size& length, Calendar  cal,
+                        ext::shared_ptr<YoYInflationIndex>  index,
                         const Period& observationLag, Rate strike = Null<Rate>(),
                         const Period& forwardStart=0*Days);
         MakeYoYInflationCapFloor& withNominal(Real n);

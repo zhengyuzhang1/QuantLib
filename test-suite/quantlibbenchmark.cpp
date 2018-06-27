@@ -90,6 +90,7 @@
 #include <iomanip>
 #include <list>
 #include <string>
+#include <utility>
 
 /* PAPI code
 #include <stdio.h
@@ -184,8 +185,8 @@ namespace {
     class Benchmark {
       public:
         typedef void (*fct_ptr)();
-        Benchmark(const std::string& name, fct_ptr f, double mflop)
-        : f_(f), name_(name), mflop_(mflop) {
+        Benchmark(std::string  name, fct_ptr f, double mflop)
+        : f_(f), name_(std::move(name)), mflop_(mflop) {
         }
 
         test_case* getTestCase() const {

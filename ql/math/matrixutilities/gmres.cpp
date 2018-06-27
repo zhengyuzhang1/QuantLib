@@ -27,13 +27,14 @@
 #include <ql/math/matrixutilities/qrdecomposition.hpp>
 
 #include <numeric>
+#include <utility>
 
 namespace QuantLib {
 
-    GMRES::GMRES(const GMRES::MatrixMult& A,
+    GMRES::GMRES(GMRES::MatrixMult  A,
                  Size maxIter, Real relTol,
-                 const GMRES::MatrixMult& preConditioner)
-    : A_(A), M_(preConditioner),
+                 GMRES::MatrixMult  preConditioner)
+    : A_(std::move(A)), M_(std::move(preConditioner)),
       maxIter_(maxIter), relTol_(relTol) {
 
         QL_REQUIRE(maxIter_ > 0, "maxIter must be greater then zero");

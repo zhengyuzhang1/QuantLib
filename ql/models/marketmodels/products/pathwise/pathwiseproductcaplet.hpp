@@ -162,7 +162,7 @@ namespace QuantLib {
                           const std::vector<Real>& accruals,
                           const std::vector<Time>& paymentTimes,
                           Rate strike,
-                          const std::vector<std::pair<Size,Size> >& startsAndEnds);
+                          std::vector<std::pair<Size,Size> >  startsAndEnds);
 
 
 

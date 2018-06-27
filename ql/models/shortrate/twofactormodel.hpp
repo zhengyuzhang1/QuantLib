@@ -27,6 +27,7 @@
 
 #include <ql/models/model.hpp>
 #include <ql/methods/lattices/lattice2d.hpp>
+#include <utility>
 
 namespace QuantLib {
     class StochasticProcess1D;
@@ -72,10 +73,10 @@ namespace QuantLib {
     class TwoFactorModel::ShortRateDynamics {
       public:
         ShortRateDynamics(
-                       const ext::shared_ptr<StochasticProcess1D>& xProcess,
-                       const ext::shared_ptr<StochasticProcess1D>& yProcess,
+                       ext::shared_ptr<StochasticProcess1D>  xProcess,
+                       ext::shared_ptr<StochasticProcess1D>  yProcess,
                        Real correlation)
-        : xProcess_(xProcess), yProcess_(yProcess),
+        : xProcess_(std::move(xProcess)), yProcess_(std::move(yProcess)),
           correlation_(correlation) {}
         virtual ~ShortRateDynamics() {}
 

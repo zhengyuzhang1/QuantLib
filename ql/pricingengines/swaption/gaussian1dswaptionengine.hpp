@@ -27,6 +27,7 @@
 #include <ql/instruments/swaption.hpp>
 #include <ql/pricingengines/genericmodelengine.hpp>
 #include <ql/models/shortrate/onefactormodels/gaussian1dmodel.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -55,7 +56,7 @@ namespace QuantLib {
             const int integrationPoints = 64, const Real stddevs = 7.0,
             const bool extrapolatePayoff = true,
             const bool flatPayoffExtrapolation = false,
-            const Handle<YieldTermStructure> &discountCurve =
+            Handle<YieldTermStructure> discountCurve =
                 Handle<YieldTermStructure>(),
             const Probabilities probabilities = None)
             : GenericModelEngine<Gaussian1dModel, Swaption::arguments,
@@ -63,7 +64,7 @@ namespace QuantLib {
               integrationPoints_(integrationPoints), stddevs_(stddevs),
               extrapolatePayoff_(extrapolatePayoff),
               flatPayoffExtrapolation_(flatPayoffExtrapolation),
-              discountCurve_(discountCurve), probabilities_(probabilities) {
+              discountCurve_(std::move(discountCurve)), probabilities_(probabilities) {
 
             if (!discountCurve_.empty())
                 registerWith(discountCurve_);

@@ -21,6 +21,7 @@
 #include <ql/models/marketmodels/utilities.hpp>
 #include <ql/auto_ptr.hpp>
 #include <cmath>
+#include <utility>
 
 namespace QuantLib {
 
@@ -31,11 +32,11 @@ namespace QuantLib {
                          const std::vector<Time>& paymentTimesFloating,
                          Real totalCoupon,
                          const std::vector<Real>& strikes,
-                         const std::vector<Real>& multipliers,
+                         std::vector<Real>  multipliers,
                          const std::vector<Real>& floatingSpreads)
     : MultiProductMultiStep(rateTimes),
       accruals_(accruals), accrualsFloating_(accrualsFloating), paymentTimes_(paymentTimes),paymentTimesFloating_(paymentTimesFloating),allPaymentTimes_(paymentTimes),
-      totalCoupon_(totalCoupon), strikes_(strikes), multipliers_(multipliers), floatingSpreads_(floatingSpreads)
+      totalCoupon_(totalCoupon), strikes_(strikes), multipliers_(std::move(multipliers)), floatingSpreads_(floatingSpreads)
     {
         QL_REQUIRE(accruals_.size()+1 == rateTimes.size(), "missized accruals in MultiStepTARN");
         QL_REQUIRE(accrualsFloating.size()+1 == rateTimes.size(), "missized accrualsFloating in MultiStepTARN");

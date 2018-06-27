@@ -44,9 +44,9 @@ namespace QuantLib {
             const std::vector<Period>& optionTenors,
             const std::vector<Period>& swapTenors,
             const std::vector<Spread>& strikeSpreads,
-            const std::vector<std::vector<Handle<Quote> > >& volSpreads,
-            const ext::shared_ptr<SwapIndex>& swapIndexBase,
-            const ext::shared_ptr<SwapIndex>& shortSwapIndexBase,
+            std::vector<std::vector<Handle<Quote> > >  volSpreads,
+            ext::shared_ptr<SwapIndex>  swapIndexBase,
+            ext::shared_ptr<SwapIndex>  shortSwapIndexBase,
             bool vegaWeightedSmileFit);
         //! \name TermStructure interface
         //@{

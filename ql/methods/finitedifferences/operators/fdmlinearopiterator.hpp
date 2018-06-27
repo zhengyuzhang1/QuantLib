@@ -28,6 +28,7 @@
 
 #include <ql/types.hpp>
 #include <ql/utilities/disposable.hpp>
+#include <utility>
 #include <vector>
 #include <numeric>
 
@@ -43,11 +44,11 @@ namespace QuantLib {
           dim_(dim),
           coordinates_(dim.size(), 0) {}
 
-        FdmLinearOpIterator(const std::vector<Size>& dim,
-            const std::vector<Size>& coordinates, Size index)
+        FdmLinearOpIterator(std::vector<Size>  dim,
+            std::vector<Size>  coordinates, Size index)
         : index_(index),
-          dim_(dim),
-          coordinates_(coordinates) {}
+          dim_(std::move(dim)),
+          coordinates_(std::move(coordinates)) {}
 
         FdmLinearOpIterator(
             const Disposable<FdmLinearOpIterator> & from) {

@@ -42,8 +42,8 @@ namespace QuantLib {
       public:
         FdmHestonHullWhiteEquityPart(
             const ext::shared_ptr<FdmMesher>& mesher,
-            const ext::shared_ptr<HullWhite>& hwModel,
-            const ext::shared_ptr<YieldTermStructure>& qTS);
+            ext::shared_ptr<HullWhite>  hwModel,
+            ext::shared_ptr<YieldTermStructure>  qTS);
 
         void setTime(Time t1, Time t2);
         const TripleBandLinearOp& getMap() const;

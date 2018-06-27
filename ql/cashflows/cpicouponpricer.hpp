@@ -38,7 +38,7 @@ namespace QuantLib {
     */
     class CPICouponPricer : public InflationCouponPricer {
     public:
-        CPICouponPricer(const Handle<CPIVolatilitySurface>& capletVol
+        CPICouponPricer(Handle<CPIVolatilitySurface>  capletVol
                                  = Handle<CPIVolatilitySurface>());
 
         virtual Handle<CPIVolatilitySurface> capletVolatility() const{

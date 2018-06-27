@@ -29,12 +29,13 @@
 #include <ql/methods/finitedifferences/utilities/fdminnervaluecalculator.hpp>
 #include <ql/methods/finitedifferences/operators/fdmlinearoplayout.hpp>
 #include <ql/methods/finitedifferences/meshers/fdmmeshercomposite.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FdHestonHullWhiteVanillaEngine::FdHestonHullWhiteVanillaEngine(
             const ext::shared_ptr<HestonModel>& hestonModel,
-            const ext::shared_ptr<HullWhiteProcess>& hwProcess,
+            ext::shared_ptr<HullWhiteProcess>  hwProcess,
             Real corrEquityShortRate,
             Size tGrid, Size xGrid, 
             Size vGrid, Size rGrid,
@@ -44,7 +45,7 @@ namespace QuantLib {
     : GenericModelEngine<HestonModel,
                          DividendVanillaOption::arguments,
                          DividendVanillaOption::results>(hestonModel),
-      hwProcess_(hwProcess),
+      hwProcess_(std::move(hwProcess)),
       corrEquityShortRate_(corrEquityShortRate),
       tGrid_(tGrid), xGrid_(xGrid), 
       vGrid_(vGrid), rGrid_(rGrid),

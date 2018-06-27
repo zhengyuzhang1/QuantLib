@@ -29,6 +29,7 @@
 
 #include <ql/instruments/bonds/cpibond.hpp>
 #include <ql/cashflows/cpicoupon.hpp>
+#include <utility>
 
 
 namespace QuantLib {
@@ -38,7 +39,7 @@ namespace QuantLib {
                      bool growthOnly,
                      Real baseCPI,
                      const Period& observationLag,
-                     const ext::shared_ptr<ZeroInflationIndex>& cpiIndex,
+                     ext::shared_ptr<ZeroInflationIndex>  cpiIndex,
                      CPI::InterpolationType observationInterpolation,
                      const Schedule& schedule,
                      const std::vector<Rate>& fixedRate,
@@ -58,7 +59,7 @@ namespace QuantLib {
     growthOnly_(growthOnly),
     baseCPI_(baseCPI),
     observationLag_(observationLag),
-    cpiIndex_(cpiIndex),
+    cpiIndex_(std::move(cpiIndex)),
     observationInterpolation_(observationInterpolation)
     {
 

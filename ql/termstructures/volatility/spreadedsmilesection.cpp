@@ -19,13 +19,14 @@
 
 #include <ql/termstructures/volatility/spreadedsmilesection.hpp>
 #include <ql/quote.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     SpreadedSmileSection::SpreadedSmileSection(
-                    const ext::shared_ptr<SmileSection>& underlyingSection,
-                    const Handle<Quote>& spread)
-    : underlyingSection_(underlyingSection), spread_(spread) {
+                    ext::shared_ptr<SmileSection>  underlyingSection,
+                    Handle<Quote>  spread)
+    : underlyingSection_(std::move(underlyingSection)), spread_(std::move(spread)) {
             registerWith(underlyingSection_);
             registerWith(spread_);
     }

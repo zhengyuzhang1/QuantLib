@@ -19,15 +19,16 @@
 */
 
 #include <ql/experimental/shortrate/generalizedornsteinuhlenbeckprocess.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     GeneralizedOrnsteinUhlenbeckProcess::GeneralizedOrnsteinUhlenbeckProcess(
-        const boost::function<Real (Time)>& speed,
-        const boost::function<Real (Time)>& vol,
+        boost::function<Real (Time)>  speed,
+        boost::function<Real (Time)>  vol,
         Real x0,
         Real level)
-    : x0_(x0), level_(level), speed_(speed), volatility_(vol) {
+    : x0_(x0), level_(level), speed_(std::move(speed)), volatility_(std::move(vol)) {
 
         QL_REQUIRE(x0 >= 0.0, "negative initial data given");
         QL_REQUIRE(level >= 0.0, "negative level given");

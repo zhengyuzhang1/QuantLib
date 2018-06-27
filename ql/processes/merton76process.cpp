@@ -20,6 +20,7 @@
 */
 
 #include <ql/processes/merton76process.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -28,15 +29,15 @@ namespace QuantLib {
              const Handle<YieldTermStructure>& dividendTS,
              const Handle<YieldTermStructure>& riskFreeTS,
              const Handle<BlackVolTermStructure>& blackVolTS,
-             const Handle<Quote>& jumpInt,
-             const Handle<Quote>& logJMean,
-             const Handle<Quote>& logJVol,
+             Handle<Quote>  jumpInt,
+             Handle<Quote>  logJMean,
+             Handle<Quote>  logJVol,
              const ext::shared_ptr<discretization>& disc)
     : blackProcess_(new BlackScholesMertonProcess(stateVariable, dividendTS,
                                                   riskFreeTS, blackVolTS,
                                                   disc)),
-      jumpIntensity_(jumpInt), logMeanJump_(logJMean),
-      logJumpVolatility_(logJVol) {
+      jumpIntensity_(std::move(jumpInt)), logMeanJump_(std::move(logJMean)),
+      logJumpVolatility_(std::move(logJVol)) {
         registerWith(blackProcess_);
         registerWith(jumpIntensity_);
         registerWith(logMeanJump_);

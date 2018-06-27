@@ -18,14 +18,15 @@
 */
 
 #include <ql/experimental/math/piecewiseintegral.hpp>
+#include <utility>
 
 namespace QuantLib {
 
 PiecewiseIntegral::PiecewiseIntegral(
-    const ext::shared_ptr<Integrator> &integrator,
-    const std::vector<Real> &criticalPoints, const bool avoidCriticalPoints)
-    : Integrator(1.0, 1), integrator_(integrator),
-      criticalPoints_(criticalPoints),
+    ext::shared_ptr<Integrator> integrator,
+    std::vector<Real> criticalPoints, const bool avoidCriticalPoints)
+    : Integrator(1.0, 1), integrator_(std::move(integrator)),
+      criticalPoints_(std::move(criticalPoints)),
       eps_(avoidCriticalPoints ? (1.0 + QL_EPSILON) : 1.0) {
 
     std::sort(criticalPoints_.begin(), criticalPoints_.end());

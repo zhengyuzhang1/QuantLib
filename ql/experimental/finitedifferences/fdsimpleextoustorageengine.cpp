@@ -39,14 +39,15 @@
 #include <ql/methods/finitedifferences/solvers/fdmbackwardsolver.hpp>
 #include <ql/experimental/finitedifferences/fdmsimple2dextousolver.hpp>
 #include <ql/experimental/finitedifferences/fdmexpextouinnervaluecalculator.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     namespace {
         class FdmStorageValue : public FdmInnerValueCalculator {
           public:
-            explicit FdmStorageValue(const ext::shared_ptr<FdmMesher>& mesher)
-            : mesher_(mesher) { }
+            explicit FdmStorageValue(ext::shared_ptr<FdmMesher>  mesher)
+            : mesher_(std::move(mesher)) { }
 
             Real innerValue(const FdmLinearOpIterator& iter, Time) override {
                 const Real s = std::exp(mesher_->location(iter, 0));
@@ -71,17 +72,17 @@ namespace QuantLib {
     }
 
     FdSimpleExtOUStorageEngine::FdSimpleExtOUStorageEngine(
-            const ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess>& process,
-            const ext::shared_ptr<YieldTermStructure>& rTS,
+            ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess>  process,
+            ext::shared_ptr<YieldTermStructure>  rTS,
             Size tGrid, Size xGrid, Size yGrid,
-            const ext::shared_ptr<Shape>& shape,
+            ext::shared_ptr<Shape>  shape,
             const FdmSchemeDesc& schemeDesc)
-    : process_(process),
-      rTS_  (rTS),
+    : process_(std::move(process)),
+      rTS_  (std::move(rTS)),
       tGrid_(tGrid),
       xGrid_(xGrid),
       yGrid_(yGrid),
-      shape_(shape),
+      shape_(std::move(shape)),
       schemeDesc_(schemeDesc) {
     }
 

@@ -23,22 +23,23 @@
 #include <ql/math/interpolations/linearinterpolation.hpp>
 #include <ql/utilities/dataformatters.hpp>
 #include <ql/quotes/simplequote.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     SabrVolSurface::SabrVolSurface(
         const ext::shared_ptr<InterestRateIndex>& index,
-        const Handle<BlackAtmVolCurve>& atmCurve,
+        Handle<BlackAtmVolCurve>  atmCurve,
         const std::vector<Period>& optionTenors,
-        const std::vector<Spread>& atmRateSpreads,
-        const std::vector<std::vector<Handle<Quote> > >& volSpreads)
+        std::vector<Spread>  atmRateSpreads,
+        std::vector<std::vector<Handle<Quote> > >  volSpreads)
     : InterestRateVolSurface(index),
-      atmCurve_(atmCurve),
+      atmCurve_(std::move(atmCurve)),
       optionTenors_(optionTenors),
       optionTimes_(optionTenors.size()),
       optionDates_(optionTenors.size()),
-      atmRateSpreads_(atmRateSpreads),
-      volSpreads_(volSpreads) {
+      atmRateSpreads_(std::move(atmRateSpreads)),
+      volSpreads_(std::move(volSpreads)) {
 
         checkInputs();
 

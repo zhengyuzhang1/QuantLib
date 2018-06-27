@@ -21,11 +21,12 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 #include <ql/models/marketmodels/curvestate.hpp>
 #include <ql/models/marketmodels/utilities.hpp>
 #include <ql/auto_ptr.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     MultiStepInverseFloater::MultiStepInverseFloater(const std::vector<Time>& rateTimes,
-        const std::vector<Real>& fixedAccruals,
+        std::vector<Real>  fixedAccruals,
         const std::vector<Real>& floatingAccruals,
         const std::vector<Real>& fixedStrikes,
         const std::vector<Real>& fixedMultipliers, 
@@ -33,7 +34,7 @@ namespace QuantLib {
         const std::vector<Time>& paymentTimes,
         bool payer)
         : MultiProductMultiStep(rateTimes),
-        fixedAccruals_(fixedAccruals), 
+        fixedAccruals_(std::move(fixedAccruals)), 
         floatingAccruals_(floatingAccruals),
         fixedStrikes_(fixedStrikes),
         fixedMultipliers_(fixedMultipliers),

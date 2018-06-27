@@ -56,7 +56,7 @@ namespace QuantLib {
         LongstaffSchwartzMultiPathPricer(
             const ext::shared_ptr<PathPayoff>& ,
             const std::vector<Size> &,
-            const std::vector<Handle<YieldTermStructure> > &,
+            std::vector<Handle<YieldTermStructure> > ,
             const Array &,
             Size ,
             LsmBasisSystem::PolynomType );

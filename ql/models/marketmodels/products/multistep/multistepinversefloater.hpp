@@ -32,7 +32,7 @@ namespace QuantLib {
     class MultiStepInverseFloater : public MultiProductMultiStep {
       public:
         MultiStepInverseFloater(const std::vector<Time>& rateTimes,
-                      const std::vector<Real>& fixedAccruals,
+                      std::vector<Real>  fixedAccruals,
                       const std::vector<Real>& floatingAccruals,
                       const std::vector<Real>& fixedStrikes,
                       const std::vector<Real>& fixedMultipliers, 

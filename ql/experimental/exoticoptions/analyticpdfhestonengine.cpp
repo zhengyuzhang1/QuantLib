@@ -31,6 +31,7 @@
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #endif
 #include <boost/bind.hpp>
+#include <utility>
 #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
 #pragma GCC diagnostic pop
 #endif
@@ -38,12 +39,12 @@
 namespace QuantLib {
 
     AnalyticPDFHestonEngine::AnalyticPDFHestonEngine(
-        const ext::shared_ptr<HestonModel>& model,
+        ext::shared_ptr<HestonModel>  model,
         Real integrationEps_,
         Size maxIntegrationIterations)
     : maxIntegrationIterations_(maxIntegrationIterations),
       integrationEps_(integrationEps_),
-      model_(model) {  }
+      model_(std::move(model)) {  }
 
     void AnalyticPDFHestonEngine::calculate() const {
         // this is an European option pricer

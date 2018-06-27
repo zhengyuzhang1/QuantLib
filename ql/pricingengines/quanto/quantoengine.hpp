@@ -29,6 +29,7 @@
 #include <ql/processes/blackscholesprocess.hpp>
 #include <ql/termstructures/yield/quantotermstructure.hpp>
 #include <ql/instruments/payoffs.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -50,10 +51,10 @@ namespace QuantLib {
                              QuantoOptionResults<typename Instr::results> > {
       public:
         QuantoEngine(
-                 const ext::shared_ptr<GeneralizedBlackScholesProcess>&,
-                 const Handle<YieldTermStructure>& foreignRiskFreeRate,
-                 const Handle<BlackVolTermStructure>& exchangeRateVolatility,
-                 const Handle<Quote>& correlation);
+                 ext::shared_ptr<GeneralizedBlackScholesProcess> ,
+                 Handle<YieldTermStructure>  foreignRiskFreeRate,
+                 Handle<BlackVolTermStructure>  exchangeRateVolatility,
+                 Handle<Quote>  correlation);
         void calculate() const override;
       protected:
         ext::shared_ptr<GeneralizedBlackScholesProcess> process_;
@@ -67,13 +68,13 @@ namespace QuantLib {
 
     template <class Instr, class Engine>
     QuantoEngine<Instr,Engine>::QuantoEngine(
-             const ext::shared_ptr<GeneralizedBlackScholesProcess>& process,
-             const Handle<YieldTermStructure>& foreignRiskFreeRate,
-             const Handle<BlackVolTermStructure>& exchangeRateVolatility,
-             const Handle<Quote>& correlation)
-    : process_(process), foreignRiskFreeRate_(foreignRiskFreeRate),
-      exchangeRateVolatility_(exchangeRateVolatility),
-      correlation_(correlation) {
+             ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
+             Handle<YieldTermStructure>  foreignRiskFreeRate,
+             Handle<BlackVolTermStructure>  exchangeRateVolatility,
+             Handle<Quote>  correlation)
+    : process_(std::move(process)), foreignRiskFreeRate_(std::move(foreignRiskFreeRate)),
+      exchangeRateVolatility_(std::move(exchangeRateVolatility)),
+      correlation_(std::move(correlation)) {
         this->registerWith(process_);
         this->registerWith(foreignRiskFreeRate_);
         this->registerWith(exchangeRateVolatility_);

@@ -21,6 +21,7 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 
 
 #include <ql/models/marketmodels/pathwisegreeks/ratepseudorootjacobian.hpp>
+#include <utility>
 
 namespace QuantLib
 {
@@ -125,13 +126,13 @@ namespace QuantLib
         Size numeraire,
         const std::vector<Time>& taus,
         const std::vector<Matrix>& pseudoBumps,
-        const std::vector<Spread>& displacements)
+        std::vector<Spread>  displacements)
         :
     pseudoRoot_(pseudoRoot),
         aliveIndex_(aliveIndex),
         taus_(taus),
         pseudoBumps_(pseudoBumps),
-        displacements_(displacements),
+        displacements_(std::move(displacements)),
         numberBumps_(pseudoBumps.size()),
         factors_(pseudoRoot.columns()),
      //   bumpedRates_(taus.size()),
@@ -246,12 +247,12 @@ namespace QuantLib
         Size aliveIndex,
         Size numeraire,
         const std::vector<Time>& taus,
-        const std::vector<Spread>& displacements)
+        std::vector<Spread>  displacements)
         :
     pseudoRoot_(pseudoRoot),
         aliveIndex_(aliveIndex),
         taus_(taus),
-        displacements_(displacements),
+        displacements_(std::move(displacements)),
         factors_(pseudoRoot.columns()),
      //   bumpedRates_(taus.size()),
         e_(pseudoRoot.rows(), pseudoRoot.columns()),

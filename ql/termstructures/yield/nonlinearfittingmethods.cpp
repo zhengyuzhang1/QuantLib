@@ -22,6 +22,7 @@
 #include <ql/termstructures/yield/nonlinearfittingmethods.hpp>
 #include <ql/math/bernsteinpolynomial.hpp>
 #include <ql/auto_ptr.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -280,7 +281,7 @@ namespace QuantLib {
     : FittedBondDiscountCurve::FittingMethod(method ? method->constrainAtZero() : true, method ? method->weights() : Array(),
                                              method ? method->optimizationMethod() : ext::shared_ptr<OptimizationMethod>(), 
                                              method ? method->l2() : Array()),
-      method_(method), discountingCurve_(discountCurve) {
+      method_(method), discountingCurve_(std::move(discountCurve)) {
         QL_REQUIRE(method, "Fitting method is empty");
         QL_REQUIRE(!discountingCurve_.empty(), "Discounting curve cannot be empty");
     }

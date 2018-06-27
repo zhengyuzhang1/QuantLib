@@ -30,6 +30,7 @@
 #include <ql/methods/finitedifferences/meshers/fdmblackscholesmesher.hpp>
 #include <ql/pricingengines/barrier/fdhestonrebateengine.hpp>
 #include <ql/pricingengines/vanilla/fdhestonvanillaengine.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -37,14 +38,14 @@ namespace QuantLib {
             const ext::shared_ptr<HestonModel>& model,
             Size tGrid, Size xGrid, Size vGrid, Size dampingSteps,
             const FdmSchemeDesc& schemeDesc,
-            const ext::shared_ptr<LocalVolTermStructure>& leverageFct)
+            ext::shared_ptr<LocalVolTermStructure>  leverageFct)
     : GenericModelEngine<HestonModel,
                         DividendBarrierOption::arguments,
                         DividendBarrierOption::results>(model),
       tGrid_(tGrid), xGrid_(xGrid), 
       vGrid_(vGrid), dampingSteps_(dampingSteps),
       schemeDesc_(schemeDesc),
-      leverageFct_(leverageFct) {
+      leverageFct_(std::move(leverageFct)) {
     }
 
     void FdHestonBarrierEngine::calculate() const {

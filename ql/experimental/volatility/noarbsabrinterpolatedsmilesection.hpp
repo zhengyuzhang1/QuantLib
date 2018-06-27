@@ -41,18 +41,18 @@ namespace QuantLib {
         //! all market data are quotes
         NoArbSabrInterpolatedSmileSection(
                            const Date& optionDate,
-                           const Handle<Quote>& forward,
+                           Handle<Quote>  forward,
                            const std::vector<Rate>& strikes,
                            bool hasFloatingStrikes,
-                           const Handle<Quote>& atmVolatility,
+                           Handle<Quote>  atmVolatility,
                            const std::vector<Handle<Quote> >& volHandles,
                            Real alpha, Real beta, Real nu, Real rho,
                            bool isAlphaFixed = false, bool isBetaFixed = false,
                            bool isNuFixed = false, bool isRhoFixed = false,
                            bool vegaWeighted = true,
-                           const ext::shared_ptr<EndCriteria>& endCriteria
+                           ext::shared_ptr<EndCriteria>  endCriteria
                             = ext::shared_ptr<EndCriteria>(),
-                           const ext::shared_ptr<OptimizationMethod>& method
+                           ext::shared_ptr<OptimizationMethod>  method
                             = ext::shared_ptr<OptimizationMethod>(),
                            const DayCounter& dc = Actual365Fixed()
                            );
@@ -68,9 +68,9 @@ namespace QuantLib {
                            bool isAlphaFixed = false, bool isBetaFixed = false,
                            bool isNuFixed = false, bool isRhoFixed = false,
                            bool vegaWeighted = true,
-                           const ext::shared_ptr<EndCriteria>& endCriteria
+                           ext::shared_ptr<EndCriteria>  endCriteria
                             = ext::shared_ptr<EndCriteria>(),
-                           const ext::shared_ptr<OptimizationMethod>& method
+                           ext::shared_ptr<OptimizationMethod>  method
                             = ext::shared_ptr<OptimizationMethod>(),
                            const DayCounter& dc = Actual365Fixed()
                            );

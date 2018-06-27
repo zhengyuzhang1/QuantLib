@@ -35,6 +35,7 @@
 #include <ql/methods/finitedifferences/stepconditions/fdmstepconditioncomposite.hpp>
 
 #include <numeric>
+#include <utility>
 
 namespace QuantLib {
 
@@ -43,7 +44,7 @@ namespace QuantLib {
       public:
         FdmNdimSolver(const FdmSolverDesc& solverDesc,
                       const FdmSchemeDesc& schemeDesc,
-                      const ext::shared_ptr<FdmLinearOpComposite>& op);
+                      ext::shared_ptr<FdmLinearOpComposite>  op);
 
         void performCalculations() const override;
 
@@ -76,10 +77,10 @@ namespace QuantLib {
     FdmNdimSolver<N>::FdmNdimSolver(
                         const FdmSolverDesc& solverDesc,
                         const FdmSchemeDesc& schemeDesc,
-                        const ext::shared_ptr<FdmLinearOpComposite>& op)
+                        ext::shared_ptr<FdmLinearOpComposite>  op)
     : solverDesc_(solverDesc),
       schemeDesc_(schemeDesc),
-      op_(op),
+      op_(std::move(op)),
       thetaCondition_(new FdmSnapshotCondition(
         0.99*std::min(1.0/365.0,
                 solverDesc.condition->stoppingTimes().empty()

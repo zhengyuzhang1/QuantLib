@@ -20,17 +20,18 @@
 #include <ql/termstructures/volatility/swaption/gaussian1dswaptionvolatility.hpp>
 #include <ql/termstructures/volatility/gaussian1dsmilesection.hpp>
 #include <ql/math/solvers1d/newtonsafe.hpp>
+#include <utility>
 
 namespace QuantLib {
 
 Gaussian1dSwaptionVolatility::Gaussian1dSwaptionVolatility(
     const Calendar &cal, BusinessDayConvention bdc,
-    const ext::shared_ptr<SwapIndex> &indexBase,
+    ext::shared_ptr<SwapIndex> indexBase,
     const ext::shared_ptr<Gaussian1dModel> &model, const DayCounter &dc,
     const ext::shared_ptr<Gaussian1dSwaptionEngine> swaptionEngine)
     : SwaptionVolatilityStructure(model->termStructure()->referenceDate(), cal,
                                   bdc, dc),
-      indexBase_(indexBase), model_(model), engine_(swaptionEngine),
+      indexBase_(std::move(indexBase)), model_(model), engine_(swaptionEngine),
       maxSwapTenor_(100 * Years) {}
 
 ext::shared_ptr<SmileSection>

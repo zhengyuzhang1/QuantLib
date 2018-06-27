@@ -28,6 +28,7 @@
 
 #include <ql/quote.hpp>
 #include <ql/handle.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -38,7 +39,7 @@ namespace QuantLib {
     template <class UnaryFunction>
     class DerivedQuote : public Quote, public Observer {
       public:
-        DerivedQuote(const Handle<Quote>& element,
+        DerivedQuote(Handle<Quote>  element,
                      const UnaryFunction& f);
         //! \name Quote interface
         //@{
@@ -57,9 +58,9 @@ namespace QuantLib {
     // inline definitions
     template <class UnaryFunction>
     inline DerivedQuote<UnaryFunction>::DerivedQuote(
-                                                 const Handle<Quote>& element,
+                                                 Handle<Quote>  element,
                                                  const UnaryFunction& f)
-    : element_(element), f_(f) {
+    : element_(std::move(element)), f_(f) {
         registerWith(element_);
     }
 

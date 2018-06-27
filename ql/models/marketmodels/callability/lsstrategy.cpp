@@ -23,6 +23,7 @@
 #include <ql/models/marketmodels/evolutiondescription.hpp>
 #include <ql/models/marketmodels/curvestate.hpp>
 #include <ql/auto_ptr.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -30,12 +31,12 @@ namespace QuantLib {
 
     LongstaffSchwartzExerciseStrategy::LongstaffSchwartzExerciseStrategy(
                      const Clone<MarketModelBasisSystem>& basisSystem,
-                     const std::vector<std::vector<Real> >& basisCoefficients,
+                     std::vector<std::vector<Real> >  basisCoefficients,
                      const EvolutionDescription& evolution,
                      const std::vector<Size>& numeraires,
                      const Clone<MarketModelExerciseValue>& exercise,
                      const Clone<MarketModelExerciseValue>& control)
-    : basisSystem_(basisSystem), basisCoefficients_(basisCoefficients),
+    : basisSystem_(basisSystem), basisCoefficients_(std::move(basisCoefficients)),
       exercise_(exercise), control_(control),
       numeraires_(numeraires) {
 

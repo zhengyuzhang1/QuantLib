@@ -38,7 +38,7 @@ namespace QuantLib {
             const DayCounter& dayCounter,
             const Date& referenceDate,
             const Date& modelReferenceDate,
-            const ext::shared_ptr<AffineModel>& model);
+            ext::shared_ptr<AffineModel>  model);
 
         Date maxDate() const override;
         void setVariable(const Array& r);

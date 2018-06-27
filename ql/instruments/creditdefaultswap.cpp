@@ -30,6 +30,7 @@
 #include <ql/quotes/simplequote.hpp>
 #include <ql/math/solvers1d/brent.hpp>
 #include <ql/time/calendars/weekendsonly.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -42,12 +43,12 @@ namespace QuantLib {
                                          bool settlesAccrual,
                                          bool paysAtDefaultTime,
                                          const Date& protectionStart,
-                                         const ext::shared_ptr<Claim>& claim,
+                                         ext::shared_ptr<Claim>  claim,
                                          const DayCounter& lastPeriodDayCounter,
                                          const bool rebatesAccrual)
     : side_(side), notional_(notional), upfront_(boost::none),
       runningSpread_(spread), settlesAccrual_(settlesAccrual),
-      paysAtDefaultTime_(paysAtDefaultTime), claim_(claim),
+      paysAtDefaultTime_(paysAtDefaultTime), claim_(std::move(claim)),
       protectionStart_(protectionStart == Null<Date>() ? schedule[0] :
                                                          protectionStart) {
         QL_REQUIRE((protectionStart_ <= schedule[0]) ||
@@ -99,12 +100,12 @@ namespace QuantLib {
                                          bool paysAtDefaultTime,
                                          const Date& protectionStart,
                                          const Date& upfrontDate,
-                                         const ext::shared_ptr<Claim>& claim,
+                                         ext::shared_ptr<Claim>  claim,
                                          const DayCounter& lastPeriodDayCounter,
                                          const bool rebatesAccrual)
     : side_(side), notional_(notional), upfront_(upfront),
       runningSpread_(runningSpread), settlesAccrual_(settlesAccrual),
-      paysAtDefaultTime_(paysAtDefaultTime), claim_(claim),
+      paysAtDefaultTime_(paysAtDefaultTime), claim_(std::move(claim)),
       protectionStart_(protectionStart == Null<Date>() ? schedule[0] :
                                                          protectionStart) {
         QL_REQUIRE((protectionStart_ <= schedule[0])

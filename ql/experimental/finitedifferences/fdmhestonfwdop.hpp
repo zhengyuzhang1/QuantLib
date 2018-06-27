@@ -46,7 +46,7 @@ namespace QuantLib {
             const ext::shared_ptr<HestonProcess>& process,
             FdmSquareRootFwdOp::TransformationType type 
                 = FdmSquareRootFwdOp::Plain,
-            const ext::shared_ptr<LocalVolTermStructure> & leverageFct
+            ext::shared_ptr<LocalVolTermStructure>  leverageFct
                 = ext::shared_ptr<LocalVolTermStructure>());
 
         Size size() const override;

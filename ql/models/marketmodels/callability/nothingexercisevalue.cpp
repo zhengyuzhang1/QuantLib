@@ -21,13 +21,14 @@
 #include <ql/models/marketmodels/utilities.hpp>
 #include <ql/errors.hpp>
 #include <ql/auto_ptr.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     NothingExerciseValue::NothingExerciseValue(
                                                const std::vector<Time>& rateTimes,
-                                               const std::valarray<bool>& isExerciseTime)
-    : rateTimes_(rateTimes), isExerciseTime_(isExerciseTime),
+                                               std::valarray<bool>  isExerciseTime)
+    : rateTimes_(rateTimes), isExerciseTime_(std::move(isExerciseTime)),
       currentIndex_(0) {
 
         checkIncreasingTimes(rateTimes);

@@ -50,7 +50,7 @@ namespace QuantLib {
                                    VanillaOption::results> {
       public:
         AnalyticPDFHestonEngine(
-            const ext::shared_ptr<HestonModel>& model,
+            ext::shared_ptr<HestonModel>  model,
             Real gaussLobattoEps = 1e-6,
             Size gaussLobattoIntegrationOrder = 10000ul);
         void calculate() const override;

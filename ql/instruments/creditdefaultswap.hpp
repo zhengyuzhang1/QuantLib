@@ -100,7 +100,7 @@ namespace QuantLib {
                           bool settlesAccrual = true,
                           bool paysAtDefaultTime = true,
                           const Date& protectionStart = Date(),
-                          const ext::shared_ptr<Claim>& =
+                          ext::shared_ptr<Claim>  =
                                                   ext::shared_ptr<Claim>(),
                           const DayCounter& lastPeriodDayCounter = DayCounter(),
                           const bool rebatesAccrual = true);
@@ -148,7 +148,7 @@ namespace QuantLib {
                           bool paysAtDefaultTime = true,
                           const Date& protectionStart = Date(),
                           const Date& upfrontDate = Date(),
-                          const ext::shared_ptr<Claim>& =
+                          ext::shared_ptr<Claim>  =
                                                   ext::shared_ptr<Claim>(),
                           const DayCounter& lastPeriodDayCounter = DayCounter(),
                           const bool rebatesAccrual = true);

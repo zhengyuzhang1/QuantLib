@@ -37,7 +37,7 @@ namespace QuantLib
         PseudoRootFacade(
             const std::vector<Matrix>& covariancePseudoRoots,
             const std::vector<Rate>& rateTimes,
-            const std::vector<Rate>& initialRates,
+            std::vector<Rate>  initialRates,
             const std::vector<Spread>& displacements);
         //! \name MarketModel interface
         //@{

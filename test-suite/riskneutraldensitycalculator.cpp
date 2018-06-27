@@ -48,6 +48,7 @@
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #endif
 #include <boost/bind.hpp>
+#include <utility>
 #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
 #pragma GCC diagnostic pop
 #endif
@@ -230,13 +231,13 @@ namespace {
       public:
         DumasParametricVolSurface(
             Real b1, Real b2, Real b3, Real b4, Real b5,
-            const ext::shared_ptr<Quote>& spot,
+            ext::shared_ptr<Quote>  spot,
             const ext::shared_ptr<YieldTermStructure>& rTS,
-            const ext::shared_ptr<YieldTermStructure>& qTS)
+            ext::shared_ptr<YieldTermStructure>  qTS)
         : BlackVolatilityTermStructure(
               0, NullCalendar(), Following, rTS->dayCounter()),
           b1_(b1), b2_(b2), b3_(b3), b4_(b4), b5_(b5),
-          spot_(spot), rTS_(rTS), qTS_(qTS) {}
+          spot_(std::move(spot)), rTS_(rTS), qTS_(std::move(qTS)) {}
 
         Date maxDate() const override { return Date::maxDate(); }
         Rate minStrike() const override { return 0.0; }
@@ -266,9 +267,9 @@ namespace {
       public:
         ProbWeightedPayoff(
             Time t,
-            const ext::shared_ptr<Payoff>& payoff,
-            const ext::shared_ptr<RiskNeutralDensityCalculator>& calc)
-      : t_(t), payoff_(payoff), calc_(calc) {}
+            ext::shared_ptr<Payoff>  payoff,
+            ext::shared_ptr<RiskNeutralDensityCalculator>  calc)
+      : t_(t), payoff_(std::move(payoff)), calc_(std::move(calc)) {}
 
         Real operator()(Real x) const {
             return calc_->pdf(x, t_) * (*payoff_)(std::exp(x));

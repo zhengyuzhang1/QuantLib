@@ -32,15 +32,16 @@
 #include <ql/methods/finitedifferences/stepconditions/fdmstepconditioncomposite.hpp>
 #include <ql/pricingengines/barrier/fdblackscholesrebateengine.hpp>
 #include <ql/pricingengines/vanilla/fdblackscholesvanillaengine.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FdBlackScholesBarrierEngine::FdBlackScholesBarrierEngine(
-            const ext::shared_ptr<GeneralizedBlackScholesProcess>& process,
+            ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
             Size tGrid, Size xGrid, Size dampingSteps, 
             const FdmSchemeDesc& schemeDesc,
             bool localVol, Real illegalLocalVolOverwrite)
-    : process_(process), tGrid_(tGrid), xGrid_(xGrid),
+    : process_(std::move(process)), tGrid_(tGrid), xGrid_(xGrid),
       dampingSteps_(dampingSteps), schemeDesc_(schemeDesc),
       localVol_(localVol), illegalLocalVolOverwrite_(illegalLocalVolOverwrite){
 

@@ -22,16 +22,17 @@
 #include <ql/instruments/makeyoyinflationcapfloor.hpp>
 #include <ql/cashflows/cashflows.hpp>
 #include <ql/time/daycounters/thirty360.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     MakeYoYInflationCapFloor::MakeYoYInflationCapFloor(YoYInflationCapFloor::Type capFloorType,
-                                const Size& length, const Calendar& cal,
-                                const ext::shared_ptr<YoYInflationIndex>& index,
+                                const Size& length, Calendar  cal,
+                                ext::shared_ptr<YoYInflationIndex>  index,
                                 const Period& observationLag, Rate strike,
                                 const Period& forwardStart)
     : capFloorType_(capFloorType), length_(length),
-      calendar_(cal), index_(index), observationLag_(observationLag),
+      calendar_(std::move(cal)), index_(std::move(index)), observationLag_(observationLag),
       strike_(strike), firstCapletExcluded_(false),
       asOptionlet_(false), effectiveDate_(Date()), forwardStart_(forwardStart),
       dayCounter_(Thirty360()), roll_(ModifiedFollowing), fixingDays_(0),

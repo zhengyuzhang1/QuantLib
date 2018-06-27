@@ -24,20 +24,21 @@
 #include <ql/methods/finitedifferences/operators/fdmhestonop.hpp>
 #include <ql/methods/finitedifferences/solvers/fdm2dimsolver.hpp>
 #include <ql/methods/finitedifferences/solvers/fdmhestonsolver.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FdmHestonSolver::FdmHestonSolver(
-        const Handle<HestonProcess>& process,
-        const FdmSolverDesc& solverDesc,
+        Handle<HestonProcess>  process,
+        FdmSolverDesc  solverDesc,
         const FdmSchemeDesc& schemeDesc,
-        const Handle<FdmQuantoHelper>& quantoHelper,
-        const ext::shared_ptr<LocalVolTermStructure>& leverageFct)
-    : process_(process),
-      solverDesc_(solverDesc),
+        Handle<FdmQuantoHelper>  quantoHelper,
+        ext::shared_ptr<LocalVolTermStructure>  leverageFct)
+    : process_(std::move(process)),
+      solverDesc_(std::move(solverDesc)),
       schemeDesc_(schemeDesc),
-      quantoHelper_(quantoHelper),
-      leverageFct_(leverageFct){
+      quantoHelper_(std::move(quantoHelper)),
+      leverageFct_(std::move(leverageFct)){
 
         registerWith(process_);
         registerWith(quantoHelper_);

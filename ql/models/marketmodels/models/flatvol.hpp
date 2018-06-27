@@ -72,10 +72,10 @@ namespace QuantLib {
                               // should be replaced with something
                               // else (such as some kind of volatility
                               // structure)
-                              const std::vector<Time>& times,
-                              const std::vector<Volatility>& vols,
+                              std::vector<Time>  times,
+                              std::vector<Volatility>  vols,
                               // this is OK
-                              const Handle<YieldTermStructure>& yieldCurve,
+                              Handle<YieldTermStructure>  yieldCurve,
                               // this might have a structure
                               Spread displacement);
         ext::shared_ptr<MarketModel> create(const EvolutionDescription&,

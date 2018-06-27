@@ -50,7 +50,7 @@ namespace QuantLib {
       public:
         NormalCLVModel(
             const ext::shared_ptr<GeneralizedBlackScholesProcess>& bsProcess,
-            const ext::shared_ptr<OrnsteinUhlenbeckProcess>& ouProcess,
+            ext::shared_ptr<OrnsteinUhlenbeckProcess>  ouProcess,
             const std::vector<Date>& maturityDates,
             Size lagrangeOrder,
             Real pMax = Null<Real>(),

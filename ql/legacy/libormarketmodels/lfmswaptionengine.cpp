@@ -20,16 +20,17 @@
 #include <ql/legacy/libormarketmodels/lfmswaptionengine.hpp>
 #include <ql/pricingengines/swap/discountingswapengine.hpp>
 #include <ql/pricingengines/blackformula.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     LfmSwaptionEngine::LfmSwaptionEngine(
                             const ext::shared_ptr<LiborForwardModel>& model,
-                            const Handle<YieldTermStructure>& discountCurve)
+                            Handle<YieldTermStructure>  discountCurve)
     : GenericModelEngine<LiborForwardModel,
                          Swaption::arguments,
                          Swaption::results>(model),
-      discountCurve_(discountCurve) {
+      discountCurve_(std::move(discountCurve)) {
         registerWith(discountCurve_);
     }
 

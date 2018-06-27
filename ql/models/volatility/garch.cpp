@@ -24,6 +24,7 @@
 #include <ql/math/autocovariance.hpp>
 #include <ql/math/functional.hpp>
 #include <boost/foreach.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -142,7 +143,7 @@ namespace QuantLib {
         class FitAcfProblem : public LeastSquareProblem {
           public:
             FitAcfProblem(Real A2, const Array &acf,
-                          const std::vector<std::size_t> &idx);
+                          std::vector<std::size_t> idx);
             Size size() override;
             void targetAndValue(const Array& x, Array& target,
                                         Array& fct2fit) override;
@@ -156,8 +157,8 @@ namespace QuantLib {
         };
 
         FitAcfProblem::FitAcfProblem(Real A2, const Array &acf,
-                                     const std::vector<std::size_t> &idx)
-        : A2_(A2), acf_(acf), idx_(idx) {}
+                                     std::vector<std::size_t> idx)
+        : A2_(A2), acf_(acf), idx_(std::move(idx)) {}
 
         Size FitAcfProblem::size() { return idx_.size(); }
 

@@ -22,15 +22,16 @@
 #include <ql/models/marketmodels/curvestate.hpp>
 #include <ql/payoff.hpp>
 #include <ql/auto_ptr.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     BermudanSwaptionExerciseValue::BermudanSwaptionExerciseValue(
               const std::vector<Time>& rateTimes,
-              const std::vector<ext::shared_ptr<Payoff> >&payoffs)
+              std::vector<ext::shared_ptr<Payoff> > payoffs)
     : numberOfExercises_(rateTimes.empty() ? 0 : rateTimes.size()-1),
       rateTimes_(rateTimes),
-      payoffs_(payoffs), currentIndex_(0) {
+      payoffs_(std::move(payoffs)), currentIndex_(0) {
 
         checkIncreasingTimes(rateTimes);
         QL_REQUIRE(numberOfExercises_>0,

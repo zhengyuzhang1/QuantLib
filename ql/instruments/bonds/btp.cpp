@@ -26,6 +26,7 @@
 #include <ql/time/daycounters/actualactual.hpp>
 #include <ql/time/daycounters/actual360.hpp>
 #include <ql/utilities/dataformatters.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -91,8 +92,8 @@ namespace QuantLib {
     RendistatoBasket::RendistatoBasket(
             const std::vector<ext::shared_ptr<BTP> >& btps,
             const std::vector<Real>& outstandings,
-            const std::vector<Handle<Quote> >& cleanPriceQuotes)
-    : btps_(btps), outstandings_(outstandings), quotes_(cleanPriceQuotes) {
+            std::vector<Handle<Quote> >  cleanPriceQuotes)
+    : btps_(btps), outstandings_(outstandings), quotes_(std::move(cleanPriceQuotes)) {
 
         QL_REQUIRE(!btps_.empty(), "empty RendistatoCalculator Basket");
         Size k = btps_.size();
@@ -133,11 +134,11 @@ namespace QuantLib {
 
 
     RendistatoCalculator::RendistatoCalculator(
-                            const ext::shared_ptr<RendistatoBasket>& basket,
-                            const ext::shared_ptr<Euribor>& euriborIndex,
-                            const Handle<YieldTermStructure>& discountCurve)
-    : basket_(basket),
-      euriborIndex_(euriborIndex), discountCurve_(discountCurve),
+                            ext::shared_ptr<RendistatoBasket>  basket,
+                            ext::shared_ptr<Euribor>  euriborIndex,
+                            Handle<YieldTermStructure>  discountCurve)
+    : basket_(std::move(basket)),
+      euriborIndex_(std::move(euriborIndex)), discountCurve_(std::move(discountCurve)),
       yields_(basket_->size(), 0.05), durations_(basket_->size()),
       nSwaps_(15), // TODO: generalize number of swaps and their lenghts
       swaps_(nSwaps_),
@@ -228,7 +229,7 @@ namespace QuantLib {
     }
 
     RendistatoEquivalentSwapLengthQuote::RendistatoEquivalentSwapLengthQuote(
-        const ext::shared_ptr<RendistatoCalculator>& r) : r_(r) {}
+        ext::shared_ptr<RendistatoCalculator>  r) : r_(std::move(r)) {}
 
     bool RendistatoEquivalentSwapLengthQuote::isValid() const {
         try {
@@ -240,7 +241,7 @@ namespace QuantLib {
     }
 
     RendistatoEquivalentSwapSpreadQuote::RendistatoEquivalentSwapSpreadQuote(
-        const ext::shared_ptr<RendistatoCalculator>& r) : r_(r) {}
+        ext::shared_ptr<RendistatoCalculator>  r) : r_(std::move(r)) {}
 
     bool RendistatoEquivalentSwapSpreadQuote::isValid() const {
         try {

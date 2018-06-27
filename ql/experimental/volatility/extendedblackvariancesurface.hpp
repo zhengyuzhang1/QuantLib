@@ -44,9 +44,9 @@ namespace QuantLib {
                               const Date& referenceDate,
                               const Calendar& calendar,
                               const std::vector<Date>& dates,
-                              const std::vector<Real>& strikes,
+                              std::vector<Real>  strikes,
                               const std::vector<Handle<Quote> >& volatilities,
-                              const DayCounter& dayCounter,
+                              DayCounter  dayCounter,
                               Extrapolation lowerExtrapolation =
                                              InterpolatorDefaultExtrapolation,
                               Extrapolation upperExtrapolation =

@@ -21,21 +21,22 @@
 #include <ql/methods/finitedifferences/solvers/fdm2dimsolver.hpp>
 #include <ql/methods/finitedifferences/operators/fdm2dblackscholesop.hpp>
 #include <ql/methods/finitedifferences/solvers/fdm2dblackscholessolver.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     Fdm2dBlackScholesSolver::Fdm2dBlackScholesSolver(
-        const Handle<GeneralizedBlackScholesProcess>& p1,
-        const Handle<GeneralizedBlackScholesProcess>& p2,
+        Handle<GeneralizedBlackScholesProcess>  p1,
+        Handle<GeneralizedBlackScholesProcess>  p2,
         const Real correlation,
-        const FdmSolverDesc& solverDesc,
+        FdmSolverDesc  solverDesc,
         const FdmSchemeDesc& schemeDesc,
         bool localVol,
         Real illegalLocalVolOverwrite)
-    : p1_(p1),
-      p2_(p2),
+    : p1_(std::move(p1)),
+      p2_(std::move(p2)),
       correlation_(correlation),
-      solverDesc_(solverDesc),
+      solverDesc_(std::move(solverDesc)),
       schemeDesc_(schemeDesc),
       localVol_(localVol),
       illegalLocalVolOverwrite_(illegalLocalVolOverwrite) {

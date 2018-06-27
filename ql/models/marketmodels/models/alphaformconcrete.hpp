@@ -27,7 +27,7 @@ namespace QuantLib {
 
     class AlphaFormInverseLinear : public AlphaForm {
       public:
-        AlphaFormInverseLinear(const std::vector<Time>& times,
+        AlphaFormInverseLinear(std::vector<Time>  times,
                                Real alpha =0.0);
         ~AlphaFormInverseLinear() override {}
         Real operator()(Integer i) const override;
@@ -39,7 +39,7 @@ namespace QuantLib {
 
     class AlphaFormLinearHyperbolic : public AlphaForm {
       public:
-        AlphaFormLinearHyperbolic(const std::vector<Time>& times,
+        AlphaFormLinearHyperbolic(std::vector<Time>  times,
                                   Real alpha =0.0);
         ~AlphaFormLinearHyperbolic() override {}
         Real operator()(Integer i) const override;

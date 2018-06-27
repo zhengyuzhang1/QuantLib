@@ -26,6 +26,7 @@
 
 #include <ql/experimental/commodities/commoditytype.hpp>
 #include <ql/experimental/commodities/unitofmeasure.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -35,8 +36,8 @@ namespace QuantLib {
         //! \name Constructors
         //@{
         Quantity();
-        Quantity(const CommodityType& commodityType,
-                 const UnitOfMeasure& unitOfMeasure,
+        Quantity(CommodityType  commodityType,
+                 UnitOfMeasure  unitOfMeasure,
                  Real amount);
         //@}
         //! \name Inspectors
@@ -125,10 +126,10 @@ namespace QuantLib {
     inline Quantity::Quantity()
     : amount_(0.0) {}
 
-    inline Quantity::Quantity(const CommodityType& commodityType,
-                              const UnitOfMeasure& unitOfMeasure,
+    inline Quantity::Quantity(CommodityType  commodityType,
+                              UnitOfMeasure  unitOfMeasure,
                               Real amount)
-    : commodityType_(commodityType), unitOfMeasure_(unitOfMeasure),
+    : commodityType_(std::move(commodityType)), unitOfMeasure_(std::move(unitOfMeasure)),
       amount_(amount) {}
 
     inline const CommodityType& Quantity::commodityType() const {

@@ -193,10 +193,10 @@ namespace QuantLib {
               GaussChebyshev, GaussChebyshev2nd };
 
         Integration(Algorithm intAlgo,
-                    const ext::shared_ptr<GaussianQuadrature>& quadrature);
+                    ext::shared_ptr<GaussianQuadrature>  quadrature);
 
         Integration(Algorithm intAlgo,
-                    const ext::shared_ptr<Integrator>& integrator);
+                    ext::shared_ptr<Integrator>  integrator);
 
         const Algorithm intAlgo_;
         const ext::shared_ptr<Integrator> integrator_;

@@ -36,15 +36,15 @@ namespace QuantLib {
         OISRateHelper(Natural settlementDays,
                       const Period& tenor, // swap maturity
                       const Handle<Quote>& fixedRate,
-                      const ext::shared_ptr<OvernightIndex>& overnightIndex,
+                      ext::shared_ptr<OvernightIndex>  overnightIndex,
                       // exogenous discounting curve
-                      const Handle<YieldTermStructure>& discountingCurve
+                      Handle<YieldTermStructure>  discountingCurve
                                                = Handle<YieldTermStructure>(),
                       bool telescopicValueDates = false,
                       Natural paymentLag = 0,
                       BusinessDayConvention paymentConvention = Following,
                       Frequency paymentFrequency = Annual,
-                      const Calendar& paymentCalendar = Calendar(),
+                      Calendar  paymentCalendar = Calendar(),
                       const Period& forwardStart = 0 * Days, 
                       const Spread overnightSpread = 0.0);
         //! \name RateHelper interface
@@ -91,7 +91,7 @@ namespace QuantLib {
                     const Handle<Quote>& fixedRate,
                     const ext::shared_ptr<OvernightIndex>& overnightIndex,
                       // exogenous discounting curve
-                    const Handle<YieldTermStructure>& discountingCurve
+                    Handle<YieldTermStructure>  discountingCurve
                                               = Handle<YieldTermStructure>(),
                     bool telescopicValueDates = false);
         //! \name RateHelper interface

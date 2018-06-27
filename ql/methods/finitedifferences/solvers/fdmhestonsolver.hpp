@@ -42,12 +42,12 @@ namespace QuantLib {
     class FdmHestonSolver : public LazyObject {
       public:
         FdmHestonSolver(
-            const Handle<HestonProcess>& process,
-            const FdmSolverDesc& solverDesc,
+            Handle<HestonProcess>  process,
+            FdmSolverDesc  solverDesc,
             const FdmSchemeDesc& schemeDesc = FdmSchemeDesc::Hundsdorfer(),
-            const Handle<FdmQuantoHelper>& quantoHelper
+            Handle<FdmQuantoHelper>  quantoHelper
                                                 = Handle<FdmQuantoHelper>(),
-            const ext::shared_ptr<LocalVolTermStructure>& leverageFct
+            ext::shared_ptr<LocalVolTermStructure>  leverageFct
                 = ext::shared_ptr<LocalVolTermStructure>());
 
         Real valueAt(Real s, Real v) const;

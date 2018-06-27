@@ -33,9 +33,9 @@ namespace QuantLib {
     class FdmSimpleSwingCondition : public StepCondition<Array> {
       public:
           FdmSimpleSwingCondition(
-                  const std::vector<Time> & exerciseTimes,
-                  const ext::shared_ptr<FdmMesher>& mesher,
-                  const ext::shared_ptr<FdmInnerValueCalculator>& calculator,
+                  std::vector<Time>  exerciseTimes,
+                  ext::shared_ptr<FdmMesher>  mesher,
+                  ext::shared_ptr<FdmInnerValueCalculator>  calculator,
                   Size swingDirection,
                   Size minExercises = 0);
     

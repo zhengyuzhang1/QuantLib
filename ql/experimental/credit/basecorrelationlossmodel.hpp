@@ -32,6 +32,7 @@
 #include <ql/experimental/credit/gaussianlhplossmodel.hpp>
 #include <ql/experimental/credit/binomiallossmodel.hpp>
 #include <ql/experimental/credit/inhomogeneouspooldef.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -95,14 +96,14 @@ namespace QuantLib {
     public:
         BaseCorrelationLossModel(
             const Handle<BaseCorrelationTermStructure<Corr2DInt_T> >& correlTS,
-            const std::vector<Real>& recoveries,
+            std::vector<Real>  recoveries,
             const initTraits& traits = initTraits()
             )
         : localCorrelationAttach_(ext::make_shared<SimpleQuote>(
             0.)),
           localCorrelationDetach_(ext::make_shared<SimpleQuote>(
             0.)),
-          recoveries_(recoveries),
+          recoveries_(std::move(recoveries)),
           correlTS_(correlTS),
           copulaTraits_(traits)
         { 

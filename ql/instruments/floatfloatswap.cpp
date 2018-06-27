@@ -29,16 +29,17 @@
 #include <ql/indexes/iborindex.hpp>
 #include <ql/indexes/swapindex.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FloatFloatSwap::FloatFloatSwap(
         const VanillaSwap::Type type, const Real nominal1, const Real nominal2,
         const Schedule &schedule1,
-        const ext::shared_ptr<InterestRateIndex> &index1,
-        const DayCounter &dayCount1, const Schedule &schedule2,
-        const ext::shared_ptr<InterestRateIndex> &index2,
-        const DayCounter &dayCount2, const bool intermediateCapitalExchange,
+        ext::shared_ptr<InterestRateIndex> index1,
+        DayCounter dayCount1, const Schedule &schedule2,
+        ext::shared_ptr<InterestRateIndex> index2,
+        DayCounter dayCount2, const bool intermediateCapitalExchange,
         const bool finalCapitalExchange, const Real gearing1,
         const Real spread1, const Real cappedRate1, const Real flooredRate1,
         const Real gearing2, const Real spread2, const Real cappedRate2,
@@ -48,8 +49,8 @@ namespace QuantLib {
         : Swap(2), type_(type),
           nominal1_(std::vector<Real>(schedule1.size() - 1, nominal1)),
           nominal2_(std::vector<Real>(schedule2.size() - 1, nominal2)),
-          schedule1_(schedule1), schedule2_(schedule2), index1_(index1),
-          index2_(index2),
+          schedule1_(schedule1), schedule2_(schedule2), index1_(std::move(index1)),
+          index2_(std::move(index2)),
           gearing1_(std::vector<Real>(schedule1.size() - 1, gearing1)),
           gearing2_(std::vector<Real>(schedule2.size() - 1, gearing2)),
           spread1_(std::vector<Real>(schedule1.size() - 1, spread1)),
@@ -58,7 +59,7 @@ namespace QuantLib {
           flooredRate1_(std::vector<Real>(schedule1.size() - 1, flooredRate1)),
           cappedRate2_(std::vector<Real>(schedule2.size() - 1, cappedRate2)),
           flooredRate2_(std::vector<Real>(schedule2.size() - 1, flooredRate2)),
-          dayCount1_(dayCount1), dayCount2_(dayCount2),
+          dayCount1_(std::move(dayCount1)), dayCount2_(std::move(dayCount2)),
           intermediateCapitalExchange_(intermediateCapitalExchange),
           finalCapitalExchange_(finalCapitalExchange) {
 
@@ -66,27 +67,27 @@ namespace QuantLib {
     }
 
     FloatFloatSwap::FloatFloatSwap(
-        const VanillaSwap::Type type, const std::vector<Real> &nominal1,
-        const std::vector<Real> &nominal2, const Schedule &schedule1,
-        const ext::shared_ptr<InterestRateIndex> &index1,
-        const DayCounter &dayCount1, const Schedule &schedule2,
-        const ext::shared_ptr<InterestRateIndex> &index2,
-        const DayCounter &dayCount2, const bool intermediateCapitalExchange,
-        const bool finalCapitalExchange, const std::vector<Real> &gearing1,
-        const std::vector<Real> &spread1, const std::vector<Real> &cappedRate1,
-        const std::vector<Real> &flooredRate1,
-        const std::vector<Real> &gearing2, const std::vector<Real> &spread2,
-        const std::vector<Real> &cappedRate2,
-        const std::vector<Real> &flooredRate2,
+        const VanillaSwap::Type type, std::vector<Real> nominal1,
+        std::vector<Real> nominal2, Schedule schedule1,
+        ext::shared_ptr<InterestRateIndex> index1,
+        DayCounter dayCount1, Schedule schedule2,
+        ext::shared_ptr<InterestRateIndex> index2,
+        DayCounter dayCount2, const bool intermediateCapitalExchange,
+        const bool finalCapitalExchange, std::vector<Real> gearing1,
+        std::vector<Real> spread1, std::vector<Real> cappedRate1,
+        std::vector<Real> flooredRate1,
+        std::vector<Real> gearing2, std::vector<Real> spread2,
+        std::vector<Real> cappedRate2,
+        std::vector<Real> flooredRate2,
         boost::optional<BusinessDayConvention> paymentConvention1,
         boost::optional<BusinessDayConvention> paymentConvention2)
-        : Swap(2), type_(type), nominal1_(nominal1), nominal2_(nominal2),
-          schedule1_(schedule1), schedule2_(schedule2), index1_(index1),
-          index2_(index2), gearing1_(gearing1), gearing2_(gearing2),
-          spread1_(spread1), spread2_(spread2), cappedRate1_(cappedRate1),
-          flooredRate1_(flooredRate1), cappedRate2_(cappedRate2),
-          flooredRate2_(flooredRate2), dayCount1_(dayCount1),
-          dayCount2_(dayCount2),
+        : Swap(2), type_(type), nominal1_(std::move(nominal1)), nominal2_(std::move(nominal2)),
+          schedule1_(std::move(schedule1)), schedule2_(std::move(schedule2)), index1_(std::move(index1)),
+          index2_(std::move(index2)), gearing1_(std::move(gearing1)), gearing2_(std::move(gearing2)),
+          spread1_(std::move(spread1)), spread2_(std::move(spread2)), cappedRate1_(std::move(cappedRate1)),
+          flooredRate1_(std::move(flooredRate1)), cappedRate2_(std::move(cappedRate2)),
+          flooredRate2_(std::move(flooredRate2)), dayCount1_(std::move(dayCount1)),
+          dayCount2_(std::move(dayCount2)),
           intermediateCapitalExchange_(intermediateCapitalExchange),
           finalCapitalExchange_(finalCapitalExchange) {
 

@@ -24,14 +24,15 @@
 #include <ql/termstructures/yield/flatforward.hpp>
 #include <ql/termstructures/volatility/equityfx/blackconstantvol.hpp>
 #include <ql/time/calendars/nullcalendar.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     AnalyticAmericanMargrabeEngine::AnalyticAmericanMargrabeEngine(
-            const ext::shared_ptr<GeneralizedBlackScholesProcess>& process1,
-            const ext::shared_ptr<GeneralizedBlackScholesProcess>& process2,
+            ext::shared_ptr<GeneralizedBlackScholesProcess>  process1,
+            ext::shared_ptr<GeneralizedBlackScholesProcess>  process2,
             Real correlation)
-    : process1_(process1), process2_(process2), rho_(correlation) {
+    : process1_(std::move(process1)), process2_(std::move(process2)), rho_(correlation) {
         registerWith(process1_);
         registerWith(process2_);
     }

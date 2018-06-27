@@ -29,6 +29,7 @@
 #include <ql/instruments/payoffs.hpp>
 #include <ql/instruments/multiassetoption.hpp>
 #include <ql/math/array.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -36,8 +37,8 @@ namespace QuantLib {
       private:
         ext::shared_ptr<Payoff> basePayoff_;
       public:
-        explicit BasketPayoff(const ext::shared_ptr<Payoff> &p)
-        : basePayoff_(p) {}
+        explicit BasketPayoff(ext::shared_ptr<Payoff> p)
+        : basePayoff_(std::move(p)) {}
         ~BasketPayoff() override {}
         std::string name() const override { return basePayoff_->name(); }
         std::string description() const override { return basePayoff_->description(); }

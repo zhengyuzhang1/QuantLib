@@ -26,6 +26,7 @@
 #include <ql/indexes/interestrateindex.hpp>
 #include <ql/cashflows/couponpricer.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -40,11 +41,11 @@ namespace QuantLib {
                             Spread spread,
                             const Date& refPeriodStart,
                             const Date& refPeriodEnd,
-                            const DayCounter& dayCounter,
+                            DayCounter  dayCounter,
                             bool isInArrears)
     : Coupon(paymentDate, nominal,
              startDate, endDate, refPeriodStart, refPeriodEnd),
-      index_(index), dayCounter_(dayCounter),
+      index_(index), dayCounter_(std::move(dayCounter)),
       fixingDays_(fixingDays==Null<Natural>() ? index->fixingDays() : fixingDays),
       gearing_(gearing), spread_(spread),
       isInArrears_(isInArrears)

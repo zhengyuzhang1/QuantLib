@@ -20,15 +20,16 @@
 */
 
 #include <ql/methods/finitedifferences/schemes/douglasscheme.hpp>
+#include <utility>
 
 namespace QuantLib {
     DouglasScheme::DouglasScheme(
         Real theta,
-        const ext::shared_ptr<FdmLinearOpComposite> & map,
+        ext::shared_ptr<FdmLinearOpComposite>  map,
         const bc_set& bcSet)
     : dt_(Null<Real>()),
       theta_(theta),
-      map_(map),
+      map_(std::move(map)),
       bcSet_(bcSet) {
     }
 

@@ -22,6 +22,7 @@
 #include <ql/time/schedule.hpp>
 #include <ql/time/imm.hpp>
 #include <ql/settings.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -70,19 +71,19 @@ namespace QuantLib {
 
 
     Schedule::Schedule(const std::vector<Date>& dates,
-                       const Calendar& calendar,
+                       Calendar  calendar,
                        BusinessDayConvention convention,
                        boost::optional<BusinessDayConvention>
                                          terminationDateConvention,
                        const boost::optional<Period> tenor,
                        boost::optional<DateGeneration::Rule> rule,
                        boost::optional<bool> endOfMonth,
-                       const std::vector<bool>& isRegular)
-    : tenor_(tenor), calendar_(calendar),
+                       std::vector<bool>  isRegular)
+    : tenor_(tenor), calendar_(std::move(calendar)),
       convention_(convention),
       terminationDateConvention_(terminationDateConvention),
       rule_(rule),
-      dates_(dates), isRegular_(isRegular) {
+      dates_(dates), isRegular_(std::move(isRegular)) {
 
         if (tenor != boost::none && !allowsEndOfMonth(*tenor))
             endOfMonth_ = false;
@@ -100,14 +101,14 @@ namespace QuantLib {
     Schedule::Schedule(Date effectiveDate,
                        const Date& terminationDate,
                        const Period& tenor,
-                       const Calendar& cal,
+                       Calendar  cal,
                        BusinessDayConvention convention,
                        BusinessDayConvention terminationDateConvention,
                        DateGeneration::Rule rule,
                        bool endOfMonth,
                        const Date& first,
                        const Date& nextToLast)
-    : tenor_(tenor), calendar_(cal), convention_(convention),
+    : tenor_(tenor), calendar_(std::move(cal)), convention_(convention),
       terminationDateConvention_(terminationDateConvention), rule_(rule),
       endOfMonth_(allowsEndOfMonth(tenor) ? endOfMonth : false),
       firstDate_(first==effectiveDate ? Date() : first),

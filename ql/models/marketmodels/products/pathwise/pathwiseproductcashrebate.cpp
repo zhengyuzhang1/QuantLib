@@ -21,6 +21,7 @@
 #include <ql/models/marketmodels/curvestate.hpp>
 #include <ql/models/marketmodels/utilities.hpp>
 #include <ql/auto_ptr.hpp>
+#include <utility>
 
 namespace QuantLib 
 {
@@ -32,11 +33,11 @@ namespace QuantLib
     }
 
      MarketModelPathwiseCashRebate::MarketModelPathwiseCashRebate(
-                              const EvolutionDescription& evolution,
+                              EvolutionDescription  evolution,
                               const std::vector<Time>& paymentTimes,
                               const Matrix& amounts,
                               Size numberOfProducts)
-    : evolution_(evolution), paymentTimes_(paymentTimes),
+    : evolution_(std::move(evolution)), paymentTimes_(paymentTimes),
       amounts_(amounts), numberOfProducts_(numberOfProducts)
     {
 

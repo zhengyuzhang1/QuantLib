@@ -29,6 +29,7 @@
 #include <ql/math/comparison.hpp>
 #include <ql/math/functional.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -161,11 +162,11 @@ namespace QuantLib {
     class DiscretizedOption : public DiscretizedAsset {
       public:
         DiscretizedOption(
-                      const ext::shared_ptr<DiscretizedAsset>& underlying,
+                      ext::shared_ptr<DiscretizedAsset>  underlying,
                       Exercise::Type exerciseType,
-                      const std::vector<Time>& exerciseTimes)
-        : underlying_(underlying), exerciseType_(exerciseType),
-          exerciseTimes_(exerciseTimes) {}
+                      std::vector<Time>  exerciseTimes)
+        : underlying_(std::move(underlying)), exerciseType_(exerciseType),
+          exerciseTimes_(std::move(exerciseTimes)) {}
         void reset(Size size) override;
         std::vector<Time> mandatoryTimes() const override;
       protected:

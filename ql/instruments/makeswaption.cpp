@@ -25,13 +25,14 @@
 #include <ql/pricingengines/swap/discountingswapengine.hpp>
 #include <ql/exercise.hpp>
 #include <ql/settings.hpp>
+#include <utility>
 
 namespace QuantLib {
 
-    MakeSwaption::MakeSwaption(const ext::shared_ptr<SwapIndex>& swapIndex,
+    MakeSwaption::MakeSwaption(ext::shared_ptr<SwapIndex>  swapIndex,
                                const Period& optionTenor,
                                Rate strike)
-    : swapIndex_(swapIndex),
+    : swapIndex_(std::move(swapIndex)),
       delivery_(Settlement::Physical),
       optionTenor_(optionTenor),
       optionConvention_(ModifiedFollowing),
@@ -40,10 +41,10 @@ namespace QuantLib {
       underlyingType_(VanillaSwap::Payer),
       nominal_(1.0) {}
 
-    MakeSwaption::MakeSwaption(const ext::shared_ptr<SwapIndex>& swapIndex,
+    MakeSwaption::MakeSwaption(ext::shared_ptr<SwapIndex>  swapIndex,
                                const Date& fixingDate,
                                Rate strike)
-    : swapIndex_(swapIndex),
+    : swapIndex_(std::move(swapIndex)),
       delivery_(Settlement::Physical),
       optionConvention_(ModifiedFollowing),
       fixingDate_(fixingDate),

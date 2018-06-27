@@ -18,17 +18,18 @@
 */
 
 #include <ql/methods/finitedifferences/schemes/modifiedcraigsneydscheme.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     ModifiedCraigSneydScheme::ModifiedCraigSneydScheme(
         Real theta, Real mu,
-        const ext::shared_ptr<FdmLinearOpComposite> & map,
+        ext::shared_ptr<FdmLinearOpComposite>  map,
         const bc_set& bcSet)
         : dt_(Null<Real>()),
         theta_(theta),
         mu_   (mu),
-        map_  (map),
+        map_  (std::move(map)),
         bcSet_(bcSet) {
     }
 

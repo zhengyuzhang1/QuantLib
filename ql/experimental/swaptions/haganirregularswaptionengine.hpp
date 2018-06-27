@@ -50,8 +50,8 @@ namespace QuantLib {
         IrregularSwaption::results> {
     public:
         //@{
-        HaganIrregularSwaptionEngine(const Handle<SwaptionVolatilityStructure>&,
-            const Handle<YieldTermStructure>& termStructure = Handle<YieldTermStructure>());
+        HaganIrregularSwaptionEngine(Handle<SwaptionVolatilityStructure> ,
+            Handle<YieldTermStructure>  termStructure = Handle<YieldTermStructure>());
         //@}
         void calculate() const override;
 
@@ -59,8 +59,8 @@ namespace QuantLib {
         class Basket {
         public:
             Basket(ext::shared_ptr<IrregularSwap> swap,
-                   const Handle<YieldTermStructure>& termStructure,
-                   const Handle<SwaptionVolatilityStructure>& volatilityStructure);
+                   Handle<YieldTermStructure>  termStructure,
+                   Handle<SwaptionVolatilityStructure>  volatilityStructure);
             Disposable<Array> compute(Rate lambda = 0.0) const;
             Real operator()(Rate x) const;
             ext::shared_ptr<VanillaSwap> component(Size i) const;

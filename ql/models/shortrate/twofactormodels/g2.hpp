@@ -28,6 +28,7 @@
 #include <ql/models/shortrate/twofactormodel.hpp>
 #include <ql/processes/ornsteinuhlenbeckprocess.hpp>
 #include <ql/instruments/swaption.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -121,7 +122,7 @@ namespace QuantLib {
 
     class G2::Dynamics : public TwoFactorModel::ShortRateDynamics {
       public:
-        Dynamics(const Parameter& fitting,
+        Dynamics(Parameter  fitting,
                  Real a,
                  Real sigma,
                  Real b,
@@ -132,7 +133,7 @@ namespace QuantLib {
                             ext::shared_ptr<StochasticProcess1D>(
                                       new OrnsteinUhlenbeckProcess(b, eta)),
                             rho),
-          fitting_(fitting) {}
+          fitting_(std::move(fitting)) {}
         Rate shortRate(Time t,
                                Real x,
                                Real y) const override {
@@ -156,13 +157,13 @@ namespace QuantLib {
       private:
         class Impl : public Parameter::Impl {
           public:
-            Impl(const Handle<YieldTermStructure>& termStructure,
+            Impl(Handle<YieldTermStructure>  termStructure,
                  Real a,
                  Real sigma,
                  Real b,
                  Real eta,
                  Real rho)
-            : termStructure_(termStructure),
+            : termStructure_(std::move(termStructure)),
               a_(a), sigma_(sigma), b_(b), eta_(eta), rho_(rho) {}
 
             Real value(const Array&, Time t) const override {

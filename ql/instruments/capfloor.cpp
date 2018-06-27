@@ -29,6 +29,7 @@
 #include <ql/cashflows/cashflows.hpp>
 #include <ql/utilities/dataformatters.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -37,7 +38,7 @@ namespace QuantLib {
         class ImpliedCapVolHelper {
           public:
             ImpliedCapVolHelper(const CapFloor&,
-                                const Handle<YieldTermStructure>& discountCurve,
+                                Handle<YieldTermStructure>  discountCurve,
                                 Real targetValue,
                                 Real displacement,
                                 VolatilityType type);
@@ -53,11 +54,11 @@ namespace QuantLib {
 
         ImpliedCapVolHelper::ImpliedCapVolHelper(
                               const CapFloor& cap,
-                              const Handle<YieldTermStructure>& discountCurve,
+                              Handle<YieldTermStructure>  discountCurve,
                               Real targetValue,
                               Real displacement,
                               VolatilityType type)
-        : discountCurve_(discountCurve), targetValue_(targetValue) {
+        : discountCurve_(std::move(discountCurve)), targetValue_(targetValue) {
 
             // set an implausible value, so that calculation is forced
             // at first ImpliedCapVolHelper::operator()(Volatility x) call
@@ -122,11 +123,11 @@ namespace QuantLib {
     }
 
     CapFloor::CapFloor(CapFloor::Type type,
-                       const Leg& floatingLeg,
-                       const std::vector<Rate>& capRates,
-                       const std::vector<Rate>& floorRates)
-    : type_(type), floatingLeg_(floatingLeg),
-      capRates_(capRates), floorRates_(floorRates) {
+                       Leg  floatingLeg,
+                       std::vector<Rate>  capRates,
+                       std::vector<Rate>  floorRates)
+    : type_(type), floatingLeg_(std::move(floatingLeg)),
+      capRates_(std::move(capRates)), floorRates_(std::move(floorRates)) {
         if (type_ == Cap || type_ == Collar) {
             QL_REQUIRE(!capRates_.empty(), "no cap rates given");
             capRates_.reserve(floatingLeg_.size());
@@ -147,9 +148,9 @@ namespace QuantLib {
     }
 
     CapFloor::CapFloor(CapFloor::Type type,
-                       const Leg& floatingLeg,
+                       Leg  floatingLeg,
                        const std::vector<Rate>& strikes)
-    : type_(type), floatingLeg_(floatingLeg) {
+    : type_(type), floatingLeg_(std::move(floatingLeg)) {
         QL_REQUIRE(!strikes.empty(), "no strikes given");
         if (type_ == Cap) {
             capRates_ = strikes;

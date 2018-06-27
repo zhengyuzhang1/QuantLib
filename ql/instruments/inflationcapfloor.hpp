@@ -58,11 +58,11 @@ namespace QuantLib {
         class arguments;
         class engine;
         YoYInflationCapFloor(Type type,
-                 const Leg& yoyLeg,
-                 const std::vector<Rate>& capRates,
-                 const std::vector<Rate>& floorRates);
+                 Leg  yoyLeg,
+                 std::vector<Rate>  capRates,
+                 std::vector<Rate>  floorRates);
         YoYInflationCapFloor(Type type,
-                 const Leg& yoyLeg,
+                 Leg  yoyLeg,
                  const std::vector<Rate>& strikes);
         //! \name Instrument interface
         //@{

@@ -20,12 +20,13 @@
 #include <ql/pricingengines/cliquet/analyticperformanceengine.hpp>
 #include <ql/pricingengines/blackcalculator.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     AnalyticPerformanceEngine::AnalyticPerformanceEngine(
-            const ext::shared_ptr<GeneralizedBlackScholesProcess>& process)
-    : process_(process) {
+            ext::shared_ptr<GeneralizedBlackScholesProcess>  process)
+    : process_(std::move(process)) {
         registerWith(process_);
     }
 

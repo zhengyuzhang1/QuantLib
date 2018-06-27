@@ -34,7 +34,7 @@ namespace QuantLib {
                           const ext::shared_ptr<MarketModel>& largeModel,
                           Size period,
                           Size offset,
-                          const std::vector<Spread>& newDisplacements_ );
+                          std::vector<Spread>  newDisplacements_ );
         //! \name MarketModel interface
         //@{
         const std::vector<Rate>& initialRates() const override;

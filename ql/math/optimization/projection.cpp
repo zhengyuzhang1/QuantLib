@@ -20,14 +20,15 @@
 */
 
 #include <ql/math/optimization/projection.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     Projection::Projection(const Array &parameterValues,
-                           const std::vector<bool> &fixParameters)
+                           std::vector<bool> fixParameters)
         : numberOfFreeParameters_(0), fixedParameters_(parameterValues),
           actualParameters_(parameterValues),
-          fixParameters_(fixParameters) {
+          fixParameters_(std::move(fixParameters)) {
 
         if (fixParameters_.size() == 0)
             fixParameters_ =

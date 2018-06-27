@@ -28,17 +28,18 @@
 #include <ql/methods/finitedifferences/operators/fdmlinearopiterator.hpp>
 #include <ql/experimental/finitedifferences/fdmhestongreensfct.hpp>
 #include <ql/experimental/finitedifferences/squarerootprocessrndcalculator.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FdmHestonGreensFct::FdmHestonGreensFct(
-        const ext::shared_ptr<FdmMesher>& mesher,
-        const ext::shared_ptr<HestonProcess>& process,
+        ext::shared_ptr<FdmMesher>  mesher,
+        ext::shared_ptr<HestonProcess>  process,
         FdmSquareRootFwdOp::TransformationType trafoType_,
         const Real l0)
     : l0_(l0),
-      mesher_(mesher),
-      process_(process),
+      mesher_(std::move(mesher)),
+      process_(std::move(process)),
       trafoType_(trafoType_) { }
 
     Disposable<Array> FdmHestonGreensFct::get(Time t, Algorithm algorithm)

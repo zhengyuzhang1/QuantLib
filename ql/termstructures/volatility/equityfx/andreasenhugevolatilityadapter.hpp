@@ -33,7 +33,7 @@ namespace QuantLib {
     class AndreasenHugeVolatilityAdapter : public BlackVarianceTermStructure {
       public:
         AndreasenHugeVolatilityAdapter(
-            const ext::shared_ptr<AndreasenHugeVolatilityInterpl>& volInterpl,
+            ext::shared_ptr<AndreasenHugeVolatilityInterpl>  volInterpl,
             Real eps = 1e-6);
 
         Date maxDate() const override;

@@ -19,6 +19,7 @@
 
 #include <ql/experimental/coupons/strippedcapflooredcoupon.hpp>
 #include <ql/cashflows/couponpricer.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -104,8 +105,8 @@ namespace QuantLib {
     }
 
     StrippedCappedFlooredCouponLeg::StrippedCappedFlooredCouponLeg(
-        const Leg &underlyingLeg)
-        : underlyingLeg_(underlyingLeg) {}
+        Leg underlyingLeg)
+        : underlyingLeg_(std::move(underlyingLeg)) {}
 
     StrippedCappedFlooredCouponLeg::operator Leg() const {
         Leg resultLeg;

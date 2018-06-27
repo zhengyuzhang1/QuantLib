@@ -34,6 +34,7 @@
 #endif
 
 #include <boost/bind.hpp>
+#include <utility>
 
 #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
 #pragma GCC diagnostic pop
@@ -44,8 +45,8 @@ namespace QuantLib {
         const FdmVPPStepConditionParams& params,
         Size nStates,
         const FdmVPPStepConditionMesher& mesh,
-        const ext::shared_ptr<FdmInnerValueCalculator>& gasPrice,
-        const ext::shared_ptr<FdmInnerValueCalculator>& sparkSpreadPrice)
+        ext::shared_ptr<FdmInnerValueCalculator>  gasPrice,
+        ext::shared_ptr<FdmInnerValueCalculator>  sparkSpreadPrice)
     : heatRate_        (params.heatRate),
       pMin_            (params.pMin),
       pMax_            (params.pMax),
@@ -57,8 +58,8 @@ namespace QuantLib {
       stateDirection_  (mesh.stateDirection),
       nStates_         (nStates),
       mesher_          (mesh.mesher),
-      gasPrice_        (gasPrice),
-      sparkSpreadPrice_(sparkSpreadPrice),
+      gasPrice_        (std::move(gasPrice)),
+      sparkSpreadPrice_(std::move(sparkSpreadPrice)),
       stateEvolveFcts_ (nStates_) {
 
         QL_REQUIRE(nStates_ == mesher_->layout()->dim()[stateDirection_],

@@ -44,11 +44,11 @@ namespace QuantLib {
         //@{
         TreeVanillaSwapEngine(const ext::shared_ptr<ShortRateModel>&,
                               Size timeSteps,
-                              const Handle<YieldTermStructure>& termStructure =
+                              Handle<YieldTermStructure>  termStructure =
                                                  Handle<YieldTermStructure>());
         TreeVanillaSwapEngine(const ext::shared_ptr<ShortRateModel>&,
                               const TimeGrid& timeGrid,
-                              const Handle<YieldTermStructure>& termStructure =
+                              Handle<YieldTermStructure>  termStructure =
                                                  Handle<YieldTermStructure>());
         //@}
         void calculate() const override;

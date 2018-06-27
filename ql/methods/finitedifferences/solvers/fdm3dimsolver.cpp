@@ -26,16 +26,17 @@
 #include <ql/methods/finitedifferences/meshers/fdmmesher.hpp>
 #include <ql/methods/finitedifferences/stepconditions/fdmsnapshotcondition.hpp>
 #include <ql/methods/finitedifferences/utilities/fdminnervaluecalculator.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     Fdm3DimSolver::Fdm3DimSolver(
                         const FdmSolverDesc& solverDesc,
                         const FdmSchemeDesc& schemeDesc,
-                        const ext::shared_ptr<FdmLinearOpComposite>& op)
+                        ext::shared_ptr<FdmLinearOpComposite>  op)
     : solverDesc_(solverDesc),
       schemeDesc_(schemeDesc),
-      op_(op),
+      op_(std::move(op)),
       thetaCondition_(ext::make_shared<FdmSnapshotCondition>(
         0.99*std::min(1.0/365.0,
                 solverDesc.condition->stoppingTimes().empty()

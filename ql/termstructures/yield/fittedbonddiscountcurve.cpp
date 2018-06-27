@@ -26,6 +26,7 @@
 #include <ql/cashflows/cashflows.hpp>
 #include <ql/utilities/dataformatters.hpp>
 #include <ql/time/daycounters/simpledaycounter.hpp>
+#include <utility>
 
 using std::vector;
 
@@ -48,7 +49,7 @@ namespace QuantLib {
     FittedBondDiscountCurve::FittedBondDiscountCurve (
                  Natural settlementDays,
                  const Calendar& calendar,
-                 const vector<ext::shared_ptr<BondHelper> >& bondHelpers,
+                 vector<ext::shared_ptr<BondHelper> >  bondHelpers,
                  const DayCounter& dayCounter,
                  const FittingMethod& fittingMethod,
                  Real accuracy,
@@ -62,7 +63,7 @@ namespace QuantLib {
       simplexLambda_(simplexLambda),
       maxStationaryStateIterations_(maxStationaryStateIterations),
       guessSolution_(guess),
-      bondHelpers_(bondHelpers),
+      bondHelpers_(std::move(bondHelpers)),
       fittingMethod_(fittingMethod) {
 
         fittingMethod_->curve_ = this;
@@ -72,7 +73,7 @@ namespace QuantLib {
 
     FittedBondDiscountCurve::FittedBondDiscountCurve (
                  const Date& referenceDate,
-                 const vector<ext::shared_ptr<BondHelper> >& bondHelpers,
+                 vector<ext::shared_ptr<BondHelper> >  bondHelpers,
                  const DayCounter& dayCounter,
                  const FittingMethod& fittingMethod,
                  Real accuracy,
@@ -86,7 +87,7 @@ namespace QuantLib {
       simplexLambda_(simplexLambda),
       maxStationaryStateIterations_(maxStationaryStateIterations),
       guessSolution_(guess),
-      bondHelpers_(bondHelpers),
+      bondHelpers_(std::move(bondHelpers)),
       fittingMethod_(fittingMethod) {
 
         fittingMethod_->curve_ = this;
@@ -131,7 +132,7 @@ namespace QuantLib {
                      ext::shared_ptr<OptimizationMethod> optimizationMethod,
                      const Array& l2)
     : constrainAtZero_(constrainAtZero), weights_(weights), l2_(l2),
-      calculateWeights_(weights.empty()), optimizationMethod_(optimizationMethod) {}
+      calculateWeights_(weights.empty()), optimizationMethod_(std::move(optimizationMethod)) {}
 
     void FittedBondDiscountCurve::FittingMethod::init() {
         // yield conventions

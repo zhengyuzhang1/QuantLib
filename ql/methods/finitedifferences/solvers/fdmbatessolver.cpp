@@ -24,21 +24,22 @@
 #include <ql/methods/finitedifferences/operators/fdmbatesop.hpp>
 #include <ql/methods/finitedifferences/solvers/fdm2dimsolver.hpp>
 #include <ql/methods/finitedifferences/solvers/fdmbatessolver.hpp>
+#include <utility>
 
 
 namespace QuantLib {
     
     FdmBatesSolver::FdmBatesSolver(
-            const Handle<BatesProcess>& process,
-            const FdmSolverDesc& solverDesc,
+            Handle<BatesProcess>  process,
+            FdmSolverDesc  solverDesc,
             const FdmSchemeDesc& schemeDesc,
             Size integroIntegrationOrder,
-            const Handle<FdmQuantoHelper>& quantoHelper)
-    : process_(process),
-      solverDesc_(solverDesc),
+            Handle<FdmQuantoHelper>  quantoHelper)
+    : process_(std::move(process)),
+      solverDesc_(std::move(solverDesc)),
       schemeDesc_(schemeDesc),
       integroIntegrationOrder_(integroIntegrationOrder),
-      quantoHelper_(quantoHelper) {
+      quantoHelper_(std::move(quantoHelper)) {
         registerWith(process_);
         registerWith(quantoHelper_);
     }

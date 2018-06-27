@@ -20,15 +20,16 @@
 #include <ql/models/marketmodels/products/multistep/cashrebate.hpp>
 #include <ql/models/marketmodels/utilities.hpp>
 #include <ql/auto_ptr.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     MarketModelCashRebate::MarketModelCashRebate(
-                              const EvolutionDescription& evolution,
+                              EvolutionDescription  evolution,
                               const std::vector<Time>& paymentTimes,
                               const Matrix& amounts,
                               Size numberOfProducts)
-    : evolution_(evolution), paymentTimes_(paymentTimes),
+    : evolution_(std::move(evolution)), paymentTimes_(paymentTimes),
       amounts_(amounts), numberOfProducts_(numberOfProducts)
     {
 

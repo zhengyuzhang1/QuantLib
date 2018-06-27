@@ -31,6 +31,7 @@
 #include <ql/experimental/coupons/digitalcmsspreadcoupon.hpp>  /* internal */
 #include <ql/pricingengines/blackformula.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -189,8 +190,8 @@ namespace QuantLib {
             ext::shared_ptr<FloatingRateCouponPricer> pricer_;
           public:
             explicit PricerSetter(
-                    const ext::shared_ptr<FloatingRateCouponPricer>& pricer)
-            : pricer_(pricer) {}
+                    ext::shared_ptr<FloatingRateCouponPricer>  pricer)
+            : pricer_(std::move(pricer)) {}
 
             void visit(CashFlow& c) override;
             void visit(Coupon& c) override;

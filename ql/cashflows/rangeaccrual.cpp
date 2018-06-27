@@ -28,6 +28,7 @@
 #include <ql/termstructures/yieldtermstructure.hpp>
 
 #include <cmath>
+#include <utility>
 
 namespace QuantLib {
 
@@ -47,14 +48,14 @@ namespace QuantLib {
                 Rate spread,
                 const Date& refPeriodStart,
                 const Date& refPeriodEnd,
-                const ext::shared_ptr<Schedule>&  observationsSchedule,
+                ext::shared_ptr<Schedule>   observationsSchedule,
                 Real lowerTrigger,                                    // l
                 Real upperTrigger                                     // u
         )
     : FloatingRateCoupon(paymentDate, nominal, startDate, endDate,
                          fixingDays, index, gearing, spread,
                          refPeriodStart, refPeriodEnd, dayCounter),
-    observationsSchedule_(observationsSchedule),
+    observationsSchedule_(std::move(observationsSchedule)),
     lowerTrigger_(lowerTrigger),
     upperTrigger_(upperTrigger){
 
@@ -167,15 +168,15 @@ namespace QuantLib {
     //===========================================================================//
     RangeAccrualPricerByBgm::RangeAccrualPricerByBgm(
             Real correlation,
-            const  ext::shared_ptr<SmileSection>& smilesOnExpiry,
-            const  ext::shared_ptr<SmileSection>& smilesOnPayment,
+            ext::shared_ptr<SmileSection>  smilesOnExpiry,
+            ext::shared_ptr<SmileSection>  smilesOnPayment,
             bool withSmile,
             bool byCallSpread)
     : correlation_(correlation),
       withSmile_(withSmile),
       byCallSpread_(byCallSpread),
-      smilesOnExpiry_(smilesOnExpiry),
-      smilesOnPayment_(smilesOnPayment),
+      smilesOnExpiry_(std::move(smilesOnExpiry)),
+      smilesOnPayment_(std::move(smilesOnPayment)),
       eps_(1.0e-8) {
 
     }
@@ -528,9 +529,9 @@ namespace QuantLib {
 
 
     RangeAccrualLeg::RangeAccrualLeg(
-                            const Schedule& schedule,
-                            const ext::shared_ptr<IborIndex>& index)
-    : schedule_(schedule), index_(index),
+                            Schedule  schedule,
+                            ext::shared_ptr<IborIndex>  index)
+    : schedule_(std::move(schedule)), index_(std::move(index)),
       paymentAdjustment_(Following),
       observationConvention_(ModifiedFollowing) {}
 

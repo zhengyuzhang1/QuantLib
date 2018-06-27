@@ -20,20 +20,21 @@
 #include <ql/indexes/inflationindex.hpp>
 #include <ql/termstructures/inflationtermstructure.hpp>
 #include <ql/time/calendars/nullcalendar.hpp>
+#include <utility>
 
 namespace QuantLib {
 
-    InflationIndex::InflationIndex(const std::string& familyName,
-                                   const Region& region,
+    InflationIndex::InflationIndex(std::string  familyName,
+                                   Region  region,
                                    bool revised,
                                    bool interpolated,
                                    Frequency frequency,
                                    const Period& availabilityLag,
-                                   const Currency& currency)
-    : familyName_(familyName), region_(region),
+                                   Currency  currency)
+    : familyName_(std::move(familyName)), region_(std::move(region)),
       revised_(revised), interpolated_(interpolated),
       frequency_(frequency), availabilityLag_(availabilityLag),
-      currency_(currency) {
+      currency_(std::move(currency)) {
         name_ = region_.name() + " " + familyName_;
         registerWith(Settings::instance().evaluationDate());
         registerWith(IndexManager::instance().notifier(name()));
@@ -70,10 +71,10 @@ namespace QuantLib {
                       Frequency frequency,
                       const Period& availabilityLag,
                       const Currency& currency,
-                      const Handle<ZeroInflationTermStructure>& zeroInflation)
+                      Handle<ZeroInflationTermStructure>  zeroInflation)
     : InflationIndex(familyName, region, revised, interpolated,
                      frequency, availabilityLag, currency),
-      zeroInflation_(zeroInflation) {
+      zeroInflation_(std::move(zeroInflation)) {
         registerWith(zeroInflation_);
     }
 
@@ -198,10 +199,10 @@ namespace QuantLib {
             Frequency frequency,
             const Period& availabilityLag,
             const Currency& currency,
-            const Handle<YoYInflationTermStructure>& yoyInflation)
+            Handle<YoYInflationTermStructure>  yoyInflation)
     : InflationIndex(familyName, region, revised, interpolated,
                      frequency, availabilityLag, currency),
-      ratio_(ratio), yoyInflation_(yoyInflation) {
+      ratio_(ratio), yoyInflation_(std::move(yoyInflation)) {
         registerWith(yoyInflation_);
     }
 

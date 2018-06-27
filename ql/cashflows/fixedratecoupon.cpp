@@ -23,6 +23,7 @@
 */
 
 #include <ql/cashflows/fixedratecoupon.hpp>
+#include <utility>
 
 using std::vector;
 
@@ -43,7 +44,7 @@ namespace QuantLib {
 
     FixedRateCoupon::FixedRateCoupon(const Date& paymentDate,
                                      Real nominal,
-                                     const InterestRate& interestRate,
+                                     InterestRate  interestRate,
                                      const Date& accrualStartDate,
                                      const Date& accrualEndDate,
                                      const Date& refPeriodStart,
@@ -51,7 +52,7 @@ namespace QuantLib {
                                      const Date& exCouponDate)
     : Coupon(paymentDate, nominal, accrualStartDate, accrualEndDate,
              refPeriodStart, refPeriodEnd, exCouponDate),
-      rate_(interestRate) {}
+      rate_(std::move(interestRate)) {}
 
     Real FixedRateCoupon::amount() const {
         return nominal()*(rate_.compoundFactor(accrualStartDate_,

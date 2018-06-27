@@ -23,6 +23,7 @@
 #include <ql/cashflows/cashflows.hpp>
 #include <ql/pricingengines/blackformula.hpp>
 #include <ql/time/calendars/nullcalendar.hpp>
+#include <utility>
 
 using namespace std;
 
@@ -30,21 +31,21 @@ namespace QuantLib {
 
     BlackCallableFixedRateBondEngine::BlackCallableFixedRateBondEngine(
                               const Handle<Quote>& fwdYieldVol,
-                              const Handle<YieldTermStructure>& discountCurve)
+                              Handle<YieldTermStructure>  discountCurve)
     : volatility_(ext::shared_ptr<CallableBondVolatilityStructure>(
                       new CallableBondConstantVolatility(0, NullCalendar(),
                                                          fwdYieldVol,
                                                          Actual365Fixed()))),
-      discountCurve_(discountCurve) {
+      discountCurve_(std::move(discountCurve)) {
         registerWith(volatility_);
         registerWith(discountCurve_);
     }
 
     //! no vol structures implemented yet besides constant volatility
     BlackCallableFixedRateBondEngine::BlackCallableFixedRateBondEngine(
-             const Handle<CallableBondVolatilityStructure>& yieldVolStructure,
-             const Handle<YieldTermStructure>& discountCurve)
-    : volatility_(yieldVolStructure), discountCurve_(discountCurve) {
+             Handle<CallableBondVolatilityStructure>  yieldVolStructure,
+             Handle<YieldTermStructure>  discountCurve)
+    : volatility_(std::move(yieldVolStructure)), discountCurve_(std::move(discountCurve)) {
         registerWith(volatility_);
         registerWith(discountCurve_);
     }

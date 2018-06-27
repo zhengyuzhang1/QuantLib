@@ -24,13 +24,14 @@
 
 
 #include <ql/math/matrixutilities/bicgstab.hpp>
+#include <utility>
 
 namespace QuantLib {
 
-    BiCGstab::BiCGstab(const BiCGstab::MatrixMult& A,
+    BiCGstab::BiCGstab(BiCGstab::MatrixMult  A,
                        Size maxIter, Real relTol,
-                       const BiCGstab::MatrixMult& preConditioner)
-    : A_(A), M_(preConditioner),
+                       BiCGstab::MatrixMult  preConditioner)
+    : A_(std::move(A)), M_(std::move(preConditioner)),
       maxIter_(maxIter), relTol_(relTol) {
     }
 

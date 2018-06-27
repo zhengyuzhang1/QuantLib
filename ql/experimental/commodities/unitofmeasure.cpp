@@ -19,6 +19,7 @@
 
 #include <ql/experimental/commodities/unitofmeasure.hpp>
 #include <ostream>
+#include <utility>
 
 namespace QuantLib {
 
@@ -48,13 +49,13 @@ namespace QuantLib {
         }
     }
 
-    UnitOfMeasure::Data::Data(const std::string& name,
-                              const std::string& code,
+    UnitOfMeasure::Data::Data(std::string  name,
+                              std::string  code,
                               UnitOfMeasure::Type unitType,
-                              const UnitOfMeasure& triangulationUnitOfMeasure,
+                              UnitOfMeasure  triangulationUnitOfMeasure,
                               const Rounding& rounding)
-    : name(name), code(code), unitType(unitType),
-      triangulationUnitOfMeasure(triangulationUnitOfMeasure),
+    : name(std::move(name)), code(std::move(code)), unitType(unitType),
+      triangulationUnitOfMeasure(std::move(triangulationUnitOfMeasure)),
       rounding(rounding) {}
 
 }

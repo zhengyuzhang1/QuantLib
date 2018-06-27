@@ -21,6 +21,7 @@
 #include <ql/experimental/averageois/averageoiscouponpricer.hpp>
 #include <ql/cashflows/overnightindexedcoupon.hpp>
 #include <ql/cashflows/fixedratecoupon.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -29,8 +30,8 @@ namespace QuantLib {
                     Real nominal,
                     const Schedule& fixedLegSchedule,
                     Rate fixedRate,
-                    const DayCounter& fixedDC,
-                    const ext::shared_ptr<OvernightIndex>& overnightIndex,
+                    DayCounter  fixedDC,
+                    ext::shared_ptr<OvernightIndex>  overnightIndex,
                     const Schedule& overnightLegSchedule,
                     Spread spread,
                     Real meanReversionSpeed,
@@ -40,8 +41,8 @@ namespace QuantLib {
       nominals_(std::vector<Real>(1, nominal)),
       fixedLegPaymentFrequency_(fixedLegSchedule.tenor().frequency()),
       overnightLegPaymentFrequency_(overnightLegSchedule.tenor().frequency()),
-      fixedRate_(fixedRate), fixedDC_(fixedDC),
-      overnightIndex_(overnightIndex),
+      fixedRate_(fixedRate), fixedDC_(std::move(fixedDC)),
+      overnightIndex_(std::move(overnightIndex)),
       spread_(spread), byApprox_(byApprox), mrs_(meanReversionSpeed),
       vol_(volatility) {
 
@@ -54,18 +55,18 @@ namespace QuantLib {
                     std::vector<Real> nominals,
                     const Schedule& fixedLegSchedule,
                     Rate fixedRate,
-                    const DayCounter& fixedDC,
-                    const ext::shared_ptr<OvernightIndex>& overnightIndex,
+                    DayCounter  fixedDC,
+                    ext::shared_ptr<OvernightIndex>  overnightIndex,
                     const Schedule& overnightLegSchedule,
                     Spread spread,
                     Real meanReversionSpeed,
                     Real volatility,
                     bool byApprox)
-    : Swap(2), type_(type), nominals_(nominals),
+    : Swap(2), type_(type), nominals_(std::move(nominals)),
       fixedLegPaymentFrequency_(fixedLegSchedule.tenor().frequency()),
       overnightLegPaymentFrequency_(overnightLegSchedule.tenor().frequency()),
-      fixedRate_(fixedRate), fixedDC_(fixedDC),
-      overnightIndex_(overnightIndex),
+      fixedRate_(fixedRate), fixedDC_(std::move(fixedDC)),
+      overnightIndex_(std::move(overnightIndex)),
       spread_(spread), byApprox_(byApprox), mrs_(meanReversionSpeed),
       vol_(volatility) {
 

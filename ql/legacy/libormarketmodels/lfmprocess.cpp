@@ -27,16 +27,17 @@
 #include <ql/cashflows/couponpricer.hpp>
 #include <ql/cashflows/iborcoupon.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     LiborForwardModelProcess::LiborForwardModelProcess(
                                         Size size,
-                                        const ext::shared_ptr<IborIndex>& index)
+                                        ext::shared_ptr<IborIndex>  index)
     : StochasticProcess(ext::shared_ptr<discretization>(
                                                     new EulerDiscretization)),
       size_             (size),
-      index_            (index),
+      index_            (std::move(index)),
       initialValues_    (size_),
       fixingTimes_      (size_),
       fixingDates_      (size_),

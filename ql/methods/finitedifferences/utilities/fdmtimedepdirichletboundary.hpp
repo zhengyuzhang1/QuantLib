@@ -44,12 +44,12 @@ namespace QuantLib {
 
         FdmTimeDepDirichletBoundary(
             const ext::shared_ptr<FdmMesher>& mesher,
-            const boost::function<Real (Real)>& valueOnBoundary,
+            boost::function<Real (Real)>  valueOnBoundary,
             Size direction, Side side);
 
         FdmTimeDepDirichletBoundary(
             const ext::shared_ptr<FdmMesher>& mesher,
-            const boost::function<Disposable<Array> (Real)>& valueOnBoundary,
+            boost::function<Disposable<Array> (Real)>  valueOnBoundary,
             Size direction, Side side);
 
         void setTime(Time) override;

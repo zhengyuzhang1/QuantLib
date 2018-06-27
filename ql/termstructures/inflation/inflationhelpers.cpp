@@ -23,6 +23,7 @@
 #include <ql/pricingengines/swap/discountingswapengine.hpp>
 
 #include <ql/utilities/null_deleter.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -30,14 +31,14 @@ namespace QuantLib {
         const Handle<Quote>& quote,
         const Period& swapObsLag,   // <= index availability lag
         const Date& maturity,
-        const Calendar& calendar,   // index may have null calendar as valid on every day
+        Calendar  calendar,   // index may have null calendar as valid on every day
         BusinessDayConvention paymentConvention,
-        const DayCounter& dayCounter,
-        const ext::shared_ptr<ZeroInflationIndex>& zii)
+        DayCounter  dayCounter,
+        ext::shared_ptr<ZeroInflationIndex>  zii)
     : BootstrapHelper<ZeroInflationTermStructure>(quote),
-    swapObsLag_(swapObsLag), maturity_(maturity), calendar_(calendar),
-    paymentConvention_(paymentConvention), dayCounter_(dayCounter),
-    zii_(zii) {
+    swapObsLag_(swapObsLag), maturity_(maturity), calendar_(std::move(calendar)),
+    paymentConvention_(paymentConvention), dayCounter_(std::move(dayCounter)),
+    zii_(std::move(zii)) {
 
         if (zii_->interpolated()) {
             // if interpolated then simple
@@ -115,14 +116,14 @@ namespace QuantLib {
         const Handle<Quote>& quote,
         const Period& swapObsLag,
         const Date& maturity,
-        const Calendar& calendar,
+        Calendar  calendar,
         BusinessDayConvention paymentConvention,
-        const DayCounter& dayCounter,
-        const ext::shared_ptr<YoYInflationIndex>& yii)
+        DayCounter  dayCounter,
+        ext::shared_ptr<YoYInflationIndex>  yii)
     : BootstrapHelper<YoYInflationTermStructure>(quote),
     swapObsLag_(swapObsLag), maturity_(maturity),
-    calendar_(calendar), paymentConvention_(paymentConvention),
-    dayCounter_(dayCounter), yii_(yii) {
+    calendar_(std::move(calendar)), paymentConvention_(paymentConvention),
+    dayCounter_(std::move(dayCounter)), yii_(std::move(yii)) {
 
         if (yii_->interpolated()) {
             // if interpolated then simple

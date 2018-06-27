@@ -23,16 +23,17 @@
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/quote.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     BlackCdsOptionEngine::BlackCdsOptionEngine(
-                   const Handle<DefaultProbabilityTermStructure>& probability,
+                   Handle<DefaultProbabilityTermStructure>  probability,
                    Real recoveryRate,
-                   const Handle<YieldTermStructure>& termStructure,
-                   const Handle<Quote>& volatility)
-    : probability_(probability), recoveryRate_(recoveryRate),
-      termStructure_(termStructure), volatility_(volatility) {
+                   Handle<YieldTermStructure>  termStructure,
+                   Handle<Quote>  volatility)
+    : probability_(std::move(probability)), recoveryRate_(recoveryRate),
+      termStructure_(std::move(termStructure)), volatility_(std::move(volatility)) {
 
         registerWith(probability_);
         registerWith(termStructure_);

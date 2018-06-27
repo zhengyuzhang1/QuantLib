@@ -20,6 +20,7 @@
 #include <ql/instruments/fixedratebondforward.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/cashflow.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -32,13 +33,13 @@ namespace QuantLib {
                     const DayCounter& dayCounter,
                     const Calendar& calendar,
                     BusinessDayConvention businessDayConvention,
-                    const ext::shared_ptr<FixedRateBond>& fixedCouponBond,
+                    ext::shared_ptr<FixedRateBond>  fixedCouponBond,
                     const Handle<YieldTermStructure>& discountCurve,
                     const Handle<YieldTermStructure>& incomeDiscountCurve)
     : Forward(dayCounter, calendar, businessDayConvention, settlementDays,
               ext::shared_ptr<Payoff>(new ForwardTypePayoff(type,strike)),
               valueDate, maturityDate, discountCurve),
-      fixedCouponBond_(fixedCouponBond) {
+      fixedCouponBond_(std::move(fixedCouponBond)) {
 
         incomeDiscountCurve_ = incomeDiscountCurve;
         registerWith(incomeDiscountCurve_);

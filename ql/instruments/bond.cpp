@@ -29,14 +29,15 @@
 #include <ql/cashflows/simplecashflow.hpp>
 #include <ql/pricingengines/bond/discountingbondengine.hpp>
 #include <ql/pricingengines/bond/bondfunctions.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     Bond::Bond(Natural settlementDays,
-               const Calendar& calendar,
+               Calendar  calendar,
                const Date& issueDate,
                const Leg& coupons)
-    : settlementDays_(settlementDays), calendar_(calendar),
+    : settlementDays_(settlementDays), calendar_(std::move(calendar)),
       cashflows_(coupons), issueDate_(issueDate) {
 
         if (!coupons.empty()) {
@@ -62,12 +63,12 @@ namespace QuantLib {
     }
 
     Bond::Bond(Natural settlementDays,
-               const Calendar& calendar,
+               Calendar  calendar,
                Real faceAmount,
                const Date& maturityDate,
                const Date& issueDate,
                const Leg& cashflows)
-    : settlementDays_(settlementDays), calendar_(calendar),
+    : settlementDays_(settlementDays), calendar_(std::move(calendar)),
       cashflows_(cashflows), maturityDate_(maturityDate),
       issueDate_(issueDate) {
 

@@ -23,6 +23,7 @@
 #include <ql/instruments/overnightindexedswap.hpp>
 #include <ql/cashflows/overnightindexedcoupon.hpp>
 #include <ql/cashflows/fixedratecoupon.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -31,8 +32,8 @@ namespace QuantLib {
                     Real nominal,
                     const Schedule& schedule,
                     Rate fixedRate,
-                    const DayCounter& fixedDC,
-                    const ext::shared_ptr<OvernightIndex>& overnightIndex,
+                    DayCounter  fixedDC,
+                    ext::shared_ptr<OvernightIndex>  overnightIndex,
                     Spread spread,
                     Natural paymentLag,
                     BusinessDayConvention paymentAdjustment,
@@ -43,8 +44,8 @@ namespace QuantLib {
       paymentFrequency_(schedule.tenor().frequency()),
       paymentCalendar_(paymentCalendar.empty() ? schedule.calendar() : paymentCalendar),
       paymentAdjustment_(paymentAdjustment), paymentLag_(paymentLag),
-      fixedRate_(fixedRate), fixedDC_(fixedDC),
-      overnightIndex_(overnightIndex), spread_(spread),
+      fixedRate_(fixedRate), fixedDC_(std::move(fixedDC)),
+      overnightIndex_(std::move(overnightIndex)), spread_(spread),
       telescopicValueDates_(telescopicValueDates) {
 
           initialize(schedule);
@@ -56,19 +57,19 @@ namespace QuantLib {
                     std::vector<Real> nominals,
                     const Schedule& schedule,
                     Rate fixedRate,
-                    const DayCounter& fixedDC,
-                    const ext::shared_ptr<OvernightIndex>& overnightIndex,
+                    DayCounter  fixedDC,
+                    ext::shared_ptr<OvernightIndex>  overnightIndex,
                     Spread spread,
                     Natural paymentLag,
                     BusinessDayConvention paymentAdjustment,
                     Calendar paymentCalendar,
                     bool telescopicValueDates)
-    : Swap(2), type_(type), nominals_(nominals),
+    : Swap(2), type_(type), nominals_(std::move(nominals)),
       paymentFrequency_(schedule.tenor().frequency()),
       paymentCalendar_(paymentCalendar.empty() ? schedule.calendar() : paymentCalendar),
       paymentAdjustment_(paymentAdjustment), paymentLag_(paymentLag),
-      fixedRate_(fixedRate), fixedDC_(fixedDC),
-      overnightIndex_(overnightIndex), spread_(spread),
+      fixedRate_(fixedRate), fixedDC_(std::move(fixedDC)),
+      overnightIndex_(std::move(overnightIndex)), spread_(spread),
       telescopicValueDates_(telescopicValueDates) {
 
           initialize(schedule);

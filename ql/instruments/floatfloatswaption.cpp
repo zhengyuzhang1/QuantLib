@@ -20,13 +20,14 @@
 
 #include <ql/instruments/floatfloatswaption.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FloatFloatSwaption::FloatFloatSwaption(
-        const ext::shared_ptr<FloatFloatSwap> &swap,
+        ext::shared_ptr<FloatFloatSwap> swap,
         const ext::shared_ptr<Exercise> &exercise)
-        : Option(ext::shared_ptr<Payoff>(), exercise), swap_(swap) {
+        : Option(ext::shared_ptr<Payoff>(), exercise), swap_(std::move(swap)) {
         registerWith(swap_);
         registerWithObservables(swap_);
     }

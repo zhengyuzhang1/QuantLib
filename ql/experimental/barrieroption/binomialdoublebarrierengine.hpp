@@ -31,6 +31,7 @@
 #include <ql/processes/blackscholesprocess.hpp>
 #include <ql/termstructures/yield/flatforward.hpp>
 #include <ql/termstructures/volatility/equityfx/blackconstantvol.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -49,9 +50,9 @@ namespace QuantLib {
     class BinomialDoubleBarrierEngine : public DoubleBarrierOption::engine {
       public:
         BinomialDoubleBarrierEngine(
-             const ext::shared_ptr<GeneralizedBlackScholesProcess>& process,
+             ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
              Size timeSteps)
-        : process_(process), timeSteps_(timeSteps) {
+        : process_(std::move(process)), timeSteps_(timeSteps) {
             QL_REQUIRE(timeSteps>0,
                        "timeSteps must be positive, " << timeSteps <<
                        " not allowed");

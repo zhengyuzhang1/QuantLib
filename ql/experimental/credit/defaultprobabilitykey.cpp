@@ -33,6 +33,7 @@
 #endif
 #include <algorithm>
 #include <set>
+#include <utility>
 
 namespace QuantLib {
 
@@ -57,10 +58,10 @@ namespace QuantLib {
           seniority_(NoSeniority) {}
 
     DefaultProbKey::DefaultProbKey(
-        const std::vector<ext::shared_ptr<DefaultType> >& eventTypes,
+        std::vector<ext::shared_ptr<DefaultType> >  eventTypes,
                    const Currency cur,
                    Seniority sen)
-        : eventTypes_(eventTypes),
+        : eventTypes_(std::move(eventTypes)),
           obligationCurrency_(cur),
           seniority_(sen) {
         std::set<AtomicDefault::Type> buffer;

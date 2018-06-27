@@ -21,36 +21,37 @@
 #include <ql/pricingengines/swaption/treeswaptionengine.hpp>
 #include <ql/pricingengines/swaption/discretizedswaption.hpp>
 #include <ql/math/functional.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     TreeSwaptionEngine::TreeSwaptionEngine(
                                const ext::shared_ptr<ShortRateModel>& model,
                               Size timeSteps,
-                              const Handle<YieldTermStructure>& termStructure)
+                              Handle<YieldTermStructure>  termStructure)
     : LatticeShortRateModelEngine<Swaption::arguments,
                                   Swaption::results>(model, timeSteps),
-      termStructure_(termStructure) {
+      termStructure_(std::move(termStructure)) {
         registerWith(termStructure_);
     }
 
     TreeSwaptionEngine::TreeSwaptionEngine(
                               const ext::shared_ptr<ShortRateModel>& model,
                               const TimeGrid& timeGrid,
-                              const Handle<YieldTermStructure>& termStructure)
+                              Handle<YieldTermStructure>  termStructure)
     : LatticeShortRateModelEngine<Swaption::arguments,
                                   Swaption::results>(model, timeGrid),
-      termStructure_(termStructure) {
+      termStructure_(std::move(termStructure)) {
         registerWith(termStructure_);
     }
 
     TreeSwaptionEngine::TreeSwaptionEngine(
                               const Handle<ShortRateModel>& model,
                               Size timeSteps,
-                              const Handle<YieldTermStructure>& termStructure)
+                              Handle<YieldTermStructure>  termStructure)
     : LatticeShortRateModelEngine<Swaption::arguments,
                                   Swaption::results>(model, timeSteps),
-      termStructure_(termStructure) {
+      termStructure_(std::move(termStructure)) {
         registerWith(termStructure_);
     }
 

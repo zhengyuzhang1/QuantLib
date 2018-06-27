@@ -20,16 +20,17 @@
 #include <ql/experimental/exoticoptions/kirkspreadoptionengine.hpp>
 #include <ql/math/distributions/normaldistribution.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 using namespace std;
 
 namespace QuantLib {
 
     KirkSpreadOptionEngine::KirkSpreadOptionEngine(
-            const ext::shared_ptr<BlackProcess>& process1,
-            const ext::shared_ptr<BlackProcess>& process2,
-            const Handle<Quote>& correlation)
-    : process1_(process1), process2_(process2), rho_(correlation) {
+            ext::shared_ptr<BlackProcess>  process1,
+            ext::shared_ptr<BlackProcess>  process2,
+            Handle<Quote>  correlation)
+    : process1_(std::move(process1)), process2_(std::move(process2)), rho_(std::move(correlation)) {
         registerWith(process1_);
         registerWith(process2_);
         registerWith(rho_);

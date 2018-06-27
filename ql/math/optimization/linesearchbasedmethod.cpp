@@ -22,12 +22,13 @@
 #include <ql/math/optimization/problem.hpp>
 #include <ql/math/optimization/linesearch.hpp>
 #include <ql/math/optimization/armijo.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     LineSearchBasedMethod::LineSearchBasedMethod(
-                           const ext::shared_ptr<LineSearch>& lineSearch)
-    : lineSearch_(lineSearch) {
+                           ext::shared_ptr<LineSearch>  lineSearch)
+    : lineSearch_(std::move(lineSearch)) {
         if (!lineSearch_)
            lineSearch_ = ext::shared_ptr<LineSearch>(new ArmijoLineSearch);
     }

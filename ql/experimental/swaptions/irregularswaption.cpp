@@ -26,6 +26,7 @@
 #include <ql/math/solvers1d/newtonsafe.hpp>
 #include <ql/quotes/simplequote.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -34,7 +35,7 @@ namespace QuantLib {
         class IrregularImpliedVolHelper {
           public:
             IrregularImpliedVolHelper(const IrregularSwaption&,
-                                      const Handle<YieldTermStructure>& discountCurve,
+                                      Handle<YieldTermStructure>  discountCurve,
                                       Real targetValue);
             Real operator()(Volatility x) const;
             Real derivative(Volatility x) const;
@@ -48,9 +49,9 @@ namespace QuantLib {
 
         IrregularImpliedVolHelper::IrregularImpliedVolHelper(
                                                               const IrregularSwaption& swaption,
-                                                              const Handle<YieldTermStructure>& discountCurve,
+                                                              Handle<YieldTermStructure>  discountCurve,
                                                               Real targetValue)
-        : discountCurve_(discountCurve), targetValue_(targetValue) {
+        : discountCurve_(std::move(discountCurve)), targetValue_(targetValue) {
 
             vol_ = ext::make_shared<SimpleQuote>(-1.0);
             Handle<Quote> h(vol_);
@@ -95,10 +96,10 @@ namespace QuantLib {
         }
     }
 
-    IrregularSwaption::IrregularSwaption(const ext::shared_ptr<IrregularSwap>& swap,
+    IrregularSwaption::IrregularSwaption(ext::shared_ptr<IrregularSwap>  swap,
                                          const ext::shared_ptr<Exercise>& exercise,
                                          IrregularSettlement::Type delivery)
-    : Option(ext::shared_ptr<Payoff>(), exercise), swap_(swap),
+    : Option(ext::shared_ptr<Payoff>(), exercise), swap_(std::move(swap)),
       settlementType_(delivery) {
         registerWith(swap_);
     }

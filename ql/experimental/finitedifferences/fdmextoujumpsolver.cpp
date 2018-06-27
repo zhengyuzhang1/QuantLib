@@ -24,17 +24,18 @@
 #include <ql/methods/finitedifferences/solvers/fdm2dimsolver.hpp>
 #include <ql/experimental/finitedifferences/fdmextoujumpop.hpp>
 #include <ql/experimental/finitedifferences/fdmextoujumpsolver.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FdmExtOUJumpSolver::FdmExtOUJumpSolver(
-            const Handle<ExtOUWithJumpsProcess>& process,
-            const ext::shared_ptr<YieldTermStructure>& rTS,
-            const FdmSolverDesc& solverDesc,
+            Handle<ExtOUWithJumpsProcess>  process,
+            ext::shared_ptr<YieldTermStructure>  rTS,
+            FdmSolverDesc  solverDesc,
             const FdmSchemeDesc& schemeDesc) 
-    : process_     (process),
-      rTS_         (rTS),
-      solverDesc_  (solverDesc),
+    : process_     (std::move(process)),
+      rTS_         (std::move(rTS)),
+      solverDesc_  (std::move(solverDesc)),
       schemeDesc_  (schemeDesc) {
                 
         registerWith(process_);

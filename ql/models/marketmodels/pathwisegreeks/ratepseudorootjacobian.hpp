@@ -85,7 +85,7 @@ namespace QuantLib
                                         Size numeraire,
                                         const std::vector<Time>& taus,
                                         const std::vector<Matrix>& pseudoBumps,
-                                        const std::vector<Spread>& displacements);
+                                        std::vector<Spread>  displacements);
 
         void getBumps(const std::vector<Rate>& oldRates,
             const std::vector<Real>& oneStepDFs, // redundant info but saves time to pass in since will have been needed elsewhere
@@ -121,7 +121,7 @@ namespace QuantLib
                                         Size aliveIndex, 
                                         Size numeraire,
                                         const std::vector<Time>& taus,
-                                        const std::vector<Spread>& displacements);
+                                        std::vector<Spread>  displacements);
 
         void getBumps(const std::vector<Rate>& oldRates,
             const std::vector<Real>& oneStepDFs, // redundant info but saves time to pass in since will have been needed elsewhere

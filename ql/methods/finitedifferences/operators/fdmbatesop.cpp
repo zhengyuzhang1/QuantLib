@@ -30,12 +30,13 @@
 #include <ql/termstructures/yield/zerospreadedtermstructure.hpp>
 #include <ql/methods/finitedifferences/operators/fdmlinearoplayout.hpp>
 #include <ql/methods/finitedifferences/utilities/fdmdirichletboundary.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FdmBatesOp::FdmBatesOp(const ext::shared_ptr<FdmMesher>& mesher,
                            const ext::shared_ptr<BatesProcess>& batesProcess,
-                           const FdmBoundaryConditionSet& bcSet,
+                           FdmBoundaryConditionSet  bcSet,
                            const Size integroIntegrationOrder, 
                            const ext::shared_ptr<FdmQuantoHelper>& quantoHelper)
     : lambda_(batesProcess->lambda()), 
@@ -44,7 +45,7 @@ namespace QuantLib {
       m_(std::exp(nu_+0.5*delta_*delta_)-1.0),
       gaussHermiteIntegration_(integroIntegrationOrder),
       mesher_(mesher),
-      bcSet_(bcSet),
+      bcSet_(std::move(bcSet)),
       hestonOp_(new FdmHestonOp(
         mesher,
         ext::make_shared<HestonProcess>(

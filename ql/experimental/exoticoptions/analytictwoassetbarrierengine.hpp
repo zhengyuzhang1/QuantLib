@@ -42,9 +42,9 @@ namespace QuantLib {
         : public TwoAssetBarrierOption::engine {
       public:
         AnalyticTwoAssetBarrierEngine(
-            const ext::shared_ptr<GeneralizedBlackScholesProcess>& process1,
-            const ext::shared_ptr<GeneralizedBlackScholesProcess>& process2,
-            const Handle<Quote>& rho);
+            ext::shared_ptr<GeneralizedBlackScholesProcess>  process1,
+            ext::shared_ptr<GeneralizedBlackScholesProcess>  process2,
+            Handle<Quote>  rho);
         void calculate() const override;
       private:
         ext::shared_ptr<GeneralizedBlackScholesProcess> process1_;

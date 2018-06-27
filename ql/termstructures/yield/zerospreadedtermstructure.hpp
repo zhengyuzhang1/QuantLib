@@ -27,6 +27,7 @@
 
 #include <ql/termstructures/yield/zeroyieldstructure.hpp>
 #include <ql/quote.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -45,11 +46,11 @@ namespace QuantLib {
     */
     class ZeroSpreadedTermStructure : public ZeroYieldStructure {
       public:
-        ZeroSpreadedTermStructure(const Handle<YieldTermStructure>&,
-                                  const Handle<Quote>& spread,
+        ZeroSpreadedTermStructure(Handle<YieldTermStructure> ,
+                                  Handle<Quote>  spread,
                                   Compounding comp = Continuous,
                                   Frequency freq = NoFrequency,
-                                  const DayCounter& dc = DayCounter());
+                                  DayCounter  dc = DayCounter());
         //! \name YieldTermStructure interface
         //@{
         DayCounter dayCounter() const override;
@@ -78,12 +79,12 @@ namespace QuantLib {
     };
 
     inline ZeroSpreadedTermStructure::ZeroSpreadedTermStructure(
-                                          const Handle<YieldTermStructure>& h,
-                                          const Handle<Quote>& spread,
+                                          Handle<YieldTermStructure>  h,
+                                          Handle<Quote>  spread,
                                           Compounding comp,
                                           Frequency freq,
-                                          const DayCounter& dc)
-    : originalCurve_(h), spread_(spread), comp_(comp), freq_(freq), dc_(dc) {
+                                          DayCounter  dc)
+    : originalCurve_(std::move(h)), spread_(std::move(spread)), comp_(comp), freq_(freq), dc_(std::move(dc)) {
         if (!originalCurve_.empty())
             enableExtrapolation(originalCurve_->allowsExtrapolation());
         registerWith(originalCurve_);

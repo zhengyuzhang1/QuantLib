@@ -39,19 +39,20 @@
 #include <boost/math/distributions/non_central_chi_squared.hpp>
 
 #include <complex>
+#include <utility>
 
 namespace QuantLib {
 
     HestonProcess::HestonProcess(
-                              const Handle<YieldTermStructure>& riskFreeRate,
-                              const Handle<YieldTermStructure>& dividendYield,
-                              const Handle<Quote>& s0,
+                              Handle<YieldTermStructure>  riskFreeRate,
+                              Handle<YieldTermStructure>  dividendYield,
+                              Handle<Quote>  s0,
                               Real v0, Real kappa,
                               Real theta, Real sigma, Real rho,
                               Discretization d)
     : StochasticProcess(ext::shared_ptr<discretization>(
                                                     new EulerDiscretization)),
-      riskFreeRate_(riskFreeRate), dividendYield_(dividendYield), s0_(s0),
+      riskFreeRate_(std::move(riskFreeRate)), dividendYield_(std::move(dividendYield)), s0_(std::move(s0)),
       v0_(v0), kappa_(kappa), theta_(theta), sigma_(sigma), rho_(rho),
       discretization_(d) {
 

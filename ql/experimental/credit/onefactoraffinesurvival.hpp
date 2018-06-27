@@ -23,6 +23,7 @@
 #include <ql/termstructures/credit/hazardratestructure.hpp>
 #include <ql/models/shortrate/onefactormodel.hpp>
 #include <ql/stochasticprocess.hpp>
+#include <utility>
 
 namespace QuantLib {
     
@@ -48,7 +49,7 @@ namespace QuantLib {
                 = std::vector<Handle<Quote> >(),
             const std::vector<Date>& jumpDates = std::vector<Date>()
         ) : HazardRateStructure(dayCounter, jumps, jumpDates), 
-            model_(model) {}
+            model_(std::move(model)) {}
 
         OneFactorAffineSurvivalStructure(
             ext::shared_ptr<OneFactorAffineModel> model,
@@ -60,7 +61,7 @@ namespace QuantLib {
             const std::vector<Date>& jumpDates = std::vector<Date>()
         ) 
         : HazardRateStructure(referenceDate, Calendar(), dayCounter, jumps, 
-            jumpDates), model_(model) {}
+            jumpDates), model_(std::move(model)) {}
 
         OneFactorAffineSurvivalStructure(
             ext::shared_ptr<OneFactorAffineModel> model,
@@ -72,7 +73,7 @@ namespace QuantLib {
             const std::vector<Date>& jumpDates = std::vector<Date>())
         : HazardRateStructure(settlementDays, calendar,
                               dayCounter, jumps, jumpDates),
-          model_(model) {}
+          model_(std::move(model)) {}
 
         //! \name TermStructure interface
         //@{

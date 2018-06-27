@@ -128,9 +128,9 @@ namespace QuantLib {
       protected:
         CallableBond(Natural settlementDays,
                      const Schedule& schedule,
-                     const DayCounter& paymentDayCounter,
+                     DayCounter  paymentDayCounter,
                      const Date& issueDate = Date(),
-                     const CallabilitySchedule& putCallSchedule
+                     CallabilitySchedule  putCallSchedule
                                                      = CallabilitySchedule());
 
         DayCounter paymentDayCounter_;

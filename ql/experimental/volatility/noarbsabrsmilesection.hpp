@@ -35,10 +35,10 @@ class NoArbSabrSmileSection : public SmileSection {
 
   public:
     NoArbSabrSmileSection(Time timeToExpiry, Rate forward,
-                          const std::vector<Real> &sabrParameters,
+                          std::vector<Real> sabrParameters,
                           const Real shift = 0.0);
     NoArbSabrSmileSection(const Date &d, Rate forward,
-                          const std::vector<Real> &sabrParameters,
+                          std::vector<Real> sabrParameters,
                           const DayCounter &dc = Actual365Fixed(),
                           const Real shift = 0.0);
     Real minStrike() const override { return 0.0; }

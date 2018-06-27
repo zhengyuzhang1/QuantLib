@@ -32,13 +32,14 @@
 #include <ql/pricingengines/vanilla/analyticeuropeanengine.hpp>
 #include <ql/experimental/models/normalclvmodel.hpp>
 #include <ql/experimental/finitedifferences/gbsmrndcalculator.hpp>
+#include <utility>
 
 
 namespace QuantLib {
 
     NormalCLVModel::NormalCLVModel(
         const ext::shared_ptr<GeneralizedBlackScholesProcess>& bsProcess,
-        const ext::shared_ptr<OrnsteinUhlenbeckProcess>& ouProcess,
+        ext::shared_ptr<OrnsteinUhlenbeckProcess>  ouProcess,
         const std::vector<Date>& maturityDates,
         Size lagrangeOrder, Real pMax, Real pMin)
     : x_(M_SQRT2*GaussHermiteIntegration(lagrangeOrder).x()),
@@ -48,7 +49,7 @@ namespace QuantLib {
                   ? x_.front() / InverseCumulativeNormal()(pMin)
                   : 1.0),
       bsProcess_    (bsProcess),
-      ouProcess_    (ouProcess),
+      ouProcess_    (std::move(ouProcess)),
       maturityDates_(maturityDates),
       rndCalculator_(ext::make_shared<GBSMRNDCalculator>(bsProcess)),
       maturityTimes_(maturityDates.size()) {

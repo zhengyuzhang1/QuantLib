@@ -46,11 +46,11 @@ namespace QuantLib {
         //! volatility is the quoted fwd yield volatility, not price vol
         BlackCallableFixedRateBondEngine(
                              const Handle<Quote>& fwdYieldVol,
-                             const Handle<YieldTermStructure>& discountCurve);
+                             Handle<YieldTermStructure>  discountCurve);
         //! volatility is the quoted fwd yield volatility, not price vol
         BlackCallableFixedRateBondEngine(
-             const Handle<CallableBondVolatilityStructure>& yieldVolStructure,
-             const Handle<YieldTermStructure>& discountCurve);
+             Handle<CallableBondVolatilityStructure>  yieldVolStructure,
+             Handle<YieldTermStructure>  discountCurve);
         void calculate() const override;
       private:
         Handle<CallableBondVolatilityStructure> volatility_;

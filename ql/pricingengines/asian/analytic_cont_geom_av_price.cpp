@@ -22,13 +22,14 @@
 #include <ql/pricingengines/blackcalculator.hpp>
 #include <ql/processes/blackscholesprocess.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     AnalyticContinuousGeometricAveragePriceAsianEngine::
     AnalyticContinuousGeometricAveragePriceAsianEngine(
-            const ext::shared_ptr<GeneralizedBlackScholesProcess>& process)
-    : process_(process) {
+            ext::shared_ptr<GeneralizedBlackScholesProcess>  process)
+    : process_(std::move(process)) {
         registerWith(process_);
     }
 

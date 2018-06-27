@@ -36,8 +36,8 @@ namespace QuantLib {
     class FdmHullWhiteSolver : public LazyObject {
       public:
         FdmHullWhiteSolver(
-            const Handle<HullWhite>& model,
-            const FdmSolverDesc& solverDesc,
+            Handle<HullWhite>  model,
+            FdmSolverDesc  solverDesc,
             const FdmSchemeDesc& schemeDesc = FdmSchemeDesc::Hundsdorfer());
 
         Real valueAt(Real r) const;

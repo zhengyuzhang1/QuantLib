@@ -28,17 +28,18 @@
 #include <ql/methods/finitedifferences/meshers/fdmmeshercomposite.hpp>
 #include <ql/methods/finitedifferences/stepconditions/fdmstepconditioncomposite.hpp>
 #include <ql/methods/finitedifferences/stepconditions/fdmarithmeticaveragecondition.hpp>
+#include <utility>
 
 namespace QuantLib {
 
 
     FdBlackScholesAsianEngine::FdBlackScholesAsianEngine(
-            const ext::shared_ptr<GeneralizedBlackScholesProcess>& process,
+            ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
             Size tGrid, Size xGrid, Size aGrid, 
             const FdmSchemeDesc& schemeDesc)
     : GenericEngine<DiscreteAveragingAsianOption::arguments,
                     DiscreteAveragingAsianOption::results>(),
-      process_(process), tGrid_(tGrid), xGrid_(xGrid), aGrid_(aGrid),
+      process_(std::move(process)), tGrid_(tGrid), xGrid_(xGrid), aGrid_(aGrid),
       schemeDesc_(schemeDesc) {}
 
 

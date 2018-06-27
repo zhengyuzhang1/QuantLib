@@ -20,13 +20,14 @@
 
 #include <ql/pricingengines/lookback/analyticcontinuousfixedlookback.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     AnalyticContinuousFixedLookbackEngine::
     AnalyticContinuousFixedLookbackEngine(
-             const ext::shared_ptr<GeneralizedBlackScholesProcess>& process)
-    : process_(process) {
+             ext::shared_ptr<GeneralizedBlackScholesProcess>  process)
+    : process_(std::move(process)) {
         registerWith(process_);
     }
 

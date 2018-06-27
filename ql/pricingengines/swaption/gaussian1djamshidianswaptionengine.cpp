@@ -20,6 +20,7 @@
 
 #include <ql/pricingengines/swaption/gaussian1djamshidianswaptionengine.hpp>
 #include <ql/math/solvers1d/brent.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -28,11 +29,11 @@ namespace QuantLib {
         rStarFinder(const ext::shared_ptr<Gaussian1dModel> &model,
                     Real nominal, const Date &maturityDate,
                     const Date &valueDate,
-                    const std::vector<Date> &fixedPayDates,
+                    std::vector<Date> fixedPayDates,
                     const std::vector<Real> &amounts, const Size startIndex)
             : strike_(nominal), maturityDate_(maturityDate),
               valueDate_(valueDate), startIndex_(startIndex),
-              times_(fixedPayDates), amounts_(amounts), model_(model) {}
+              times_(std::move(fixedPayDates)), amounts_(amounts), model_(model) {}
 
         Real operator()(Rate y) const {
             Real value = strike_;

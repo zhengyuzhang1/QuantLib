@@ -27,6 +27,7 @@
 
 #include <ql/termstructures/yield/forwardstructure.hpp>
 #include <ql/quote.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -45,8 +46,8 @@ namespace QuantLib {
     */
     class ForwardSpreadedTermStructure : public ForwardRateStructure {
       public:
-        ForwardSpreadedTermStructure(const Handle<YieldTermStructure>&,
-                                     const Handle<Quote>& spread);
+        ForwardSpreadedTermStructure(Handle<YieldTermStructure> ,
+                                     Handle<Quote>  spread);
         //! \name TermStructure interface
         //@{
         DayCounter dayCounter() const override;
@@ -73,9 +74,9 @@ namespace QuantLib {
     };
 
     inline ForwardSpreadedTermStructure::ForwardSpreadedTermStructure(
-                                          const Handle<YieldTermStructure>& h,
-                                          const Handle<Quote>& spread)
-    : originalCurve_(h), spread_(spread) {
+                                          Handle<YieldTermStructure>  h,
+                                          Handle<Quote>  spread)
+    : originalCurve_(std::move(h)), spread_(std::move(spread)) {
         registerWith(originalCurve_);
         registerWith(spread_);
     }

@@ -22,6 +22,7 @@
 #include <ql/indexes/iborindex.hpp>
 #include <ql/time/schedule.hpp>
 #include <sstream>
+#include <utility>
 
 namespace QuantLib {
 
@@ -33,10 +34,10 @@ namespace QuantLib {
                          const Period& fixedLegTenor,
                          BusinessDayConvention fixedLegConvention,
                          const DayCounter& fixedLegDayCounter,
-                         const ext::shared_ptr<IborIndex>& iborIndex)
+                         ext::shared_ptr<IborIndex>  iborIndex)
     : InterestRateIndex(familyName, tenor, settlementDays,
                         currency, fixingCalendar, fixedLegDayCounter),
-      tenor_(tenor), iborIndex_(iborIndex),
+      tenor_(tenor), iborIndex_(std::move(iborIndex)),
       fixedLegTenor_(fixedLegTenor),
       fixedLegConvention_(fixedLegConvention),
       exogenousDiscount_(false),
@@ -52,15 +53,15 @@ namespace QuantLib {
                          const Period& fixedLegTenor,
                          BusinessDayConvention fixedLegConvention,
                          const DayCounter& fixedLegDayCounter,
-                         const ext::shared_ptr<IborIndex>& iborIndex,
-                         const Handle<YieldTermStructure>& discount)
+                         ext::shared_ptr<IborIndex>  iborIndex,
+                         Handle<YieldTermStructure>  discount)
     : InterestRateIndex(familyName, tenor, settlementDays,
                         currency, fixingCalendar, fixedLegDayCounter),
-      tenor_(tenor), iborIndex_(iborIndex),
+      tenor_(tenor), iborIndex_(std::move(iborIndex)),
       fixedLegTenor_(fixedLegTenor),
       fixedLegConvention_(fixedLegConvention),
       exogenousDiscount_(true),
-      discount_(discount) {
+      discount_(std::move(discount)) {
         registerWith(iborIndex_);
         registerWith(discount_);
     }

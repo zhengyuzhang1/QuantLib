@@ -20,13 +20,14 @@
 #include <ql/experimental/volatility/volcube.hpp>
 #include <ql/experimental/volatility/abcdatmvolcurve.hpp>
 #include <ql/experimental/volatility/interestratevolsurface.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     VolatilityCube::VolatilityCube(
-                const std::vector<Handle<InterestRateVolSurface> >& surfaces,
-                const std::vector<Handle<AbcdAtmVolCurve> >& curves)
-    : surfaces_(surfaces), curves_(curves)
+                std::vector<Handle<InterestRateVolSurface> >  surfaces,
+                std::vector<Handle<AbcdAtmVolCurve> >  curves)
+    : surfaces_(std::move(surfaces)), curves_(std::move(curves))
     {
         QL_REQUIRE(surfaces_.size()>1, "at least 2 surfaces are needed");
 

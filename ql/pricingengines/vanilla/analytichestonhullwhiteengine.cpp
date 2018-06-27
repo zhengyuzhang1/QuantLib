@@ -19,15 +19,16 @@
 */
 
 #include <ql/pricingengines/vanilla/analytichestonhullwhiteengine.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     AnalyticHestonHullWhiteEngine::AnalyticHestonHullWhiteEngine(
                         const ext::shared_ptr<HestonModel>& hestonModel,
-                        const ext::shared_ptr<HullWhite>& hullWhiteModel,
+                        ext::shared_ptr<HullWhite>  hullWhiteModel,
                         Size integrationOrder)
     : AnalyticHestonEngine(hestonModel, integrationOrder),
-      hullWhiteModel_(hullWhiteModel) {
+      hullWhiteModel_(std::move(hullWhiteModel)) {
 
         update();
         registerWith(hullWhiteModel_);
@@ -35,10 +36,10 @@ namespace QuantLib {
 
     AnalyticHestonHullWhiteEngine::AnalyticHestonHullWhiteEngine(
                     const ext::shared_ptr<HestonModel>& hestonModel,
-                    const ext::shared_ptr<HullWhite>& hullWhiteModel,
+                    ext::shared_ptr<HullWhite>  hullWhiteModel,
                     Real relTolerance, Size maxEvaluations)
     : AnalyticHestonEngine(hestonModel, relTolerance, maxEvaluations),
-      hullWhiteModel_(hullWhiteModel) {
+      hullWhiteModel_(std::move(hullWhiteModel)) {
 
         update();
         registerWith(hullWhiteModel_);

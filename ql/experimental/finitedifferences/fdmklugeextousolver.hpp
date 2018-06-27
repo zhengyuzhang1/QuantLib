@@ -31,6 +31,7 @@
 #include <ql/experimental/finitedifferences/fdmklugeextouop.hpp>
 #include <ql/methods/finitedifferences/solvers/fdmndimsolver.hpp>
 #include <ql/methods/finitedifferences/solvers/fdmbackwardsolver.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -41,13 +42,13 @@ namespace QuantLib {
     class FdmKlugeExtOUSolver : public LazyObject {
       public:
         FdmKlugeExtOUSolver(
-          const Handle<KlugeExtOUProcess>& klugeOUProcess,
-          const ext::shared_ptr<YieldTermStructure>& rTS,
-          const FdmSolverDesc& solverDesc,
+          Handle<KlugeExtOUProcess>  klugeOUProcess,
+          ext::shared_ptr<YieldTermStructure>  rTS,
+          FdmSolverDesc  solverDesc,
           const FdmSchemeDesc& schemeDesc = FdmSchemeDesc::Hundsdorfer())
-        : klugeOUProcess_(klugeOUProcess),
-          rTS_           (rTS),
-          solverDesc_    (solverDesc),
+        : klugeOUProcess_(std::move(klugeOUProcess)),
+          rTS_           (std::move(rTS)),
+          solverDesc_    (std::move(solverDesc)),
           schemeDesc_    (schemeDesc) {
             registerWith(klugeOUProcess_);
         }

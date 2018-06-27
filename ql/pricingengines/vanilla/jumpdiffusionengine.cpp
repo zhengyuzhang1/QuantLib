@@ -25,14 +25,15 @@
 #include <ql/termstructures/volatility/equityfx/blackconstantvol.hpp>
 #include <ql/utilities/dataformatters.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     JumpDiffusionEngine::JumpDiffusionEngine(
-        const ext::shared_ptr<Merton76Process>& process,
+        ext::shared_ptr<Merton76Process>  process,
         Real relativeAccuracy,
         Size maxIterations)
-    : process_(process), relativeAccuracy_(relativeAccuracy),
+    : process_(std::move(process)), relativeAccuracy_(relativeAccuracy),
       maxIterations_(maxIterations) {
         registerWith(process_);
     }

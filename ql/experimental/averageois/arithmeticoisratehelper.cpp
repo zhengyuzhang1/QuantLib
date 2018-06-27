@@ -20,6 +20,7 @@
 #include <ql/experimental/averageois/arithmeticoisratehelper.hpp>
 #include <ql/experimental/averageois/makearithmeticaverageois.hpp>
 #include <ql/pricingengines/swap/discountingswapengine.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -32,19 +33,19 @@ namespace QuantLib {
                     const Period& tenor, // swap maturity
                     Frequency fixedLegPaymentFrequency,
                     const Handle<Quote>& fixedRate,
-                    const ext::shared_ptr<OvernightIndex>& overnightIndex,
+                    ext::shared_ptr<OvernightIndex>  overnightIndex,
                     Frequency overnightLegPaymentFrequency,
-                    const Handle<Quote>& spread,
+                    Handle<Quote>  spread,
                     Real meanReversionSpeed,
                     Real volatility,
                     bool byApprox,
-                    const Handle<YieldTermStructure>& discount)
+                    Handle<YieldTermStructure>  discount)
     : RelativeDateRateHelper(fixedRate),
       settlementDays_(settlementDays), tenor_(tenor),
-      overnightIndex_(overnightIndex), discountHandle_(discount),
+      overnightIndex_(std::move(overnightIndex)), discountHandle_(std::move(discount)),
       fixedLegPaymentFrequency_(fixedLegPaymentFrequency),
       overnightLegPaymentFrequency_(overnightLegPaymentFrequency),
-      spread_(spread), mrs_(meanReversionSpeed), vol_(volatility),
+      spread_(std::move(spread)), mrs_(meanReversionSpeed), vol_(volatility),
       byApprox_(byApprox){
         registerWith(overnightIndex_);
         registerWith(discountHandle_);

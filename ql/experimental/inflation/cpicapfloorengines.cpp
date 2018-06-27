@@ -29,14 +29,15 @@
 
 #include <ql/experimental/inflation/cpicapfloorengines.hpp>
 #include <ql/experimental/inflation/cpicapfloortermpricesurface.hpp>
+#include <utility>
 
 
 namespace QuantLib {
 
 
     InterpolatingCPICapFloorEngine::InterpolatingCPICapFloorEngine
-    (const Handle<CPICapFloorTermPriceSurface> &priceSurf)
-    : priceSurf_(priceSurf)
+    (Handle<CPICapFloorTermPriceSurface> priceSurf)
+    : priceSurf_(std::move(priceSurf))
     {
         registerWith(priceSurf_);
     }

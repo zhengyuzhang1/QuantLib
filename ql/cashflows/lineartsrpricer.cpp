@@ -33,6 +33,7 @@
 #include <ql/math/integrals/kronrodintegral.hpp>
 #include <ql/pricingengines/blackformula.hpp>
 #include <ql/termstructures/volatility/atmsmilesection.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -50,13 +51,13 @@ namespace QuantLib {
 
     LinearTsrPricer::LinearTsrPricer(
         const Handle<SwaptionVolatilityStructure> &swaptionVol,
-        const Handle<Quote> &meanReversion,
-        const Handle<YieldTermStructure> &couponDiscountCurve,
+        Handle<Quote> meanReversion,
+        Handle<YieldTermStructure> couponDiscountCurve,
         const Settings &settings,
-        const ext::shared_ptr<Integrator> &integrator)
-        : CmsCouponPricer(swaptionVol), meanReversion_(meanReversion),
-          couponDiscountCurve_(couponDiscountCurve), settings_(settings),
-          volDayCounter_(swaptionVol->dayCounter()), integrator_(integrator) {
+        ext::shared_ptr<Integrator> integrator)
+        : CmsCouponPricer(swaptionVol), meanReversion_(std::move(meanReversion)),
+          couponDiscountCurve_(std::move(couponDiscountCurve)), settings_(settings),
+          volDayCounter_(swaptionVol->dayCounter()), integrator_(std::move(integrator)) {
 
         if (!couponDiscountCurve_.empty())
             registerWith(couponDiscountCurve_);

@@ -33,6 +33,7 @@
 #include <boost/tuple/tuple.hpp>
 #include <iostream>
 #include <iomanip>
+#include <utility>
 
 using namespace QuantLib;
 
@@ -144,7 +145,7 @@ class TestFunction : public CostFunction {
 public:
     typedef boost::function<Real(const Array&)> RealFunc;
     typedef boost::function<Disposable<Array>(const Array&)> ArrayFunc;
-    TestFunction(const RealFunc & f, const ArrayFunc & fs = ArrayFunc()) : f_(f), fs_(fs) {}
+    TestFunction(RealFunc  f, ArrayFunc  fs = ArrayFunc()) : f_(std::move(f)), fs_(std::move(fs)) {}
     TestFunction(Real(*f)(const Array&), Disposable<Array>(*fs)(const Array&) = NULL) : f_(f), fs_(fs) {}
     ~TestFunction() override{}
     Real value(const Array& x) const override {

@@ -22,6 +22,7 @@
 #include <ql/cashflows/cashflowvectors.hpp>
 #include <ql/cashflows/capflooredcoupon.hpp>
 #include <ql/indexes/swapindex.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -53,9 +54,9 @@ namespace QuantLib {
 
 
 
-    CmsLeg::CmsLeg(const Schedule& schedule,
-                   const ext::shared_ptr<SwapIndex>& swapIndex)
-    : schedule_(schedule), swapIndex_(swapIndex),
+    CmsLeg::CmsLeg(Schedule  schedule,
+                   ext::shared_ptr<SwapIndex>  swapIndex)
+    : schedule_(std::move(schedule)), swapIndex_(std::move(swapIndex)),
       paymentAdjustment_(Following),
       inArrears_(false), zeroPayments_(false) {}
 

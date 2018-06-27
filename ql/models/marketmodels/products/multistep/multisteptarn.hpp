@@ -33,7 +33,7 @@ namespace QuantLib {
                          const std::vector<Time>& paymentTimesFloating,
                          Real totalCoupon,
                          const std::vector<Real>& strikes,
-                         const std::vector<Real>& multipliers,
+                         std::vector<Real>  multipliers,
                          const std::vector<Real>& floatingSpreads);
         //! \name MarketModelMultiProduct interface
         //@{

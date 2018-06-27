@@ -32,6 +32,7 @@
 #include <boost/scoped_ptr.hpp>
 
 #include <limits>
+#include <utility>
 
 namespace QuantLib {
 
@@ -49,7 +50,7 @@ namespace QuantLib {
     HestonBlackVolSurface::HestonBlackVolSurface(
         const Handle<HestonModel>& hestonModel,
         const AnalyticHestonEngine::ComplexLogFormula cpxLogFormula,
-        const AnalyticHestonEngine::Integration& integration)
+        AnalyticHestonEngine::Integration  integration)
     : BlackVolTermStructure(
           hestonModel->process()->riskFreeRate()->referenceDate(),
           NullCalendar(),
@@ -57,7 +58,7 @@ namespace QuantLib {
           hestonModel->process()->riskFreeRate()->dayCounter()),
       hestonModel_(hestonModel),
       cpxLogFormula_(cpxLogFormula),
-      integration_(integration) {
+      integration_(std::move(integration)) {
         registerWith(hestonModel_);
     }
 

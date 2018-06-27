@@ -28,19 +28,20 @@
 #include <ql/experimental/processes/extendedornsteinuhlenbeckprocess.hpp>
 #include <ql/experimental/finitedifferences/fdmextendedornsteinuhlenbeckop.hpp>
 #include <ql/methods/finitedifferences/operators/secondderivativeop.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FdmExtendedOrnsteinUhlenbackOp::FdmExtendedOrnsteinUhlenbackOp(
             const ext::shared_ptr<FdmMesher>& mesher,
-            const ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess>& process,
-            const ext::shared_ptr<YieldTermStructure>& rTS,
-            const FdmBoundaryConditionSet& bcSet,
+            ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess>  process,
+            ext::shared_ptr<YieldTermStructure>  rTS,
+            FdmBoundaryConditionSet  bcSet,
             Size direction)
     : mesher_   (mesher),
-      process_  (process),
-      rTS_      (rTS),
-      bcSet_    (bcSet),
+      process_  (std::move(process)),
+      rTS_      (std::move(rTS)),
+      bcSet_    (std::move(bcSet)),
       direction_(direction),
       x_        (mesher->locations(direction)),
       dxMap_    (direction, mesher),

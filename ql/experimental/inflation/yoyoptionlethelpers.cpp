@@ -21,6 +21,7 @@
 #include <ql/instruments/makeyoyinflationcapfloor.hpp>
 
 #include <ql/utilities/null_deleter.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -29,17 +30,17 @@ namespace QuantLib {
                   Real notional,
                   YoYInflationCapFloor::Type capFloorType,
                   Period &lag,
-                  const DayCounter& yoyDayCounter,
-                  const Calendar& paymentCalendar,
+                  DayCounter  yoyDayCounter,
+                  Calendar  paymentCalendar,
                   Natural fixingDays,
-                  const ext::shared_ptr<YoYInflationIndex>& index,
+                  ext::shared_ptr<YoYInflationIndex>  index,
                   Rate strike, Size n,
-                  const ext::shared_ptr<YoYInflationCapFloorEngine> &pricer)
+                  ext::shared_ptr<YoYInflationCapFloorEngine> pricer)
     : BootstrapHelper<YoYOptionletVolatilitySurface>(price),
       notional_(notional), capFloorType_(capFloorType), lag_(lag),
-      fixingDays_(fixingDays), index_(index), strike_(strike), n_(n),
-      yoyDayCounter_(yoyDayCounter), calendar_(paymentCalendar),
-      pricer_(pricer) {
+      fixingDays_(fixingDays), index_(std::move(index)), strike_(strike), n_(n),
+      yoyDayCounter_(std::move(yoyDayCounter)), calendar_(std::move(paymentCalendar)),
+      pricer_(std::move(pricer)) {
 
         // build the instrument to reprice (only need do this once)
         yoyCapFloor_ = ext::make_shared<YoYInflationCapFloor>(

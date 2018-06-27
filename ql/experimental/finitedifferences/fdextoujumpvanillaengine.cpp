@@ -36,16 +36,17 @@
 #include <ql/experimental/finitedifferences/fdmextoujumpsolver.hpp>
 #include <ql/methods/finitedifferences/meshers/fdmsimpleprocess1dmesher.hpp>
 #include <ql/experimental/finitedifferences/fdextoujumpvanillaengine.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FdExtOUJumpVanillaEngine::FdExtOUJumpVanillaEngine(
-                      const ext::shared_ptr<ExtOUWithJumpsProcess>& process,
-                      const ext::shared_ptr<YieldTermStructure>& rTS,
+                      ext::shared_ptr<ExtOUWithJumpsProcess>  process,
+                      ext::shared_ptr<YieldTermStructure>  rTS,
                       Size tGrid, Size xGrid, Size yGrid,
                       const FdmSchemeDesc& schemeDesc)
-    : process_(process),
-      rTS_(rTS),
+    : process_(std::move(process)),
+      rTS_(std::move(rTS)),
       tGrid_(tGrid),
       xGrid_(xGrid),
       yGrid_(yGrid),

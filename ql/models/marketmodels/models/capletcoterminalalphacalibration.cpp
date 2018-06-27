@@ -24,6 +24,7 @@
 #include <ql/models/marketmodels/models/piecewiseconstantvariance.hpp>
 #include <ql/models/marketmodels/swapforwardmappings.hpp>
 #include <ql/math/matrixutilities/pseudosqrt.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -45,7 +46,7 @@ namespace QuantLib {
                              mktCapletVols, cs, displacement),
       alphaInitial_(alphaInitial), alphaMax_(alphaMax), alphaMin_(alphaMin),
       maximizeHomogeneity_(maximizeHomogeneity),
-      parametricForm_(parametricForm),
+      parametricForm_(std::move(parametricForm)),
       alpha_(numberOfRates_), a_(numberOfRates_), b_(numberOfRates_) {
           if (!parametricForm_)
               parametricForm_ = ext::shared_ptr<AlphaForm>(new

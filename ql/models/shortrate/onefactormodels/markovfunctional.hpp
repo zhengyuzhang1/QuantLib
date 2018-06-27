@@ -29,6 +29,7 @@
 #include <ql/termstructures/volatility/optionlet/optionletvolatilitystructure.hpp>
 #include <ql/processes/mfstateprocess.hpp>
 #include <ql/math/interpolation.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -124,12 +125,12 @@ namespace QuantLib {
                           Real digitalGap, Real marketRateAccuracy, 
                           Real lowerRateBound, Real upperRateBound,
                           int adjustments, 
-                          const std::vector<Real>& smileMoneyCheckpoints = std::vector<Real>())
+                          std::vector<Real>  smileMoneyCheckpoints = std::vector<Real>())
                 : yGridPoints_(yGridPoints), yStdDevs_(yStdDevs), 
                   gaussHermitePoints_(gaussHermitePoints), digitalGap_(digitalGap), 
                   marketRateAccuracy_(marketRateAccuracy), lowerRateBound_(lowerRateBound), 
                   upperRateBound_(upperRateBound), adjustments_(adjustments),
-                  smileMoneynessCheckpoints_(smileMoneyCheckpoints) {}
+                  smileMoneynessCheckpoints_(std::move(smileMoneyCheckpoints)) {}
 
             void validate() {
 
@@ -276,24 +277,24 @@ namespace QuantLib {
         // Constructor for a swaption smile calibrated model
         MarkovFunctional(const Handle<YieldTermStructure> &termStructure,
                          const Real reversion,
-                         const std::vector<Date> &volstepdates,
-                         const std::vector<Real> &volatilities,
+                         std::vector<Date> volstepdates,
+                         std::vector<Real> volatilities,
                          const Handle<SwaptionVolatilityStructure> &swaptionVol,
                          const std::vector<Date> &swaptionExpiries,
                          const std::vector<Period> &swaptionTenors,
                          const ext::shared_ptr<SwapIndex> &swapIndexBase,
-                         const MarkovFunctional::ModelSettings &modelSettings =
+                         MarkovFunctional::ModelSettings modelSettings =
                              ModelSettings());
 
         // Constructor for a caplet smile calibrated model
         MarkovFunctional(const Handle<YieldTermStructure> &termStructure,
                          const Real reversion,
-                         const std::vector<Date> &volstepdates,
-                         const std::vector<Real> &volatilities,
+                         std::vector<Date> volstepdates,
+                         std::vector<Real> volatilities,
                          const Handle<OptionletVolatilityStructure> &capletVol,
                          const std::vector<Date> &capletExpiries,
-                         const ext::shared_ptr<IborIndex> &iborIndex,
-                         const MarkovFunctional::ModelSettings &modelSettings =
+                         ext::shared_ptr<IborIndex> iborIndex,
+                         MarkovFunctional::ModelSettings modelSettings =
                              ModelSettings());
 
         const ModelSettings &modelSettings() const { return modelSettings_; }

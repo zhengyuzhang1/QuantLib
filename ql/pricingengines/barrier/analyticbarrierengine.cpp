@@ -23,12 +23,13 @@
 
 #include <ql/pricingengines/barrier/analyticbarrierengine.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     AnalyticBarrierEngine::AnalyticBarrierEngine(
-            const ext::shared_ptr<GeneralizedBlackScholesProcess>& process)
-    : process_(process) {
+            ext::shared_ptr<GeneralizedBlackScholesProcess>  process)
+    : process_(std::move(process)) {
         registerWith(process_);
     }
 

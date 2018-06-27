@@ -20,20 +20,21 @@
 #include <ql/quotes/futuresconvadjustmentquote.hpp>
 #include <ql/models/shortrate/onefactormodels/hullwhite.hpp>
 #include <ql/time/imm.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FuturesConvAdjustmentQuote::FuturesConvAdjustmentQuote(
                                const ext::shared_ptr<IborIndex>& index,
                                const Date& futuresDate,
-                               const Handle<Quote>& futuresQuote,
-                               const Handle<Quote>& volatility,
-                               const Handle<Quote>& meanReversion)
+                               Handle<Quote>  futuresQuote,
+                               Handle<Quote>  volatility,
+                               Handle<Quote>  meanReversion)
     : dc_(index->dayCounter()),
       futuresDate_(futuresDate),
       indexMaturityDate_(index->maturityDate(futuresDate_)),
-      futuresQuote_(futuresQuote),
-      volatility_(volatility), meanReversion_(meanReversion) {
+      futuresQuote_(std::move(futuresQuote)),
+      volatility_(std::move(volatility)), meanReversion_(std::move(meanReversion)) {
 
         registerWith(futuresQuote_);
         registerWith(volatility_);
@@ -43,14 +44,14 @@ namespace QuantLib {
     FuturesConvAdjustmentQuote::FuturesConvAdjustmentQuote(
                                const ext::shared_ptr<IborIndex>& index,
                                const std::string& immCode,
-                               const Handle<Quote>& futuresQuote,
-                               const Handle<Quote>& volatility,
-                               const Handle<Quote>& meanReversion)
+                               Handle<Quote>  futuresQuote,
+                               Handle<Quote>  volatility,
+                               Handle<Quote>  meanReversion)
     : dc_(index->dayCounter()),
       futuresDate_(IMM::date(immCode)),
       indexMaturityDate_(index->maturityDate(futuresDate_)),
-      futuresQuote_(futuresQuote),
-      volatility_(volatility), meanReversion_(meanReversion) {
+      futuresQuote_(std::move(futuresQuote)),
+      volatility_(std::move(volatility)), meanReversion_(std::move(meanReversion)) {
 
         registerWith(futuresQuote_);
         registerWith(volatility_);

@@ -20,6 +20,7 @@
 #include <ql/models/shortrate/onefactormodel.hpp>
 #include <ql/stochasticprocess.hpp>
 #include <ql/math/solvers1d/brent.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -28,14 +29,14 @@ namespace QuantLib {
       public:
         Helper(Size i,
                Real discountBondPrice,
-               const ext::shared_ptr
-                   <TermStructureFittingParameter::NumericalImpl>& theta,
+               ext::shared_ptr
+                   <TermStructureFittingParameter::NumericalImpl>  theta,
                ShortRateTree& tree)
         : size_(tree.size(i)),
           i_(i),
           statePrices_(tree.statePrices(i)),
           discountBondPrice_(discountBondPrice),
-          theta_(theta),
+          theta_(std::move(theta)),
           tree_(tree) {
             theta_->set(tree.timeGrid()[i], 0.0);
         }
@@ -59,12 +60,12 @@ namespace QuantLib {
 
     OneFactorModel::ShortRateTree::ShortRateTree(
             const ext::shared_ptr<TrinomialTree>& tree,
-            const ext::shared_ptr<ShortRateDynamics>& dynamics,
+            ext::shared_ptr<ShortRateDynamics>  dynamics,
             const ext::shared_ptr
                 <TermStructureFittingParameter::NumericalImpl>& theta,
             const TimeGrid& timeGrid)
     : TreeLattice1D<OneFactorModel::ShortRateTree>(timeGrid, tree->size(1)),
-      tree_(tree), dynamics_(dynamics), spread_(0.0) {
+      tree_(tree), dynamics_(std::move(dynamics)), spread_(0.0) {
 
         theta->reset();
         Real value = 1.0;
@@ -84,10 +85,10 @@ namespace QuantLib {
 
     OneFactorModel::ShortRateTree::ShortRateTree(
                          const ext::shared_ptr<TrinomialTree>& tree,
-                         const ext::shared_ptr<ShortRateDynamics>& dynamics,
+                         ext::shared_ptr<ShortRateDynamics>  dynamics,
                          const TimeGrid& timeGrid)
     : TreeLattice1D<OneFactorModel::ShortRateTree>(timeGrid, tree->size(1)),
-      tree_(tree), dynamics_(dynamics), spread_(0.0) {}
+      tree_(tree), dynamics_(std::move(dynamics)), spread_(0.0) {}
 
     OneFactorModel::OneFactorModel(Size nArguments)
     : ShortRateModel(nArguments) {}

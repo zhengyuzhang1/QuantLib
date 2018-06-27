@@ -41,7 +41,7 @@ namespace QuantLib {
       public:
         GsrProcess(const Array &times, const Array &vols,
                    const Array &reversions, const Real T = 60.0,
-                   const Date &referenceDate = Null<Date>(), const DayCounter &dc = DayCounter());
+                   const Date &referenceDate = Null<Date>(), DayCounter dc = DayCounter());
         //! \name StochasticProcess1D interface
         //@{
         Real x0() const override;

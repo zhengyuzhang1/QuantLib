@@ -38,8 +38,8 @@ namespace QuantLib {
             const std::vector<Date> & exerciseDates,
             const Date& referenceDate,
             const DayCounter& dayCounter,
-            const ext::shared_ptr<FdmMesher> & mesher,
-            const ext::shared_ptr<FdmInnerValueCalculator> & calculator);
+            ext::shared_ptr<FdmMesher>  mesher,
+            ext::shared_ptr<FdmInnerValueCalculator>  calculator);
 
         void applyTo(Array& a, Time t) const override;
         const std::vector<Time>& exerciseTimes() const;

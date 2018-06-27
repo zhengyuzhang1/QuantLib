@@ -28,6 +28,7 @@
 #include <ql/methods/finitedifferences/utilities/fdminnervaluecalculator.hpp>
 #include <ql/methods/finitedifferences/stepconditions/fdmstepconditioncomposite.hpp>
 #include <ql/experimental/finitedifferences/fdornsteinuhlenbeckvanillaengine.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -35,10 +36,10 @@ namespace QuantLib {
         class FdmOUInnerValue : public FdmInnerValueCalculator {
           public:
             FdmOUInnerValue(
-                const ext::shared_ptr<Payoff>& payoff,
-                const ext::shared_ptr<FdmMesher>& mesher,
+                ext::shared_ptr<Payoff>  payoff,
+                ext::shared_ptr<FdmMesher>  mesher,
                 Size direction)
-          : payoff_(payoff), mesher_(mesher), direction_ (direction) { }
+          : payoff_(std::move(payoff)), mesher_(std::move(mesher)), direction_ (direction) { }
 
 
             Real innerValue(const FdmLinearOpIterator& iter, Time t) override {
@@ -58,12 +59,12 @@ namespace QuantLib {
     }
 
     FdOrnsteinUhlenbeckVanillaEngine::FdOrnsteinUhlenbeckVanillaEngine(
-            const ext::shared_ptr<OrnsteinUhlenbeckProcess>& process,
+            ext::shared_ptr<OrnsteinUhlenbeckProcess>  process,
             const ext::shared_ptr<YieldTermStructure>& rTS,
             Size tGrid, Size xGrid, Size dampingSteps,
             Real epsilon,
             const FdmSchemeDesc& schemeDesc)
-    : process_(process),
+    : process_(std::move(process)),
       rTS_(rTS),
       tGrid_(tGrid), xGrid_(xGrid), dampingSteps_(dampingSteps),
       epsilon_(epsilon),

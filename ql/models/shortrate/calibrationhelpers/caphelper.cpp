@@ -25,20 +25,21 @@
 #include <ql/time/schedule.hpp>
 #include <ql/quotes/simplequote.hpp>
 #include <ql/cashflows/cashflowvectors.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     CapHelper::CapHelper(const Period& length,
                          const Handle<Quote>& volatility,
-                         const ext::shared_ptr<IborIndex>& index,
+                         ext::shared_ptr<IborIndex>  index,
                          Frequency fixedLegFrequency,
-                         const DayCounter& fixedLegDayCounter,
+                         DayCounter  fixedLegDayCounter,
                          bool includeFirstSwaplet,
                          const Handle<YieldTermStructure>& termStructure,
                          CalibrationHelper::CalibrationErrorType errorType)
         : CalibrationHelper(volatility,termStructure,errorType),
-        length_(length), index_(index), fixedLegFrequency_(fixedLegFrequency),
-        fixedLegDayCounter_(fixedLegDayCounter),
+        length_(length), index_(std::move(index)), fixedLegFrequency_(fixedLegFrequency),
+        fixedLegDayCounter_(std::move(fixedLegDayCounter)),
         includeFirstSwaplet_(includeFirstSwaplet)
     {
 

@@ -37,18 +37,19 @@
 #include <ql/experimental/finitedifferences/fdmsimple3dextoujumpsolver.hpp>
 #include <ql/experimental/finitedifferences/fdsimpleextoujumpswingengine.hpp>
 #include <ql/methods/finitedifferences/meshers/uniform1dmesher.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FdSimpleExtOUJumpSwingEngine::FdSimpleExtOUJumpSwingEngine(
-              const ext::shared_ptr<ExtOUWithJumpsProcess>& process,
-              const ext::shared_ptr<YieldTermStructure>& rTS,
+              ext::shared_ptr<ExtOUWithJumpsProcess>  process,
+              ext::shared_ptr<YieldTermStructure>  rTS,
               Size tGrid, Size xGrid, Size yGrid,
-              const ext::shared_ptr<Shape>& shape,
+              ext::shared_ptr<Shape>  shape,
               const FdmSchemeDesc& schemeDesc)
-    : process_(process),
-      rTS_(rTS),
-      shape_(shape),
+    : process_(std::move(process)),
+      rTS_(std::move(rTS)),
+      shape_(std::move(shape)),
       tGrid_(tGrid), xGrid_(xGrid), yGrid_(yGrid),
       schemeDesc_(schemeDesc) {
     }

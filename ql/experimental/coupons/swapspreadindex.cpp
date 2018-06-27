@@ -19,13 +19,14 @@
 
 #include <sstream>
 #include <iomanip>
+#include <utility>
 
 namespace QuantLib {
 
     SwapSpreadIndex::SwapSpreadIndex(
         const std::string &familyName,
         const ext::shared_ptr<SwapIndex> &swapIndex1,
-        const ext::shared_ptr<SwapIndex> &swapIndex2, const Real gearing1,
+        ext::shared_ptr<SwapIndex> swapIndex2, const Real gearing1,
         const Real gearing2)
         : InterestRateIndex(
               familyName,
@@ -34,7 +35,7 @@ namespace QuantLib {
               swapIndex1->fixingDays(),
               swapIndex1->currency(), swapIndex1->fixingCalendar(),
               swapIndex1->dayCounter()),
-          swapIndex1_(swapIndex1), swapIndex2_(swapIndex2), gearing1_(gearing1),
+          swapIndex1_(swapIndex1), swapIndex2_(std::move(swapIndex2)), gearing1_(gearing1),
           gearing2_(gearing2) {
 
         registerWith(swapIndex1_);

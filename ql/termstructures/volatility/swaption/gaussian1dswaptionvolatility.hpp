@@ -38,7 +38,7 @@ class Gaussian1dSwaptionVolatility : public SwaptionVolatilityStructure {
   public:
     Gaussian1dSwaptionVolatility(
         const Calendar &cal, BusinessDayConvention bdc,
-        const ext::shared_ptr<SwapIndex> &indexBase,
+        ext::shared_ptr<SwapIndex> indexBase,
         const ext::shared_ptr<Gaussian1dModel> &model, const DayCounter &dc,
         const ext::shared_ptr<Gaussian1dSwaptionEngine> swaptionEngine =
             ext::shared_ptr<Gaussian1dSwaptionEngine>());

@@ -39,6 +39,7 @@
 
 #include <set>
 #include <numeric>
+#include <utility>
 
 namespace QuantLib {
     namespace {
@@ -68,7 +69,7 @@ namespace QuantLib {
            to create [Array -> Real] functor */
         class MultiDimFct : public std::unary_function<Real, Array> {
           public:
-            explicit MultiDimFct(const VF_R& b): b_(b) {
+            explicit MultiDimFct(VF_R  b): b_(std::move(b)) {
                 QL_REQUIRE(b_.size()>0, "zero size basis");
             }
             inline Real operator()(const Array& a) const {

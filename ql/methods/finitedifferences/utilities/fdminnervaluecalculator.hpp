@@ -48,8 +48,8 @@ namespace QuantLib {
 
     class FdmLogInnerValue : public FdmInnerValueCalculator {
       public:
-        FdmLogInnerValue(const ext::shared_ptr<Payoff>& payoff,
-                         const ext::shared_ptr<FdmMesher>& mesher,
+        FdmLogInnerValue(ext::shared_ptr<Payoff>  payoff,
+                         ext::shared_ptr<FdmMesher>  mesher,
                          Size direction);
 
         Real innerValue(const FdmLinearOpIterator& iter, Time) override;
@@ -67,8 +67,8 @@ namespace QuantLib {
 
     class FdmLogBasketInnerValue : public FdmInnerValueCalculator {
       public:
-        FdmLogBasketInnerValue(const ext::shared_ptr<BasketPayoff>& payoff,
-                               const ext::shared_ptr<FdmMesher>& mesher);
+        FdmLogBasketInnerValue(ext::shared_ptr<BasketPayoff>  payoff,
+                               ext::shared_ptr<FdmMesher>  mesher);
 
         Real innerValue(const FdmLinearOpIterator& iter, Time) override;
         Real avgInnerValue(const FdmLinearOpIterator& iter, Time) override;

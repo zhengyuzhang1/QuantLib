@@ -26,6 +26,7 @@
 #define quantlib_inversecumulative_rsg_h
 
 #include <ql/methods/montecarlo/sample.hpp>
+#include <utility>
 #include <vector>
 
 namespace QuantLib {
@@ -56,8 +57,8 @@ namespace QuantLib {
     class InverseCumulativeRsg {
       public:
         typedef Sample<std::vector<Real> > sample_type;
-        explicit InverseCumulativeRsg(const USG& uniformSequenceGenerator);
-        InverseCumulativeRsg(const USG& uniformSequenceGenerator,
+        explicit InverseCumulativeRsg(USG  uniformSequenceGenerator);
+        InverseCumulativeRsg(USG  uniformSequenceGenerator,
                              const IC& inverseCumulative);
         //! returns next sample from the inverse cumulative distribution
         const sample_type& nextSequence() const;
@@ -71,15 +72,15 @@ namespace QuantLib {
     };
 
     template <class USG, class IC>
-    InverseCumulativeRsg<USG, IC>::InverseCumulativeRsg(const USG& usg)
-    : uniformSequenceGenerator_(usg),
+    InverseCumulativeRsg<USG, IC>::InverseCumulativeRsg(USG usg)
+    : uniformSequenceGenerator_(std::move(usg)),
       dimension_(uniformSequenceGenerator_.dimension()),
       x_(std::vector<Real> (dimension_), 1.0) {}
 
     template <class USG, class IC>
-    InverseCumulativeRsg<USG, IC>::InverseCumulativeRsg(const USG& usg,
+    InverseCumulativeRsg<USG, IC>::InverseCumulativeRsg(USG usg,
                                                         const IC& inverseCum)
-    : uniformSequenceGenerator_(usg),
+    : uniformSequenceGenerator_(std::move(usg)),
       dimension_(uniformSequenceGenerator_.dimension()),
       x_(std::vector<Real> (dimension_), 1.0),
       ICD_(inverseCum) {}

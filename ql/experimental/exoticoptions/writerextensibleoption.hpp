@@ -45,7 +45,7 @@ namespace QuantLib {
             const ext::shared_ptr<PlainVanillaPayoff>& payoff1,
             const ext::shared_ptr<Exercise>& exercise1,
             const ext::shared_ptr<PlainVanillaPayoff>& payoff2,
-            const ext::shared_ptr<Exercise>& exercise2);
+            ext::shared_ptr<Exercise>  exercise2);
         // inspectors
         ext::shared_ptr<Payoff> payoff2() { return payoff2_; }
         ext::shared_ptr<Exercise> exercise2() { return exercise2_; };

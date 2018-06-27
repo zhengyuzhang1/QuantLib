@@ -28,12 +28,13 @@
 #include <ql/experimental/finitedifferences/bsmrndcalculator.hpp>
 
 #include <cmath>
+#include <utility>
 
 namespace QuantLib {
 
     BSMRNDCalculator::BSMRNDCalculator(
-        const ext::shared_ptr<GeneralizedBlackScholesProcess>& process)
-    : process_(process) { }
+        ext::shared_ptr<GeneralizedBlackScholesProcess>  process)
+    : process_(std::move(process)) { }
 
     std::pair<Real, Volatility>
     BSMRNDCalculator::distributionParams(Real x, Time t) const {

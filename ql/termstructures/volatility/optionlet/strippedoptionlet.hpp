@@ -40,11 +40,11 @@ namespace QuantLib {
       public:
         StrippedOptionlet(Natural settlementDays, const Calendar &calendar,
                           BusinessDayConvention bdc,
-                          const ext::shared_ptr< IborIndex > &iborIndex,
+                          ext::shared_ptr< IborIndex > iborIndex,
                           const std::vector< Date > &optionletDates,
                           const std::vector< Rate > &strikes,
-                          const std::vector< std::vector< Handle< Quote > > > &,
-                          const DayCounter &dc,
+                          std::vector< std::vector< Handle< Quote > > > ,
+                          DayCounter dc,
                           VolatilityType type = ShiftedLognormal,
                           Real displacement = 0.0);
         //! \name StrippedOptionletBase interface

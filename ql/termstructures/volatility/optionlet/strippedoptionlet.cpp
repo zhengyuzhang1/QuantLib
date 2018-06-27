@@ -23,6 +23,7 @@
 #include <ql/instruments/makecapfloor.hpp>
 #include <ql/pricingengines/capfloor/blackcapfloorengine.hpp>
 #include <ql/utilities/dataformatters.hpp>
+#include <utility>
 
 using std::vector;
 
@@ -30,17 +31,17 @@ namespace QuantLib {
 
 StrippedOptionlet::StrippedOptionlet(
     Natural settlementDays, const Calendar &calendar, BusinessDayConvention bdc,
-    const ext::shared_ptr< IborIndex > &iborIndex,
+    ext::shared_ptr< IborIndex > iborIndex,
     const std::vector< Date > &optionletDates, const vector< Rate > &strikes,
-    const vector< vector< Handle< Quote > > > &v, const DayCounter &dc,
+    vector< vector< Handle< Quote > > > v, DayCounter dc,
     VolatilityType type, Real displacement)
     : calendar_(calendar), settlementDays_(settlementDays),
-      businessDayConvention_(bdc), dc_(dc), iborIndex_(iborIndex), type_(type),
+      businessDayConvention_(bdc), dc_(std::move(dc)), iborIndex_(std::move(iborIndex)), type_(type),
       displacement_(displacement), nOptionletDates_(optionletDates.size()),
       optionletDates_(optionletDates), optionletTimes_(nOptionletDates_),
       optionletAtmRates_(nOptionletDates_),
       optionletStrikes_(nOptionletDates_, strikes), nStrikes_(strikes.size()),
-      optionletVolQuotes_(v),
+      optionletVolQuotes_(std::move(v)),
       optionletVolatilities_(nOptionletDates_, vector< Volatility >(nStrikes_))
 
 {

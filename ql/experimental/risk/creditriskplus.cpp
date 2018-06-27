@@ -19,19 +19,20 @@
 
 #include <ql/experimental/risk/creditriskplus.hpp>
 #include <map>
+#include <utility>
 
 using std::sqrt;
 
 namespace QuantLib {
 
     CreditRiskPlus::CreditRiskPlus(
-        const std::vector<Real> &exposure,
-        const std::vector<Real> &defaultProbability,
-        const std::vector<Size> &sector,
-        const std::vector<Real> &relativeDefaultVariance,
+        std::vector<Real> exposure,
+        std::vector<Real> defaultProbability,
+        std::vector<Size> sector,
+        std::vector<Real> relativeDefaultVariance,
         const Matrix &correlation, const Real unit)
-        : exposure_(exposure), pd_(defaultProbability), sector_(sector),
-          relativeDefaultVariance_(relativeDefaultVariance),
+        : exposure_(std::move(exposure)), pd_(std::move(defaultProbability)), sector_(std::move(sector)),
+          relativeDefaultVariance_(std::move(relativeDefaultVariance)),
           correlation_(correlation), unit_(unit) {
 
         m_ = exposure_.size();

@@ -31,6 +31,7 @@
 #include <ql/methods/finitedifferences/meshers/fdmmeshercomposite.hpp>
 #include <ql/methods/finitedifferences/meshers/fdmblackscholesmesher.hpp>
 #include <ql/methods/finitedifferences/meshers/fdmblackscholesmultistrikemesher.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -38,14 +39,14 @@ namespace QuantLib {
             const ext::shared_ptr<HestonModel>& model,
             Size tGrid, Size xGrid, Size vGrid, Size dampingSteps,
             const FdmSchemeDesc& schemeDesc,
-            const ext::shared_ptr<LocalVolTermStructure>& leverageFct)
+            ext::shared_ptr<LocalVolTermStructure>  leverageFct)
     : GenericModelEngine<HestonModel,
                         DividendVanillaOption::arguments,
                         DividendVanillaOption::results>(model),
       tGrid_(tGrid), xGrid_(xGrid), 
       vGrid_(vGrid), dampingSteps_(dampingSteps),
       schemeDesc_(schemeDesc),
-      leverageFct_(leverageFct) {
+      leverageFct_(std::move(leverageFct)) {
     }
 
 

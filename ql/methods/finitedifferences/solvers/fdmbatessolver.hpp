@@ -37,11 +37,11 @@ namespace QuantLib {
     class FdmBatesSolver : public LazyObject {
       public:
         FdmBatesSolver(
-            const Handle<BatesProcess>& process,
-            const FdmSolverDesc& solverDesc,
+            Handle<BatesProcess>  process,
+            FdmSolverDesc  solverDesc,
             const FdmSchemeDesc& schemeDesc = FdmSchemeDesc::Hundsdorfer(),
             Size integroIntegrationOrder = 12,
-            const Handle<FdmQuantoHelper>& quantoHelper
+            Handle<FdmQuantoHelper>  quantoHelper
                                                 = Handle<FdmQuantoHelper>());
         
         Real valueAt(Real s, Real v) const;

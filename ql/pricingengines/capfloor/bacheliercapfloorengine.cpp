@@ -23,24 +23,25 @@
 #include <ql/termstructures/volatility/optionlet/constantoptionletvol.hpp>
 #include <ql/termstructures/volatility/optionlet/strippedoptionletadapter.hpp>
 #include <ql/time/calendars/nullcalendar.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     BachelierCapFloorEngine::BachelierCapFloorEngine(
-                              const Handle<YieldTermStructure>& discountCurve,
+                              Handle<YieldTermStructure>  discountCurve,
                               Volatility v,
                               const DayCounter& dc)
-    : discountCurve_(discountCurve),
+    : discountCurve_(std::move(discountCurve)),
       vol_(ext::shared_ptr<OptionletVolatilityStructure>(new
           ConstantOptionletVolatility(0, NullCalendar(), Following, v, dc))) {
         registerWith(discountCurve_);
     }
 
     BachelierCapFloorEngine::BachelierCapFloorEngine(
-                              const Handle<YieldTermStructure>& discountCurve,
+                              Handle<YieldTermStructure>  discountCurve,
                               const Handle<Quote>& v,
                               const DayCounter& dc)
-    : discountCurve_(discountCurve),
+    : discountCurve_(std::move(discountCurve)),
       vol_(ext::shared_ptr<OptionletVolatilityStructure>(new
           ConstantOptionletVolatility(0, NullCalendar(), Following, v, dc))) {
         registerWith(discountCurve_);
@@ -48,9 +49,9 @@ namespace QuantLib {
     }
 
     BachelierCapFloorEngine::BachelierCapFloorEngine(
-                       const Handle<YieldTermStructure>& discountCurve,
-                       const Handle<OptionletVolatilityStructure>& volatility)
-    : discountCurve_(discountCurve), vol_(volatility) {
+                       Handle<YieldTermStructure>  discountCurve,
+                       Handle<OptionletVolatilityStructure>  volatility)
+    : discountCurve_(std::move(discountCurve)), vol_(std::move(volatility)) {
         QL_REQUIRE(vol_->volatilityType() == Normal,
                    "BachelierCapFloorEngine should only be used for vol "
                    "surfaces stripped with normal model. Options were stripped "

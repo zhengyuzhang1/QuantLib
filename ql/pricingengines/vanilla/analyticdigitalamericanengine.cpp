@@ -23,12 +23,13 @@
 #include <ql/pricingengines/americanpayoffathit.hpp>
 #include <ql/pricingengines/americanpayoffatexpiry.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     AnalyticDigitalAmericanEngine::AnalyticDigitalAmericanEngine(
-              const ext::shared_ptr<GeneralizedBlackScholesProcess>& process)
-    : process_(process) {
+              ext::shared_ptr<GeneralizedBlackScholesProcess>  process)
+    : process_(std::move(process)) {
         registerWith(process_);
     }
 

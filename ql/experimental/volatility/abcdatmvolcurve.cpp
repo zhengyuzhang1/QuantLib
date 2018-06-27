@@ -21,6 +21,7 @@
 #include <ql/experimental/volatility/abcdatmvolcurve.hpp>
 #include <ql/utilities/dataformatters.hpp>
 #include <ql/quote.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -30,7 +31,7 @@ namespace QuantLib {
             const Calendar& cal,
             const std::vector<Period>& optionTenors,
             const std::vector<Handle<Quote> >& volsHandles,
-            const std::vector<bool>& inclusionInInterpolationFlag,
+            std::vector<bool>  inclusionInInterpolationFlag,
             BusinessDayConvention bdc,
             const DayCounter& dc)
     : BlackAtmVolCurve(settlDays, cal, bdc, dc),
@@ -42,7 +43,7 @@ namespace QuantLib {
       volHandles_(volsHandles),
       vols_(volsHandles.size()),
       actualVols_(volsHandles.size()),
-      inclusionInInterpolation_(inclusionInInterpolationFlag),
+      inclusionInInterpolation_(std::move(inclusionInInterpolationFlag)),
       interpolation_(ext::shared_ptr<AbcdInterpolation>()) // do not initialize with nOptionTenors_
     {
         checkInputs();

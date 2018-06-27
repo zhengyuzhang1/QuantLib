@@ -33,6 +33,7 @@
 #include <ql/instruments/payoffs.hpp>
 #include <ql/pricingengines/blackcalculator.hpp>
 #include <ql/pricingengines/vanilla/analytichestonengine.hpp>
+#include <utility>
 
 
 #if defined(QL_PATCH_MSVC)
@@ -48,8 +49,8 @@ namespace QuantLib {
             const Real c_inf_;
             const boost::function<Real(Real)> f_;
           public:
-            integrand1(Real c_inf, const boost::function<Real(Real)>& f)
-            : c_inf_(c_inf), f_(f) {}
+            integrand1(Real c_inf, boost::function<Real(Real)>  f)
+            : c_inf_(c_inf), f_(std::move(f)) {}
             Real operator()(Real x) const {
                 if ((1.0-x)*c_inf_ > QL_EPSILON)
                     return f_(-std::log(0.5-0.5*x)/c_inf_)/((1.0-x)*c_inf_);
@@ -63,8 +64,8 @@ namespace QuantLib {
             const Real c_inf_;
             const boost::function<Real(Real)> f_;
           public:
-            integrand2(Real c_inf, const boost::function<Real(Real)>& f)
-            : c_inf_(c_inf), f_(f) {}
+            integrand2(Real c_inf, boost::function<Real(Real)>  f)
+            : c_inf_(c_inf), f_(std::move(f)) {}
             Real operator()(Real x) const {
                 if (x*c_inf_ > QL_EPSILON) {
                     return f_(-std::log(x)/c_inf_)/(x*c_inf_);
@@ -623,15 +624,15 @@ namespace QuantLib {
 
     AnalyticHestonEngine::Integration::Integration(
             Algorithm intAlgo,
-            const ext::shared_ptr<Integrator>& integrator)
+            ext::shared_ptr<Integrator>  integrator)
     : intAlgo_(intAlgo),
-      integrator_(integrator) { }
+      integrator_(std::move(integrator)) { }
 
     AnalyticHestonEngine::Integration::Integration(
             Algorithm intAlgo,
-            const ext::shared_ptr<GaussianQuadrature>& gaussianQuadrature)
+            ext::shared_ptr<GaussianQuadrature>  gaussianQuadrature)
     : intAlgo_(intAlgo),
-      gaussianQuadrature_(gaussianQuadrature) { }
+      gaussianQuadrature_(std::move(gaussianQuadrature)) { }
 
     AnalyticHestonEngine::Integration
     AnalyticHestonEngine::Integration::gaussLobatto(Real relTolerance,

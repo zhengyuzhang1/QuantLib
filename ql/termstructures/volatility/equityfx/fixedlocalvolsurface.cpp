@@ -21,6 +21,7 @@
 #include <ql/time/calendars/nullcalendar.hpp>
 #include <ql/math/interpolations/linearinterpolation.hpp>
 #include <ql/termstructures/volatility/equityfx/fixedlocalvolsurface.hpp>
+#include <utility>
 
 
 namespace QuantLib {
@@ -42,14 +43,14 @@ namespace QuantLib {
         const Date& referenceDate,
         const std::vector<Date>& dates,
         const std::vector<Real>& strikes,
-        const ext::shared_ptr<Matrix>& localVolMatrix,
+        ext::shared_ptr<Matrix>  localVolMatrix,
         const DayCounter& dayCounter,
         Extrapolation lowerExtrapolation,
         Extrapolation upperExtrapolation)
     : LocalVolTermStructure(
           referenceDate, NullCalendar(), Following, dayCounter),
       maxDate_(dates.back()),
-      localVolMatrix_(localVolMatrix),
+      localVolMatrix_(std::move(localVolMatrix)),
       strikes_(dates.size(),ext::make_shared<std::vector<Real> >(strikes)),
       localVolInterpol_(dates.size()),
       lowerExtrapolation_(lowerExtrapolation),
@@ -70,7 +71,7 @@ namespace QuantLib {
         const Date& referenceDate,
         const std::vector<Time>& times,
         const std::vector<Real>& strikes,
-        const ext::shared_ptr<Matrix>& localVolMatrix,
+        ext::shared_ptr<Matrix>  localVolMatrix,
         const DayCounter& dayCounter,
         Extrapolation lowerExtrapolation,
         Extrapolation upperExtrapolation)
@@ -78,7 +79,7 @@ namespace QuantLib {
           referenceDate, NullCalendar(), Following, dayCounter),
       maxDate_(time2Date(referenceDate, dayCounter, times.back())),
       times_(times),
-      localVolMatrix_(localVolMatrix),
+      localVolMatrix_(std::move(localVolMatrix)),
       strikes_(times.size(),ext::make_shared<std::vector<Real> >(strikes)),
       localVolInterpol_(times.size()),
       lowerExtrapolation_(lowerExtrapolation),
@@ -94,7 +95,7 @@ namespace QuantLib {
         const Date& referenceDate,
         const std::vector<Time>& times,
         const std::vector<ext::shared_ptr<std::vector<Real> > > & strikes,
-        const ext::shared_ptr<Matrix>& localVolMatrix,
+        ext::shared_ptr<Matrix>  localVolMatrix,
         const DayCounter& dayCounter,
         Extrapolation lowerExtrapolation,
         Extrapolation upperExtrapolation)
@@ -102,7 +103,7 @@ namespace QuantLib {
               referenceDate, NullCalendar(), Following, dayCounter),
       maxDate_(time2Date(referenceDate, dayCounter, times.back())),
       times_(times),
-      localVolMatrix_(localVolMatrix),
+      localVolMatrix_(std::move(localVolMatrix)),
       strikes_(strikes),
       localVolInterpol_(times.size()),
       lowerExtrapolation_(lowerExtrapolation),

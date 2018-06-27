@@ -42,7 +42,7 @@ namespace QuantLib {
                   BusinessDayConvention convention,
                   bool endOfMonth,
                   const DayCounter& dayCounter,
-                  const Handle<YieldTermStructure>& h =
+                  Handle<YieldTermStructure>  h =
                                     Handle<YieldTermStructure>());
         //! \name InterestRateIndex interface
         //@{

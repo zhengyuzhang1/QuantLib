@@ -26,6 +26,7 @@
 
 #include <ql/math/interpolations/interpolation2d.hpp>
 #include <ql/math/matrixutilities/qrdecomposition.hpp>
+#include <utility>
 
 /*
   Grid Explanation:
@@ -59,14 +60,14 @@ namespace QuantLib {
             KernelInterpolation2DImpl(const I1& xBegin, const I1& xEnd,
                                       const I2& yBegin, const I2& yEnd,
                                       const M& zData,
-                                      const Kernel& kernel)
+                                      Kernel  kernel)
             : Interpolation2D::templateImpl<I1,I2,M>(xBegin, xEnd,
                                                      yBegin, yEnd, zData),
               xSize_(Size(xEnd-xBegin)), ySize_(Size(yEnd-yBegin)),
               xySize_(xSize_*ySize_), invPrec_(1.0e-10),
               alphaVec_(xySize_), yVec_(xySize_),
               M_(xySize_,xySize_),
-              kernel_(kernel) {
+              kernel_(std::move(kernel)) {
 
                 QL_REQUIRE(zData.rows()==xSize_,
                            "Z value matrix has wrong number of rows");

@@ -25,6 +25,7 @@
 #define quantlib_implied_vol_term_structure_hpp
 
 #include <ql/termstructures/volatility/equityfx/blackvoltermstructure.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -41,7 +42,7 @@ namespace QuantLib {
     */
     class ImpliedVolTermStructure : public BlackVarianceTermStructure {
       public:
-        ImpliedVolTermStructure(const Handle<BlackVolTermStructure>& origTS,
+        ImpliedVolTermStructure(Handle<BlackVolTermStructure>  origTS,
                                 const Date& referenceDate);
         //! \name TermStructure interface
         //@{
@@ -67,9 +68,9 @@ namespace QuantLib {
     // inline definitions
 
     inline ImpliedVolTermStructure::ImpliedVolTermStructure(
-                              const Handle<BlackVolTermStructure>& originalTS,
+                              Handle<BlackVolTermStructure>  originalTS,
                               const Date& referenceDate)
-    : BlackVarianceTermStructure(referenceDate), originalTS_(originalTS) {
+    : BlackVarianceTermStructure(referenceDate), originalTS_(std::move(originalTS)) {
         registerWith(originalTS_);
     }
 

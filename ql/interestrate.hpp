@@ -45,7 +45,7 @@ namespace QuantLib {
         InterestRate();
         //! Standard constructor
         InterestRate(Rate r,
-                     const DayCounter& dc,
+                     DayCounter  dc,
                      Compounding comp,
                      Frequency freq);
         //@}

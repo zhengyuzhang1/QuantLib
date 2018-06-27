@@ -51,7 +51,7 @@ namespace QuantLib {
                                       Frequency frequency,
                                       bool indexIsInterpolated,
                                       const Handle<YieldTermStructure>& yTS,
-                                      const std::vector<Date>& dates,
+                                      std::vector<Date>  dates,
                                       const std::vector<Rate>& rates,
                                       const Interpolator& interpolator
                                                             = Interpolator());
@@ -109,13 +109,13 @@ namespace QuantLib {
                                   Frequency frequency,
                                   bool indexIsInterpolated,
                                   const Handle<YieldTermStructure>& yTS,
-                                  const std::vector<Date>& dates,
+                                  std::vector<Date>  dates,
                                   const std::vector<Rate>& rates,
                                   const Interpolator& interpolator)
     : YoYInflationTermStructure(referenceDate, calendar, dayCounter, rates[0],
                                 lag, frequency, indexIsInterpolated,  yTS),
       InterpolatedCurve<Interpolator>(std::vector<Time>(), rates, interpolator),
-      dates_(dates) {
+      dates_(std::move(dates)) {
 
         QL_REQUIRE(dates_.size()>1, "too few dates: " << dates_.size());
 

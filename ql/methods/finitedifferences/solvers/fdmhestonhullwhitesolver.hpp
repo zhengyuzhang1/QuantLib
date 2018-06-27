@@ -42,7 +42,7 @@ namespace QuantLib {
             const Handle<HestonProcess>& hestonProcess,
             const Handle<HullWhiteProcess>& hwProcess,
             Rate corrEquityShortRate,
-            const FdmSolverDesc& solverDesc,
+            FdmSolverDesc  solverDesc,
             const FdmSchemeDesc& schemeDesc = FdmSchemeDesc::Hundsdorfer());
 
         Real valueAt(Real s, Real v, Rate r) const;

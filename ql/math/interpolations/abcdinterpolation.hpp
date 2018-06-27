@@ -30,6 +30,7 @@
 #include <ql/math/interpolations/linearinterpolation.hpp>
 #include <ql/termstructures/volatility/abcd.hpp>
 #include <ql/termstructures/volatility/abcdcalibration.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -91,12 +92,12 @@ namespace QuantLib {
                 bool cIsFixed,
                 bool dIsFixed,
                 bool vegaWeighted,
-                const ext::shared_ptr<EndCriteria>& endCriteria,
-                const ext::shared_ptr<OptimizationMethod>& optMethod)
+                ext::shared_ptr<EndCriteria>  endCriteria,
+                ext::shared_ptr<OptimizationMethod>  optMethod)
             : Interpolation::templateImpl<I1,I2>(xBegin, xEnd, yBegin),
               AbcdCoeffHolder(a, b, c, d,
                               aIsFixed, bIsFixed, cIsFixed, dIsFixed),
-              endCriteria_(endCriteria), optMethod_(optMethod),
+              endCriteria_(std::move(endCriteria)), optMethod_(std::move(optMethod)),
               vegaWeighted_(vegaWeighted) { }
 
             void update() override {

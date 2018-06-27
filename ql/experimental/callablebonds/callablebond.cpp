@@ -24,15 +24,16 @@
 #include <ql/termstructures/yield/zerospreadedtermstructure.hpp>
 #include <ql/math/solvers1d/brent.hpp>
 #include <ql/experimental/math/numericaldifferentiation.hpp>
+#include <utility>
 namespace QuantLib {
 
     CallableBond::CallableBond(Natural settlementDays,
                                const Schedule& schedule,
-                               const DayCounter& paymentDayCounter,
+                               DayCounter  paymentDayCounter,
                                const Date& issueDate,
-                               const CallabilitySchedule& putCallSchedule)
+                               CallabilitySchedule  putCallSchedule)
     : Bond(settlementDays, schedule.calendar(), issueDate),
-      paymentDayCounter_(paymentDayCounter), putCallSchedule_(putCallSchedule) {
+      paymentDayCounter_(std::move(paymentDayCounter)), putCallSchedule_(std::move(putCallSchedule)) {
 
         maturityDate_ = schedule.dates().back();
 

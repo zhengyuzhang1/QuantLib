@@ -46,7 +46,7 @@ namespace QuantLib {
 
         FdmStepConditionComposite(
             const std::list<std::vector<Time> > & stoppingTimes,
-            const Conditions & conditions);
+            Conditions  conditions);
 
         void applyTo(Array& a, Time t) const override;
         const std::vector<Time>& stoppingTimes() const;

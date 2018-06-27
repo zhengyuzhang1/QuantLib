@@ -21,19 +21,20 @@
 #include <ql/time/daycounter.hpp>
 #include <ql/time/calendars/southafrica.hpp>
 #include <ql/time/period.hpp>
+#include <utility>
 
 using namespace QuantLib;
 using namespace boost::unit_test_framework;
 
 namespace {
     struct SingleCase {
-        SingleCase(const Calendar& calendar,
+        SingleCase(Calendar  calendar,
                    const BusinessDayConvention& convention,
                    const Date& start,
                    const Period& period,
                    const bool endOfMonth,
                    Date result)
-        : calendar(calendar), convention(convention), start(start), 
+        : calendar(std::move(calendar)), convention(convention), start(start), 
           period(period), endOfMonth(endOfMonth), result(result) {}
         Calendar calendar;
         BusinessDayConvention convention;

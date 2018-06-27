@@ -51,9 +51,9 @@ namespace QuantLib {
                         const Date& startDate,
                         const Date& endDate,
                         Natural fixingDays,
-                        const ext::shared_ptr<InflationIndex>& index,
+                        ext::shared_ptr<InflationIndex>  index,
                         const Period& observationLag,
-                        const DayCounter& dayCounter,
+                        DayCounter  dayCounter,
                         const Date& refPeriodStart = Date(),
                         const Date& refPeriodEnd = Date(),
                         const Date& exCouponDate = Date()

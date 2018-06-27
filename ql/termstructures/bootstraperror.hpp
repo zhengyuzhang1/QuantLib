@@ -28,6 +28,7 @@
 
 #include <ql/types.hpp>
 #include <ql/shared_ptr.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -38,7 +39,7 @@ namespace QuantLib {
       public:
         BootstrapError(
                  const Curve* curve,
-                 const ext::shared_ptr<typename Traits::helper>& instrument,
+                 ext::shared_ptr<typename Traits::helper>  instrument,
                  Size segment);
         Real operator()(Rate guess) const;
         const ext::shared_ptr<typename Traits::helper>& helper() {
@@ -56,9 +57,9 @@ namespace QuantLib {
     template <class Curve>
     BootstrapError<Curve>::BootstrapError(
                      const Curve* curve,
-                     const ext::shared_ptr<typename Traits::helper>& helper,
+                     ext::shared_ptr<typename Traits::helper> helper,
                      Size segment)
-    : curve_(curve), helper_(helper), segment_(segment) {}
+    : curve_(curve), helper_(std::move(helper)), segment_(segment) {}
 
     #ifndef __DOXYGEN__
     template <class Curve>

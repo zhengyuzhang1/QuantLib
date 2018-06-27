@@ -26,6 +26,7 @@
 #include <ql/math/matrix.hpp>
 #include <ql/math/optimization/costfunction.hpp>
 #include <boost/function.hpp>
+#include <utility>
 #include <vector>
 
 namespace QuantLib {
@@ -95,12 +96,12 @@ namespace QuantLib {
       public:
         FrobeniusCostFunction(
             const Matrix& target,
-            const boost::function<Disposable<Matrix>(const Array&,
+            boost::function<Disposable<Matrix>(const Array&,
                                                      Size,
-                                                     Size)>& f,
+                                                     Size)>  f,
                                                      Size matrixSize,
                                                      Size rank)
-        : target_(target), f_(f), matrixSize_(matrixSize), rank_(rank) {}
+        : target_(target), f_(std::move(f)), matrixSize_(matrixSize), rank_(rank) {}
         Real value (const Array &x) const override;
         Disposable<Array> values (const Array &x) const override;
       private:

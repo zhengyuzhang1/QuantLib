@@ -89,7 +89,7 @@ namespace QuantLib {
         FittedBondDiscountCurve(
                  Natural settlementDays,
                  const Calendar& calendar,
-                 const std::vector<ext::shared_ptr<BondHelper> >& bonds,
+                 std::vector<ext::shared_ptr<BondHelper> >  bonds,
                  const DayCounter& dayCounter,
                  const FittingMethod& fittingMethod,
                  Real accuracy = 1.0e-10,
@@ -100,7 +100,7 @@ namespace QuantLib {
         //! curve reference date fixed for life of curve
         FittedBondDiscountCurve(
                  const Date &referenceDate,
-                 const std::vector<ext::shared_ptr<BondHelper> >& bonds,
+                 std::vector<ext::shared_ptr<BondHelper> >  bonds,
                  const DayCounter& dayCounter,
                  const FittingMethod& fittingMethod,
                  Real accuracy = 1.0e-10,

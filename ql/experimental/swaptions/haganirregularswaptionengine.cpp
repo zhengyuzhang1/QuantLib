@@ -30,6 +30,7 @@
 #include <ql/math/distributions/normaldistribution.hpp>
 #include <ql/math/interpolations/linearinterpolation.hpp>
 #include <ql/math/solvers1d/brent.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -38,9 +39,9 @@ namespace QuantLib {
     //////////////////////////////////////////////////////////////////////////
 
     HaganIrregularSwaptionEngine::Basket::Basket(ext::shared_ptr<IrregularSwap> swap,
-        const Handle<YieldTermStructure>& termStructure,
-        const Handle<SwaptionVolatilityStructure>& volatilityStructure)
-        :swap_(swap),termStructure_(termStructure),volatilityStructure_(volatilityStructure),targetNPV_(0.0),lambda_(0.0){
+        Handle<YieldTermStructure>  termStructure,
+        Handle<SwaptionVolatilityStructure>  volatilityStructure)
+        :swap_(std::move(swap)),termStructure_(std::move(termStructure)),volatilityStructure_(std::move(volatilityStructure)),targetNPV_(0.0),lambda_(0.0){
 
             engine_ = ext::shared_ptr<PricingEngine>(new DiscountingSwapEngine(termStructure_));
 
@@ -239,11 +240,11 @@ namespace QuantLib {
     ///////////////////////////////////////////////////////////
 
 
-    HaganIrregularSwaptionEngine::HaganIrregularSwaptionEngine(const Handle<SwaptionVolatilityStructure>& volatilityStructure,
-        const Handle<YieldTermStructure>& termStructure)
+    HaganIrregularSwaptionEngine::HaganIrregularSwaptionEngine(Handle<SwaptionVolatilityStructure>  volatilityStructure,
+        Handle<YieldTermStructure>  termStructure)
         : GenericEngine<IrregularSwaption::arguments,IrregularSwaption::results>(),
-        termStructure_(termStructure),
-        volatilityStructure_(volatilityStructure)
+        termStructure_(std::move(termStructure)),
+        volatilityStructure_(std::move(volatilityStructure))
     {
         registerWith(termStructure_);
         registerWith(volatilityStructure_);

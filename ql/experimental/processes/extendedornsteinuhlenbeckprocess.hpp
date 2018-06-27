@@ -46,7 +46,7 @@ namespace QuantLib {
 
         ExtendedOrnsteinUhlenbeckProcess(
                                 Real speed, Volatility sigma, Real x0,
-                                const boost::function<Real (Real)>& b,
+                                boost::function<Real (Real)>  b,
                                 Discretization discretization = MidPoint,
                                 Real intEps = 1e-4);
 

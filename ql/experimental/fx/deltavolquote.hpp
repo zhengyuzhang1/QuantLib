@@ -55,12 +55,12 @@ namespace QuantLib {
 
         // Standard constructor delta vs vol.
         DeltaVolQuote(Real delta,
-                      const Handle<Quote>& vol,
+                      Handle<Quote>  vol,
                       Time maturity,
                       DeltaType deltaType);
 
         // Additional constructor, if special atm quote is used
-        DeltaVolQuote(const Handle<Quote>& vol,
+        DeltaVolQuote(Handle<Quote>  vol,
                       DeltaType deltaType,
                       Time maturity,
                       AtmType atmType);

@@ -25,6 +25,7 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 #include <ql/math/randomnumbers/sobolrsg.hpp>
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <algorithm>
+#include <utility>
 
 namespace QuantLib {
     FireflyAlgorithm::FireflyAlgorithm(Size M, 
@@ -34,8 +35,8 @@ namespace QuantLib {
         Real crossover, unsigned long seed):
         mutation_(mutation), crossover_(crossover),
         M_(M), Mde_(Mde), Mfa_(M_-Mde_), 
-        intensity_(intensity),
-        randomWalk_(randomWalk),
+        intensity_(std::move(intensity)),
+        randomWalk_(std::move(randomWalk)),
         drawIndex_(base_generator_type(seed), uniform_integer(Mfa_, Mde > 0 ? M_-1 : M_)),
         rng_(seed){
         QL_REQUIRE(M_ >= Mde_,

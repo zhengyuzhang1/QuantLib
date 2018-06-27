@@ -27,6 +27,7 @@
 
 #include <ql/termstructures/yield/zeroyieldstructure.hpp>
 #include <ql/termstructures/volatility/equityfx/blackvoltermstructure.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -41,8 +42,8 @@ namespace QuantLib {
     class DriftTermStructure : public ZeroYieldStructure {
       public:
         DriftTermStructure(const Handle<YieldTermStructure>& riskFreeTS,
-                           const Handle<YieldTermStructure>& dividendTS,
-                           const Handle<BlackVolTermStructure>& blackVolTS);
+                           Handle<YieldTermStructure>  dividendTS,
+                           Handle<BlackVolTermStructure>  blackVolTS);
         //! \name YieldTermStructure interface
         //@{
         DayCounter dayCounter() const override;
@@ -65,12 +66,12 @@ namespace QuantLib {
 
     inline DriftTermStructure::DriftTermStructure(
                               const Handle<YieldTermStructure>& riskFreeTS,
-                              const Handle<YieldTermStructure>& dividendTS,
-                              const Handle<BlackVolTermStructure>& blackVolTS)
+                              Handle<YieldTermStructure>  dividendTS,
+                              Handle<BlackVolTermStructure>  blackVolTS)
     : ZeroYieldStructure(riskFreeTS->dayCounter()),
       riskFreeTS_(riskFreeTS),
-      dividendTS_(dividendTS),
-      blackVolTS_(blackVolTS) {
+      dividendTS_(std::move(dividendTS)),
+      blackVolTS_(std::move(blackVolTS)) {
         registerWith(riskFreeTS_);
         registerWith(dividendTS_);
         registerWith(blackVolTS_);

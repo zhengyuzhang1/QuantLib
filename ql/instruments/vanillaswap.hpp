@@ -71,13 +71,13 @@ namespace QuantLib {
         VanillaSwap(
             Type type,
             Real nominal,
-            const Schedule& fixedSchedule,
+            Schedule  fixedSchedule,
             Rate fixedRate,
-            const DayCounter& fixedDayCount,
-            const Schedule& floatSchedule,
-            const ext::shared_ptr<IborIndex>& iborIndex,
+            DayCounter  fixedDayCount,
+            Schedule  floatSchedule,
+            ext::shared_ptr<IborIndex>  iborIndex,
             Spread spread,
-            const DayCounter& floatingDayCount,
+            DayCounter  floatingDayCount,
             boost::optional<BusinessDayConvention> paymentConvention =
                                                                  boost::none);
         //! \name Inspectors

@@ -21,6 +21,7 @@
 #include <ql/instruments/makeswaption.hpp>
 #include <ql/instruments/makecapfloor.hpp>
 #include <ql/pricingengines/blackformula.hpp>
+#include <utility>
 
 using std::fabs;
 using std::sqrt;
@@ -28,12 +29,12 @@ using std::sqrt;
 namespace QuantLib {
 
 Gaussian1dSmileSection::Gaussian1dSmileSection(
-    const Date &fixingDate, const ext::shared_ptr<SwapIndex> &swapIndex,
+    const Date &fixingDate, ext::shared_ptr<SwapIndex> swapIndex,
     const ext::shared_ptr<Gaussian1dModel> &model,
     const DayCounter &dc,
     const ext::shared_ptr<Gaussian1dSwaptionEngine> swaptionEngine)
     : SmileSection(fixingDate, dc, model->termStructure()->referenceDate()),
-      fixingDate_(fixingDate), swapIndex_(swapIndex),
+      fixingDate_(fixingDate), swapIndex_(std::move(swapIndex)),
       iborIndex_(ext::shared_ptr<IborIndex>()), model_(model),
       engine_(swaptionEngine) {
 
@@ -50,13 +51,13 @@ Gaussian1dSmileSection::Gaussian1dSmileSection(
 }
 
 Gaussian1dSmileSection::Gaussian1dSmileSection(
-    const Date &fixingDate, const ext::shared_ptr<IborIndex> &iborIndex,
+    const Date &fixingDate, ext::shared_ptr<IborIndex> iborIndex,
     const ext::shared_ptr<Gaussian1dModel> &model,
     const DayCounter &dc,
     const ext::shared_ptr<Gaussian1dCapFloorEngine> capEngine)
     : SmileSection(fixingDate, dc, model->termStructure()->referenceDate()),
       fixingDate_(fixingDate), swapIndex_(ext::shared_ptr<SwapIndex>()),
-      iborIndex_(iborIndex), model_(model), engine_(capEngine) {
+      iborIndex_(std::move(iborIndex)), model_(model), engine_(capEngine) {
 
     atm_ = model_->forwardRate(fixingDate_, Null<Date>(), 0.0, iborIndex_);
     CapFloor c = MakeCapFloor(CapFloor::Cap, iborIndex_->tenor(), iborIndex_,

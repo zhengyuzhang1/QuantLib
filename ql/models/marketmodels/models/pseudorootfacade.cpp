@@ -21,6 +21,7 @@
 #include <ql/models/marketmodels/models/pseudorootfacade.hpp>
 #include <ql/models/marketmodels/utilities.hpp>
 #include <ql/math/matrixutilities/pseudosqrt.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -40,12 +41,12 @@ namespace QuantLib {
     PseudoRootFacade::PseudoRootFacade(
             const std::vector<Matrix>& covariancePseudoRoots,
             const std::vector<Rate>& rateTimes,
-            const std::vector<Rate>& initialRates,
+            std::vector<Rate>  initialRates,
             const std::vector<Spread>& displacements)
     : numberOfFactors_(covariancePseudoRoots.front().columns()),
       numberOfRates_(covariancePseudoRoots.front().rows()),
       numberOfSteps_(covariancePseudoRoots.size()),
-      initialRates_(initialRates),
+      initialRates_(std::move(initialRates)),
       displacements_(displacements),
       evolution_(rateTimes),
       covariancePseudoRoots_(covariancePseudoRoots)

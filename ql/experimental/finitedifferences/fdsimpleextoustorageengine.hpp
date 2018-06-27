@@ -42,10 +42,10 @@ namespace QuantLib {
 
 
         FdSimpleExtOUStorageEngine(
-          const ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess>& p,
-          const ext::shared_ptr<YieldTermStructure>& rTS,
+          ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess>  p,
+          ext::shared_ptr<YieldTermStructure>  rTS,
           Size tGrid = 50, Size xGrid = 100, Size yGrid = Null<Size>(),
-          const ext::shared_ptr<Shape>& shape = ext::shared_ptr<Shape>(),
+          ext::shared_ptr<Shape>  shape = ext::shared_ptr<Shape>(),
           const FdmSchemeDesc& schemeDesc = FdmSchemeDesc::Douglas());
 
         void calculate() const override;

@@ -60,8 +60,8 @@ namespace QuantLib {
         typedef FdmLinearOp::array_type array_type;
         
         FdmBackwardSolver(
-          const ext::shared_ptr<FdmLinearOpComposite>& map,
-          const FdmBoundaryConditionSet& bcSet,
+          ext::shared_ptr<FdmLinearOpComposite>  map,
+          FdmBoundaryConditionSet  bcSet,
           const ext::shared_ptr<FdmStepConditionComposite> condition,
           const FdmSchemeDesc& schemeDesc);
 

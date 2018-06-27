@@ -32,6 +32,7 @@
 #include <ql/methods/finitedifferences/utilities/fdminnervaluecalculator.hpp>
 
 #include <deque>
+#include <utility>
 
 namespace QuantLib {
 
@@ -49,11 +50,11 @@ namespace QuantLib {
     }
 
     FdmLogInnerValue::FdmLogInnerValue(
-        const ext::shared_ptr<Payoff>& payoff,
-        const ext::shared_ptr<FdmMesher>& mesher,
+        ext::shared_ptr<Payoff>  payoff,
+        ext::shared_ptr<FdmMesher>  mesher,
         Size direction)
-    : payoff_(payoff), 
-      mesher_(mesher),
+    : payoff_(std::move(payoff)), 
+      mesher_(std::move(mesher)),
       direction_ (direction) {
     }
 
@@ -114,10 +115,10 @@ namespace QuantLib {
     }
     
     FdmLogBasketInnerValue::FdmLogBasketInnerValue(
-                                const ext::shared_ptr<BasketPayoff>& payoff,
-                                const ext::shared_ptr<FdmMesher>& mesher)
-    : payoff_(payoff),
-      mesher_(mesher) { }
+                                ext::shared_ptr<BasketPayoff>  payoff,
+                                ext::shared_ptr<FdmMesher>  mesher)
+    : payoff_(std::move(payoff)),
+      mesher_(std::move(mesher)) { }
 
     Real FdmLogBasketInnerValue::innerValue(
                                     const FdmLinearOpIterator& iter, Time) {

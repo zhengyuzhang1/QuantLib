@@ -44,11 +44,11 @@ namespace QuantLib {
         enum Scheme { Central, Backward, Forward };
 
         NumericalDifferentiation(
-            const boost::function<Real(Real)>& f,
+            boost::function<Real(Real)>  f,
             Size orderOfDerivative, const Array& x_offsets);
 
         NumericalDifferentiation(
-            const boost::function<Real(Real)>& f,
+            boost::function<Real(Real)>  f,
             Size orderOfDerivative,
             Real stepSize, Size steps, Scheme scheme);
 

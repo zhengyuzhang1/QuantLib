@@ -20,13 +20,14 @@
 #include <ql/models/marketmodels/callability/swapratetrigger.hpp>
 #include <ql/models/marketmodels/utilities.hpp>
 #include <ql/auto_ptr.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     SwapRateTrigger::SwapRateTrigger(const std::vector<Time>& rateTimes,
-                                     const std::vector<Rate>& swapTriggers,
+                                     std::vector<Rate>  swapTriggers,
                                      const std::vector<Time>& exerciseTimes)
-    : rateTimes_(rateTimes), swapTriggers_(swapTriggers),
+    : rateTimes_(rateTimes), swapTriggers_(std::move(swapTriggers)),
       exerciseTimes_(exerciseTimes), rateIndex_(exerciseTimes.size()) {
 
         checkIncreasingTimes(rateTimes);

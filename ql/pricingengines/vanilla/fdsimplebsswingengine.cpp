@@ -31,14 +31,15 @@
 #include <ql/methods/finitedifferences/stepconditions/fdmsimpleswingcondition.hpp>
 #include <ql/methods/finitedifferences/stepconditions/fdmstepconditioncomposite.hpp>
 #include <ql/methods/finitedifferences/solvers/fdmsimple2dbssolver.hpp>
+#include <utility>
 
 namespace QuantLib {
     
     FdSimpleBSSwingEngine::FdSimpleBSSwingEngine(
-            const ext::shared_ptr<GeneralizedBlackScholesProcess>& process,
+            ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
             Size tGrid, Size xGrid,
             const FdmSchemeDesc& schemeDesc)
-    : process_(process),
+    : process_(std::move(process)),
       tGrid_(tGrid),
       xGrid_(xGrid),
       schemeDesc_(schemeDesc) { 

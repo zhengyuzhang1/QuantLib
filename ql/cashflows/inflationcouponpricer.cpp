@@ -20,12 +20,13 @@
 #include <ql/cashflows/inflationcouponpricer.hpp>
 #include <ql/termstructures/volatility/inflation/yoyinflationoptionletvolatilitystructure.hpp>
 #include <ql/pricingengines/blackformula.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     YoYInflationCouponPricer::
-    YoYInflationCouponPricer(const Handle<YoYOptionletVolatilitySurface>& capletVol)
-    : capletVol_(capletVol) {
+    YoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface>  capletVol)
+    : capletVol_(std::move(capletVol)) {
 
         if( !capletVol_.empty() ) registerWith(capletVol_);
     }

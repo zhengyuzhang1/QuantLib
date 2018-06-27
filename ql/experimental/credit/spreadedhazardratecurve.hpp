@@ -26,6 +26,7 @@
 
 #include <ql/termstructures/credit/hazardratestructure.hpp>
 #include <ql/quote.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -39,8 +40,8 @@ namespace QuantLib {
     class SpreadedHazardRateCurve : public HazardRateStructure {
       public:
         SpreadedHazardRateCurve(
-                 const Handle<DefaultProbabilityTermStructure>& originalCurve,
-                 const Handle<Quote>& spread);
+                 Handle<DefaultProbabilityTermStructure>  originalCurve,
+                 Handle<Quote>  spread);
         //! \name DefaultProbabilityTermStructure interface
         //@{
         DayCounter dayCounter() const override;
@@ -63,9 +64,9 @@ namespace QuantLib {
     // inline definitions
 
     inline SpreadedHazardRateCurve::SpreadedHazardRateCurve(
-                             const Handle<DefaultProbabilityTermStructure>& h,
-                             const Handle<Quote>& spread)
-    : originalCurve_(h), spread_(spread) {
+                             Handle<DefaultProbabilityTermStructure>  h,
+                             Handle<Quote>  spread)
+    : originalCurve_(std::move(h)), spread_(std::move(spread)) {
         registerWith(originalCurve_);
         registerWith(spread_);
     }

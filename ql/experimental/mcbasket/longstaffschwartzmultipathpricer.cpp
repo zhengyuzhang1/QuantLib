@@ -20,6 +20,7 @@
 #include <ql/math/generallinearleastsquares.hpp>
 #include <ql/experimental/mcbasket/longstaffschwartzmultipathpricer.hpp>
 #include <ql/utilities/tracing.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -37,7 +38,7 @@ namespace QuantLib {
     LongstaffSchwartzMultiPathPricer::LongstaffSchwartzMultiPathPricer(
         const ext::shared_ptr<PathPayoff>& payoff,
         const std::vector<Size> & timePositions,
-        const std::vector<Handle<YieldTermStructure> > & forwardTermStructures,
+        std::vector<Handle<YieldTermStructure> >  forwardTermStructures,
         const Array & discounts,
         Size polynomOrder,
         LsmBasisSystem::PolynomType polynomType)
@@ -46,7 +47,7 @@ namespace QuantLib {
       coeff_     (new Array[timePositions.size() - 1]),
       lowerBounds_(new Real[timePositions.size()]),
       timePositions_(timePositions),
-      forwardTermStructures_(forwardTermStructures),
+      forwardTermStructures_(std::move(forwardTermStructures)),
       dF_        (discounts),
       v_         (LsmBasisSystem::multiPathBasisSystem(payoff->basisSystemDimension(),
                                                        polynomOrder,

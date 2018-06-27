@@ -44,7 +44,7 @@ namespace QuantLib {
             that neither the list of dates nor the meta information is
             checked for plausibility in any sense. */
         Schedule(const std::vector<Date>&,
-                 const Calendar& calendar = NullCalendar(),
+                 Calendar  calendar = NullCalendar(),
                  const BusinessDayConvention
                                     convention = Unadjusted,
                  boost::optional<BusinessDayConvention>
@@ -52,12 +52,12 @@ namespace QuantLib {
                  const boost::optional<Period> tenor = boost::none,
                  boost::optional<DateGeneration::Rule> rule = boost::none,
                  boost::optional<bool> endOfMonth = boost::none,
-                 const std::vector<bool>& isRegular = std::vector<bool>(0));
+                 std::vector<bool>  isRegular = std::vector<bool>(0));
         /*! rule based constructor */
         Schedule(Date effectiveDate,
                  const Date& terminationDate,
                  const Period& tenor,
-                 const Calendar& calendar,
+                 Calendar  calendar,
                  BusinessDayConvention convention,
                  BusinessDayConvention terminationDateConvention,
                  DateGeneration::Rule rule,

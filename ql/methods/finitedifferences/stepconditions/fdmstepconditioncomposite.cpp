@@ -30,13 +30,14 @@
 #include <ql/methods/finitedifferences/stepconditions/fdmbermudanstepcondition.hpp>
 
 #include <set>
+#include <utility>
 
 namespace QuantLib {
 
     FdmStepConditionComposite::FdmStepConditionComposite(
         const std::list<std::vector<Time> > & stoppingTimes,
-        const Conditions & conditions)
-    : conditions_(conditions) {
+        Conditions  conditions)
+    : conditions_(std::move(conditions)) {
 
         std::set<Real> allStoppingTimes;
         for (std::list<std::vector<Time> >::const_iterator

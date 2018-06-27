@@ -27,27 +27,28 @@
 #include <ql/math/matrixutilities/pseudosqrt.hpp>
 #include <ql/math/comparison.hpp>
 #include <ql/utilities/dataformatters.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     CTSMMCapletCalibration::~CTSMMCapletCalibration() {}
 
     CTSMMCapletCalibration::CTSMMCapletCalibration(
-                            const EvolutionDescription& evolution,
-                            const ext::shared_ptr<PiecewiseConstantCorrelation>& corr,
-                            const std::vector<ext::shared_ptr<
-                                        PiecewiseConstantVariance> >&
+                            EvolutionDescription  evolution,
+                            ext::shared_ptr<PiecewiseConstantCorrelation>  corr,
+                            std::vector<ext::shared_ptr<
+                                        PiecewiseConstantVariance> > 
                                                 displacedSwapVariances,
-                            const std::vector<Volatility>& mktCapletVols,
-                            const ext::shared_ptr<CurveState>& cs,
+                            std::vector<Volatility>  mktCapletVols,
+                            ext::shared_ptr<CurveState>  cs,
                             Spread displacement)
-    : evolution_(evolution),  corr_(corr),
-      displacedSwapVariances_(displacedSwapVariances),
-      mktCapletVols_(mktCapletVols),
+    : evolution_(std::move(evolution)),  corr_(std::move(corr)),
+      displacedSwapVariances_(std::move(displacedSwapVariances)),
+      mktCapletVols_(std::move(mktCapletVols)),
       mdlCapletVols_(evolution_.numberOfRates()),
       mktSwaptionVols_(evolution_.numberOfRates()),
       mdlSwaptionVols_(evolution_.numberOfRates()),
-      cs_(cs), displacement_(displacement),
+      cs_(std::move(cs)), displacement_(displacement),
       numberOfRates_(evolution_.numberOfRates())
     {
         performChecks(evolution_, *corr_, displacedSwapVariances_,

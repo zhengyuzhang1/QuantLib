@@ -40,7 +40,7 @@ namespace QuantLib {
                                const Period& observationLag,
                                Frequency frequency,
                                bool indexIsInterpolated,
-                               const Handle<YieldTermStructure>& yTS,
+                               Handle<YieldTermStructure>  yTS,
                                const DayCounter& dayCounter = DayCounter(),
                                const ext::shared_ptr<Seasonality> &seasonality = ext::shared_ptr<Seasonality>());
         InflationTermStructure(const Date& referenceDate,
@@ -48,7 +48,7 @@ namespace QuantLib {
                                const Period& observationLag,
                                Frequency frequency,
                                bool indexIsInterpolated,
-                               const Handle<YieldTermStructure>& yTS,
+                               Handle<YieldTermStructure>  yTS,
                                const Calendar& calendar = Calendar(),
                                const DayCounter& dayCounter = DayCounter(),
                                const ext::shared_ptr<Seasonality> &seasonality = ext::shared_ptr<Seasonality>());
@@ -58,7 +58,7 @@ namespace QuantLib {
                                const Period& observationLag,
                                Frequency frequency,
                                bool indexIsInterpolated,
-                               const Handle<YieldTermStructure>& yTS,
+                               Handle<YieldTermStructure>  yTS,
                                const DayCounter& dayCounter = DayCounter(),
                                const ext::shared_ptr<Seasonality> &seasonality = ext::shared_ptr<Seasonality>());
         //@}

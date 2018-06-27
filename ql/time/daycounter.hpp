@@ -27,6 +27,7 @@
 
 #include <ql/time/date.hpp>
 #include <ql/errors.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -61,8 +62,8 @@ namespace QuantLib {
         /*! This constructor can be invoked by derived classes which
             define a given implementation.
         */
-        explicit DayCounter(const ext::shared_ptr<Impl>& impl)
-        : impl_(impl) {}
+        explicit DayCounter(ext::shared_ptr<Impl>  impl)
+        : impl_(std::move(impl)) {}
       public:
         /*! The default constructor returns a day counter with a null
             implementation, which is therefore unusable except as a

@@ -34,9 +34,9 @@ namespace QuantLib {
     class FdmSimpleStorageCondition : public StepCondition<Array> {
       public:
           FdmSimpleStorageCondition(
-                  const std::vector<Time> & exerciseTimes,
-                  const ext::shared_ptr<FdmMesher>& mesher,
-                  const ext::shared_ptr<FdmInnerValueCalculator>& calculator,
+                  std::vector<Time>  exerciseTimes,
+                  ext::shared_ptr<FdmMesher>  mesher,
+                  ext::shared_ptr<FdmInnerValueCalculator>  calculator,
                   Real changeRate);
 
         void applyTo(Array& a, Time t) const override;

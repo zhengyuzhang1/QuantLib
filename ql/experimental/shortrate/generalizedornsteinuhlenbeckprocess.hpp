@@ -43,8 +43,8 @@ namespace QuantLib {
     class GeneralizedOrnsteinUhlenbeckProcess : public StochasticProcess1D {
       public:
         GeneralizedOrnsteinUhlenbeckProcess(
-              const boost::function<Real (Time)>& speed,
-              const boost::function<Real (Time)>& vol,
+              boost::function<Real (Time)>  speed,
+              boost::function<Real (Time)>  vol,
               Real x0 = 0.0,
               Real level = 0.0);
         //! \name StochasticProcess1D interface

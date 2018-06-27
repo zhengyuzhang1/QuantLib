@@ -26,21 +26,22 @@
 #include <ql/methods/finitedifferences/operators/secondderivativeop.hpp>
 #include <ql/methods/finitedifferences/operators/fdmhestonhullwhiteop.hpp>
 #include <ql/methods/finitedifferences/operators/secondordermixedderivativeop.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FdmHestonHullWhiteEquityPart::FdmHestonHullWhiteEquityPart(
         const ext::shared_ptr<FdmMesher>& mesher,
-        const ext::shared_ptr<HullWhite>& hwModel,
-        const ext::shared_ptr<YieldTermStructure>& qTS)
+        ext::shared_ptr<HullWhite>  hwModel,
+        ext::shared_ptr<YieldTermStructure>  qTS)
     : x_(mesher->locations(2)),
       varianceValues_(0.5*mesher->locations(1)),
       dxMap_ (FirstDerivativeOp(0, mesher)),
       dxxMap_(SecondDerivativeOp(0, mesher).mult(0.5*mesher->locations(1))),
       mapT_   (0, mesher),
-      hwModel_(hwModel),
+      hwModel_(std::move(hwModel)),
       mesher_ (mesher),
-      qTS_(qTS) {
+      qTS_(std::move(qTS)) {
 
         // on the boundary s_min and s_max the second derivative
         // d²V/dS² is zero and due to Ito's Lemma the variance term

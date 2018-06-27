@@ -69,12 +69,12 @@ namespace QuantLib {
                     const Date& startDate,   // start date of contract (only)
                     Real baseCPI,
                     const Date& maturity,    // this is pre-adjustment!
-                    const Calendar& fixCalendar,
+                    Calendar  fixCalendar,
                     BusinessDayConvention fixConvention,
-                    const Calendar& payCalendar,
+                    Calendar  payCalendar,
                     BusinessDayConvention payConvention,
                     Rate strike,
-                    const Handle<ZeroInflationIndex> &infIndex,
+                    Handle<ZeroInflationIndex> infIndex,
                     const Period& observationLag,
                     CPI::InterpolationType observationInterpolation = CPI::AsIndex);
 

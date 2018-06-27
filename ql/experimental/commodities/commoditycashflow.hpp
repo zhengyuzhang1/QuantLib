@@ -27,6 +27,7 @@
 #include <ql/cashflow.hpp>
 #include <ql/money.hpp>
 #include <map>
+#include <utility>
 
 namespace QuantLib {
 
@@ -40,10 +41,10 @@ namespace QuantLib {
                           Real discountFactor,
                           Real paymentDiscountFactor,
                           bool finalized)
-        : date_(date), discountedAmount_(discountedAmount),
-          undiscountedAmount_(undiscountedAmount),
-          discountedPaymentAmount_(discountedPaymentAmount),
-          undiscountedPaymentAmount_(undiscountedPaymentAmount),
+        : date_(date), discountedAmount_(std::move(discountedAmount)),
+          undiscountedAmount_(std::move(undiscountedAmount)),
+          discountedPaymentAmount_(std::move(discountedPaymentAmount)),
+          undiscountedPaymentAmount_(std::move(undiscountedPaymentAmount)),
           discountFactor_(discountFactor),
           paymentDiscountFactor_(paymentDiscountFactor),
           finalized_(finalized) {}

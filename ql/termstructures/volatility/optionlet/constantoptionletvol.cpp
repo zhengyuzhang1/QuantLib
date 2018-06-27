@@ -22,26 +22,27 @@
 #include <ql/termstructures/volatility/optionlet/constantoptionletvol.hpp>
 #include <ql/termstructures/volatility/flatsmilesection.hpp>
 #include <ql/quotes/simplequote.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     // floating reference date, floating market data
 ConstantOptionletVolatility::ConstantOptionletVolatility(
     Natural settlementDays, const Calendar &cal, BusinessDayConvention bdc,
-    const Handle< Quote > &vol, const DayCounter &dc, VolatilityType type,
+    Handle< Quote > vol, const DayCounter &dc, VolatilityType type,
     Real displacement)
     : OptionletVolatilityStructure(settlementDays, cal, bdc, dc),
-      volatility_(vol), type_(type), displacement_(displacement) {
+      volatility_(std::move(vol)), type_(type), displacement_(displacement) {
         registerWith(volatility_);
     }
 
     // fixed reference date, floating market data
     ConstantOptionletVolatility::ConstantOptionletVolatility(
         const Date &referenceDate, const Calendar &cal,
-        BusinessDayConvention bdc, const Handle< Quote > &vol,
+        BusinessDayConvention bdc, Handle< Quote > vol,
         const DayCounter &dc, VolatilityType type, Real displacement)
         : OptionletVolatilityStructure(referenceDate, cal, bdc, dc),
-          volatility_(vol), type_(type), displacement_(displacement) {
+          volatility_(std::move(vol)), type_(type), displacement_(displacement) {
         registerWith(volatility_);
     }
 

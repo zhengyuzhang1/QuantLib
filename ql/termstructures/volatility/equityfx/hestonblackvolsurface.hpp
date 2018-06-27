@@ -37,7 +37,7 @@ namespace QuantLib {
             const Handle<HestonModel>& hestonModel,
             const AnalyticHestonEngine::ComplexLogFormula cpxLogFormula
                 = AnalyticHestonEngine::Gatheral,
-            const AnalyticHestonEngine::Integration& integration =
+            AnalyticHestonEngine::Integration  integration =
                 AnalyticHestonEngine::Integration::gaussLaguerre(164));
 
         DayCounter dayCounter() const override;

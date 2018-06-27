@@ -22,6 +22,7 @@
 #include <ql/experimental/credit/loss.hpp>
 #include <ql/time/daycounters/actualactual.hpp>
 #include <ql/experimental/credit/defaultlossmodel.hpp>
+#include <utility>
 
 using namespace std;
 
@@ -29,15 +30,15 @@ namespace QuantLib {
 
     Basket::Basket(const Date& refDate,
         const vector<string>& names,
-        const vector<Real>& notionals,
+        vector<Real>  notionals,
         const ext::shared_ptr<Pool> pool,
         Real attachment,
         Real detachment,
-        const ext::shared_ptr<Claim>& claim
+        ext::shared_ptr<Claim>  claim
         )
-    : notionals_(notionals),
+    : notionals_(std::move(notionals)),
       pool_(pool),
-      claim_(claim),
+      claim_(std::move(claim)),
       attachmentRatio_(attachment),
       detachmentRatio_(detachment),
       basketNotional_(0.0),

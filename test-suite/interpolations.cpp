@@ -48,6 +48,7 @@
 #include <boost/tuple/tuple.hpp>
 #include <boost/assign/std/vector.hpp>
 #include <boost/math/special_functions/fpclassify.hpp>
+#include <utility>
 
 using namespace QuantLib;
 using namespace boost::unit_test_framework;
@@ -173,7 +174,7 @@ namespace {
     template <class F>
     class errorFunction : public std::unary_function<Real,Real> {
       public:
-        errorFunction(const F& f) : f_(f) {}
+        errorFunction(F  f) : f_(std::move(f)) {}
         Real operator()(Real x) const {
             Real temp = f_(x)-std::exp(-x*x);
             return temp*temp;

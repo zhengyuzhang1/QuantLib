@@ -38,7 +38,7 @@ namespace QuantLib {
         //! floating reference date, floating market data
         ConstantOptionletVolatility(Natural settlementDays, const Calendar &cal,
                                     BusinessDayConvention bdc,
-                                    const Handle< Quote > &volatility,
+                                    Handle< Quote > volatility,
                                     const DayCounter &dc,
                                     VolatilityType type = ShiftedLognormal,
                                     Real displacement = 0.0);
@@ -46,7 +46,7 @@ namespace QuantLib {
         ConstantOptionletVolatility(const Date &referenceDate,
                                     const Calendar &cal,
                                     BusinessDayConvention bdc,
-                                    const Handle< Quote > &volatility,
+                                    Handle< Quote > volatility,
                                     const DayCounter &dc,
                                     VolatilityType type = ShiftedLognormal,
                                     Real displacement = 0.0);

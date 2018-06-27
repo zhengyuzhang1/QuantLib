@@ -23,6 +23,7 @@
 
 #include <ql/math/interpolation.hpp>
 #include <ql/math/matrixutilities/qrdecomposition.hpp>
+#include <utility>
 
 /*! \file kernelinterpolation.hpp
     \brief Kernel interpolation
@@ -38,12 +39,12 @@ namespace QuantLib {
           public:
             KernelInterpolationImpl(const I1& xBegin, const I1& xEnd,
                                     const I2& yBegin,
-                                    const Kernel& kernel,
+                                    Kernel  kernel,
                                     const Real epsilon)
             : Interpolation::templateImpl<I1,I2>(xBegin, xEnd, yBegin),
               xSize_(Size(xEnd-xBegin)), invPrec_(epsilon),
               M_(xSize_,xSize_), alphaVec_(xSize_), yVec_(xSize_),
-              kernel_(kernel) {}
+              kernel_(std::move(kernel)) {}
 
             void update() override {
                 updateAlphaVec();

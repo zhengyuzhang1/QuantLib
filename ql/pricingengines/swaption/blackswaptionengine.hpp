@@ -39,6 +39,7 @@
 #include <ql/cashflows/fixedratecoupon.hpp>
 #include <ql/cashflows/cashflows.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -52,18 +53,18 @@ namespace QuantLib {
     class BlackStyleSwaptionEngine : public Swaption::engine {
       public:
         enum CashAnnuityModel { SwapRate, DiscountCurve };
-        BlackStyleSwaptionEngine(const Handle<YieldTermStructure>& discountCurve,
+        BlackStyleSwaptionEngine(Handle<YieldTermStructure>  discountCurve,
                             Volatility vol,
                             const DayCounter& dc = Actual365Fixed(),
                             Real displacement = 0.0,
                             CashAnnuityModel model = DiscountCurve);
-        BlackStyleSwaptionEngine(const Handle<YieldTermStructure>& discountCurve,
+        BlackStyleSwaptionEngine(Handle<YieldTermStructure>  discountCurve,
                             const Handle<Quote>& vol,
                             const DayCounter& dc = Actual365Fixed(),
                             Real displacement = 0.0,
                             CashAnnuityModel model = DiscountCurve);
-        BlackStyleSwaptionEngine(const Handle<YieldTermStructure>& discountCurve,
-                                 const Handle<SwaptionVolatilityStructure>& vol,
+        BlackStyleSwaptionEngine(Handle<YieldTermStructure>  discountCurve,
+                                 Handle<SwaptionVolatilityStructure>  vol,
                                  CashAnnuityModel model = DiscountCurve);
         void calculate() const override;
         Handle<YieldTermStructure> termStructure() { return discountCurve_; }
@@ -166,9 +167,9 @@ namespace QuantLib {
 
     template<class Spec>
     BlackStyleSwaptionEngine<Spec>::BlackStyleSwaptionEngine(
-        const Handle<YieldTermStructure> &discountCurve, Volatility vol,
+        Handle<YieldTermStructure> discountCurve, Volatility vol,
         const DayCounter &dc, Real displacement, CashAnnuityModel model)
-        : discountCurve_(discountCurve),
+        : discountCurve_(std::move(discountCurve)),
           vol_(ext::shared_ptr<SwaptionVolatilityStructure>(
               new ConstantSwaptionVolatility(0, NullCalendar(), Following, vol,
                                              dc, Spec().type, displacement))),
@@ -178,10 +179,10 @@ namespace QuantLib {
 
     template<class Spec>
     BlackStyleSwaptionEngine<Spec>::BlackStyleSwaptionEngine(
-        const Handle<YieldTermStructure> &discountCurve,
+        Handle<YieldTermStructure> discountCurve,
         const Handle<Quote> &vol, const DayCounter &dc, Real displacement,
         CashAnnuityModel model)
-        : discountCurve_(discountCurve),
+        : discountCurve_(std::move(discountCurve)),
           vol_(ext::shared_ptr<SwaptionVolatilityStructure>(
               new ConstantSwaptionVolatility(0, NullCalendar(), Following, vol,
                                              dc, Spec().type, displacement))),
@@ -192,10 +193,10 @@ namespace QuantLib {
 
     template<class Spec>
     BlackStyleSwaptionEngine<Spec>::BlackStyleSwaptionEngine(
-        const Handle<YieldTermStructure> &discountCurve,
-        const Handle<SwaptionVolatilityStructure> &volatility,
+        Handle<YieldTermStructure> discountCurve,
+        Handle<SwaptionVolatilityStructure> volatility,
         CashAnnuityModel model)
-        : discountCurve_(discountCurve), vol_(volatility),
+        : discountCurve_(std::move(discountCurve)), vol_(std::move(volatility)),
           model_(model) {
         registerWith(discountCurve_);
         registerWith(vol_);

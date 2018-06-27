@@ -27,6 +27,7 @@
 
 #include <ql/termstructures/yield/zeroyieldstructure.hpp>
 #include <ql/termstructures/volatility/equityfx/blackvoltermstructure.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -42,11 +43,11 @@ namespace QuantLib {
       public:
         QuantoTermStructure(
                     const Handle<YieldTermStructure>& underlyingDividendTS,
-                    const Handle<YieldTermStructure>& riskFreeTS,
-                    const Handle<YieldTermStructure>& foreignRiskFreeTS,
-                    const Handle<BlackVolTermStructure>& underlyingBlackVolTS,
+                    Handle<YieldTermStructure>  riskFreeTS,
+                    Handle<YieldTermStructure>  foreignRiskFreeTS,
+                    Handle<BlackVolTermStructure>  underlyingBlackVolTS,
                     Real strike,
-                    const Handle<BlackVolTermStructure>& exchRateBlackVolTS,
+                    Handle<BlackVolTermStructure>  exchRateBlackVolTS,
                     Real exchRateATMlevel,
                     Real underlyingExchRateCorrelation);
         //! \name YieldTermStructure interface
@@ -73,18 +74,18 @@ namespace QuantLib {
 
     inline QuantoTermStructure::QuantoTermStructure(
                     const Handle<YieldTermStructure>& underlyingDividendTS,
-                    const Handle<YieldTermStructure>& riskFreeTS,
-                    const Handle<YieldTermStructure>& foreignRiskFreeTS,
-                    const Handle<BlackVolTermStructure>& underlyingBlackVolTS,
+                    Handle<YieldTermStructure>  riskFreeTS,
+                    Handle<YieldTermStructure>  foreignRiskFreeTS,
+                    Handle<BlackVolTermStructure>  underlyingBlackVolTS,
                     Real strike,
-                    const Handle<BlackVolTermStructure>& exchRateBlackVolTS,
+                    Handle<BlackVolTermStructure>  exchRateBlackVolTS,
                     Real exchRateATMlevel,
                     Real underlyingExchRateCorrelation)
     : ZeroYieldStructure(underlyingDividendTS->dayCounter()),
       underlyingDividendTS_(underlyingDividendTS),
-      riskFreeTS_(riskFreeTS), foreignRiskFreeTS_(foreignRiskFreeTS),
-      underlyingBlackVolTS_(underlyingBlackVolTS),
-      exchRateBlackVolTS_(exchRateBlackVolTS),
+      riskFreeTS_(std::move(riskFreeTS)), foreignRiskFreeTS_(std::move(foreignRiskFreeTS)),
+      underlyingBlackVolTS_(std::move(underlyingBlackVolTS)),
+      exchRateBlackVolTS_(std::move(exchRateBlackVolTS)),
       underlyingExchRateCorrelation_(underlyingExchRateCorrelation),
       strike_(strike), exchRateATMlevel_(exchRateATMlevel) {
         registerWith(underlyingDividendTS_);

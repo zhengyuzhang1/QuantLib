@@ -31,6 +31,7 @@
 #include <ql/models/parameter.hpp>
 #include <ql/models/calibrationhelper.hpp>
 #include <ql/math/optimization/endcriteria.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -72,8 +73,8 @@ namespace QuantLib {
     class TermStructureConsistentModel : public virtual Observable {
       public:
         TermStructureConsistentModel(
-                              const Handle<YieldTermStructure>& termStructure)
-        : termStructure_(termStructure) {}
+                              Handle<YieldTermStructure>  termStructure)
+        : termStructure_(std::move(termStructure)) {}
         const Handle<YieldTermStructure>& termStructure() const {
             return termStructure_;
         }

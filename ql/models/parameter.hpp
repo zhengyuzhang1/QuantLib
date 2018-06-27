@@ -27,6 +27,7 @@
 #include <ql/qldefines.hpp>
 #include <ql/handle.hpp>
 #include <ql/math/optimization/constraint.hpp>
+#include <utility>
 #include <vector>
 
 namespace QuantLib {
@@ -61,9 +62,9 @@ namespace QuantLib {
         const Constraint& constraint() const { return constraint_; }
       protected:
         Parameter(Size size,
-                  const ext::shared_ptr<Impl>& impl,
-                  const Constraint& constraint)
-        : impl_(impl), params_(size), constraint_(constraint) {}
+                  ext::shared_ptr<Impl>  impl,
+                  Constraint  constraint)
+        : impl_(std::move(impl)), params_(size), constraint_(std::move(constraint)) {}
         Array params_;
         Constraint constraint_;
     };
@@ -125,8 +126,8 @@ namespace QuantLib {
       private:
         class Impl : public Parameter::Impl {
           public:
-            explicit Impl(const std::vector<Time>& times)
-            : times_(times) {}
+            explicit Impl(std::vector<Time>  times)
+            : times_(std::move(times)) {}
 
             Real value(const Array& params, Time t) const override {
                 Size size = times_.size();
@@ -155,8 +156,8 @@ namespace QuantLib {
       public:
         class NumericalImpl : public Parameter::Impl {
           public:
-            NumericalImpl(const Handle<YieldTermStructure>& termStructure)
-            : times_(0), values_(0), termStructure_(termStructure) {}
+            NumericalImpl(Handle<YieldTermStructure>  termStructure)
+            : times_(0), values_(0), termStructure_(std::move(termStructure)) {}
 
             void set(Time t, Real x) {
                 times_.push_back(t);

@@ -23,23 +23,24 @@
 #include <ql/models/marketmodels/discounter.hpp>
 #include <ql/models/marketmodels/constrainedevolver.hpp>
 #include <algorithm>
+#include <utility>
 
 namespace QuantLib {
 
     ProxyGreekEngine::ProxyGreekEngine(
-            const ext::shared_ptr<MarketModelEvolver>& evolver,
-            const std::vector<
-                std::vector<ext::shared_ptr<ConstrainedEvolver> > >&
+            ext::shared_ptr<MarketModelEvolver>  evolver,
+            std::vector<
+                std::vector<ext::shared_ptr<ConstrainedEvolver> > > 
                                                           constrainedEvolvers,
-            const std::vector<std::vector<std::vector<Real> > >& diffWeights,
-            const std::vector<Size>& startIndexOfConstraint,
-            const std::vector<Size>& endIndexOfConstraint,
+            std::vector<std::vector<std::vector<Real> > >  diffWeights,
+            std::vector<Size>  startIndexOfConstraint,
+            std::vector<Size>  endIndexOfConstraint,
             const Clone<MarketModelMultiProduct>& product,
             Real initialNumeraireValue)
-    : originalEvolver_(evolver), constrainedEvolvers_(constrainedEvolvers),
-      diffWeights_(diffWeights),
-      startIndexOfConstraint_(startIndexOfConstraint),
-      endIndexOfConstraint_(endIndexOfConstraint),
+    : originalEvolver_(std::move(evolver)), constrainedEvolvers_(std::move(constrainedEvolvers)),
+      diffWeights_(std::move(diffWeights)),
+      startIndexOfConstraint_(std::move(startIndexOfConstraint)),
+      endIndexOfConstraint_(std::move(endIndexOfConstraint)),
       product_(product),
       initialNumeraireValue_(initialNumeraireValue),
       numberProducts_(product->numberOfProducts()),

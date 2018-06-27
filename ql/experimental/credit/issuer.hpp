@@ -52,9 +52,9 @@ namespace QuantLib {
 
             To do: add settlement event access
         */
-        Issuer(const std::vector<key_curve_pair>& probabilities =
+        Issuer(std::vector<key_curve_pair>  probabilities =
                                                 std::vector<key_curve_pair>(),
-               const DefaultEventSet& events = DefaultEventSet());
+               DefaultEventSet  events = DefaultEventSet());
 
         Issuer(const std::vector<std::vector<
                  ext::shared_ptr<DefaultType> > >& eventTypes,
@@ -62,7 +62,7 @@ namespace QuantLib {
                const std::vector<Seniority>& seniorities,
                const std::vector<Handle<DefaultProbabilityTermStructure> >&
                    curves,
-               const DefaultEventSet& events = DefaultEventSet());
+               DefaultEventSet  events = DefaultEventSet());
 
         //! \name Inspectors
         //@{

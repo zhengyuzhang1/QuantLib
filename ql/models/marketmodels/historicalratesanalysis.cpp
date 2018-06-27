@@ -20,6 +20,7 @@
 #include <ql/models/marketmodels/historicalratesanalysis.hpp>
 #include <ql/time/calendar.hpp>
 #include <ql/indexes/interestrateindex.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -79,12 +80,12 @@ namespace QuantLib {
     }
 
     HistoricalRatesAnalysis::HistoricalRatesAnalysis(
-                const ext::shared_ptr<SequenceStatistics>& stats,
+                ext::shared_ptr<SequenceStatistics>  stats,
                 const Date& startDate,
                 const Date& endDate,
                 const Period& step,
                 const std::vector<ext::shared_ptr<InterestRateIndex> >& indexes)
-    : stats_(stats) {
+    : stats_(std::move(stats)) {
         historicalRatesAnalysis(
                     *stats_,
                     skippedDates_, skippedDatesErrorMessage_,

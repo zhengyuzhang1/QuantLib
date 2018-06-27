@@ -18,16 +18,17 @@
 */
 
 #include <ql/pricingengines/capfloor/analyticcapfloorengine.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     AnalyticCapFloorEngine::AnalyticCapFloorEngine(
                               const ext::shared_ptr<AffineModel>& model,
-                              const Handle<YieldTermStructure>& termStructure)
+                              Handle<YieldTermStructure>  termStructure)
     : GenericModelEngine<AffineModel,
                          CapFloor::arguments,
                          CapFloor::results >(model),
-      termStructure_(termStructure) {
+      termStructure_(std::move(termStructure)) {
         registerWith(termStructure_);
     }
 

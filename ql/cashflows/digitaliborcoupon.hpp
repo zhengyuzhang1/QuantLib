@@ -58,8 +58,8 @@ namespace QuantLib {
     //! helper class building a sequence of digital ibor-rate coupons
     class DigitalIborLeg {
       public:
-        DigitalIborLeg(const Schedule& schedule,
-                       const ext::shared_ptr<IborIndex>& index);
+        DigitalIborLeg(Schedule  schedule,
+                       ext::shared_ptr<IborIndex>  index);
         DigitalIborLeg& withNotionals(Real notional);
         DigitalIborLeg& withNotionals(const std::vector<Real>& notionals);
         DigitalIborLeg& withPaymentDayCounter(const DayCounter&);

@@ -22,6 +22,7 @@
 #include <ql/experimental/commodities/unitofmeasureconversionmanager.hpp>
 #include <ql/currencies/exchangeratemanager.hpp>
 #include <iomanip>
+#include <utility>
 
 namespace QuantLib {
 
@@ -86,9 +87,9 @@ namespace QuantLib {
     }
 
     EnergyCommodity::EnergyCommodity(
-                      const CommodityType& commodityType,
+                      CommodityType  commodityType,
                       const ext::shared_ptr<SecondaryCosts>& secondaryCosts)
-    : Commodity(secondaryCosts), commodityType_(commodityType) {}
+    : Commodity(secondaryCosts), commodityType_(std::move(commodityType)) {}
 
     const CommodityType& EnergyCommodity::commodityType() const {
         return commodityType_;

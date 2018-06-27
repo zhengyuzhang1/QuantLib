@@ -29,6 +29,7 @@
 #include <ql/instruments/swaption.hpp>
 #include <ql/models/shortrate/onefactormodel.hpp>
 #include <ql/pricingengines/genericmodelengine.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -50,12 +51,12 @@ namespace QuantLib {
         */
         JamshidianSwaptionEngine(
                          const ext::shared_ptr<OneFactorAffineModel>& model,
-                         const Handle<YieldTermStructure>& termStructure =
+                         Handle<YieldTermStructure>  termStructure =
                                                  Handle<YieldTermStructure>())
         : GenericModelEngine<OneFactorAffineModel,
                              Swaption::arguments,
                              Swaption::results>(model),
-          termStructure_(termStructure) {
+          termStructure_(std::move(termStructure)) {
             registerWith(termStructure_);
         }
         void calculate() const override;

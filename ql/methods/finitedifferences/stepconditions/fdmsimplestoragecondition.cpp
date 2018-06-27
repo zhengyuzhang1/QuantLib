@@ -21,17 +21,18 @@
 #include <ql/math/interpolations/bilinearinterpolation.hpp>
 #include <ql/methods/finitedifferences/operators/fdmlinearoplayout.hpp>
 #include <ql/methods/finitedifferences/stepconditions/fdmsimplestoragecondition.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FdmSimpleStorageCondition::FdmSimpleStorageCondition(
-            const std::vector<Time> & exerciseTimes,
-            const ext::shared_ptr<FdmMesher>& mesher,
-            const ext::shared_ptr<FdmInnerValueCalculator>& calculator,
+            std::vector<Time>  exerciseTimes,
+            ext::shared_ptr<FdmMesher>  mesher,
+            ext::shared_ptr<FdmInnerValueCalculator>  calculator,
             Real changeRate)
-    : exerciseTimes_(exerciseTimes),
-      mesher_       (mesher),
-      calculator_   (calculator),
+    : exerciseTimes_(std::move(exerciseTimes)),
+      mesher_       (std::move(mesher)),
+      calculator_   (std::move(calculator)),
       changeRate_   (changeRate) {
 
         const ext::shared_ptr<FdmLinearOpLayout> layout = mesher_->layout();

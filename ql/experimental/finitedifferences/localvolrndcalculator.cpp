@@ -42,6 +42,7 @@
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #endif
 #include <boost/bind.hpp>
+#include <utility>
 #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
 #pragma GCC diagnostic pop
 #endif
@@ -49,9 +50,9 @@
 
 namespace QuantLib {
     LocalVolRNDCalculator::LocalVolRNDCalculator(
-        const ext::shared_ptr<Quote>& spot,
-        const ext::shared_ptr<YieldTermStructure>& rTS,
-        const ext::shared_ptr<YieldTermStructure>& qTS,
+        ext::shared_ptr<Quote>  spot,
+        ext::shared_ptr<YieldTermStructure>  rTS,
+        ext::shared_ptr<YieldTermStructure>  qTS,
         const ext::shared_ptr<LocalVolTermStructure>& localVol,
         Size xGrid, Size tGrid,
         Real x0Density,
@@ -64,10 +65,10 @@ namespace QuantLib {
       localVolProbEps_(eps),
       maxIter_ (maxIter),
       gaussianStepSize_(gaussianStepSize),
-      spot_       (spot),
+      spot_       (std::move(spot)),
       localVol_(localVol),
-      rTS_     (rTS),
-      qTS_     (qTS),
+      rTS_     (std::move(rTS)),
+      qTS_     (std::move(qTS)),
       timeGrid_(new TimeGrid(localVol->maxTime(), tGrid)),
       xm_      (tGrid),
       pm_      (new Matrix(tGrid, xGrid)) {
@@ -78,10 +79,10 @@ namespace QuantLib {
     }
 
     LocalVolRNDCalculator::LocalVolRNDCalculator(
-        const ext::shared_ptr<Quote>& spot,
-        const ext::shared_ptr<YieldTermStructure>& rTS,
-        const ext::shared_ptr<YieldTermStructure>& qTS,
-        const ext::shared_ptr<LocalVolTermStructure>& localVol,
+        ext::shared_ptr<Quote>  spot,
+        ext::shared_ptr<YieldTermStructure>  rTS,
+        ext::shared_ptr<YieldTermStructure>  qTS,
+        ext::shared_ptr<LocalVolTermStructure>  localVol,
         const ext::shared_ptr<TimeGrid>& timeGrid,
         Size xGrid,
         Real x0Density,
@@ -94,10 +95,10 @@ namespace QuantLib {
       localVolProbEps_(eps),
       maxIter_ (maxIter),
       gaussianStepSize_(gaussianStepSize),
-      spot_    (spot),
-      localVol_(localVol),
-      rTS_     (rTS),
-      qTS_     (qTS),
+      spot_    (std::move(spot)),
+      localVol_(std::move(localVol)),
+      rTS_     (std::move(rTS)),
+      qTS_     (std::move(qTS)),
       timeGrid_(timeGrid),
       xm_      (tGrid_),
       pm_      (new Matrix(tGrid_, xGrid_)) {

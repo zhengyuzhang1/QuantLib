@@ -37,13 +37,13 @@ namespace QuantLib {
       public:
         CommodityIndex(
                 const std::string& name,
-                const CommodityType& commodityType,
-                const Currency& currency,
-                const UnitOfMeasure& unitOfMeasure,
-                const Calendar& calendar,
+                CommodityType  commodityType,
+                Currency  currency,
+                UnitOfMeasure  unitOfMeasure,
+                Calendar  calendar,
                 Real lotQuantity,
-                const ext::shared_ptr<CommodityCurve>& forwardCurve,
-                const ext::shared_ptr<ExchangeContracts>& exchangeContracts,
+                ext::shared_ptr<CommodityCurve>  forwardCurve,
+                ext::shared_ptr<ExchangeContracts>  exchangeContracts,
                 int nearbyOffset);
         //! \name Index interface
         //@{

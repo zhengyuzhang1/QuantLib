@@ -28,6 +28,7 @@
 #include <ql/types.hpp>
 #include <ql/handle.hpp>
 #include <ql/errors.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -39,8 +40,8 @@ namespace QuantLib {
     class CompositeQuote : public Quote, public Observer {
       public:
         CompositeQuote(
-            const Handle<Quote>& element1,
-            const Handle<Quote>& element2,
+            Handle<Quote>  element1,
+            Handle<Quote>  element2,
             const BinaryFunction& f);
         //! \name inspectors
         //@{
@@ -66,10 +67,10 @@ namespace QuantLib {
 
     template <class BinaryFunction>
     inline CompositeQuote<BinaryFunction>::CompositeQuote(
-                                                const Handle<Quote>& element1,
-                                                const Handle<Quote>& element2,
+                                                Handle<Quote>  element1,
+                                                Handle<Quote>  element2,
                                                 const BinaryFunction& f)
-    : element1_(element1), element2_(element2), f_(f) {
+    : element1_(std::move(element1)), element2_(std::move(element2)), f_(f) {
         registerWith(element1_);
         registerWith(element2_);
     }

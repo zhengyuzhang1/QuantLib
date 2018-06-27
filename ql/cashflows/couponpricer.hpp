@@ -33,6 +33,7 @@
 #include <ql/cashflow.hpp>
 #include <ql/option.hpp>
 #include <ql/quotes/simplequote.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -64,9 +65,9 @@ namespace QuantLib {
     class IborCouponPricer : public FloatingRateCouponPricer {
       public:
         explicit IborCouponPricer(
-            const Handle<OptionletVolatilityStructure>& v =
+            Handle<OptionletVolatilityStructure>  v =
                                        Handle<OptionletVolatilityStructure>())
-        : capletVol_(v) {
+        : capletVol_(std::move(v)) {
             registerWith(capletVol_);
         }
 
@@ -139,9 +140,9 @@ namespace QuantLib {
     class CmsCouponPricer : public FloatingRateCouponPricer {
       public:
         explicit CmsCouponPricer(
-            const Handle<SwaptionVolatilityStructure>& v =
+            Handle<SwaptionVolatilityStructure>  v =
                                        Handle<SwaptionVolatilityStructure>())
-        : swaptionVol_(v) {
+        : swaptionVol_(std::move(v)) {
             registerWith(swaptionVol_);
         }
 

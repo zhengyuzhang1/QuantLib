@@ -26,6 +26,7 @@
 #include <ql/time/schedule.hpp>
 #include <ql/quotes/simplequote.hpp>
 #include <ql/indexes/iborindex.hpp>
+#include <utility>
 
 
 namespace QuantLib {
@@ -34,18 +35,18 @@ namespace QuantLib {
                               const Period& maturity,
                               const Period& length,
                               const Handle<Quote>& volatility,
-                              const ext::shared_ptr<IborIndex>& index,
+                              ext::shared_ptr<IborIndex>  index,
                               const Period& fixedLegTenor,
-                              const DayCounter& fixedLegDayCounter,
-                              const DayCounter& floatingLegDayCounter,
+                              DayCounter  fixedLegDayCounter,
+                              DayCounter  floatingLegDayCounter,
                               const Handle<YieldTermStructure>& termStructure,
                               CalibrationHelper::CalibrationErrorType errorType,
                               const Real strike, const Real nominal,
                               const VolatilityType type, const Real shift)
     : CalibrationHelper(volatility,termStructure, errorType, type, shift),
         exerciseDate_(Null<Date>()), endDate_(Null<Date>()),
-        maturity_(maturity), length_(length), fixedLegTenor_(fixedLegTenor), index_(index),
-        fixedLegDayCounter_(fixedLegDayCounter), floatingLegDayCounter_(floatingLegDayCounter),
+        maturity_(maturity), length_(length), fixedLegTenor_(fixedLegTenor), index_(std::move(index)),
+        fixedLegDayCounter_(std::move(fixedLegDayCounter)), floatingLegDayCounter_(std::move(floatingLegDayCounter)),
         strike_(strike), nominal_(nominal)
     {
         registerWith(index_);
@@ -55,18 +56,18 @@ namespace QuantLib {
                               const Date& exerciseDate,
                               const Period& length,
                               const Handle<Quote>& volatility,
-                              const ext::shared_ptr<IborIndex>& index,
+                              ext::shared_ptr<IborIndex>  index,
                               const Period& fixedLegTenor,
-                              const DayCounter& fixedLegDayCounter,
-                              const DayCounter& floatingLegDayCounter,
+                              DayCounter  fixedLegDayCounter,
+                              DayCounter  floatingLegDayCounter,
                               const Handle<YieldTermStructure>& termStructure,
                               CalibrationHelper::CalibrationErrorType errorType,
                               const Real strike, const Real nominal,
                               const VolatilityType type, const Real shift)
     : CalibrationHelper(volatility,termStructure, errorType, type, shift),
         exerciseDate_(exerciseDate), endDate_(Null<Date>()),
-        maturity_(0*Days), length_(length), fixedLegTenor_(fixedLegTenor), index_(index),
-        fixedLegDayCounter_(fixedLegDayCounter), floatingLegDayCounter_(floatingLegDayCounter),
+        maturity_(0*Days), length_(length), fixedLegTenor_(fixedLegTenor), index_(std::move(index)),
+        fixedLegDayCounter_(std::move(fixedLegDayCounter)), floatingLegDayCounter_(std::move(floatingLegDayCounter)),
         strike_(strike), nominal_(nominal)
     {
         registerWith(index_);
@@ -76,18 +77,18 @@ namespace QuantLib {
                               const Date& exerciseDate,
                               const Date& endDate,
                               const Handle<Quote>& volatility,
-                              const ext::shared_ptr<IborIndex>& index,
+                              ext::shared_ptr<IborIndex>  index,
                               const Period& fixedLegTenor,
-                              const DayCounter& fixedLegDayCounter,
-                              const DayCounter& floatingLegDayCounter,
+                              DayCounter  fixedLegDayCounter,
+                              DayCounter  floatingLegDayCounter,
                               const Handle<YieldTermStructure>& termStructure,
                               CalibrationHelper::CalibrationErrorType errorType,
                               const Real strike, const Real nominal,
                               const VolatilityType type, const Real shift)
     : CalibrationHelper(volatility,termStructure, errorType, type, shift),
         exerciseDate_(exerciseDate), endDate_(endDate),
-        maturity_(0*Days), length_(0*Days), fixedLegTenor_(fixedLegTenor), index_(index),
-        fixedLegDayCounter_(fixedLegDayCounter), floatingLegDayCounter_(floatingLegDayCounter),
+        maturity_(0*Days), length_(0*Days), fixedLegTenor_(fixedLegTenor), index_(std::move(index)),
+        fixedLegDayCounter_(std::move(fixedLegDayCounter)), floatingLegDayCounter_(std::move(floatingLegDayCounter)),
         strike_(strike), nominal_(nominal)
     {
         registerWith(index_);

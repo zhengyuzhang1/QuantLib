@@ -20,23 +20,24 @@
 #include <ql/experimental/callablebonds/callablebondconstantvol.hpp>
 #include <ql/termstructures/volatility/flatsmilesection.hpp>
 #include <ql/quotes/simplequote.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     CallableBondConstantVolatility::CallableBondConstantVolatility(
                                                  const Date& referenceDate,
                                                  Volatility volatility,
-                                                 const DayCounter& dayCounter)
+                                                 DayCounter  dayCounter)
     : CallableBondVolatilityStructure(referenceDate),
       volatility_(ext::shared_ptr<Quote>(new SimpleQuote(volatility))),
-      dayCounter_(dayCounter), maxBondTenor_(100*Years) {}
+      dayCounter_(std::move(dayCounter)), maxBondTenor_(100*Years) {}
 
     CallableBondConstantVolatility::CallableBondConstantVolatility(
                                               const Date& referenceDate,
-                                              const Handle<Quote>& volatility,
-                                              const DayCounter& dayCounter)
-    : CallableBondVolatilityStructure(referenceDate), volatility_(volatility),
-      dayCounter_(dayCounter), maxBondTenor_(100*Years) {
+                                              Handle<Quote>  volatility,
+                                              DayCounter  dayCounter)
+    : CallableBondVolatilityStructure(referenceDate), volatility_(std::move(volatility)),
+      dayCounter_(std::move(dayCounter)), maxBondTenor_(100*Years) {
         registerWith(volatility_);
     }
 
@@ -44,18 +45,18 @@ namespace QuantLib {
                                                  Natural settlementDays,
                                                  const Calendar& calendar,
                                                  Volatility volatility,
-                                                 const DayCounter& dayCounter)
+                                                 DayCounter  dayCounter)
     : CallableBondVolatilityStructure(settlementDays, calendar),
       volatility_(ext::shared_ptr<Quote>(new SimpleQuote(volatility))),
-      dayCounter_(dayCounter), maxBondTenor_(100*Years) {}
+      dayCounter_(std::move(dayCounter)), maxBondTenor_(100*Years) {}
 
     CallableBondConstantVolatility::CallableBondConstantVolatility(
                                               Natural settlementDays,
                                               const Calendar& calendar,
-                                              const Handle<Quote>& volatility,
-                                              const DayCounter& dayCounter)
+                                              Handle<Quote>  volatility,
+                                              DayCounter  dayCounter)
     : CallableBondVolatilityStructure(settlementDays, calendar),
-      volatility_(volatility), dayCounter_(dayCounter),
+      volatility_(std::move(volatility)), dayCounter_(std::move(dayCounter)),
       maxBondTenor_(100*Years) {
         registerWith(volatility_);
     }

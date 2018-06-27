@@ -27,13 +27,14 @@
 #include <ql/exercise.hpp>
 
 #include <ql/utilities/null_deleter.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     ConvertibleBond::ConvertibleBond(
             const ext::shared_ptr<Exercise>&,
             Real conversionRatio,
-            const DividendSchedule& dividends,
+            DividendSchedule  dividends,
             const CallabilitySchedule& callability,
             const Handle<Quote>& creditSpread,
             const Date& issueDate,
@@ -42,7 +43,7 @@ namespace QuantLib {
             Real)
     : Bond(settlementDays, schedule.calendar(), issueDate),
       conversionRatio_(conversionRatio), callability_(callability),
-      dividends_(dividends), creditSpread_(creditSpread) {
+      dividends_(std::move(dividends)), creditSpread_(creditSpread) {
 
         maturityDate_ = schedule.endDate();
 
@@ -169,12 +170,12 @@ namespace QuantLib {
             const ConvertibleBond* bond,
             const ext::shared_ptr<Exercise>& exercise,
             Real conversionRatio,
-            const DividendSchedule& dividends,
-            const CallabilitySchedule& callability,
-            const Handle<Quote>& creditSpread,
-            const Leg& cashflows,
-            const DayCounter& dayCounter,
-            const Schedule& schedule,
+            DividendSchedule  dividends,
+            CallabilitySchedule  callability,
+            Handle<Quote>  creditSpread,
+            Leg  cashflows,
+            DayCounter  dayCounter,
+            Schedule  schedule,
             const Date& issueDate,
             Natural settlementDays,
             Real redemption)
@@ -184,9 +185,9 @@ namespace QuantLib {
                              *redemption/conversionRatio)),
                             exercise),
       bond_(bond), conversionRatio_(conversionRatio),
-      callability_(callability), dividends_(dividends),
-      creditSpread_(creditSpread), cashflows_(cashflows),
-      dayCounter_(dayCounter), issueDate_(issueDate), schedule_(schedule),
+      callability_(std::move(callability)), dividends_(std::move(dividends)),
+      creditSpread_(std::move(creditSpread)), cashflows_(std::move(cashflows)),
+      dayCounter_(std::move(dayCounter)), issueDate_(issueDate), schedule_(std::move(schedule)),
       settlementDays_(settlementDays), redemption_(redemption) {
         registerWith(ext::shared_ptr<ConvertibleBond>(const_cast<ConvertibleBond*>(bond),
                                                         null_deleter()));

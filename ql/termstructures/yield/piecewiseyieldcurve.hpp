@@ -30,6 +30,7 @@
 #include <ql/termstructures/localbootstrap.hpp>
 #include <ql/termstructures/yield/bootstraptraits.hpp>
 #include <ql/patterns/lazyobject.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -87,16 +88,16 @@ namespace QuantLib {
         }
         PiecewiseYieldCurve(
                const Date& referenceDate,
-               const std::vector<ext::shared_ptr<typename Traits::helper> >&
+               std::vector<ext::shared_ptr<typename Traits::helper> > 
                                                                   instruments,
                const DayCounter& dayCounter,
                Real accuracy,
                const Interpolator& i = Interpolator(),
-               const Bootstrap<this_curve>& bootstrap = Bootstrap<this_curve>())
+               Bootstrap<this_curve>  bootstrap = Bootstrap<this_curve>())
         : base_curve(referenceDate, dayCounter,
                      std::vector<Handle<Quote> >(), std::vector<Date>(), i),
-          instruments_(instruments),
-          accuracy_(accuracy), bootstrap_(bootstrap) {
+          instruments_(std::move(instruments)),
+          accuracy_(accuracy), bootstrap_(std::move(bootstrap)) {
             bootstrap_.setup(this);
         }
         PiecewiseYieldCurve(

@@ -19,6 +19,7 @@
 
 #include <ql/models/marketmodels/models/alphafinder.hpp>
 #include <ql/math/quadratic.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -176,7 +177,7 @@ namespace
 }
 
     AlphaFinder::AlphaFinder(ext::shared_ptr<AlphaForm> parametricform)
-    : parametricform_(parametricform) {}
+    : parametricform_(std::move(parametricform)) {}
 
 
     Real AlphaFinder::computeLinearPart(Real alpha) {

@@ -19,29 +19,30 @@
 
 #include <ql/termstructure.hpp>
 #include <ql/math/comparison.hpp>
+#include <utility>
 
 namespace QuantLib {
 
-    TermStructure::TermStructure(const DayCounter& dc)
+    TermStructure::TermStructure(DayCounter  dc)
     : moving_(false),
       updated_(true),
       settlementDays_(Null<Natural>()),
-      dayCounter_(dc) {}
+      dayCounter_(std::move(dc)) {}
 
     TermStructure::TermStructure(const Date& referenceDate,
-                                 const Calendar& cal,
-                                 const DayCounter& dc)
-    : moving_(false), updated_(true), calendar_(cal),
+                                 Calendar  cal,
+                                 DayCounter  dc)
+    : moving_(false), updated_(true), calendar_(std::move(cal)),
       referenceDate_(referenceDate),
       settlementDays_(Null<Natural>()),
-      dayCounter_(dc) {}
+      dayCounter_(std::move(dc)) {}
 
     TermStructure::TermStructure(Natural settlementDays,
-                                 const Calendar& cal,
-                                 const DayCounter& dc)
-    : moving_(true), updated_(false), calendar_(cal),
+                                 Calendar  cal,
+                                 DayCounter  dc)
+    : moving_(true), updated_(false), calendar_(std::move(cal)),
       settlementDays_(settlementDays),
-      dayCounter_(dc) {
+      dayCounter_(std::move(dc)) {
         registerWith(Settings::instance().evaluationDate());
     }
 

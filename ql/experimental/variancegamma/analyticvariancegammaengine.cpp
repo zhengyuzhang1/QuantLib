@@ -24,6 +24,7 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 #include <ql/math/integrals/segmentintegral.hpp>
 #include <ql/math/integrals/gausslobattointegral.hpp>
 #include <ql/math/integrals/kronrodintegral.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -31,10 +32,10 @@ namespace QuantLib {
 
         class Integrand : std::unary_function<Real,Real> {
         public:
-            Integrand(const ext::shared_ptr<StrikedTypePayoff>& payoff,
+            Integrand(ext::shared_ptr<StrikedTypePayoff>  payoff,
                 Real s0, Real t, Real riskFreeDiscount, Real dividendDiscount,
                 Real sigma, Real nu, Real theta)
-                : payoff_(payoff), s0_(s0), t_(t), riskFreeDiscount_(riskFreeDiscount),
+                : payoff_(std::move(payoff)), s0_(s0), t_(t), riskFreeDiscount_(riskFreeDiscount),
                     dividendDiscount_(dividendDiscount),
                     sigma_(sigma), nu_(nu), theta_(theta) {
                 omega_ = std::log(1.0 - theta_ * nu_ - (sigma_ * sigma_ * nu_) / 2.0) / nu_;
@@ -75,9 +76,9 @@ namespace QuantLib {
 
 
     VarianceGammaEngine::VarianceGammaEngine(
-        const ext::shared_ptr<VarianceGammaProcess>& process,
+        ext::shared_ptr<VarianceGammaProcess>  process,
         Real absoluteError)
-        : process_(process), absErr_(absoluteError) {
+        : process_(std::move(process)), absErr_(absoluteError) {
             QL_REQUIRE(absErr_>0, "absolute error must be positive")
             registerWith(process_);
     }

@@ -18,12 +18,13 @@
  */
 
 #include <ql/cashflows/cpicouponpricer.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     CPICouponPricer::
-    CPICouponPricer(const Handle<CPIVolatilitySurface>& capletVol)
-    : capletVol_(capletVol) {
+    CPICouponPricer(Handle<CPIVolatilitySurface>  capletVol)
+    : capletVol_(std::move(capletVol)) {
 
         if( !capletVol_.empty() ) registerWith(capletVol_);
     }

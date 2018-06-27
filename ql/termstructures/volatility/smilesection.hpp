@@ -39,12 +39,12 @@ namespace QuantLib {
                          public virtual Observer {
       public:
         SmileSection(const Date& d,
-                     const DayCounter& dc = DayCounter(),
+                     DayCounter  dc = DayCounter(),
                      const Date& referenceDate = Date(),
                      const VolatilityType type = ShiftedLognormal,
                      const Rate shift = 0.0);
         SmileSection(Time exerciseTime,
-                     const DayCounter& dc = DayCounter(),
+                     DayCounter  dc = DayCounter(),
                      const VolatilityType type = ShiftedLognormal,
                      const Rate shift = 0.0);
         SmileSection() {}

@@ -20,15 +20,16 @@
 #include <ql/experimental/credit/riskyassetswapoption.hpp>
 #include <ql/math/distributions/normaldistribution.hpp>
 #include <ql/event.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     RiskyAssetSwapOption::RiskyAssetSwapOption(
-                                 const ext::shared_ptr<RiskyAssetSwap>& asw,
+                                 ext::shared_ptr<RiskyAssetSwap>  asw,
                                  const Date& expiry,
                                  Rate marketSpread,
                                  Volatility spreadVolatility)
-    : asw_(asw), expiry_(expiry),
+    : asw_(std::move(asw)), expiry_(expiry),
       marketSpread_(marketSpread),
       spreadVolatility_(spreadVolatility) {}
 

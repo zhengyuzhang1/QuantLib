@@ -29,6 +29,7 @@
 #include <ql/termstructures/yieldtermstructure.hpp>
 
 #include <ql/instruments/cpicapfloor.hpp>
+#include <utility>
 
 
 namespace QuantLib {
@@ -38,18 +39,18 @@ namespace QuantLib {
                 const Date& startDate,   // start date of contract (only)
                 Real baseCPI,
                 const Date& maturity,    // this is pre-adjustment!
-                const Calendar& fixCalendar,
+                Calendar  fixCalendar,
                 BusinessDayConvention fixConvention,
-                const Calendar& payCalendar,
+                Calendar  payCalendar,
                 BusinessDayConvention payConvention,
                 Rate strike,
-                const Handle<ZeroInflationIndex> &infIndex,
+                Handle<ZeroInflationIndex> infIndex,
                 const Period& observationLag,
                              CPI::InterpolationType observationInterpolation)
     : type_(type), nominal_(nominal), startDate_(startDate), baseCPI_(baseCPI),
-    maturity_(maturity), fixCalendar_(fixCalendar), fixConvention_(fixConvention),
-    payCalendar_(payCalendar), payConvention_(payConvention),
-    strike_(strike), infIndex_(infIndex), observationLag_(observationLag),
+    maturity_(maturity), fixCalendar_(std::move(fixCalendar)), fixConvention_(fixConvention),
+    payCalendar_(std::move(payCalendar)), payConvention_(payConvention),
+    strike_(strike), infIndex_(std::move(infIndex)), observationLag_(observationLag),
     observationInterpolation_(observationInterpolation)
     {
         QL_REQUIRE(fixCalendar_ != Calendar(),"CPICapFloor: fixing calendar may not be null.");

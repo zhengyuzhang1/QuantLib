@@ -21,6 +21,7 @@
 
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/utilities/dataformatters.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -31,9 +32,9 @@ namespace QuantLib {
 
     YieldTermStructure::YieldTermStructure(
                                     const DayCounter& dc,
-                                    const std::vector<Handle<Quote> >& jumps,
+                                    std::vector<Handle<Quote> >  jumps,
                                     const std::vector<Date>& jumpDates)
-    : TermStructure(dc), jumps_(jumps),
+    : TermStructure(dc), jumps_(std::move(jumps)),
       jumpDates_(jumpDates), jumpTimes_(jumpDates.size()),
       nJumps_(jumps_.size()) {
         setJumps();
@@ -45,9 +46,9 @@ namespace QuantLib {
                                     const Date& referenceDate,
                                     const Calendar& cal,
                                     const DayCounter& dc,
-                                    const std::vector<Handle<Quote> >& jumps,
+                                    std::vector<Handle<Quote> >  jumps,
                                     const std::vector<Date>& jumpDates)
-    : TermStructure(referenceDate, cal, dc), jumps_(jumps),
+    : TermStructure(referenceDate, cal, dc), jumps_(std::move(jumps)),
       jumpDates_(jumpDates), jumpTimes_(jumpDates.size()),
       nJumps_(jumps_.size()) {
         setJumps();
@@ -59,9 +60,9 @@ namespace QuantLib {
                                     Natural settlementDays,
                                     const Calendar& cal,
                                     const DayCounter& dc,
-                                    const std::vector<Handle<Quote> >& jumps,
+                                    std::vector<Handle<Quote> >  jumps,
                                     const std::vector<Date>& jumpDates)
-    : TermStructure(settlementDays, cal, dc), jumps_(jumps),
+    : TermStructure(settlementDays, cal, dc), jumps_(std::move(jumps)),
       jumpDates_(jumpDates), jumpTimes_(jumpDates.size()),
       nJumps_(jumps_.size()) {
         setJumps();

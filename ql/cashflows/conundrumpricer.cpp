@@ -41,6 +41,7 @@
 #endif
 
 #include <boost/bind.hpp>
+#include <utility>
 
 #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
 #pragma GCC diagnostic pop
@@ -80,11 +81,11 @@ namespace QuantLib {
     HaganPricer::HaganPricer(
                 const Handle<SwaptionVolatilityStructure>& swaptionVol,
                 GFunctionFactory::YieldCurveModel modelOfYieldCurve,
-                const Handle<Quote>& meanReversion)
+                Handle<Quote>  meanReversion)
     : CmsCouponPricer(swaptionVol),
       modelOfYieldCurve_(modelOfYieldCurve),
       cutoffForCaplet_(2), cutoffForFloorlet_(0),
-      meanReversion_(meanReversion) {
+      meanReversion_(std::move(meanReversion)) {
           registerWith(meanReversion_);
     }
 
@@ -236,7 +237,7 @@ namespace QuantLib {
 
         class Spy {
           public:
-            explicit Spy(boost::function<Real (Real)> f) : f_(f) {}
+            explicit Spy(boost::function<Real (Real)> f) : f_(std::move(f)) {}
             Real value(Real x){
                 abscissas.push_back(x);
                 Real value = f_(x);
@@ -401,19 +402,19 @@ namespace QuantLib {
 //===========================================================================//
 
     NumericHaganPricer::ConundrumIntegrand::ConundrumIntegrand(
-        const ext::shared_ptr<VanillaOptionPricer>& o,
+        ext::shared_ptr<VanillaOptionPricer>  o,
         const ext::shared_ptr<YieldTermStructure>&,
-        const ext::shared_ptr<GFunction>& gFunction,
+        ext::shared_ptr<GFunction>  gFunction,
         Date fixingDate,
         Date paymentDate,
         Real annuity,
         Real forwardValue,
         Real strike,
         Option::Type optionType)
-    : vanillaOptionPricer_(o), forwardValue_(forwardValue), annuity_(annuity),
+    : vanillaOptionPricer_(std::move(o)), forwardValue_(forwardValue), annuity_(annuity),
       fixingDate_(fixingDate), paymentDate_(paymentDate), strike_(strike),
       optionType_(optionType),
-      gFunction_(gFunction) {}
+      gFunction_(std::move(gFunction)) {}
 
     void NumericHaganPricer::ConundrumIntegrand::setStrike(Real strike) {
         strike_ = strike;
@@ -677,8 +678,8 @@ namespace QuantLib {
 
     GFunctionFactory::GFunctionWithShifts::GFunctionWithShifts(
                     const CmsCoupon& coupon,
-                    const Handle<Quote>& meanReversion)
-    : meanReversion_(meanReversion), calibratedShift_(0.03),
+                    Handle<Quote>  meanReversion)
+    : meanReversion_(std::move(meanReversion)), calibratedShift_(0.03),
       tmpRs_(10000000.0), accuracy_( 1.0e-14) {
 
         const ext::shared_ptr<SwapIndex>& swapIndex = coupon.swapIndex();

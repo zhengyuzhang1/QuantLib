@@ -38,7 +38,7 @@ namespace QuantLib {
         FdmBatesOp(
             const ext::shared_ptr<FdmMesher>& mesher,
             const ext::shared_ptr<BatesProcess>& batesProcess,
-            const FdmBoundaryConditionSet& bcSet,
+            FdmBoundaryConditionSet  bcSet,
             Size integroIntegrationOrder,
             const ext::shared_ptr<FdmQuantoHelper>& quantoHelper
                                         = ext::shared_ptr<FdmQuantoHelper>());

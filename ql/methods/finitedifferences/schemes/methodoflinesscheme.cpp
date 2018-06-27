@@ -25,6 +25,7 @@
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #endif
 #include <boost/bind.hpp>
+#include <utility>
 #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
 #pragma GCC diagnostic pop
 #endif
@@ -34,12 +35,12 @@ namespace QuantLib {
     MethodOfLinesScheme::MethodOfLinesScheme(
         const Real eps,
         const Real relInitStepSize,
-        const ext::shared_ptr<FdmLinearOpComposite> & map,
+        ext::shared_ptr<FdmLinearOpComposite>  map,
         const bc_set& bcSet)
     : dt_(Null<Real>()),
       eps_(eps),
       relInitStepSize_(relInitStepSize),
-      map_(map),
+      map_(std::move(map)),
       bcSet_(bcSet) {
     }
 

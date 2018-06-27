@@ -19,16 +19,17 @@
 
 #include <ql/processes/gsrprocess.hpp>
 #include <cmath>
+#include <utility>
 
 namespace QuantLib {
 
     GsrProcess::GsrProcess(const Array &times, const Array &vols,
                        const Array &reversions,
                        const Real T, const Date &referenceDate,
-                       const DayCounter &dc)
+                       DayCounter dc)
     : ForwardMeasureProcess1D(T),
       core_(times,vols,reversions,T),
-      referenceDate_(referenceDate), dc_(dc) {
+      referenceDate_(referenceDate), dc_(std::move(dc)) {
         flushCache();
     }
 

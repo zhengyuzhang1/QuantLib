@@ -27,6 +27,7 @@
 #include <ql/cashflows/couponpricer.hpp>
 #include <ql/indexes/inflationindex.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -34,23 +35,23 @@ namespace QuantLib {
     YearOnYearInflationSwap(
                             Type type,
                             Real nominal,
-                            const Schedule& fixedSchedule,
+                            Schedule  fixedSchedule,
                             Rate fixedRate,
-                            const DayCounter& fixedDayCount,
-                            const Schedule& yoySchedule,
-                            const ext::shared_ptr<YoYInflationIndex>& yoyIndex,
+                            DayCounter  fixedDayCount,
+                            Schedule  yoySchedule,
+                            ext::shared_ptr<YoYInflationIndex>  yoyIndex,
                             const Period& observationLag,
                             Spread spread,
-                            const DayCounter& yoyDayCount,
-                            const Calendar& paymentCalendar,
+                            DayCounter  yoyDayCount,
+                            Calendar  paymentCalendar,
                             BusinessDayConvention paymentConvention)
     : Swap(2), type_(type), nominal_(nominal),
-    fixedSchedule_(fixedSchedule), fixedRate_(fixedRate),
-    fixedDayCount_(fixedDayCount),
-    yoySchedule_(yoySchedule), yoyIndex_(yoyIndex),
+    fixedSchedule_(std::move(fixedSchedule)), fixedRate_(fixedRate),
+    fixedDayCount_(std::move(fixedDayCount)),
+    yoySchedule_(std::move(yoySchedule)), yoyIndex_(std::move(yoyIndex)),
     observationLag_(observationLag),
     spread_(spread),
-    yoyDayCount_(yoyDayCount), paymentCalendar_(paymentCalendar),
+    yoyDayCount_(std::move(yoyDayCount)), paymentCalendar_(std::move(paymentCalendar)),
     paymentConvention_(paymentConvention)
     {
         // N.B. fixed leg gets its calendar from the schedule!

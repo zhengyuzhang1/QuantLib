@@ -19,15 +19,16 @@
 
 #include <ql/instruments/cliquetoption.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     CliquetOption::CliquetOption(
                    const ext::shared_ptr<PercentageStrikePayoff>& payoff,
                    const ext::shared_ptr<EuropeanExercise>& maturity,
-                   const std::vector<Date>& resetDates)
+                   std::vector<Date>  resetDates)
     : OneAssetOption(payoff,maturity),
-      resetDates_(resetDates) {}
+      resetDates_(std::move(resetDates)) {}
 
     void CliquetOption::setupArguments(PricingEngine::arguments* args) const {
         OneAssetOption::setupArguments(args);

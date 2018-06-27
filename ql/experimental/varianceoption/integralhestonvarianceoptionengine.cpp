@@ -26,6 +26,7 @@
 #include <boost/function.hpp>
 #include <boost/scoped_array.hpp>
 #include <complex>
+#include <utility>
 
 namespace QuantLib {
 
@@ -348,7 +349,7 @@ namespace QuantLib {
     struct payoff_adapter {
         ext::shared_ptr<QuantLib::Payoff> payoff;
         explicit payoff_adapter(ext::shared_ptr<QuantLib::Payoff> payoff)
-        : payoff(payoff) {}
+        : payoff(std::move(payoff)) {}
         Real operator()(Real S) const {
             return (*payoff)(S);
         }
@@ -357,8 +358,8 @@ namespace QuantLib {
     }
 
     IntegralHestonVarianceOptionEngine::IntegralHestonVarianceOptionEngine(
-                              const ext::shared_ptr<HestonProcess>& process)
-    : process_(process) {
+                              ext::shared_ptr<HestonProcess>  process)
+    : process_(std::move(process)) {
         registerWith(process_);
     }
 

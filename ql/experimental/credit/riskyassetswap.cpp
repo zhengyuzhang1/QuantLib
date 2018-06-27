@@ -21,26 +21,27 @@
 #include <ql/event.hpp>
 
 #include <ql/utilities/null_deleter.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     RiskyAssetSwap::RiskyAssetSwap(
                      bool fixedPayer,
                      Real nominal,
-                     const Schedule& fixedSchedule,
-                     const Schedule& floatSchedule,
-                     const DayCounter& fixedDayCounter,
-                     const DayCounter& floatDayCounter,
+                     Schedule  fixedSchedule,
+                     Schedule  floatSchedule,
+                     DayCounter  fixedDayCounter,
+                     DayCounter  floatDayCounter,
                      Rate spread,
                      Rate recoveryRate,
-                     const Handle<YieldTermStructure>& yieldTS,
-                     const Handle<DefaultProbabilityTermStructure>& defaultTS,
+                     Handle<YieldTermStructure>  yieldTS,
+                     Handle<DefaultProbabilityTermStructure>  defaultTS,
                      Rate coupon)
     : fixedPayer_(fixedPayer), nominal_(nominal),
-      fixedSchedule_(fixedSchedule), floatSchedule_(floatSchedule),
-      fixedDayCounter_(fixedDayCounter), floatDayCounter_(floatDayCounter),
+      fixedSchedule_(std::move(fixedSchedule)), floatSchedule_(std::move(floatSchedule)),
+      fixedDayCounter_(std::move(fixedDayCounter)), floatDayCounter_(std::move(floatDayCounter)),
       spread_(spread), recoveryRate_(recoveryRate),
-      yieldTS_(yieldTS), defaultTS_(defaultTS), coupon_(coupon) {
+      yieldTS_(std::move(yieldTS)), defaultTS_(std::move(defaultTS)), coupon_(coupon) {
 
         registerWith (yieldTS_);
         registerWith (defaultTS_);
@@ -185,22 +186,22 @@ namespace QuantLib {
                           const Handle<Quote>& spread,
                           const Period& tenor,
                           Natural settlementDays,
-                          const Calendar& calendar,
+                          Calendar  calendar,
                           const Period& fixedPeriod,
                           BusinessDayConvention fixedConvention,
-                          const DayCounter& fixedDayCount,
+                          DayCounter  fixedDayCount,
                           const Period& floatPeriod,
                           BusinessDayConvention floatConvention,
-                          const DayCounter& floatDayCount,
+                          DayCounter  floatDayCount,
                           Real recoveryRate,
                           const RelinkableHandle<YieldTermStructure>& yieldTS,
                           const Period& integrationStepSize)
     : DefaultProbabilityHelper(spread),
-      tenor_(tenor), settlementDays_(settlementDays), calendar_(calendar),
+      tenor_(tenor), settlementDays_(settlementDays), calendar_(std::move(calendar)),
       fixedConvention_(fixedConvention),
-      fixedPeriod_(fixedPeriod), fixedDayCount_(fixedDayCount),
+      fixedPeriod_(fixedPeriod), fixedDayCount_(std::move(fixedDayCount)),
       floatConvention_(floatConvention),
-      floatPeriod_(floatPeriod), floatDayCount_(floatDayCount),
+      floatPeriod_(floatPeriod), floatDayCount_(std::move(floatDayCount)),
       recoveryRate_(recoveryRate), yieldTS_(yieldTS),
       integrationStepSize_(integrationStepSize) {
 

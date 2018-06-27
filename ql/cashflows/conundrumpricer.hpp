@@ -168,7 +168,7 @@ namespace QuantLib {
             ext::shared_ptr<ObjectiveFunction> objectiveFunction_;
           public:
             GFunctionWithShifts(const CmsCoupon& coupon,
-                                const Handle<Quote>& meanReversion);
+                                Handle<Quote>  meanReversion);
             Real operator()(Real x) override ;
             Real firstDerivative(Real x) override;
             Real secondDerivative(Real x) override;
@@ -217,7 +217,7 @@ namespace QuantLib {
         HaganPricer(
                 const Handle<SwaptionVolatilityStructure>& swaptionVol,
                 GFunctionFactory::YieldCurveModel modelOfYieldCurve,
-                const Handle<Quote>& meanReversion);
+                Handle<Quote>  meanReversion);
         void initialize(const FloatingRateCoupon& coupon) override;
 
         virtual Real optionletPrice(Option::Type optionType,
@@ -271,9 +271,9 @@ namespace QuantLib {
             friend class NumericHaganPricer;
           public:
             ConundrumIntegrand(
-                       const ext::shared_ptr<VanillaOptionPricer>& o,
+                       ext::shared_ptr<VanillaOptionPricer>  o,
                        const ext::shared_ptr<YieldTermStructure>& rateCurve,
-                       const ext::shared_ptr<GFunction>& gFunction,
+                       ext::shared_ptr<GFunction>  gFunction,
                        Date fixingDate,
                        Date paymentDate,
                        Real annuity,

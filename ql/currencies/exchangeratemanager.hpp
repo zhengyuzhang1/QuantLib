@@ -30,6 +30,7 @@
 #include <ql/patterns/singleton.hpp>
 #include <list>
 #include <map>
+#include <utility>
 
 namespace QuantLib {
 
@@ -71,9 +72,9 @@ namespace QuantLib {
 
         struct Entry {
             Entry() {}
-            Entry(const ExchangeRate& rate,
+            Entry(ExchangeRate  rate,
                   const Date& start, const Date& end)
-            : rate(rate), startDate(start), endDate(end) {}
+            : rate(std::move(rate)), startDate(start), endDate(end) {}
             ExchangeRate rate;
             Date startDate, endDate;
         };

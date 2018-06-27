@@ -33,6 +33,7 @@
 #include <ql/cashflows/coupon.hpp>
 
 #include <map>
+#include <utility>
 
 namespace QuantLib {
 
@@ -40,11 +41,11 @@ namespace QuantLib {
     class FdmAffineModelSwapInnerValue : public FdmInnerValueCalculator {
       public:
         FdmAffineModelSwapInnerValue(
-            const ext::shared_ptr<ModelType>& disModel,
-            const ext::shared_ptr<ModelType>& fwdModel,
+            ext::shared_ptr<ModelType>  disModel,
+            ext::shared_ptr<ModelType>  fwdModel,
             const ext::shared_ptr<VanillaSwap>& swap,
-            const std::map<Time, Date>& exerciseDates,
-            const ext::shared_ptr<FdmMesher>& mesher,
+            std::map<Time, Date>  exerciseDates,
+            ext::shared_ptr<FdmMesher>  mesher,
             Size direction);
 
         Real innerValue(const FdmLinearOpIterator& iter, Time t) override;
@@ -68,14 +69,14 @@ namespace QuantLib {
 
     template <class ModelType> inline
     FdmAffineModelSwapInnerValue<ModelType>::FdmAffineModelSwapInnerValue(
-        const ext::shared_ptr<ModelType>& disModel,
-        const ext::shared_ptr<ModelType>& fwdModel,
+        ext::shared_ptr<ModelType> disModel,
+        ext::shared_ptr<ModelType> fwdModel,
         const ext::shared_ptr<VanillaSwap>& swap,
-        const std::map<Time, Date>& exerciseDates,
-        const ext::shared_ptr<FdmMesher>& mesher,
+        std::map<Time, Date>  exerciseDates,
+        ext::shared_ptr<FdmMesher>  mesher,
         Size direction)
-    : disModel_(disModel),
-      fwdModel_(fwdModel),
+    : disModel_(std::move(disModel)),
+      fwdModel_(std::move(fwdModel)),
       index_(swap->iborIndex()),
       swap_(ext::shared_ptr<VanillaSwap>(
           new VanillaSwap(swap->type(),
@@ -88,8 +89,8 @@ namespace QuantLib {
                           swap->spread(),
                           swap->floatingDayCount(),
                           swap->paymentConvention()))),
-      exerciseDates_(exerciseDates),
-      mesher_(mesher),
+      exerciseDates_(std::move(exerciseDates)),
+      mesher_(std::move(mesher)),
       direction_(direction) {
     }
 

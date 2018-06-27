@@ -18,11 +18,12 @@
 */
 
 #include <ql/instruments/stock.hpp>
+#include <utility>
 
 namespace QuantLib {
 
-    Stock::Stock(const Handle<Quote>& quote)
-    : quote_(quote) {
+    Stock::Stock(Handle<Quote>  quote)
+    : quote_(std::move(quote)) {
         registerWith(quote_);
     }
 

@@ -24,6 +24,7 @@
 #include <ql/cashflows/iborcoupon.hpp>
 #include <ql/cashflows/couponpricer.hpp>
 #include <ql/cashflows/simplecashflow.hpp>
+#include <utility>
 #include <ql/time/daycounters/actualactual.hpp>
 
 using namespace std;
@@ -31,15 +32,15 @@ using namespace std;
 namespace QuantLib {
 
     RiskyBond::RiskyBond(
-                 const std::string& name,
-                 const Currency& ccy,
+                 std::string  name,
+                 Currency  ccy,
                  Real recoveryRate,
-                 const Handle<DefaultProbabilityTermStructure>& defaultTS,
-                 const Handle<YieldTermStructure>& yieldTS,
+                 Handle<DefaultProbabilityTermStructure>  defaultTS,
+                 Handle<YieldTermStructure>  yieldTS,
                  Natural settlementDays, Calendar calendar)
-    : name_(name), ccy_(ccy), recoveryRate_(recoveryRate),
-      defaultTS_(defaultTS), yieldTS_(yieldTS),
-      settlementDays_(settlementDays), calendar_(calendar) {
+    : name_(std::move(name)), ccy_(std::move(ccy)), recoveryRate_(recoveryRate),
+      defaultTS_(std::move(defaultTS)), yieldTS_(std::move(yieldTS)),
+      settlementDays_(settlementDays), calendar_(std::move(calendar)) {
         registerWith (yieldTS_);
         registerWith (defaultTS_);
         //the two above might not be registered with evalDate
@@ -142,18 +143,18 @@ namespace QuantLib {
                             const Handle<DefaultProbabilityTermStructure>& defaultTS,
                             const Schedule& schedule,
                             Real rate,
-                            const DayCounter& dayCounter,
+                            DayCounter  dayCounter,
                             BusinessDayConvention paymentConvention,
-                            const std::vector<Real>& notionals,
+                            std::vector<Real>  notionals,
                             const Handle<YieldTermStructure>& yieldTS,
                             Natural settlementDays)
     : RiskyBond(name, ccy, recoveryRate, defaultTS, yieldTS,
                 settlementDays, schedule.calendar()),
           schedule_(schedule),
           rate_(rate),
-          dayCounter_(dayCounter),
+          dayCounter_(std::move(dayCounter)),
           // paymentConvention_(paymentConvention),
-          notionals_(notionals) {
+          notionals_(std::move(notionals)) {
         // FIXME: Take paymentConvention into account
         std::vector<Date> dates = schedule_.dates();
         Real previousNotional = notionals_.front();
@@ -229,10 +230,10 @@ namespace QuantLib {
     : RiskyBond(name, ccy, recoveryRate, defaultTS, yieldTS,
                 settlementDays, schedule.calendar()),
           schedule_(schedule),
-          index_(index),
+          index_(std::move(index)),
           fixingDays_(fixingDays),
           spread_(spread),
-          notionals_(notionals) {
+          notionals_(std::move(notionals)) {
 
         // FIXME: Take paymentConvention into account
         std::vector<Date> dates = schedule_.dates();

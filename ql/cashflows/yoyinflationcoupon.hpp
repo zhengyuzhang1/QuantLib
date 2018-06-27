@@ -90,8 +90,8 @@ namespace QuantLib {
     //! payoff is: spread + gearing x index
     class yoyInflationLeg {
     public:
-        yoyInflationLeg(const Schedule& schedule, const Calendar& cal,
-                        const ext::shared_ptr<YoYInflationIndex>& index,
+        yoyInflationLeg(Schedule  schedule, Calendar  cal,
+                        ext::shared_ptr<YoYInflationIndex>  index,
                         const Period& observationLag);
         yoyInflationLeg& withNotionals(Real notional);
         yoyInflationLeg& withNotionals(const std::vector<Real>& notionals);

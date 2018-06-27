@@ -47,8 +47,8 @@ namespace QuantLib {
         /*! the rate \f$ r \f$ is given with the convention that a
             unit of the source is worth \f$ r \f$ units of the target.
         */
-        ExchangeRate(const Currency& source,
-                     const Currency& target,
+        ExchangeRate(Currency  source,
+                     Currency  target,
                      Decimal rate);
         //@}
 
@@ -86,10 +86,10 @@ namespace QuantLib {
     inline ExchangeRate::ExchangeRate()
     : rate_(Null<Decimal>()) {}
 
-    inline ExchangeRate::ExchangeRate(const Currency& source,
-                                      const Currency& target,
+    inline ExchangeRate::ExchangeRate(Currency  source,
+                                      Currency  target,
                                       Decimal rate)
-    : source_(source), target_(target), rate_(rate), type_(Direct) {}
+    : source_(std::move(source)), target_(std::move(target)), rate_(rate), type_(Direct) {}
 
     inline const Currency& ExchangeRate::source() const {
         return source_;

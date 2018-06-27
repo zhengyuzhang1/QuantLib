@@ -20,13 +20,14 @@
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/termstructures/volatility/equityfx/andreasenhugelocalvoladapter.hpp>
 #include <ql/termstructures/volatility/equityfx/andreasenhugevolatilityinterpl.hpp>
+#include <utility>
 
 namespace QuantLib {
 
 
     AndreasenHugeLocalVolAdapter::AndreasenHugeLocalVolAdapter(
-        const ext::shared_ptr<AndreasenHugeVolatilityInterpl>& localVol)
-    : localVol_(localVol) {}
+        ext::shared_ptr<AndreasenHugeVolatilityInterpl>  localVol)
+    : localVol_(std::move(localVol)) {}
 
     Date AndreasenHugeLocalVolAdapter::maxDate() const {
         return localVol_->maxDate();

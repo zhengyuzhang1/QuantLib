@@ -30,6 +30,7 @@
 #include <ql/models/marketmodels/callability/exercisevalue.hpp>
 #include <ql/auto_ptr.hpp>
 #include <algorithm>
+#include <utility>
 
 namespace QuantLib {
 
@@ -109,8 +110,8 @@ namespace QuantLib {
 
 
     UpperBoundEngine::UpperBoundEngine(
-                   const ext::shared_ptr<MarketModelEvolver>& evolver,
-                   const std::vector<ext::shared_ptr<MarketModelEvolver> >&
+                   ext::shared_ptr<MarketModelEvolver>  evolver,
+                   std::vector<ext::shared_ptr<MarketModelEvolver> > 
                                                                  innerEvolvers,
                    const MarketModelMultiProduct& underlying,
                    const MarketModelExerciseValue& rebate,
@@ -118,7 +119,7 @@ namespace QuantLib {
                    const MarketModelExerciseValue& hedgeRebate,
                    const ExerciseStrategy<CurveState>& hedgeStrategy,
                    Real initialNumeraireValue)
-    : evolver_(evolver), innerEvolvers_(innerEvolvers),
+    : evolver_(std::move(evolver)), innerEvolvers_(std::move(innerEvolvers)),
       composite_(MultiProductComposite()),
       initialNumeraireValue_(initialNumeraireValue) {
 

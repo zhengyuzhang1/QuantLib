@@ -26,6 +26,7 @@
 
 #include <ql/experimental/commodities/dateinterval.hpp>
 #include <ql/experimental/commodities/quantity.hpp>
+#include <utility>
 #include <vector>
 
 namespace QuantLib {
@@ -35,9 +36,9 @@ namespace QuantLib {
     class PricingPeriod : public DateInterval {
       public:
         PricingPeriod(const Date& startDate, const Date& endDate,
-                      const Date& paymentDate, const Quantity& quantity)
+                      const Date& paymentDate, Quantity  quantity)
         : DateInterval(startDate, endDate), paymentDate_(paymentDate),
-          quantity_(quantity) {
+          quantity_(std::move(quantity)) {
         }
         const Date& paymentDate() const { return paymentDate_; }
         const Quantity& quantity() const { return quantity_; }

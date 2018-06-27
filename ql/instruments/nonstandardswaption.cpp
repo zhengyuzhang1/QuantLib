@@ -20,6 +20,7 @@
 
 #include <ql/instruments/nonstandardswaption.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -34,9 +35,9 @@ namespace QuantLib {
     }
 
     NonstandardSwaption::NonstandardSwaption(
-        const ext::shared_ptr<NonstandardSwap> &swap,
+        ext::shared_ptr<NonstandardSwap> swap,
         const ext::shared_ptr<Exercise> &exercise, Settlement::Type delivery)
-        : Option(ext::shared_ptr<Payoff>(), exercise), swap_(swap),
+        : Option(ext::shared_ptr<Payoff>(), exercise), swap_(std::move(swap)),
           settlementType_(delivery) {
 
         registerWith(swap_);

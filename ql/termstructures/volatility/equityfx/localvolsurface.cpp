@@ -21,6 +21,7 @@
 #include <ql/termstructures/volatility/equityfx/blackvoltermstructure.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/quotes/simplequote.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -47,13 +48,13 @@ namespace QuantLib {
 
     LocalVolSurface::LocalVolSurface(
                                  const Handle<BlackVolTermStructure>& blackTS,
-                                 const Handle<YieldTermStructure>& riskFreeTS,
-                                 const Handle<YieldTermStructure>& dividendTS,
-                                 const Handle<Quote>& underlying)
+                                 Handle<YieldTermStructure>  riskFreeTS,
+                                 Handle<YieldTermStructure>  dividendTS,
+                                 Handle<Quote>  underlying)
     : LocalVolTermStructure(blackTS->businessDayConvention(),
                             blackTS->dayCounter()),
-      blackTS_(blackTS), riskFreeTS_(riskFreeTS), dividendTS_(dividendTS),
-      underlying_(underlying) {
+      blackTS_(blackTS), riskFreeTS_(std::move(riskFreeTS)), dividendTS_(std::move(dividendTS)),
+      underlying_(std::move(underlying)) {
         registerWith(blackTS_);
         registerWith(riskFreeTS_);
         registerWith(dividendTS_);
@@ -62,12 +63,12 @@ namespace QuantLib {
 
     LocalVolSurface::LocalVolSurface(
                                  const Handle<BlackVolTermStructure>& blackTS,
-                                 const Handle<YieldTermStructure>& riskFreeTS,
-                                 const Handle<YieldTermStructure>& dividendTS,
+                                 Handle<YieldTermStructure>  riskFreeTS,
+                                 Handle<YieldTermStructure>  dividendTS,
                                  Real underlying)
     : LocalVolTermStructure(blackTS->businessDayConvention(),
                             blackTS->dayCounter()),
-      blackTS_(blackTS), riskFreeTS_(riskFreeTS), dividendTS_(dividendTS),
+      blackTS_(blackTS), riskFreeTS_(std::move(riskFreeTS)), dividendTS_(std::move(dividendTS)),
       underlying_(ext::shared_ptr<Quote>(new SimpleQuote(underlying))) {
         registerWith(blackTS_);
         registerWith(riskFreeTS_);

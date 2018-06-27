@@ -27,6 +27,7 @@
 #include <ql/methods/finitedifferences/utilities/fdminnervaluecalculator.hpp>
 #include <ql/experimental/finitedifferences/fdmvppstepconditionfactory.hpp>
 #include <ql/experimental/finitedifferences/dynprogvppintrinsicvalueengine.hpp>
+#include <utility>
 
 
 namespace QuantLib {
@@ -74,14 +75,14 @@ namespace QuantLib {
     }
 
     DynProgVPPIntrinsicValueEngine::DynProgVPPIntrinsicValueEngine(
-        const std::vector<Real>& fuelPrices,
-        const std::vector<Real>& powerPrices,
+        std::vector<Real>  fuelPrices,
+        std::vector<Real>  powerPrices,
         Real fuelCostAddon,
-        const ext::shared_ptr<YieldTermStructure>& rTS)
-    : fuelPrices_   (fuelPrices),
-      powerPrices_  (powerPrices),
+        ext::shared_ptr<YieldTermStructure>  rTS)
+    : fuelPrices_   (std::move(fuelPrices)),
+      powerPrices_  (std::move(powerPrices)),
       fuelCostAddon_(fuelCostAddon),
-      rTS_(rTS) {
+      rTS_(std::move(rTS)) {
     }
 
     void DynProgVPPIntrinsicValueEngine::calculate() const {

@@ -34,7 +34,7 @@ namespace QuantLib {
       public:
         HestonSLVProcess(
             const ext::shared_ptr<HestonProcess>& hestonProcess,
-            const ext::shared_ptr<LocalVolTermStructure>& leverageFct);
+            ext::shared_ptr<LocalVolTermStructure>  leverageFct);
 
         Size size()    const override { return Size(2); }
         Size factors() const override { return Size(2); }

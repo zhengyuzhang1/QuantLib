@@ -34,7 +34,7 @@ namespace QuantLib {
       public:
         ParametricExerciseAdapter(
                            const MarketModelParametricExercise& exercise,
-                           const std::vector<std::vector<Real> >& parameters);
+                           std::vector<std::vector<Real> >  parameters);
         std::vector<Time> exerciseTimes() const override;
         std::vector<Time> relevantTimes() const override;
         void reset() override;

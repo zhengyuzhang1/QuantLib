@@ -39,12 +39,13 @@
 #endif
 
 #include <boost/function.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     GBSMRNDCalculator::GBSMRNDCalculator(
-        const ext::shared_ptr<GeneralizedBlackScholesProcess>& process)
-    : process_(process) { }
+        ext::shared_ptr<GeneralizedBlackScholesProcess>  process)
+    : process_(std::move(process)) { }
 
     Real GBSMRNDCalculator::pdf(Real k, Time t) const {
         const Real dk = 1e-3*k;

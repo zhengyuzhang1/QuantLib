@@ -21,17 +21,18 @@
 #include <ql/experimental/processes/klugeextouprocess.hpp>
 #include <ql/experimental/processes/extouwithjumpsprocess.hpp>
 #include <ql/experimental/processes/extendedornsteinuhlenbeckprocess.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     KlugeExtOUProcess::KlugeExtOUProcess(
         Real rho,
-        const ext::shared_ptr<ExtOUWithJumpsProcess>& klugeProcess,
-        const ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess>& ouProcess)
+        ext::shared_ptr<ExtOUWithJumpsProcess>  klugeProcess,
+        ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess>  ouProcess)
     : rho_         (rho),
       sqrtMRho_    (std::sqrt(1-rho*rho)),
-      klugeProcess_(klugeProcess),
-      ouProcess_   (ouProcess) {
+      klugeProcess_(std::move(klugeProcess)),
+      ouProcess_   (std::move(ouProcess)) {
     }
 
     Size KlugeExtOUProcess::size() const {

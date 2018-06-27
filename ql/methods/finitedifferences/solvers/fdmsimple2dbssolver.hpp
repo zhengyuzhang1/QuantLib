@@ -38,9 +38,9 @@ namespace QuantLib {
     class FdmSimple2dBSSolver : public LazyObject {
       public:
         FdmSimple2dBSSolver(
-            const Handle<GeneralizedBlackScholesProcess>& process,
+            Handle<GeneralizedBlackScholesProcess>  process,
             Real strike,
-            const FdmSolverDesc& desc,
+            FdmSolverDesc  desc,
             const FdmSchemeDesc& schemeDesc = FdmSchemeDesc::Douglas());
 
         Real valueAt(Real s, Real a) const;

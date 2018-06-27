@@ -29,6 +29,7 @@
 #include <ql/termstructures/yield/zeroyieldstructure.hpp>
 #include <ql/quote.hpp>
 #include <ql/math/interpolations/linearinterpolation.hpp>
+#include <utility>
 #include <vector>
 
 namespace QuantLib {
@@ -48,12 +49,12 @@ namespace QuantLib {
   class InterpolatedPiecewiseZeroSpreadedTermStructure : public ZeroYieldStructure {
     public:
       InterpolatedPiecewiseZeroSpreadedTermStructure(
-                                   const Handle<YieldTermStructure>&,
-                                   const std::vector<Handle<Quote> >& spreads,
+                                   Handle<YieldTermStructure> ,
+                                   std::vector<Handle<Quote> >  spreads,
                                    const std::vector<Date>& dates,
                                    Compounding comp = Continuous,
                                    Frequency freq = NoFrequency,
-                                   const DayCounter& dc = DayCounter(),
+                                   DayCounter  dc = DayCounter(),
                                    const Interpolator& factory = Interpolator());
       //! \name YieldTermStructure interface
       //@{
@@ -93,16 +94,16 @@ namespace QuantLib {
     template <class T>
     inline
     InterpolatedPiecewiseZeroSpreadedTermStructure<T>::InterpolatedPiecewiseZeroSpreadedTermStructure(
-                                   const Handle<YieldTermStructure>& h,
-                                   const std::vector<Handle<Quote> >& spreads,
+                                   Handle<YieldTermStructure>  h,
+                                   std::vector<Handle<Quote> >  spreads,
                                    const std::vector<Date>& dates,
                                    Compounding comp,
                                    Frequency freq,
-                                   const DayCounter& dc,
+                                   DayCounter  dc,
                                    const T& factory)
-        : originalCurve_(h), spreads_(spreads), dates_(dates),
+        : originalCurve_(std::move(h)), spreads_(std::move(spreads)), dates_(dates),
           times_(dates.size()), spreadValues_(dates.size()), comp_(comp), freq_(freq),
-          dc_(dc), factory_(factory) {
+          dc_(std::move(dc)), factory_(factory) {
         QL_REQUIRE(!spreads_.empty(), "no spreads given");
         QL_REQUIRE(spreads_.size() == dates_.size(),
                    "spread and date vector have different sizes");

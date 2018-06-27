@@ -28,13 +28,14 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 
 
 #include <ql/termstructures/yield/zeroyieldstructure.hpp>
+#include <utility>
 
 namespace QuantLib {
     template <class BinaryFunction>
     class CompositeZeroYieldStructure : public ZeroYieldStructure {
       public:
-          CompositeZeroYieldStructure(const Handle<YieldTermStructure>& h1,
-                                      const Handle<YieldTermStructure>& h2,
+          CompositeZeroYieldStructure(Handle<YieldTermStructure>  h1,
+                                      Handle<YieldTermStructure>  h2,
                                       const BinaryFunction& f,
                                       Compounding comp = Continuous,
                                       Frequency freq = NoFrequency);
@@ -67,12 +68,12 @@ namespace QuantLib {
 
     template <class BinaryFunction>
     inline CompositeZeroYieldStructure<BinaryFunction>::CompositeZeroYieldStructure(
-        const Handle<YieldTermStructure>& h1, 
-        const Handle<YieldTermStructure>& h2, 
+        Handle<YieldTermStructure>  h1, 
+        Handle<YieldTermStructure>  h2, 
         const BinaryFunction& f,
         Compounding comp, 
         Frequency freq)
-    : curve1_(h1), curve2_(h2), f_(f), comp_(comp), freq_(freq) {
+    : curve1_(std::move(h1)), curve2_(std::move(h2)), f_(f), comp_(comp), freq_(freq) {
         if (!curve1_.empty() && !curve2_.empty())
             enableExtrapolation(curve1_->allowsExtrapolation() && curve2_->allowsExtrapolation());
 

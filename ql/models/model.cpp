@@ -23,6 +23,7 @@
 #include <ql/math/optimization/projection.hpp>
 #include <ql/math/optimization/projectedconstraint.hpp>
 #include <ql/utilities/null_deleter.hpp>
+#include <utility>
 
 using std::vector;
 
@@ -37,10 +38,10 @@ namespace QuantLib {
       public:
         CalibrationFunction(CalibratedModel* model,
                             const vector<ext::shared_ptr<CalibrationHelper> >& h,
-                            const vector<Real>& weights,
+                            vector<Real>  weights,
                             const Projection& projection)
             : model_(model, null_deleter()), instruments_(h),
-              weights_(weights), projection_(projection) { }
+              weights_(std::move(weights)), projection_(projection) { }
 
         ~CalibrationFunction() override {}
 

@@ -21,6 +21,7 @@
 
 #include <ql/cashflows/digitaliborcoupon.hpp>
 #include <ql/cashflows/cashflowvectors.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -51,9 +52,9 @@ namespace QuantLib {
 
 
 
-    DigitalIborLeg::DigitalIborLeg(const Schedule& schedule,
-                                   const ext::shared_ptr<IborIndex>& index)
-    : schedule_(schedule), index_(index),
+    DigitalIborLeg::DigitalIborLeg(Schedule  schedule,
+                                   ext::shared_ptr<IborIndex>  index)
+    : schedule_(std::move(schedule)), index_(std::move(index)),
       paymentAdjustment_(Following), inArrears_(false),
       longCallOption_(Position::Long), callATM_(false),
       longPutOption_(Position::Long), putATM_(false) {}

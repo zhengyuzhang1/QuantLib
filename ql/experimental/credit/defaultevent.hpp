@@ -92,7 +92,7 @@ namespace QuantLib {
         */
         DefaultEvent(const Date& creditEventDate,
                      const DefaultType& atomicEvType,
-                     const Currency& curr,
+                     Currency  curr,
                      Seniority bondsSen,
                      // Settlement information:
                      const Date& settleDate = Null<Date>(),
@@ -104,7 +104,7 @@ namespace QuantLib {
         */
         DefaultEvent(const Date& creditEventDate,
                      const DefaultType& atomicEvType,
-                     const Currency& curr,
+                     Currency  curr,
                      Seniority bondsSen,
                      // Settlement information:
                      const Date& settleDate = Null<Date>(),

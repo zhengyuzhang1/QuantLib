@@ -40,9 +40,9 @@ namespace QuantLib {
       public:
         FdmExtendedOrnsteinUhlenbackOp(
                const ext::shared_ptr<FdmMesher>& mesher,
-               const ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess>& p,
-               const ext::shared_ptr<YieldTermStructure>& rTS,
-               const FdmBoundaryConditionSet& bcSet,
+               ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess>  p,
+               ext::shared_ptr<YieldTermStructure>  rTS,
+               FdmBoundaryConditionSet  bcSet,
                Size direction = 0);
 
         Size size() const override;

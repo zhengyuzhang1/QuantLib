@@ -64,11 +64,11 @@ namespace QuantLib {
         Basket(
             const Date& refDate,
             const std::vector<std::string>& names,
-            const std::vector<Real>& notionals,
+            std::vector<Real>  notionals,
             const ext::shared_ptr<Pool> pool,
             Real attachmentRatio = 0.0,
             Real detachmentRatio = 1.0,
-            const ext::shared_ptr<Claim>& claim =
+            ext::shared_ptr<Claim>  claim =
                 ext::shared_ptr<Claim>(new FaceValueClaim()));
         void update() override {
             computeBasket();

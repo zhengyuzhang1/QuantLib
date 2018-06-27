@@ -28,6 +28,7 @@
 #include <ql/quotes/simplequote.hpp>
 #include <ql/exercise.hpp>
 #include <ql/shared_ptr.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -36,7 +37,7 @@ namespace QuantLib {
         class ImpliedSwaptionVolHelper {
           public:
             ImpliedSwaptionVolHelper(const Swaption&,
-                                     const Handle<YieldTermStructure>& discountCurve,
+                                     Handle<YieldTermStructure>  discountCurve,
                                      Real targetValue,
                                      Real displacement,
                                      VolatilityType type);
@@ -52,11 +53,11 @@ namespace QuantLib {
 
         ImpliedSwaptionVolHelper::ImpliedSwaptionVolHelper(
                               const Swaption& swaption,
-                              const Handle<YieldTermStructure>& discountCurve,
+                              Handle<YieldTermStructure>  discountCurve,
                               Real targetValue,
                               Real displacement,
                               VolatilityType type)
-        : discountCurve_(discountCurve), targetValue_(targetValue) {
+        : discountCurve_(std::move(discountCurve)), targetValue_(targetValue) {
 
             // set an implausible value, so that calculation is forced
             // at first ImpliedSwaptionVolHelper::operator()(Volatility x) call
@@ -114,10 +115,10 @@ namespace QuantLib {
         }
     }
 
-    Swaption::Swaption(const ext::shared_ptr<VanillaSwap>& swap,
+    Swaption::Swaption(ext::shared_ptr<VanillaSwap>  swap,
                        const ext::shared_ptr<Exercise>& exercise,
                        Settlement::Type delivery)
-    : Option(ext::shared_ptr<Payoff>(), exercise), swap_(swap),
+    : Option(ext::shared_ptr<Payoff>(), exercise), swap_(std::move(swap)),
       settlementType_(delivery) {
         registerWith(swap_);
         registerWithObservables(swap_);

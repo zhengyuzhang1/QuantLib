@@ -41,10 +41,10 @@ namespace QuantLib {
       public:
         FdmHestonEquityPart(
             const ext::shared_ptr<FdmMesher>& mesher,
-            const ext::shared_ptr<YieldTermStructure>& rTS,
-            const ext::shared_ptr<YieldTermStructure>& qTS,
-            const ext::shared_ptr<FdmQuantoHelper>& quantoHelper,
-            const ext::shared_ptr<LocalVolTermStructure>& leverageFct
+            ext::shared_ptr<YieldTermStructure>  rTS,
+            ext::shared_ptr<YieldTermStructure>  qTS,
+            ext::shared_ptr<FdmQuantoHelper>  quantoHelper,
+            ext::shared_ptr<LocalVolTermStructure>  leverageFct
                 = ext::shared_ptr<LocalVolTermStructure>());
 
         void setTime(Time t1, Time t2);
@@ -69,7 +69,7 @@ namespace QuantLib {
       public:
         FdmHestonVariancePart(
             const ext::shared_ptr<FdmMesher>& mesher,
-            const ext::shared_ptr<YieldTermStructure>& rTS,
+            ext::shared_ptr<YieldTermStructure>  rTS,
             Real sigma, Real kappa, Real theta);
 
         void setTime(Time t1, Time t2);

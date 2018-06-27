@@ -19,6 +19,7 @@
 
 #include <ql/experimental/volatility/extendedblackvariancesurface.hpp>
 #include <ql/math/interpolations/bilinearinterpolation.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -26,14 +27,14 @@ namespace QuantLib {
                           const Date& referenceDate,
                           const Calendar& calendar,
                           const std::vector<Date>& dates,
-                          const std::vector<Real>& strikes,
+                          std::vector<Real>  strikes,
                           const std::vector<Handle<Quote> >& volatilities,
-                          const DayCounter& dayCounter,
+                          DayCounter  dayCounter,
                           ExtendedBlackVarianceSurface::Extrapolation lowerEx,
                           ExtendedBlackVarianceSurface::Extrapolation upperEx)
     : BlackVarianceTermStructure(referenceDate, calendar),
-      dayCounter_(dayCounter), maxDate_(dates.back()),
-      volatilities_(volatilities), strikes_(strikes),
+      dayCounter_(std::move(dayCounter)), maxDate_(dates.back()),
+      volatilities_(volatilities), strikes_(std::move(strikes)),
       lowerExtrapolation_(lowerEx), upperExtrapolation_(upperEx) {
 
         QL_REQUIRE(dates.size()*strikes_.size()==volatilities_.size(),

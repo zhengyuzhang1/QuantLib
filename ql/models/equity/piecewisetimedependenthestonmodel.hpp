@@ -52,7 +52,7 @@ namespace QuantLib {
               const Parameter& kappa,
               const Parameter& sigma,
               const Parameter& rho,
-              const TimeGrid& timeGrid);
+              TimeGrid  timeGrid);
 
         // variance mean version level
         Real theta(Time t) const { return arguments_[0](t); }

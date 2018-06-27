@@ -21,13 +21,14 @@
 #include <ql/models/marketmodels/callability/marketmodelparametricexercise.hpp>
 #include <ql/models/marketmodels/evolutiondescription.hpp>
 #include <ql/auto_ptr.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     ParametricExerciseAdapter::ParametricExerciseAdapter(
                             const MarketModelParametricExercise& exercise,
-                            const std::vector<std::vector<Real> >& parameters)
-    : exercise_(exercise), parameters_(parameters),
+                            std::vector<std::vector<Real> >  parameters)
+    : exercise_(exercise), parameters_(std::move(parameters)),
       currentStep_(0), currentExercise_(0),
       isExerciseTime_(exercise.isExerciseTime()),
       numberOfVariables_(exercise.numberOfVariables()) {

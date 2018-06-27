@@ -28,6 +28,7 @@
 #include <ql/indexes/iborindex.hpp>
 #include <ql/indexes/swapindex.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -54,22 +55,22 @@ namespace QuantLib {
     }
 
     NonstandardSwap::NonstandardSwap(
-        const VanillaSwap::Type type, const std::vector<Real> &fixedNominal,
-        const std::vector<Real> &floatingNominal, const Schedule &fixedSchedule,
-        const std::vector<Real> &fixedRate, const DayCounter &fixedDayCount,
-        const Schedule &floatingSchedule,
-        const ext::shared_ptr<IborIndex> &iborIndex, const Real gearing,
-        const Spread spread, const DayCounter &floatingDayCount,
+        const VanillaSwap::Type type, std::vector<Real> fixedNominal,
+        const std::vector<Real> &floatingNominal, Schedule fixedSchedule,
+        std::vector<Real> fixedRate, DayCounter fixedDayCount,
+        Schedule floatingSchedule,
+        ext::shared_ptr<IborIndex> iborIndex, const Real gearing,
+        const Spread spread, DayCounter floatingDayCount,
         const bool intermediateCapitalExchange, const bool finalCapitalExchange,
         boost::optional<BusinessDayConvention> paymentConvention)
-        : Swap(2), type_(type), fixedNominal_(fixedNominal),
-          floatingNominal_(floatingNominal), fixedSchedule_(fixedSchedule),
-          fixedRate_(fixedRate), fixedDayCount_(fixedDayCount),
-          floatingSchedule_(floatingSchedule), iborIndex_(iborIndex),
+        : Swap(2), type_(type), fixedNominal_(std::move(fixedNominal)),
+          floatingNominal_(floatingNominal), fixedSchedule_(std::move(fixedSchedule)),
+          fixedRate_(std::move(fixedRate)), fixedDayCount_(std::move(fixedDayCount)),
+          floatingSchedule_(std::move(floatingSchedule)), iborIndex_(std::move(iborIndex)),
           spread_(std::vector<Real>(floatingNominal.size(), spread)),
           gearing_(std::vector<Real>(floatingNominal.size(), gearing)),
           singleSpreadAndGearing_(true),
-          floatingDayCount_(floatingDayCount),
+          floatingDayCount_(std::move(floatingDayCount)),
           intermediateCapitalExchange_(intermediateCapitalExchange),
           finalCapitalExchange_(finalCapitalExchange) {
 
@@ -81,21 +82,21 @@ namespace QuantLib {
     }
 
     NonstandardSwap::NonstandardSwap(
-        const VanillaSwap::Type type, const std::vector<Real> &fixedNominal,
-        const std::vector<Real> &floatingNominal, const Schedule &fixedSchedule,
-        const std::vector<Real> &fixedRate, const DayCounter &fixedDayCount,
-        const Schedule &floatingSchedule,
-        const ext::shared_ptr<IborIndex> &iborIndex,
-        const std::vector<Real> &gearing, const std::vector<Spread> &spread,
-        const DayCounter &floatingDayCount,
+        const VanillaSwap::Type type, std::vector<Real> fixedNominal,
+        std::vector<Real> floatingNominal, Schedule fixedSchedule,
+        std::vector<Real> fixedRate, DayCounter fixedDayCount,
+        Schedule floatingSchedule,
+        ext::shared_ptr<IborIndex> iborIndex,
+        std::vector<Real> gearing, std::vector<Spread> spread,
+        DayCounter floatingDayCount,
         const bool intermediateCapitalExchange, const bool finalCapitalExchange,
         boost::optional<BusinessDayConvention> paymentConvention)
-        : Swap(2), type_(type), fixedNominal_(fixedNominal),
-          floatingNominal_(floatingNominal), fixedSchedule_(fixedSchedule),
-          fixedRate_(fixedRate), fixedDayCount_(fixedDayCount),
-          floatingSchedule_(floatingSchedule), iborIndex_(iborIndex),
-          spread_(spread), gearing_(gearing), singleSpreadAndGearing_(false),
-          floatingDayCount_(floatingDayCount),
+        : Swap(2), type_(type), fixedNominal_(std::move(fixedNominal)),
+          floatingNominal_(std::move(floatingNominal)), fixedSchedule_(std::move(fixedSchedule)),
+          fixedRate_(std::move(fixedRate)), fixedDayCount_(std::move(fixedDayCount)),
+          floatingSchedule_(std::move(floatingSchedule)), iborIndex_(std::move(iborIndex)),
+          spread_(std::move(spread)), gearing_(std::move(gearing)), singleSpreadAndGearing_(false),
+          floatingDayCount_(std::move(floatingDayCount)),
           intermediateCapitalExchange_(intermediateCapitalExchange),
           finalCapitalExchange_(finalCapitalExchange) {
 

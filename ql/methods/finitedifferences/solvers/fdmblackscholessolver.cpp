@@ -23,19 +23,20 @@
 #include <ql/methods/finitedifferences/solvers/fdm1dimsolver.hpp>
 #include <ql/methods/finitedifferences/operators/fdmblackscholesop.hpp>
 #include <ql/methods/finitedifferences/solvers/fdmblackscholessolver.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FdmBlackScholesSolver::FdmBlackScholesSolver(
-        const Handle<GeneralizedBlackScholesProcess>& process,
+        Handle<GeneralizedBlackScholesProcess>  process,
         Real strike,
-        const FdmSolverDesc& solverDesc,
+        FdmSolverDesc  solverDesc,
         const FdmSchemeDesc& schemeDesc,
         bool localVol,
         Real illegalLocalVolOverwrite)
-    : process_(process),
+    : process_(std::move(process)),
       strike_(strike),
-      solverDesc_(solverDesc),
+      solverDesc_(std::move(solverDesc)),
       schemeDesc_(schemeDesc),
       localVol_(localVol),
       illegalLocalVolOverwrite_(illegalLocalVolOverwrite) {

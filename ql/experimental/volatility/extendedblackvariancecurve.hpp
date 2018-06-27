@@ -40,8 +40,8 @@ namespace QuantLib {
         ExtendedBlackVarianceCurve(
                               const Date& referenceDate,
                               const std::vector<Date>& dates,
-                              const std::vector<Handle<Quote> >& volatilities,
-                              const DayCounter& dayCounter,
+                              std::vector<Handle<Quote> >  volatilities,
+                              DayCounter  dayCounter,
                               bool forceMonotoneVariance = true);
 
         DayCounter dayCounter() const override { return dayCounter_; }

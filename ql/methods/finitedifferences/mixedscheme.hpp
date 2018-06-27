@@ -26,6 +26,7 @@
 #define quantlib_mixed_scheme_hpp
 
 #include <ql/methods/finitedifferences/finitedifferencemodel.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -80,9 +81,9 @@ namespace QuantLib {
         // constructors
         MixedScheme(const operator_type& L,
                     Real theta,
-                    const bc_set& bcs)
+                    bc_set  bcs)
         : L_(L), I_(operator_type::identity(L.size())),
-          dt_(0.0), theta_(theta) , bcs_(bcs) {}
+          dt_(0.0), theta_(theta) , bcs_(std::move(bcs)) {}
         void step(array_type& a,
                   Time t);
         void setStep(Time dt) {

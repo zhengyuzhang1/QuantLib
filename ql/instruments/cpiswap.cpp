@@ -30,6 +30,7 @@
 
 #include <ql/instruments/cpiswap.hpp>
 #include <ql/cashflows/cpicoupon.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -40,28 +41,28 @@ namespace QuantLib {
             bool subtractInflationNominal,
             // float + spread leg
             Spread spread,
-            const DayCounter& floatDayCount,
-            const Schedule& floatSchedule,
+            DayCounter  floatDayCount,
+            Schedule  floatSchedule,
             const BusinessDayConvention& floatPaymentRoll,
             Natural fixingDays,
-            const ext::shared_ptr<IborIndex>& floatIndex,
+            ext::shared_ptr<IborIndex>  floatIndex,
             // fixed x inflation leg
             Rate fixedRate,
             Real baseCPI,
-            const DayCounter& fixedDayCount,
-            const Schedule& fixedSchedule,
+            DayCounter  fixedDayCount,
+            Schedule  fixedSchedule,
             const BusinessDayConvention& fixedPaymentRoll,
             const Period& observationLag,
-            const ext::shared_ptr<ZeroInflationIndex>& fixedIndex,
+            ext::shared_ptr<ZeroInflationIndex>  fixedIndex,
             CPI::InterpolationType observationInterpolation,
             Real inflationNominal
             )
     : Swap(2), type_(type), nominal_(nominal), subtractInflationNominal_(subtractInflationNominal),
-    spread_(spread), floatDayCount_(floatDayCount), floatSchedule_(floatSchedule),
+    spread_(spread), floatDayCount_(std::move(floatDayCount)), floatSchedule_(std::move(floatSchedule)),
     floatPaymentRoll_(floatPaymentRoll), fixingDays_(fixingDays),
-    floatIndex_(floatIndex),
-    fixedRate_(fixedRate), baseCPI_(baseCPI), fixedDayCount_(fixedDayCount), fixedSchedule_(fixedSchedule),
-    fixedPaymentRoll_(fixedPaymentRoll), fixedIndex_(fixedIndex),
+    floatIndex_(std::move(floatIndex)),
+    fixedRate_(fixedRate), baseCPI_(baseCPI), fixedDayCount_(std::move(fixedDayCount)), fixedSchedule_(std::move(fixedSchedule)),
+    fixedPaymentRoll_(fixedPaymentRoll), fixedIndex_(std::move(fixedIndex)),
     observationLag_(observationLag),
     observationInterpolation_(observationInterpolation)
     {

@@ -19,6 +19,7 @@
 
 #include <ql/termstructures/inflationtermstructure.hpp>
 #include <ql/indexes/inflationindex.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -27,12 +28,12 @@ namespace QuantLib {
                                         const Period& observationLag,
                                         Frequency frequency,
                                         bool indexIsInterpolated,
-                                        const Handle<YieldTermStructure>& yTS,
+                                        Handle<YieldTermStructure>  yTS,
                                         const DayCounter& dayCounter,
                                         const ext::shared_ptr<Seasonality> &seasonality)
     : TermStructure(dayCounter),
       observationLag_(observationLag), frequency_(frequency), indexIsInterpolated_(indexIsInterpolated),
-      baseRate_(baseRate), nominalTermStructure_(yTS) {
+      baseRate_(baseRate), nominalTermStructure_(std::move(yTS)) {
         registerWith(nominalTermStructure_);
         setSeasonality(seasonality);
     }
@@ -43,14 +44,14 @@ namespace QuantLib {
                                         const Period& observationLag,
                                         Frequency frequency,
                                         const bool indexIsInterpolated,
-                                        const Handle<YieldTermStructure>& yTS,
+                                        Handle<YieldTermStructure>  yTS,
                                         const Calendar& calendar,
                                         const DayCounter& dayCounter,
                                         const ext::shared_ptr<Seasonality> &seasonality)
     : TermStructure(referenceDate, calendar, dayCounter),
       observationLag_(observationLag),
       frequency_(frequency), indexIsInterpolated_(indexIsInterpolated),
-      baseRate_(baseRate), nominalTermStructure_(yTS) {
+      baseRate_(baseRate), nominalTermStructure_(std::move(yTS)) {
         registerWith(nominalTermStructure_);
         setSeasonality(seasonality);
     }
@@ -62,13 +63,13 @@ namespace QuantLib {
                                         const Period& observationLag,
                                         Frequency frequency,
                                         bool indexIsInterpolated,
-                                        const Handle<YieldTermStructure>& yTS,
+                                        Handle<YieldTermStructure>  yTS,
                                         const DayCounter &dayCounter,
                                         const ext::shared_ptr<Seasonality> &seasonality)
     : TermStructure(settlementDays, calendar, dayCounter),
       observationLag_(observationLag),
       frequency_(frequency), indexIsInterpolated_(indexIsInterpolated),
-      baseRate_(baseRate), nominalTermStructure_(yTS) {
+      baseRate_(baseRate), nominalTermStructure_(std::move(yTS)) {
         registerWith(nominalTermStructure_);
         setSeasonality(seasonality);
     }

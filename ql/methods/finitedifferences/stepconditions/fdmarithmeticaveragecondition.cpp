@@ -24,17 +24,18 @@
 #include <ql/math/interpolations/cubicinterpolation.hpp>
 #include <ql/methods/finitedifferences/operators/fdmlinearoplayout.hpp>
 #include <ql/methods/finitedifferences/stepconditions/fdmarithmeticaveragecondition.hpp>
+#include <utility>
 
 namespace QuantLib {
 
     FdmArithmeticAverageCondition::FdmArithmeticAverageCondition(
-                                    const std::vector<Time> & averageTimes,
+                                    std::vector<Time>  averageTimes,
                                     Real, Size pastFixings,
                                     const ext::shared_ptr<FdmMesher> & mesher,
                                     Size equityDirection)
     : x_(mesher->layout()->dim()[equityDirection]),
       a_(mesher->layout()->dim()[equityDirection == 0 ? 1 : 0]),
-      averageTimes_(averageTimes),
+      averageTimes_(std::move(averageTimes)),
       pastFixings_(pastFixings), mesher_(mesher),
       equityDirection_(equityDirection) {
 

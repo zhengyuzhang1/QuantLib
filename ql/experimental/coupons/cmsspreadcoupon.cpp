@@ -19,6 +19,7 @@
 #include <ql/experimental/coupons/cmsspreadcoupon.hpp>
 #include <ql/cashflows/cashflowvectors.hpp>
 #include <ql/cashflows/capflooredcoupon.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -43,9 +44,9 @@ namespace QuantLib {
             FloatingRateCoupon::accept(v);
     }
 
-    CmsSpreadLeg::CmsSpreadLeg(const Schedule &schedule,
-                               const ext::shared_ptr<SwapSpreadIndex> &index)
-        : schedule_(schedule), swapSpreadIndex_(index),
+    CmsSpreadLeg::CmsSpreadLeg(Schedule schedule,
+                               ext::shared_ptr<SwapSpreadIndex> index)
+        : schedule_(std::move(schedule)), swapSpreadIndex_(std::move(index)),
           paymentAdjustment_(Following), inArrears_(false),
           zeroPayments_(false) {}
 

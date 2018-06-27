@@ -90,7 +90,7 @@ namespace QuantLib {
     class OvernightLeg {
       public:
         OvernightLeg(const Schedule& schedule,
-                     const ext::shared_ptr<OvernightIndex>& overnightIndex);
+                     ext::shared_ptr<OvernightIndex>  overnightIndex);
         OvernightLeg& withNotionals(Real notional);
         OvernightLeg& withNotionals(const std::vector<Real>& notionals);
         OvernightLeg& withPaymentDayCounter(const DayCounter&);

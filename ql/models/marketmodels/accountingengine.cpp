@@ -23,14 +23,15 @@
 #include <ql/models/marketmodels/evolutiondescription.hpp>
 #include <ql/models/marketmodels/curvestate.hpp>
 #include <algorithm>
+#include <utility>
 
 namespace QuantLib {
 
     AccountingEngine::AccountingEngine(
-                         const ext::shared_ptr<MarketModelEvolver>& evolver,
+                         ext::shared_ptr<MarketModelEvolver>  evolver,
                          const Clone<MarketModelMultiProduct>& product,
                          Real initialNumeraireValue)
-    : evolver_(evolver), product_(product),
+    : evolver_(std::move(evolver)), product_(product),
       initialNumeraireValue_(initialNumeraireValue),
       numberProducts_(product->numberOfProducts()),
       numerairesHeld_(product->numberOfProducts()),

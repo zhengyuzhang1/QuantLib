@@ -20,14 +20,15 @@
 #include <ql/experimental/catbonds/montecarlocatbondengine.hpp>
 #include <ql/cashflows/cashflows.hpp>
 #include <algorithm>
+#include <utility>
 
 namespace QuantLib {
 
     MonteCarloCatBondEngine::MonteCarloCatBondEngine(
                              const ext::shared_ptr<CatRisk> catRisk,
-                             const Handle<YieldTermStructure>& discountCurve,
+                             Handle<YieldTermStructure>  discountCurve,
                              boost::optional<bool> includeSettlementDateFlows)
-    : catRisk_(catRisk), discountCurve_(discountCurve),
+    : catRisk_(catRisk), discountCurve_(std::move(discountCurve)),
       includeSettlementDateFlows_(includeSettlementDateFlows) {
         registerWith(discountCurve_);
     }

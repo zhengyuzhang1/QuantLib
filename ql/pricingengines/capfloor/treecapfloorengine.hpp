@@ -42,11 +42,11 @@ namespace QuantLib {
         //@{
         TreeCapFloorEngine(const ext::shared_ptr<ShortRateModel>& model,
                            Size timeSteps,
-                           const Handle<YieldTermStructure>& termStructure =
+                           Handle<YieldTermStructure>  termStructure =
                                                  Handle<YieldTermStructure>());
         TreeCapFloorEngine(const ext::shared_ptr<ShortRateModel>& model,
                            const TimeGrid& timeGrid,
-                           const Handle<YieldTermStructure>& termStructure =
+                           Handle<YieldTermStructure>  termStructure =
                                                  Handle<YieldTermStructure>());
         //@}
         void calculate() const override;

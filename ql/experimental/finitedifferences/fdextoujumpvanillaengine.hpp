@@ -39,8 +39,8 @@ namespace QuantLib {
                                VanillaOption::results> {
       public:
           FdExtOUJumpVanillaEngine(
-                  const ext::shared_ptr<ExtOUWithJumpsProcess>& p,
-                  const ext::shared_ptr<YieldTermStructure>& rTS,
+                  ext::shared_ptr<ExtOUWithJumpsProcess>  p,
+                  ext::shared_ptr<YieldTermStructure>  rTS,
                   Size tGrid = 50, Size xGrid = 200, Size yGrid = 50,
                   const FdmSchemeDesc& schemeDesc=FdmSchemeDesc::Hundsdorfer());
     

@@ -25,6 +25,7 @@
 
 #include <ql/cashflows/cpicoupon.hpp>
 #include <ql/cashflows/cpicouponpricer.hpp>
+#include <utility>
 
 
 namespace QuantLib {
@@ -149,9 +150,9 @@ namespace QuantLib {
     }
 
 
-    CPILeg::CPILeg(const Schedule& schedule, const ext::shared_ptr<ZeroInflationIndex>& index,
+    CPILeg::CPILeg(const Schedule& schedule, ext::shared_ptr<ZeroInflationIndex>  index,
                    const Real baseCPI, const Period& observationLag) :
-    schedule_(schedule), index_(index),
+    schedule_(schedule), index_(std::move(index)),
     baseCPI_(baseCPI), observationLag_(observationLag),
     paymentDayCounter_(Thirty360()),
     paymentAdjustment_(ModifiedFollowing),

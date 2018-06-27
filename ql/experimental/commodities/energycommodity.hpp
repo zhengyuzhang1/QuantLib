@@ -87,7 +87,7 @@ namespace QuantLib {
                                YearlySettlement };
 
         EnergyCommodity(
-                    const CommodityType& commodityType,
+                    CommodityType  commodityType,
                     const ext::shared_ptr<SecondaryCosts>& secondaryCosts);
 
         virtual Quantity quantity() const = 0;

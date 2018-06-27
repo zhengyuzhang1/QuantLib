@@ -26,24 +26,25 @@
 #include <ql/quotes/simplequote.hpp>
 #include <ql/indexes/swapindex.hpp>
 #include <ql/instruments/swap.hpp>
+#include <utility>
 
 using std::vector;
 
 namespace QuantLib {
 
     CmsMarket::CmsMarket(
-        const vector<Period>& swapLengths,
-        const vector<ext::shared_ptr<SwapIndex> >& swapIndexes,
-        const ext::shared_ptr<IborIndex>& iborIndex,
+        vector<Period>  swapLengths,
+        vector<ext::shared_ptr<SwapIndex> >  swapIndexes,
+        ext::shared_ptr<IborIndex>  iborIndex,
         const vector<vector<Handle<Quote> > >& bidAskSpreads,
         const vector<ext::shared_ptr<CmsCouponPricer> >& pricers,
-        const Handle<YieldTermStructure>& discountingTS)
-    : swapLengths_(swapLengths),
-      swapIndexes_(swapIndexes),
-      iborIndex_(iborIndex),
+        Handle<YieldTermStructure>  discountingTS)
+    : swapLengths_(std::move(swapLengths)),
+      swapIndexes_(std::move(swapIndexes)),
+      iborIndex_(std::move(iborIndex)),
       bidAskSpreads_(bidAskSpreads),
       pricers_(pricers),
-      discTS_(discountingTS),
+      discTS_(std::move(discountingTS)),
 
       nExercise_(swapLengths_.size()),
       nSwapIndexes_(swapIndexes_.size()),

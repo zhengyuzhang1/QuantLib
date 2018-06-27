@@ -36,14 +36,14 @@ namespace QuantLib {
                         const Period& tenor, // swap maturity
                         Frequency fixedLegPaymentFrequency,
                         const Handle<Quote>& fixedRate,
-                        const ext::shared_ptr<OvernightIndex>& overnightIndex,
+                        ext::shared_ptr<OvernightIndex>  overnightIndex,
                         Frequency overnightLegPaymentFrequency,
-                        const Handle<Quote>& spread,
+                        Handle<Quote>  spread,
                         Real meanReversionSpeed = 0.03,
                         Real volatility = 0.00, // NO convexity adjustment by default
                         bool byApprox = false, // TRUE to use Katsumi Takada approximation
                         // exogenous discounting curve
-                        const Handle<YieldTermStructure>& discountingCurve
+                        Handle<YieldTermStructure>  discountingCurve
                                               = Handle<YieldTermStructure>());
         //! \name RateHelper interface
         //@{

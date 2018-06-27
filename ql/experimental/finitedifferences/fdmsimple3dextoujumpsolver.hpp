@@ -33,6 +33,7 @@
 #include <ql/methods/finitedifferences/solvers/fdm3dimsolver.hpp>
 #include <ql/experimental/finitedifferences/fdmextoujumpop.hpp>
 #include <ql/methods/finitedifferences/solvers/fdmbackwardsolver.hpp>
+#include <utility>
 
 namespace QuantLib {
 
@@ -40,11 +41,11 @@ namespace QuantLib {
       public:
         FdmSimple3dExtOUJumpSolver(
             const Handle<ExtOUWithJumpsProcess>& process,
-            const ext::shared_ptr<YieldTermStructure>& rTS,
-            const FdmSolverDesc& solverDesc,
+            ext::shared_ptr<YieldTermStructure>  rTS,
+            FdmSolverDesc  solverDesc,
             const FdmSchemeDesc& schemeDesc  = FdmSchemeDesc::Hundsdorfer())
-        : process_(process), rTS_(rTS),
-          solverDesc_(solverDesc), schemeDesc_(schemeDesc) {
+        : process_(process), rTS_(std::move(rTS)),
+          solverDesc_(std::move(solverDesc)), schemeDesc_(schemeDesc) {
             registerWith(process);
         }
 

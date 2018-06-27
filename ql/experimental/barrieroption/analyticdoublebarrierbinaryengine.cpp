@@ -19,6 +19,7 @@
 
 #include <ql/experimental/barrieroption/analyticdoublebarrierbinaryengine.hpp>
 #include <ql/exercise.hpp>
+#include <utility>
 
 using std::fabs;
 
@@ -171,8 +172,8 @@ namespace QuantLib {
     }
 
     AnalyticDoubleBarrierBinaryEngine::AnalyticDoubleBarrierBinaryEngine(
-              const ext::shared_ptr<GeneralizedBlackScholesProcess>& process)
-    : process_(process) {
+              ext::shared_ptr<GeneralizedBlackScholesProcess>  process)
+    : process_(std::move(process)) {
         registerWith(process_);
     }
 

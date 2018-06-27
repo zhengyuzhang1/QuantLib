@@ -64,7 +64,7 @@ namespace QuantLib {
             included in the passed cash flows.
         */
         Bond(Natural settlementDays,
-             const Calendar& calendar,
+             Calendar  calendar,
              const Date& issueDate = Date(),
              const Leg& coupons = Leg());
 
@@ -74,7 +74,7 @@ namespace QuantLib {
                      later than the redemption date.
         */
         Bond(Natural settlementDays,
-             const Calendar& calendar,
+             Calendar  calendar,
              Real faceAmount,
              const Date& maturityDate,
              const Date& issueDate = Date(),

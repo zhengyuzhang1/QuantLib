@@ -25,6 +25,7 @@
 #include <ql/cashflows/couponpricer.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/utilities/vectors.hpp>
+#include <utility>
 #include <ql/termstructures/yieldtermstructure.hpp>
 
 using std::vector;
@@ -214,8 +215,8 @@ namespace QuantLib {
     }
 
     OvernightLeg::OvernightLeg(const Schedule& schedule,
-                               const ext::shared_ptr<OvernightIndex>& i)
-    : schedule_(schedule), overnightIndex_(i), paymentCalendar_(schedule.calendar()),
+                               ext::shared_ptr<OvernightIndex>  i)
+    : schedule_(schedule), overnightIndex_(std::move(i)), paymentCalendar_(schedule.calendar()),
       paymentAdjustment_(Following), paymentLag_(0), telescopicValueDates_(false) {}
 
     OvernightLeg& OvernightLeg::withNotionals(Real notional) {

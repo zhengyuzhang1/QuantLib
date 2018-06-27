@@ -58,11 +58,11 @@ namespace QuantLib {
         class arguments;
         class engine;
         CapFloor(Type type,
-                 const Leg& floatingLeg,
-                 const std::vector<Rate>& capRates,
-                 const std::vector<Rate>& floorRates);
+                 Leg  floatingLeg,
+                 std::vector<Rate>  capRates,
+                 std::vector<Rate>  floorRates);
         CapFloor(Type type,
-                 const Leg& floatingLeg,
+                 Leg  floatingLeg,
                  const std::vector<Rate>& strikes);
         //! \name Observable interface
         //@{
