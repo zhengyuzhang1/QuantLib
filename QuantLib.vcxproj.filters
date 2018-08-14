@@ -600,7 +600,19 @@
     <ClInclude Include="ql\indexes\ibor\all.hpp">
       <Filter>indexes\ibor</Filter>
     </ClInclude>
+    <ClInclude Include="ql\indexes\ibor\aonia.hpp">
+      <Filter>indexes\ibor</Filter>
+    </ClInclude>
     <ClInclude Include="ql\indexes\ibor\audlibor.hpp">
+      <Filter>indexes\ibor</Filter>
+    </ClInclude>
+    <ClInclude Include="ql\indexes\ibor\bbsw.hpp">
+      <Filter>indexes\ibor</Filter>
+    </ClInclude>
+    <ClInclude Include="ql\indexes\ibor\bibor.hpp">
+      <Filter>indexes\ibor</Filter>
+    </ClInclude>
+    <ClInclude Include="ql\indexes\ibor\bkbm.hpp">
       <Filter>indexes\ibor</Filter>
     </ClInclude>
     <ClInclude Include="ql\indexes\ibor\cadlibor.hpp">
@@ -639,7 +651,19 @@
     <ClInclude Include="ql\indexes\ibor\libor.hpp">
       <Filter>indexes\ibor</Filter>
     </ClInclude>
+    <ClInclude Include="ql\indexes\ibor\mosprime.hpp">
+      <Filter>indexes\ibor</Filter>
+    </ClInclude>
     <ClInclude Include="ql\indexes\ibor\nzdlibor.hpp">
+      <Filter>indexes\ibor</Filter>
+    </ClInclude>
+    <ClInclude Include="ql\indexes\ibor\nzocr.hpp">
+      <Filter>indexes\ibor</Filter>
+    </ClInclude>
+    <ClInclude Include="ql\indexes\ibor\pribor.hpp">
+      <Filter>indexes\ibor</Filter>
+    </ClInclude>
+    <ClInclude Include="ql\indexes\ibor\robor.hpp">
       <Filter>indexes\ibor</Filter>
     </ClInclude>
     <ClInclude Include="ql\indexes\ibor\seklibor.hpp">
@@ -651,6 +675,9 @@
     <ClInclude Include="ql\indexes\ibor\sonia.hpp">
       <Filter>indexes\ibor</Filter>
     </ClInclude>
+    <ClInclude Include="ql\indexes\ibor\thbfix.hpp">
+      <Filter>indexes\ibor</Filter>
+    </ClInclude>
     <ClInclude Include="ql\indexes\ibor\tibor.hpp">
       <Filter>indexes\ibor</Filter>
     </ClInclude>
@@ -658,6 +685,9 @@
       <Filter>indexes\ibor</Filter>
     </ClInclude>
     <ClInclude Include="ql\indexes\ibor\usdlibor.hpp">
+      <Filter>indexes\ibor</Filter>
+    </ClInclude>
+    <ClInclude Include="ql\indexes\ibor\wibor.hpp">
       <Filter>indexes\ibor</Filter>
     </ClInclude>
     <ClInclude Include="ql\indexes\ibor\zibor.hpp">
@@ -2745,6 +2775,9 @@
     <ClInclude Include="ql\time\calendars\target.hpp">
       <Filter>time\calendars</Filter>
     </ClInclude>
+    <ClInclude Include="ql\time\calendars\thailand.hpp">
+      <Filter>time\calendars</Filter>
+    </ClInclude>
     <ClInclude Include="ql\time\calendars\turkey.hpp">
       <Filter>time\calendars</Filter>
     </ClInclude>
@@ -3789,17 +3822,8 @@
     <ClInclude Include="ql\methods\finitedifferences\meshers\concentrating1dmesher.hpp">
       <Filter>methods\finitedifferences\meshers</Filter>
     </ClInclude>
-    <ClInclude Include="ql\methods\finitedifferences\schemes\craigsneydscheme.hpp">
-      <Filter>methods\finitedifferences\schemes</Filter>
-    </ClInclude>
     <ClInclude Include="ql\instruments\dividendbarrieroption.hpp">
       <Filter>instruments</Filter>
-    </ClInclude>
-    <ClInclude Include="ql\methods\finitedifferences\schemes\douglasscheme.hpp">
-      <Filter>methods\finitedifferences\schemes</Filter>
-    </ClInclude>
-    <ClInclude Include="ql\methods\finitedifferences\schemes\expliciteulerscheme.hpp">
-      <Filter>methods\finitedifferences\schemes</Filter>
     </ClInclude>
     <ClInclude Include="ql\methods\finitedifferences\meshers\exponentialjump1dmesher.hpp">
       <Filter>methods\finitedifferences\meshers</Filter>
@@ -3984,13 +4008,31 @@
     <ClInclude Include="ql\methods\finitedifferences\schemes\all.hpp">
       <Filter>methods\finitedifferences\schemes</Filter>
     </ClInclude>
+    <ClInclude Include="ql\methods\finitedifferences\schemes\boundaryconditionschemehelper.hpp">
+      <Filter>methods\finitedifferences\schemes</Filter>
+    </ClInclude>
+    <ClInclude Include="ql\methods\finitedifferences\schemes\craigsneydscheme.hpp">
+      <Filter>methods\finitedifferences\schemes</Filter>
+    </ClInclude>
+    <ClInclude Include="ql\methods\finitedifferences\schemes\douglasscheme.hpp">
+      <Filter>methods\finitedifferences\schemes</Filter>
+    </ClInclude>
+    <ClInclude Include="ql\methods\finitedifferences\schemes\expliciteulerscheme.hpp">
+      <Filter>methods\finitedifferences\schemes</Filter>
+    </ClInclude>
     <ClInclude Include="ql\methods\finitedifferences\schemes\hundsdorferscheme.hpp">
       <Filter>methods\finitedifferences\schemes</Filter>
     </ClInclude>
     <ClInclude Include="ql\methods\finitedifferences\schemes\impliciteulerscheme.hpp">
       <Filter>methods\finitedifferences\schemes</Filter>
     </ClInclude>
+    <ClInclude Include="ql\methods\finitedifferences\schemes\methodoflinesscheme.hpp">
+      <Filter>methods\finitedifferences\schemes</Filter>
+    </ClInclude>
     <ClInclude Include="ql\methods\finitedifferences\schemes\modifiedcraigsneydscheme.hpp">
+      <Filter>methods\finitedifferences\schemes</Filter>
+    </ClInclude>
+    <ClInclude Include="ql\methods\finitedifferences\schemes\trbdf2scheme.hpp">
       <Filter>methods\finitedifferences\schemes</Filter>
     </ClInclude>
     <ClInclude Include="ql\experimental\finitedifferences\fdmspreadpayoffinnervalue.hpp">
@@ -4070,9 +4112,6 @@
     </ClInclude>
     <ClInclude Include="ql\math\richardsonextrapolation.hpp">
       <Filter>math</Filter>
-    </ClInclude>
-    <ClInclude Include="ql\methods\finitedifferences\schemes\boundaryconditionschemehelper.hpp">
-      <Filter>methods\finitedifferences\schemes</Filter>
     </ClInclude>
     <ClInclude Include="ql\methods\finitedifferences\utilities\fdmtimedepdirichletboundary.hpp">
       <Filter>methods\finitedifferences\utilities</Filter>
@@ -4176,18 +4215,6 @@
     <ClInclude Include="ql\methods\finitedifferences\operators\fdmornsteinuhlenbeckop.hpp">
       <Filter>methods\finitedifferences\operators</Filter>
     </ClInclude>
-    <ClInclude Include="ql\indexes\ibor\aonia.hpp">
-      <Filter>indexes\ibor</Filter>
-    </ClInclude>
-    <ClInclude Include="ql\indexes\ibor\bbsw.hpp">
-      <Filter>indexes\ibor</Filter>
-    </ClInclude>
-    <ClInclude Include="ql\indexes\ibor\bkbm.hpp">
-      <Filter>indexes\ibor</Filter>
-    </ClInclude>
-    <ClInclude Include="ql\indexes\ibor\nzocr.hpp">
-      <Filter>indexes\ibor</Filter>
-    </ClInclude>
     <ClInclude Include="ql\math\matrixutilities\gmres.hpp">
       <Filter>math\matrixutilities</Filter>
     </ClInclude>
@@ -4202,21 +4229,6 @@
     </ClInclude>
     <ClInclude Include="ql\experimental\math\gaussiannoncentralchisquaredpolynomial.hpp">
       <Filter>experimental\math</Filter>
-    </ClInclude>
-    <ClInclude Include="ql\methods\finitedifferences\schemes\methodoflinesscheme.hpp">
-      <Filter>methods\finitedifferences\schemes</Filter>
-    </ClInclude>
-    <ClInclude Include="ql\indexes\ibor\pribor.hpp">
-      <Filter>indexes\ibor</Filter>
-    </ClInclude>
-    <ClInclude Include="ql\indexes\ibor\mosprime.hpp">
-      <Filter>indexes\ibor</Filter>
-    </ClInclude>
-    <ClInclude Include="ql\indexes\ibor\robor.hpp">
-      <Filter>indexes\ibor</Filter>
-    </ClInclude>
-    <ClInclude Include="ql\indexes\ibor\wibor.hpp">
-      <Filter>indexes\ibor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -4345,6 +4357,9 @@
     </ClCompile>
     <ClCompile Include="ql\indexes\swapindex.cpp">
       <Filter>indexes</Filter>
+    </ClCompile>
+    <ClCompile Include="ql\indexes\ibor\bibor.cpp">
+      <Filter>indexes\ibor</Filter>
     </ClCompile>
     <ClCompile Include="ql\indexes\ibor\eonia.cpp">
       <Filter>indexes\ibor</Filter>
@@ -5741,6 +5756,9 @@
     <ClCompile Include="ql\time\calendars\target.cpp">
       <Filter>time\calendars</Filter>
     </ClCompile>
+    <ClCompile Include="ql\time\calendars\thailand.cpp">
+      <Filter>time\calendars</Filter>
+    </ClCompile>
     <ClCompile Include="ql\time\calendars\turkey.cpp">
       <Filter>time\calendars</Filter>
     </ClCompile>
@@ -6463,17 +6481,8 @@
     <ClCompile Include="ql\methods\finitedifferences\meshers\concentrating1dmesher.cpp">
       <Filter>methods\finitedifferences\meshers</Filter>
     </ClCompile>
-    <ClCompile Include="ql\methods\finitedifferences\schemes\craigsneydscheme.cpp">
-      <Filter>methods\finitedifferences\schemes</Filter>
-    </ClCompile>
     <ClCompile Include="ql\instruments\dividendbarrieroption.cpp">
       <Filter>instruments</Filter>
-    </ClCompile>
-    <ClCompile Include="ql\methods\finitedifferences\schemes\douglasscheme.cpp">
-      <Filter>methods\finitedifferences\schemes</Filter>
-    </ClCompile>
-    <ClCompile Include="ql\methods\finitedifferences\schemes\expliciteulerscheme.cpp">
-      <Filter>methods\finitedifferences\schemes</Filter>
     </ClCompile>
     <ClCompile Include="ql\methods\finitedifferences\meshers\exponentialjump1dmesher.cpp">
       <Filter>methods\finitedifferences\meshers</Filter>
@@ -6616,10 +6625,22 @@
     <ClCompile Include="ql\methods\finitedifferences\meshers\uniformgridmesher.cpp">
       <Filter>methods\finitedifferences\meshers</Filter>
     </ClCompile>
+    <ClCompile Include="ql\methods\finitedifferences\schemes\craigsneydscheme.cpp">
+      <Filter>methods\finitedifferences\schemes</Filter>
+    </ClCompile>
+    <ClCompile Include="ql\methods\finitedifferences\schemes\douglasscheme.cpp">
+      <Filter>methods\finitedifferences\schemes</Filter>
+    </ClCompile>
+    <ClCompile Include="ql\methods\finitedifferences\schemes\expliciteulerscheme.cpp">
+      <Filter>methods\finitedifferences\schemes</Filter>
+    </ClCompile>
     <ClCompile Include="ql\methods\finitedifferences\schemes\hundsdorferscheme.cpp">
       <Filter>methods\finitedifferences\schemes</Filter>
     </ClCompile>
     <ClCompile Include="ql\methods\finitedifferences\schemes\impliciteulerscheme.cpp">
+      <Filter>methods\finitedifferences\schemes</Filter>
+    </ClCompile>
+    <ClCompile Include="ql\methods\finitedifferences\schemes\methodoflinesscheme.cpp">
       <Filter>methods\finitedifferences\schemes</Filter>
     </ClCompile>
     <ClCompile Include="ql\methods\finitedifferences\schemes\modifiedcraigsneydscheme.cpp">
@@ -6792,9 +6813,6 @@
     </ClCompile>
     <ClCompile Include="ql\time\daycounters\actual365fixed.cpp">
       <Filter>time\daycounters</Filter>
-    </ClCompile>
-    <ClCompile Include="ql\methods\finitedifferences\schemes\methodoflinesscheme.cpp">
-      <Filter>methods\finitedifferences\schemes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

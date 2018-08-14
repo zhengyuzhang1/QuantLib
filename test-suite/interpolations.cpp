@@ -1432,7 +1432,11 @@ void InterpolationTest::testKernelInterpolation() {
 
             std::vector<Real> currY = yd[j];
             KernelInterpolation f(deltaGrid.begin(), deltaGrid.end(),
-                                  currY.begin(), myKernel);
+                                  currY.begin(), myKernel
+#ifdef __FAST_MATH__
+                                  ,1e-6
+#endif
+                                  );
             f.update();
 
             for (Size dIt=0; dIt< deltaGrid.size(); ++dIt) {
@@ -1755,7 +1759,11 @@ void InterpolationTest::testNoArbSabrInterpolation(){
     BOOST_TEST_MESSAGE("Testing no-arbitrage Sabr interpolation...");
 
     // Test SABR function against input volatilities
+#ifndef __FAST_MATH__
     Real tolerance = 1.0e-12;
+#else
+    Real tolerance = 1.0e-8;
+#endif
     std::vector<Real> strikes(31);
     std::vector<Real> volatilities(31), volatilities2(31);
     // input strikes

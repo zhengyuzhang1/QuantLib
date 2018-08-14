@@ -28,8 +28,11 @@
 #include <utility>
 
 namespace QuantLib {
-
     
+    /*! \ingroup interpolations
+        \warning See the Interpolation class for information about the
+                 required lifetime of the underlying data.
+    */
     class FlatExtrapolator2D : public Interpolation2D {
       public:
         FlatExtrapolator2D(ext::shared_ptr<Interpolation2D> decoratedInterpolation) {
