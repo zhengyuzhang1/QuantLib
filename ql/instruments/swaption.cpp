@@ -6,7 +6,7 @@
  Copyright (C) 2006 Marco Bianchetti
  Copyright (C) 2007 StatPro Italia srl
  Copyright (C) 2014 Ferdinando Ametrano
- Copyright (C) 2016 Peter Caspers
+ Copyright (C) 2016, 2018 Peter Caspers
 
  This file is part of QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -115,11 +115,27 @@ namespace QuantLib {
         }
     }
 
-    Swaption::Swaption(ext::shared_ptr<VanillaSwap>  swap,
+    std::ostream& operator<<(std::ostream& out, Settlement::Method m) {
+        switch (m) {
+        case Settlement::PhysicalOTC:
+            return out << "PhysicalOTC";
+        case Settlement::PhysicalCleared:
+            return out << "PhysicalCleared";
+        case Settlement::CollateralizedCashPrice:
+            return out << "CollateralizedCashPrice";
+        case Settlement::ParYieldCurve:
+            return out << "ParYieldCurve";
+        default:
+            QL_FAIL("unknown Settlement::Method(" << Integer(m) << ")");
+        }
+    }
+
+    Swaption::Swaption(ext::shared_ptr<VanillaSwap> swap,
                        const ext::shared_ptr<Exercise>& exercise,
-                       Settlement::Type delivery)
+                       Settlement::Type delivery,
+                       Settlement::Method settlementMethod)
     : Option(ext::shared_ptr<Payoff>(), exercise), swap_(std::move(swap)),
-      settlementType_(delivery) {
+      settlementType_(delivery), settlementMethod_(settlementMethod) {
         registerWith(swap_);
         registerWithObservables(swap_);
     }
@@ -139,6 +155,7 @@ namespace QuantLib {
 
         arguments->swap = swap_;
         arguments->settlementType = settlementType_;
+        arguments->settlementMethod = settlementMethod_;
         arguments->exercise = exercise_;
     }
 
@@ -146,6 +163,8 @@ namespace QuantLib {
         VanillaSwap::arguments::validate();
         QL_REQUIRE(swap, "vanilla swap not set");
         QL_REQUIRE(exercise, "exercise not set");
+        Settlement::checkTypeAndMethodConsistency(settlementType,
+                                                  settlementMethod);
     }
 
     Volatility Swaption::impliedVolatility(Real targetValue,
@@ -165,6 +184,21 @@ namespace QuantLib {
         NewtonSafe solver;
         solver.setMaxEvaluations(maxEvaluations);
         return solver.solve(f, accuracy, guess, minVol, maxVol);
+    }
+
+    void Settlement::checkTypeAndMethodConsistency(
+                                        Settlement::Type settlementType,
+                                        Settlement::Method settlementMethod) {
+        if (settlementType == Physical) {
+            QL_REQUIRE(settlementMethod == PhysicalOTC ||
+                       settlementMethod == PhysicalCleared,
+                       "invalid settlement method for physical settlement");
+        }
+        if (settlementType == Cash) {
+            QL_REQUIRE(settlementMethod == CollateralizedCashPrice ||
+                       settlementMethod == ParYieldCurve,
+                       "invalid settlement method for cash settlement");
+        }
     }
 
 }

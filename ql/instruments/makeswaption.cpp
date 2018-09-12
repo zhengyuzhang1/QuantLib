@@ -34,6 +34,7 @@ namespace QuantLib {
                                Rate strike)
     : swapIndex_(std::move(swapIndex)),
       delivery_(Settlement::Physical),
+      settlementMethod_(Settlement::PhysicalOTC),
       optionTenor_(optionTenor),
       optionConvention_(ModifiedFollowing),
       fixingDate_(Null<Date>()),
@@ -46,6 +47,7 @@ namespace QuantLib {
                                Rate strike)
     : swapIndex_(std::move(swapIndex)),
       delivery_(Settlement::Physical),
+      settlementMethod_(Settlement::PhysicalOTC),
       optionConvention_(ModifiedFollowing),
       fixingDate_(fixingDate),
       strike_(strike),
@@ -107,14 +109,20 @@ namespace QuantLib {
             .withType(underlyingType_)
             .withNominal(nominal_);
 
-        ext::shared_ptr<Swaption> swaption(new
-            Swaption(underlyingSwap_, exercise_, delivery_));
+        ext::shared_ptr<Swaption> swaption(new Swaption(
+            underlyingSwap_, exercise_, delivery_, settlementMethod_));
         swaption->setPricingEngine(engine_);
         return swaption;
     }
 
     MakeSwaption& MakeSwaption::withSettlementType(Settlement::Type delivery) {
         delivery_ = delivery;
+        return *this;
+    }
+
+    MakeSwaption& MakeSwaption::withSettlementMethod(
+        Settlement::Method settlementMethod) {
+        settlementMethod_ = settlementMethod;
         return *this;
     }
 
