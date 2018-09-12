@@ -40,10 +40,10 @@ namespace QuantLib {
                               DayCounter  fixedLegDayCounter,
                               DayCounter  floatingLegDayCounter,
                               const Handle<YieldTermStructure>& termStructure,
-                              CalibrationHelper::CalibrationErrorType errorType,
+                              BlackCalibrationHelper::CalibrationErrorType errorType,
                               const Real strike, const Real nominal,
                               const VolatilityType type, const Real shift)
-    : CalibrationHelper(volatility,termStructure, errorType, type, shift),
+    : BlackCalibrationHelper(volatility,termStructure, errorType, type, shift),
         exerciseDate_(Null<Date>()), endDate_(Null<Date>()),
         maturity_(maturity), length_(length), fixedLegTenor_(fixedLegTenor), index_(std::move(index)),
         fixedLegDayCounter_(std::move(fixedLegDayCounter)), floatingLegDayCounter_(std::move(floatingLegDayCounter)),
@@ -61,10 +61,10 @@ namespace QuantLib {
                               DayCounter  fixedLegDayCounter,
                               DayCounter  floatingLegDayCounter,
                               const Handle<YieldTermStructure>& termStructure,
-                              CalibrationHelper::CalibrationErrorType errorType,
+                              BlackCalibrationHelper::CalibrationErrorType errorType,
                               const Real strike, const Real nominal,
                               const VolatilityType type, const Real shift)
-    : CalibrationHelper(volatility,termStructure, errorType, type, shift),
+    : BlackCalibrationHelper(volatility,termStructure, errorType, type, shift),
         exerciseDate_(exerciseDate), endDate_(Null<Date>()),
         maturity_(0*Days), length_(length), fixedLegTenor_(fixedLegTenor), index_(std::move(index)),
         fixedLegDayCounter_(std::move(fixedLegDayCounter)), floatingLegDayCounter_(std::move(floatingLegDayCounter)),
@@ -82,10 +82,10 @@ namespace QuantLib {
                               DayCounter  fixedLegDayCounter,
                               DayCounter  floatingLegDayCounter,
                               const Handle<YieldTermStructure>& termStructure,
-                              CalibrationHelper::CalibrationErrorType errorType,
+                              BlackCalibrationHelper::CalibrationErrorType errorType,
                               const Real strike, const Real nominal,
                               const VolatilityType type, const Real shift)
-    : CalibrationHelper(volatility,termStructure, errorType, type, shift),
+    : BlackCalibrationHelper(volatility,termStructure, errorType, type, shift),
         exerciseDate_(exerciseDate), endDate_(endDate),
         maturity_(0*Days), length_(0*Days), fixedLegTenor_(fixedLegTenor), index_(std::move(index)),
         fixedLegDayCounter_(std::move(fixedLegDayCounter)), floatingLegDayCounter_(std::move(floatingLegDayCounter)),
@@ -193,7 +193,7 @@ namespace QuantLib {
 
         swaption_ = ext::make_shared<Swaption>(swap_, exercise);
 
-        CalibrationHelper::performCalculations();
+        BlackCalibrationHelper::performCalculations();
 
     }
 

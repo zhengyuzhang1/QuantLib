@@ -36,8 +36,8 @@ namespace QuantLib {
                          DayCounter  fixedLegDayCounter,
                          bool includeFirstSwaplet,
                          const Handle<YieldTermStructure>& termStructure,
-                         CalibrationHelper::CalibrationErrorType errorType)
-        : CalibrationHelper(volatility,termStructure,errorType),
+                         BlackCalibrationHelper::CalibrationErrorType errorType)
+        : BlackCalibrationHelper(volatility,termStructure,errorType),
         length_(length), index_(std::move(index)), fixedLegFrequency_(fixedLegFrequency),
         fixedLegDayCounter_(std::move(fixedLegDayCounter)),
         includeFirstSwaplet_(includeFirstSwaplet)
@@ -128,7 +128,7 @@ namespace QuantLib {
         cap_ = ext::make_shared<Cap>(floatingLeg,
                                               std::vector<Rate>(1, fairRate));
 
-        CalibrationHelper::performCalculations();
+        BlackCalibrationHelper::performCalculations();
 
     }
 
