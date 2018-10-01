@@ -172,7 +172,7 @@ namespace {
     }
 
     template <class F>
-    class errorFunction : public std::unary_function<Real,Real> {
+    class errorFunction {
       public:
         errorFunction(F  f) : f_(std::move(f)) {}
         Real operator()(Real x) const {
