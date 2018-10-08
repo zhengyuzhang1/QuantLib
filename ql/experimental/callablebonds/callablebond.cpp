@@ -127,7 +127,7 @@ namespace QuantLib {
 
     class OASHelper {
     public:
-        OASHelper(const boost::function<Real(Real)>& npvhelper,
+        OASHelper(const ext::function<Real(Real)>& npvhelper,
                   Real targetValue):
             npvhelper_(npvhelper),
             targetValue_(targetValue)
@@ -139,7 +139,7 @@ namespace QuantLib {
             return targetValue_ - npvhelper_(x);
         }
     private:
-        const boost::function<Real(Real)>& npvhelper_;
+        const ext::function<Real(Real)>& npvhelper_;
         Real targetValue_;
     };
 
@@ -253,7 +253,7 @@ namespace QuantLib {
 
         Real dirtyPrice = cleanPrice + accruedAmount(settlement);
 
-        boost::function<Real(Real)> f = NPVSpreadHelper(*this);
+        ext::function<Real(Real)> f = NPVSpreadHelper(*this);
         OASHelper obj(f, dirtyPrice);
 
         Brent solver;
@@ -289,7 +289,7 @@ namespace QuantLib {
                              compounding,
                              frequency);
 
-        boost::function<Real(Real)> f = NPVSpreadHelper(*this);
+        ext::function<Real(Real)> f = NPVSpreadHelper(*this);
 
         Real P = f(oas) - accruedAmount(settlement);
 

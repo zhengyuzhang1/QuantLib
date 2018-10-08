@@ -92,7 +92,7 @@ namespace QuantLib {
                     copula_->inverseCumulativeY(invProbs[iName], iName);
 
             return copula_->integratedExpectedValue(
-                boost::function<Disposable<std::vector<Real> > (
+                ext::function<Disposable<std::vector<Real> > (
                   const std::vector<Real>& v1)>(
                     boost::bind(
                         &BinomialLossModel<LLM>::lossProbability,
@@ -291,7 +291,7 @@ namespace QuantLib {
         std::vector<Real> notionals = basket_->remainingNotionals(d);
 
         Real aveLossFrct = copula_->integratedExpectedValue(
-            boost::function<Real (const std::vector<Real>& v1)>(
+            ext::function<Real (const std::vector<Real>& v1)>(
                 boost::bind(
                     &BinomialLossModel<LLM>::averageLoss,
                     this,
@@ -342,7 +342,7 @@ namespace QuantLib {
                 copula_->inverseCumulativeY(invProbs[iName], iName);
             
         return copula_->integratedExpectedValue(
-            boost::function<Real (const std::vector<Real>& v1)>(
+            ext::function<Real (const std::vector<Real>& v1)>(
                 boost::bind(&BinomialLossModel<LLM>::condTrancheLoss,
                             this,
                             boost::cref(d), 

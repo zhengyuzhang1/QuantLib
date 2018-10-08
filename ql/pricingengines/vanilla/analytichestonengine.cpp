@@ -47,9 +47,9 @@ namespace QuantLib {
         class integrand1 {
           private:
             const Real c_inf_;
-            const boost::function<Real(Real)> f_;
+            const ext::function<Real(Real)> f_;
           public:
-            integrand1(Real c_inf, boost::function<Real(Real)>  f)
+            integrand1(Real c_inf, ext::function<Real(Real)> f)
             : c_inf_(c_inf), f_(std::move(f)) {}
             Real operator()(Real x) const {
                 if ((1.0-x)*c_inf_ > QL_EPSILON)
@@ -62,9 +62,9 @@ namespace QuantLib {
         class integrand2 {
           private:
             const Real c_inf_;
-            const boost::function<Real(Real)> f_;
+            const ext::function<Real(Real)> f_;
           public:
-            integrand2(Real c_inf, boost::function<Real(Real)>  f)
+            integrand2(Real c_inf, ext::function<Real(Real)> f)
             : c_inf_(c_inf), f_(std::move(f)) {}
             Real operator()(Real x) const {
                 if (x*c_inf_ > QL_EPSILON) {
@@ -79,7 +79,7 @@ namespace QuantLib {
           private:
             const integrand2 int_;
           public:
-            integrand3(Real c_inf, const boost::function<Real(Real)>& f)
+            integrand3(Real c_inf, const ext::function<Real(Real)>& f)
             : int_(c_inf, f) {}
 
             Real operator()(Real x) const { return int_(1.0-x); }
@@ -734,7 +734,7 @@ namespace QuantLib {
 
     Real AnalyticHestonEngine::Integration::calculate(
                                Real c_inf,
-                               const boost::function1<Real, Real>& f,
+                               const ext::function<Real(Real)>& f,
                                Real maxBound) const {
         Real retVal;
 

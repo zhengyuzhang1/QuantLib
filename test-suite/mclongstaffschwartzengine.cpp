@@ -56,7 +56,7 @@ namespace {
             return (*payoff_)(*std::max_element(tmp.begin(), tmp.end()));
         }
 
-        std::vector<boost::function1<Real, StateType> > basisSystem() const override {
+        std::vector<ext::function<Real(StateType)> > basisSystem() const override {
             return LsmBasisSystem::multiPathBasisSystem(2, 2,
                                                         LsmBasisSystem::Monomial);
         }

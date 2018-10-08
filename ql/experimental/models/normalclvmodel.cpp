@@ -96,7 +96,7 @@ namespace QuantLib {
     }
 
 
-    boost::function<Real(Time, Real)> NormalCLVModel::g() const {
+    ext::function<Real(Time, Real)> NormalCLVModel::g() const {
         calculate();
         return g_;
     }
@@ -137,6 +137,6 @@ namespace QuantLib {
     }
 
     void NormalCLVModel::performCalculations() const {
-        g_ = boost::function<Real(Time, Real)>(MappingFunction(*this));
+        g_ = ext::function<Real(Time, Real)>(MappingFunction(*this));
     }
 }
