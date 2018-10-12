@@ -83,7 +83,7 @@ namespace QuantLib {
                                        PricingEngine::arguments* args) const {
         OneAssetOption::setupArguments(args);
 
-        DividendVanillaOption::arguments* arguments =
+        auto* arguments =
             dynamic_cast<DividendVanillaOption::arguments*>(args);
         QL_REQUIRE(arguments != 0, "wrong engine type");
 

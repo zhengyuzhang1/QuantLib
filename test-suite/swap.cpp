@@ -175,7 +175,7 @@ void SwapTest::testRateDependency() {
                 swap_values.push_back(swap->NPV());
             }
             // and check that they go the right way
-            std::vector<Real>::iterator it =
+            auto it =
                 std::adjacent_find(swap_values.begin(),swap_values.end(),
                                    std::less<Real>());
             if (it != swap_values.end()) {
@@ -212,7 +212,7 @@ void SwapTest::testSpreadDependency() {
                 swap_values.push_back(swap->NPV());
             }
             // and check that they go the right way
-            std::vector<Real>::iterator it =
+            auto it =
                 std::adjacent_find(swap_values.begin(),swap_values.end(),
                                    std::greater<Real>());
             if (it != swap_values.end()) {

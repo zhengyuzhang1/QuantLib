@@ -47,7 +47,7 @@ void TimeSeriesTest::testConstruction() {
     ts[Date(29, March, 2005)] = 2.3;
     ts[Date(15, March, 2005)] = 0.3;
 
-    TimeSeries<Real>::const_iterator cur = ts.begin();
+    auto cur = ts.begin();
     if (cur->first != Date(15, March, 2005)) {
         BOOST_ERROR("date does not match");
     }

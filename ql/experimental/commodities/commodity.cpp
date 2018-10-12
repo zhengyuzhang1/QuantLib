@@ -48,7 +48,7 @@ namespace QuantLib {
         Real totalAmount = 0;
 
         out << "secondary costs" << std::endl;
-        for (SecondaryCostAmounts::const_iterator i = secondaryCostAmounts.begin();
+        for (auto i = secondaryCostAmounts.begin();
              i != secondaryCostAmounts.end(); ++i) {
             Real amount = i->second.value();
             if (currencyCode == "")
@@ -91,7 +91,7 @@ namespace QuantLib {
     std::ostream& operator<<(std::ostream& out, const PricingErrors& errors) {
         if (errors.size() > 0) {
             out << "*** pricing errors" << std::endl;
-            for (PricingErrors::const_iterator i = errors.begin();
+            for (auto i = errors.begin();
                  i != errors.end(); ++i)
                 out << *i << std::endl;
         }

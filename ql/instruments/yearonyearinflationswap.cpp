@@ -86,7 +86,7 @@ namespace QuantLib {
 
         Swap::setupArguments(args);
 
-        YearOnYearInflationSwap::arguments* arguments =
+        auto* arguments =
         dynamic_cast<YearOnYearInflationSwap::arguments*>(args);
 
         if (!arguments)  // it's a swap engine...
@@ -180,7 +180,7 @@ namespace QuantLib {
 
         Swap::fetchResults(r);
 
-        const YearOnYearInflationSwap::results* results =
+        const auto* results =
         dynamic_cast<const YearOnYearInflationSwap::results*>(r);
         if (results) { // might be a swap engine, so no error is thrown
             fairRate_ = results->fairRate;

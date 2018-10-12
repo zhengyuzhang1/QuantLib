@@ -40,7 +40,7 @@ namespace QuantLib {
     : conditions_(std::move(conditions)) {
 
         std::set<Real> allStoppingTimes;
-        for (std::list<std::vector<Time> >::const_iterator
+        for (auto
              iter = stoppingTimes.begin(); iter != stoppingTimes.end();
              ++iter) {
             allStoppingTimes.insert(iter->begin(), iter->end());
@@ -59,7 +59,7 @@ namespace QuantLib {
     }
 
     void FdmStepConditionComposite::applyTo(Array& a, Time t) const {
-        for (Conditions::const_iterator iter = conditions_.begin();
+        for (auto iter = conditions_.begin();
              iter != conditions_.end(); ++iter) {
             (*iter)->applyTo(a, t);
         }

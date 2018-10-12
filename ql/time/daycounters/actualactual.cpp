@@ -64,7 +64,7 @@ namespace QuantLib {
                    << ", reference period end: " << refPeriodEnd);
 
         // estimate roughly the length in months of a period
-        Integer months =
+        auto months =
             Integer(0.5+12*Real(refPeriodEnd-refPeriodStart)/365);
 
         // for short periods...

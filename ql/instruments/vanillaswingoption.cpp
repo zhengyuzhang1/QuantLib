@@ -113,7 +113,7 @@ namespace QuantLib {
     }
 
     void VanillaForwardPayoff::accept(AcyclicVisitor& v) {
-        Visitor<VanillaForwardPayoff>* v1 =
+        auto* v1 =
             dynamic_cast<Visitor<VanillaForwardPayoff>*>(&v);
         if (v1 != 0)
             v1->visit(*this);
@@ -135,7 +135,7 @@ namespace QuantLib {
 
     void VanillaSwingOption::setupArguments(
                             PricingEngine::arguments* args) const {
-        VanillaSwingOption::arguments* arguments =
+        auto* arguments =
             dynamic_cast<VanillaSwingOption::arguments*>(args);
         QL_REQUIRE(arguments != 0, "wrong argument type");
 

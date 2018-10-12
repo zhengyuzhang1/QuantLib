@@ -116,7 +116,7 @@ namespace QuantLib {
 
         ext::shared_ptr<Engine> originalEngine(new Engine(quantoProcess));
         originalEngine->reset();
-        typename Instr::arguments* originalArguments =
+        auto* originalArguments =
             dynamic_cast<typename Instr::arguments*>(
                                               originalEngine->getArguments());
         QL_REQUIRE(originalArguments, "wrong engine type");
@@ -126,7 +126,7 @@ namespace QuantLib {
         originalArguments->validate();
         originalEngine->calculate();
 
-        const typename Instr::results* originalResults =
+        const auto* originalResults =
             dynamic_cast<const typename Instr::results*>(
                                                 originalEngine->getResults());
         QL_REQUIRE(originalResults, "wrong engine type");

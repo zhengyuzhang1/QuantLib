@@ -42,7 +42,7 @@ namespace QuantLib {
 
         swap_->setupArguments(args);
 
-        FloatFloatSwaption::arguments *arguments =
+        auto *arguments =
             dynamic_cast<FloatFloatSwaption::arguments *>(args);
 
         QL_REQUIRE(arguments != 0, "wrong argument type");

@@ -122,7 +122,7 @@ namespace QuantLib {
     };
 
     inline void FixedRateCoupon::accept(AcyclicVisitor& v) {
-        Visitor<FixedRateCoupon>* v1 =
+        auto* v1 =
             dynamic_cast<Visitor<FixedRateCoupon>*>(&v);
         if (v1 != 0)
             v1->visit(*this);

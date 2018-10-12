@@ -94,7 +94,7 @@ namespace QuantLib {
     // inline definitions
 
     inline void Option::setupArguments(PricingEngine::arguments* args) const {
-        Option::arguments* arguments =
+        auto* arguments =
             dynamic_cast<Option::arguments*>(args);
         QL_REQUIRE(arguments != 0, "wrong argument type");
 

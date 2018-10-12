@@ -437,7 +437,7 @@ void DoubleBarrierOptionTest::testVannaVolgaDoubleBarrierValues() {
 
         for (Size j=0; j<=1; j++) {
 
-           DoubleBarrier::Type barrierType = static_cast<DoubleBarrier::Type>(j);
+           auto barrierType = static_cast<DoubleBarrier::Type>(j);
 
             spot->setValue(values[i].s);
             qRate->setValue(values[i].q);

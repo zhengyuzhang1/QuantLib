@@ -236,7 +236,7 @@ namespace QuantLib {
                    "engine does not provide "
                    "control variation pricing engine");
 
-        VanillaOption::arguments* controlArguments =
+        auto* controlArguments =
             dynamic_cast<VanillaOption::arguments*>(controlPE->getArguments());
         *controlArguments = this->arguments_;
         controlArguments->exercise = ext::shared_ptr<Exercise>(
@@ -244,7 +244,7 @@ namespace QuantLib {
 
         controlPE->calculate();
 
-        const VanillaOption::results* controlResults =
+        const auto* controlResults =
             dynamic_cast<const VanillaOption::results*>(
                                                      controlPE->getResults());
 

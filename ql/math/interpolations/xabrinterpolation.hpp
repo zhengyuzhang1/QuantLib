@@ -138,8 +138,8 @@ class XABRInterpolationImpl : public Interpolation::templateImpl<I1, I2>,
 
         // we must update weights if it is vegaWeighted
         if (vegaWeighted_) {
-            std::vector<Real>::const_iterator x = this->xBegin_;
-            std::vector<Real>::const_iterator y = this->yBegin_;
+            auto x = this->xBegin_;
+            auto y = this->yBegin_;
             // std::vector<Real>::iterator w = weights_.begin();
             this->weights_.clear();
             Real weightsSum = 0.0;
@@ -150,7 +150,7 @@ class XABRInterpolationImpl : public Interpolation::templateImpl<I1, I2>,
                 weightsSum += this->weights_.back();
             }
             // weight normalization
-            std::vector<Real>::iterator w = this->weights_.begin();
+            auto w = this->weights_.begin();
             for (; w != this->weights_.end(); ++w)
                 *w /= weightsSum;
         }
@@ -245,9 +245,9 @@ class XABRInterpolationImpl : public Interpolation::templateImpl<I1, I2>,
     // calculate total squared weighted difference (L2 norm)
     Real interpolationSquaredError() const {
         Real error, totalError = 0.0;
-        std::vector<Real>::const_iterator x = this->xBegin_;
-        std::vector<Real>::const_iterator y = this->yBegin_;
-        std::vector<Real>::const_iterator w = this->weights_.begin();
+        auto x = this->xBegin_;
+        auto y = this->yBegin_;
+        auto w = this->weights_.begin();
         for (; x != this->xEnd_; ++x, ++y, ++w) {
             error = (value(*x) - *y);
             totalError += error * error * (*w);
@@ -258,10 +258,10 @@ class XABRInterpolationImpl : public Interpolation::templateImpl<I1, I2>,
     // calculate weighted differences
     Disposable<Array> interpolationErrors() const {
         Array results(this->xEnd_ - this->xBegin_);
-        std::vector<Real>::const_iterator x = this->xBegin_;
+        auto x = this->xBegin_;
         Array::iterator r = results.begin();
-        std::vector<Real>::const_iterator y = this->yBegin_;
-        std::vector<Real>::const_iterator w = this->weights_.begin();
+        auto y = this->yBegin_;
+        auto w = this->weights_.begin();
         for (; x != this->xEnd_; ++x, ++r, ++w, ++y) {
             *r = (value(*x) - *y) * std::sqrt(*w);
         }

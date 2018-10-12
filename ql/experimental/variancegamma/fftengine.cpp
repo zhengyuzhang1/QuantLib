@@ -41,10 +41,10 @@ namespace QuantLib {
             ext::dynamic_pointer_cast<StrikedTypePayoff>(arguments_.payoff);
         QL_REQUIRE(payoff, "non-striked payoff given");
 
-        ResultMap::const_iterator r1 = resultMap_.find(arguments_.exercise->lastDate());
+        auto r1 = resultMap_.find(arguments_.exercise->lastDate());
         if (r1 != resultMap_.end())
         {
-            PayoffResultMap::const_iterator r2 = r1->second.find(payoff);
+            auto r2 = r1->second.find(payoff);
             if (r2 != r1->second.end())
             {
                 results_.value = r2->second;
@@ -87,7 +87,7 @@ namespace QuantLib {
         typedef std::map<Date, PayoffList> PayoffMap;
         PayoffMap payoffMap;
         
-        for (std::vector<ext::shared_ptr<Instrument> >::const_iterator optIt = optionList.begin();
+        for (auto optIt = optionList.begin();
             optIt != optionList.end(); ++optIt)
         {
             ext::shared_ptr<VanillaOption> option = ext::dynamic_pointer_cast<VanillaOption>(*optIt);
@@ -111,7 +111,7 @@ namespace QuantLib {
 
             // Calculate n large enough for maximum strike, and round up to a power of 2
             Real maxStrike = 0.0;
-            for (PayoffList::const_iterator it = payIt->second.begin();
+            for (auto it = payIt->second.begin();
                 it != payIt->second.end(); ++it)
             {
                 ext::shared_ptr<StrikedTypePayoff> payoff = *it;
@@ -167,7 +167,7 @@ namespace QuantLib {
                 strikes[i] = std::exp(k_u);
             }
 
-            for (PayoffList::const_iterator it = payIt->second.begin();
+            for (auto it = payIt->second.begin();
                 it != payIt->second.end(); ++it)
             {
                 ext::shared_ptr<StrikedTypePayoff> payoff = *it;

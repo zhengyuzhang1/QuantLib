@@ -37,7 +37,7 @@ namespace QuantLib {
     }
 
     void NullPayoff::accept(AcyclicVisitor& v) {
-        Visitor<NullPayoff>* v1 =
+        auto* v1 =
             dynamic_cast<Visitor<NullPayoff>*>(&v);
         if (v1 != 0)
             v1->visit(*this);
@@ -71,7 +71,7 @@ namespace QuantLib {
     }
 
     void FloatingTypePayoff::accept(AcyclicVisitor& v) {
-        Visitor<FloatingTypePayoff>* v1 =
+        auto* v1 =
             dynamic_cast<Visitor<FloatingTypePayoff>*>(&v);
         if (v1 != 0)
             v1->visit(*this);
@@ -91,7 +91,7 @@ namespace QuantLib {
     }
 
     void PlainVanillaPayoff::accept(AcyclicVisitor& v) {
-        Visitor<PlainVanillaPayoff>* v1 =
+        auto* v1 =
             dynamic_cast<Visitor<PlainVanillaPayoff>*>(&v);
         if (v1 != 0)
             v1->visit(*this);
@@ -111,7 +111,7 @@ namespace QuantLib {
     }
 
     void PercentageStrikePayoff::accept(AcyclicVisitor& v) {
-        Visitor<PercentageStrikePayoff>* v1 =
+        auto* v1 =
             dynamic_cast<Visitor<PercentageStrikePayoff>*>(&v);
         if (v1 != 0)
             v1->visit(*this);
@@ -131,7 +131,7 @@ namespace QuantLib {
     }
 
     void AssetOrNothingPayoff::accept(AcyclicVisitor& v) {
-        Visitor<AssetOrNothingPayoff>* v1 =
+        auto* v1 =
             dynamic_cast<Visitor<AssetOrNothingPayoff>*>(&v);
         if (v1 != 0)
             v1->visit(*this);
@@ -157,7 +157,7 @@ namespace QuantLib {
     }
 
     void CashOrNothingPayoff::accept(AcyclicVisitor& v) {
-        Visitor<CashOrNothingPayoff>* v1 =
+        auto* v1 =
             dynamic_cast<Visitor<CashOrNothingPayoff>*>(&v);
         if (v1 != 0)
             v1->visit(*this);
@@ -182,7 +182,7 @@ namespace QuantLib {
     }
 
     void GapPayoff::accept(AcyclicVisitor& v) {
-        Visitor<GapPayoff>* v1 =
+        auto* v1 =
             dynamic_cast<Visitor<GapPayoff>*>(&v);
         if (v1 != 0)
             v1->visit(*this);
@@ -195,7 +195,7 @@ namespace QuantLib {
     }
 
     void SuperFundPayoff::accept(AcyclicVisitor& v) {
-        Visitor<SuperFundPayoff>* v1 =
+        auto* v1 =
             dynamic_cast<Visitor<SuperFundPayoff>*>(&v);
         if (v1 != 0)
             v1->visit(*this);
@@ -213,7 +213,7 @@ namespace QuantLib {
     }
 
     void SuperSharePayoff::accept(AcyclicVisitor& v) {
-        Visitor<SuperSharePayoff>* v1 =
+        auto* v1 =
             dynamic_cast<Visitor<SuperSharePayoff>*>(&v);
         if (v1 != 0)
             v1->visit(*this);

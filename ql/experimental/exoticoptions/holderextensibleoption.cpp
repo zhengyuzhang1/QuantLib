@@ -37,7 +37,7 @@ namespace QuantLib {
     void HolderExtensibleOption::setupArguments(
                                        PricingEngine::arguments* args) const {
         OneAssetOption::setupArguments(args);
-        HolderExtensibleOption::arguments* moreArgs =
+        auto* moreArgs =
             dynamic_cast<HolderExtensibleOption::arguments*>(args);
         QL_REQUIRE(moreArgs != 0, "wrong argument type");
         moreArgs->premium = premium_;

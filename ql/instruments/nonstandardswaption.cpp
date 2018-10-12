@@ -55,7 +55,7 @@ namespace QuantLib {
 
         swap_->setupArguments(args);
 
-        NonstandardSwaption::arguments *arguments =
+        auto *arguments =
             dynamic_cast<NonstandardSwaption::arguments *>(args);
 
         QL_REQUIRE(arguments != 0, "argument types do not match");

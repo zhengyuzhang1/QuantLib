@@ -78,7 +78,7 @@ namespace QuantLib {
         }
 
         if (s != 0.0) {
-            OneFactorModel::ShortRateTree *sr=
+            auto *sr=
                 dynamic_cast<OneFactorModel::ShortRateTree*>(&(*lattice));
             QL_REQUIRE(sr,
                        "Spread is not supported for trees other than OneFactorModel");

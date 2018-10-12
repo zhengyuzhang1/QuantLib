@@ -89,7 +89,7 @@ namespace QuantLib {
                              sellPrice + price*maxWithDraw));
 
                 // check if intermediate grid points give a better value
-                std::vector<Real>::const_iterator yIter =
+                auto yIter =
                     std::upper_bound(y_.begin(), y_.end(), y - maxWithDraw);
 
                 while (yIter != y_.end() && *yIter < y + maxInject) {

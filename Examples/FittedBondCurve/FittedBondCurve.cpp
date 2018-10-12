@@ -653,9 +653,9 @@ int main(int, char* []) {
 
 
         double seconds = timer.elapsed();
-        Integer hours = int(seconds/3600);
+        auto hours = int(seconds/3600);
         seconds -= hours * 3600;
-        Integer minutes = int(seconds/60);
+        auto minutes = int(seconds/60);
         seconds -= minutes * 60;
         std::cout << " \nRun completed in ";
         if (hours > 0)

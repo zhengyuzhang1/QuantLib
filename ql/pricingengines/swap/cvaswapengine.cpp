@@ -128,7 +128,7 @@ namespace QuantLib {
 
     // Compute fair spread for strike value:
     // copy args into the non risky engine
-    Swap::arguments * noCVAArgs = dynamic_cast<Swap::arguments*>(
+    auto * noCVAArgs = dynamic_cast<Swap::arguments*>(
       baseSwapEngine_->getArguments());
     QL_REQUIRE(noCVAArgs != 0, "wrong argument type");
 
@@ -141,7 +141,7 @@ namespace QuantLib {
     QL_REQUIRE(coupon,"dynamic cast of fixed leg coupon failed.");
     Rate baseSwapRate = coupon->rate();
 
-    const Swap::results * vSResults =  
+    const auto * vSResults =  
         dynamic_cast<const Swap::results *>(baseSwapEngine_->getResults());
     QL_REQUIRE(vSResults != 0, "wrong result type");
 

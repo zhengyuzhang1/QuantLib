@@ -148,7 +148,7 @@ namespace QuantLib {
         } else {
             // or ensure they're sorted if given
             std::sort(breaks_.begin(), breaks_.end());
-            std::vector<Real>::iterator end =
+            auto end =
                 std::unique(breaks_.begin(),breaks_.end(),
                             static_cast<bool (*)(Real, Real)>(close_enough));
             breaks_.resize(end - breaks_.begin());

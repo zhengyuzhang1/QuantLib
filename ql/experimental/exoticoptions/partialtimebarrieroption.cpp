@@ -39,7 +39,7 @@ namespace QuantLib {
                                        PricingEngine::arguments* args) const {
         OneAssetOption::setupArguments(args);
 
-        PartialTimeBarrierOption::arguments* moreArgs =
+        auto* moreArgs =
             dynamic_cast<PartialTimeBarrierOption::arguments*>(args);
         QL_REQUIRE(moreArgs != 0, "wrong argument type");
         moreArgs->barrierType = barrierType_;

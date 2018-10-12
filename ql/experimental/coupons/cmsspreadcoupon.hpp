@@ -89,7 +89,7 @@ namespace QuantLib {
                       dayCounter, isInArrears)), cap, floor) {}
 
         void accept(AcyclicVisitor& v) override {
-            Visitor<CappedFlooredCmsSpreadCoupon>* v1 =
+            auto* v1 =
                 dynamic_cast<Visitor<CappedFlooredCmsSpreadCoupon>*>(&v);
             if (v1 != 0)
                 v1->visit(*this);

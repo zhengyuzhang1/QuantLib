@@ -301,9 +301,9 @@ int main(int, char* []) {
         #endif
 
         Real seconds  = timer.elapsed();
-        Integer hours = Integer(seconds/3600);
+        auto hours = Integer(seconds/3600);
         seconds -= hours * 3600;
-        Integer minutes = Integer(seconds/60);
+        auto minutes = Integer(seconds/60);
         seconds -= minutes * 60;
         cout << "Run completed in ";
         if (hours > 0)

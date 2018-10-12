@@ -80,7 +80,7 @@ namespace QuantLib {
 
     void StrippedCappedFlooredCoupon::accept(AcyclicVisitor &v) {
         underlying_->accept(v);
-        Visitor<StrippedCappedFlooredCoupon> *v1 =
+        auto *v1 =
             dynamic_cast<Visitor<StrippedCappedFlooredCoupon> *>(&v);
         if (v1 != NULL)
             v1->visit(*this);
@@ -114,7 +114,7 @@ namespace QuantLib {
         Leg resultLeg;
         resultLeg.reserve(underlyingLeg_.size());
         ext::shared_ptr<CappedFlooredCoupon> c;
-        for (Leg::const_iterator i = underlyingLeg_.begin();
+        for (auto i = underlyingLeg_.begin();
              i != underlyingLeg_.end(); ++i) {
             if ((c = ext::dynamic_pointer_cast<CappedFlooredCoupon>(*i)) !=
                 NULL) {

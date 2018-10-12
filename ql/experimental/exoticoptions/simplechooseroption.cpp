@@ -35,7 +35,7 @@ namespace QuantLib {
     void SimpleChooserOption::setupArguments(
                                     PricingEngine::arguments* args) const {
         OneAssetOption::setupArguments(args);
-        SimpleChooserOption::arguments* moreArgs =
+        auto* moreArgs =
             dynamic_cast<SimpleChooserOption::arguments*>(args);
         QL_REQUIRE(moreArgs != 0, "wrong argument type");
         moreArgs->choosingDate=choosingDate_;

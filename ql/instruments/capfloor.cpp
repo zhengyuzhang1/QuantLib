@@ -100,7 +100,7 @@ namespace QuantLib {
                 vol_->setValue(x);
                 engine_->calculate();
             }
-            std::map<std::string,boost::any>::const_iterator vega_ =
+            auto vega_ =
                 results_->additionalResults.find("vega");
             QL_REQUIRE(vega_ != results_->additionalResults.end(),
                        "vega not provided");
@@ -211,7 +211,7 @@ namespace QuantLib {
     }
 
     void CapFloor::setupArguments(PricingEngine::arguments* args) const {
-        CapFloor::arguments* arguments =
+        auto* arguments =
             dynamic_cast<CapFloor::arguments*>(args);
         QL_REQUIRE(arguments != 0, "wrong argument type");
 

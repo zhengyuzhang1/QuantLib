@@ -70,7 +70,7 @@ namespace QuantLib {
 
         MultiAssetOption::setupArguments(args);
 
-        VanillaVPPOption::arguments* arguments =
+        auto* arguments =
             dynamic_cast<VanillaVPPOption::arguments*>(args);
         QL_REQUIRE(arguments != 0, "wrong argument type");
 

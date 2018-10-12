@@ -33,7 +33,7 @@ namespace QuantLib {
     void ForwardVanillaOption::setupArguments(
                                        PricingEngine::arguments* args) const {
         OneAssetOption::setupArguments(args);
-        ForwardVanillaOption::arguments* arguments =
+        auto* arguments =
             dynamic_cast<ForwardVanillaOption::arguments*>(args);
         QL_REQUIRE(arguments != 0, "wrong argument type");
 
@@ -45,7 +45,7 @@ namespace QuantLib {
     void ForwardVanillaOption::fetchResults(
                                       const PricingEngine::results* r) const {
         OneAssetOption::fetchResults(r);
-        const ForwardVanillaOption::results* results =
+        const auto* results =
             dynamic_cast<const ForwardVanillaOption::results*>(r);
         QL_ENSURE(results != 0,
                   "no results returned from pricing engine");

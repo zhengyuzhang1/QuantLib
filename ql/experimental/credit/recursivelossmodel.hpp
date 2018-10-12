@@ -346,11 +346,11 @@ namespace QuantLib {
                                                 mktFactor);
             ////// iterate on all possible losses in the distribution:
             std::map<Real, Probability> pDistTemp;
-            std::map<Real, Probability>::iterator distIt =
+            auto distIt =
                 pIndepDistrib.begin();
             while(distIt != pIndepDistrib.end()) {
               ///   update prob if this name does not default
-                std::map<Real, Probability>::iterator matchIt
+                auto matchIt
                     = pDistTemp.find(distIt->first);
                 if(matchIt != pDistTemp.end()) {
                     matchIt->second += distIt->second * (1.-pDef);
@@ -397,11 +397,11 @@ namespace QuantLib {
 
             // iterate on all possible losses in the distribution:
             std::map<Real, Probability> pDistTemp;
-            std::map<Real, Probability>::iterator distIt =
+            auto distIt =
                 pIndepDistrib.begin();
             while(distIt != pIndepDistrib.end()) {
                 // update prob if this name does not default
-                std::map<Real, Probability>::iterator matchIt
+                auto matchIt
                     = pDistTemp.find(distIt->first);
                 if(matchIt != pDistTemp.end()) {
                     matchIt->second += distIt->second * (1.-pDef);
@@ -453,7 +453,7 @@ namespace QuantLib {
              unroll below to take profit of the fact that once we go over
              the tranche top the loss amount is fixed:
         */
-        std::map<Real, Probability>::iterator distIt =
+        auto distIt =
             pIndepDistrib.begin();
 
         while(distIt != pIndepDistrib.end()) {
@@ -486,7 +486,7 @@ namespace QuantLib {
              unroll below to take profit of the fact that once we go over
              the tranche top the loss amount is fixed:
         */
-        std::map<Real, Probability>::iterator distIt =
+        auto distIt =
             pIndepDistrib.begin();
 
         while(distIt != pIndepDistrib.end()) {
@@ -511,7 +511,7 @@ namespace QuantLib {
             conditionalLossDistrib(pDefDate, mktFactor);
 
         std::vector<Real> results;
-        std::map<Real, Probability>::iterator distIt = pIndepDistrib.begin();
+        auto distIt = pIndepDistrib.begin();
         while(distIt != pIndepDistrib.end()) {
             //Real loss = distIt->first * loss_unit_
             //                    ;

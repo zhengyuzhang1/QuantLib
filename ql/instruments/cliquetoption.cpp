@@ -33,7 +33,7 @@ namespace QuantLib {
     void CliquetOption::setupArguments(PricingEngine::arguments* args) const {
         OneAssetOption::setupArguments(args);
         // set accrued coupon, last fixing, caps, floors
-        CliquetOption::arguments* moreArgs =
+        auto* moreArgs =
             dynamic_cast<CliquetOption::arguments*>(args);
         QL_REQUIRE(moreArgs != 0,
                    "wrong engine type");

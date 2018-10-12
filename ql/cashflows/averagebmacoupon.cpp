@@ -116,7 +116,7 @@ namespace QuantLib {
                          refPeriodStart, refPeriodEnd, dayCounter, false)
     {
         Calendar cal = index->fixingCalendar();
-        Integer fixingDays = Integer(index->fixingDays());
+        auto fixingDays = Integer(index->fixingDays());
         fixingDays += bmaCutoffDays;
         Date fixingStart = cal.advance(startDate, -fixingDays*Days, Preceding);
         fixingSchedule_ = index->fixingSchedule(fixingStart, endDate);
@@ -149,7 +149,7 @@ namespace QuantLib {
     }
 
     void AverageBMACoupon::accept(AcyclicVisitor& v) {
-        Visitor<AverageBMACoupon>* v1 =
+        auto* v1 =
             dynamic_cast<Visitor<AverageBMACoupon>*>(&v);
         if (v1 != 0) {
             v1->visit(*this);

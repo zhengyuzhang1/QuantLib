@@ -102,7 +102,7 @@ namespace QuantLib {
     void MarkovFunctional::updateTimes1() const {
         volsteptimes_.clear();
         int j = 0;
-        for (std::vector<Date>::const_iterator i = volstepdates_.begin();
+        for (auto i = volstepdates_.begin();
              i != volstepdates_.end(); ++i, ++j) {
             volsteptimes_.push_back(termStructure()->timeFromReference(*i));
             volsteptimesArray_[j] = volsteptimes_[j];
@@ -124,7 +124,7 @@ namespace QuantLib {
         times_.push_back(0.0);
         modelOutputs_.expiries_.clear();
         modelOutputs_.tenors_.clear();
-        for (std::map<Date, CalibrationPoint>::iterator k =
+        for (auto k =
                  calibrationPoints_.begin();
              k != calibrationPoints_.end(); ++k) {
             times_.push_back(termStructure()->timeFromReference(k->first));
@@ -179,7 +179,7 @@ namespace QuantLib {
         do {
             Date numeraireKnown = numeraireDate_;
             done = true;
-            for (std::map<Date, CalibrationPoint>::reverse_iterator i =
+            for (auto i =
                      calibrationPoints_.rbegin();
                  i != calibrationPoints_.rend() && done; ++i) {
                 if (i->second.paymentDates_.back() > numeraireDate_) {
@@ -313,7 +313,7 @@ namespace QuantLib {
 
         Size pointIndex = 0;
 
-        for (std::map<Date, CalibrationPoint>::reverse_iterator i =
+        for (auto i =
                  calibrationPoints_.rbegin();
              i != calibrationPoints_.rend(); ++i) {
 
@@ -472,7 +472,7 @@ namespace QuantLib {
 
         int idx = times_.size() - 2;
 
-        for (std::map<Date, CalibrationPoint>::reverse_iterator
+        for (auto
                  i = calibrationPoints_.rbegin();
              i != calibrationPoints_.rend(); ++i, --idx) {
 
@@ -664,7 +664,7 @@ namespace QuantLib {
             modelOutputs_.marketRawCallPremium_.clear();
             modelOutputs_.marketRawPutPremium_.clear();
 
-            for (std::map<Date, CalibrationPoint>::iterator i =
+            for (auto i =
                      calibrationPoints_.begin();
                  i != calibrationPoints_.end(); ++i) {
                 modelOutputs_.atm_.push_back(i->second.atm_);
@@ -939,7 +939,7 @@ namespace QuantLib {
             return out; // no trace information was collected so no output
         out << std::endl;
         out << "Messages:" << std::endl;
-        for (std::vector<std::string>::const_iterator i = m.messages_.begin();
+        for (auto i = m.messages_.begin();
              i != m.messages_.end(); ++i)
             out << (*i) << std::endl;
         out << std::endl << std::setprecision(16);

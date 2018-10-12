@@ -116,7 +116,7 @@ namespace QuantLib {
         }
 
         // remove duplicate strikes
-        std::vector<Real>::iterator last =
+        auto last =
             std::unique(strikes.begin(), strikes.end());
         strikes.erase(last, strikes.end());
 
@@ -164,7 +164,7 @@ namespace QuantLib {
                                         new AnalyticEuropeanEngine(process_));
         Real optionsValue = 0.0;
 
-        for (weights_type::const_iterator i = optionWeights.begin();
+        for (auto i = optionWeights.begin();
              i < optionWeights.end(); ++i) {
             ext::shared_ptr<StrikedTypePayoff> payoff = i->first;
             EuropeanOption option(payoff, exercise);

@@ -40,7 +40,7 @@ namespace QuantLib {
         dividends_.reserve(schedule.size());
         dividendDates_.reserve(schedule.size());
         dividendTimes_.reserve(schedule.size());
-        for (DividendSchedule::const_iterator iter=schedule.begin();
+        for (auto iter=schedule.begin();
               iter!=schedule.end(); ++iter) {
              dividends_.push_back((*iter)->amount());
              dividendDates_.push_back((*iter)->date());
@@ -70,7 +70,7 @@ namespace QuantLib {
     void FdmDividendHandler::applyTo(Array& a, Time t) const {
         Array aCopy(a);
 
-        std::vector<Time>::const_iterator iter
+        auto iter
             = std::find(dividendTimes_.begin(), dividendTimes_.end(), t);
 
         if (iter != dividendTimes_.end()) {

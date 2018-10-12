@@ -131,7 +131,7 @@ namespace QuantLib {
     }
 
     void YoYInflationCapFloor::setupArguments(PricingEngine::arguments* args) const {
-        YoYInflationCapFloor::arguments* arguments =
+        auto* arguments =
         dynamic_cast<YoYInflationCapFloor::arguments*>(args);
         QL_REQUIRE(arguments != 0, "wrong argument type");
 

@@ -263,7 +263,7 @@ namespace QuantLib {
         }
 
         // remove losses over detachment point:
-        std::vector<Real>::iterator detachPosit = 
+        auto detachPosit = 
             std::find_if(x_.begin(), x_.end(), 
                          greater_than<Real>(detachmentPoint));
         if(detachPosit != x_.end())

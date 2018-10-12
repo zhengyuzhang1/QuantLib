@@ -41,7 +41,7 @@ namespace QuantLib {
 
     void PathMultiAssetOption::setupArguments(PricingEngine::arguments* args)
                                                                        const {
-        PathMultiAssetOption::arguments* arguments =
+        auto* arguments =
             dynamic_cast<PathMultiAssetOption::arguments*>(args);
 
         QL_REQUIRE(arguments != 0, "wrong argument type");

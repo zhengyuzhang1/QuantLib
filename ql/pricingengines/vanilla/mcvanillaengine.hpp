@@ -134,7 +134,7 @@ namespace QuantLib {
                    "engine does not provide "
                    "control variation pricing engine");
 
-        typename Inst::arguments* controlArguments =
+        auto* controlArguments =
                 dynamic_cast<typename Inst::arguments*>(
                                                    controlPE->getArguments());
 
@@ -143,7 +143,7 @@ namespace QuantLib {
         *controlArguments = this->arguments_;
         controlPE->calculate();
 
-        const typename Inst::results* controlResults =
+        const auto* controlResults =
                 dynamic_cast<const typename Inst::results*>(
                                                      controlPE->getResults());
         QL_REQUIRE(controlResults,

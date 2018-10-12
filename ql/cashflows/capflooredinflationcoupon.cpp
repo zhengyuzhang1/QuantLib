@@ -151,7 +151,7 @@ namespace QuantLib {
 
     void CappedFlooredYoYInflationCoupon::accept(AcyclicVisitor& v) {
         typedef YoYInflationCoupon super;
-        Visitor<CappedFlooredYoYInflationCoupon>* v1 =
+        auto* v1 =
             dynamic_cast<Visitor<CappedFlooredYoYInflationCoupon>*>(&v);
 
         if (v1 != 0)

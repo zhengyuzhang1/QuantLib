@@ -229,7 +229,7 @@ namespace QuantLib {
     requested ctpty......*/
     Real Basket::exposure(const std::string& name, const Date& d) const {
         //'this->names_' contains duplicates, contrary to 'pool->names'
-        std::vector<std::string>::const_iterator match =  
+        auto match =  
             std::find(pool_->names().begin(), pool_->names().end(), name);
         QL_REQUIRE(match != pool_->names().end(), "Name not in basket.");
         Real totalNotional = 0.;

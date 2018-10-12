@@ -77,7 +77,7 @@ namespace QuantLib {
     // inline definitions
 
     inline void LocalVolCurve::accept(AcyclicVisitor& v) {
-        Visitor<LocalVolCurve>* v1 =
+        auto* v1 =
             dynamic_cast<Visitor<LocalVolCurve>*>(&v);
         if (v1 != 0)
             v1->visit(*this);

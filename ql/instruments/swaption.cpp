@@ -95,7 +95,7 @@ namespace QuantLib {
                 vol_->setValue(x);
                 engine_->calculate();
             }
-            std::map<std::string,boost::any>::const_iterator vega_ =
+            auto vega_ =
                 results_->additionalResults.find("vega");
             QL_REQUIRE(vega_ != results_->additionalResults.end(),
                        "vega not provided");
@@ -148,7 +148,7 @@ namespace QuantLib {
 
         swap_->setupArguments(args);
 
-        Swaption::arguments* arguments =
+        auto* arguments =
             dynamic_cast<Swaption::arguments*>(args);
 
         QL_REQUIRE(arguments != 0, "wrong argument type");

@@ -305,7 +305,7 @@ namespace QuantLib {
             Size poolSize = basket_->size();//move to 'livesize'
             const ext::shared_ptr<Pool>& pool = basket_->pool();
 
-            BigNatural limit = 
+            auto limit = 
                 static_cast<BigNatural>(std::pow(2., (int)(poolSize)));
 
             // Precalc conditional probabilities
@@ -317,7 +317,7 @@ namespace QuantLib {
                     defaultProbability(date), i, mktFactors));
 
             Probability probNEventsOrMore = 0.;
-            for(BigNatural mask = 
+            for(auto mask = 
                   static_cast<BigNatural>(std::pow(2., (int)(n))-1);
                 mask < limit; mask++) 
             {

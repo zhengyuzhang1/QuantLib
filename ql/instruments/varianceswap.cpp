@@ -44,7 +44,7 @@ namespace QuantLib {
     }
 
     void VarianceSwap::setupArguments(PricingEngine::arguments* args) const {
-        VarianceSwap::arguments* arguments =
+        auto* arguments =
             dynamic_cast<VarianceSwap::arguments*>(args);
         QL_REQUIRE(arguments != 0, "wrong argument type");
 
@@ -57,7 +57,7 @@ namespace QuantLib {
 
     void VarianceSwap::fetchResults(const PricingEngine::results* r) const {
         Instrument::fetchResults(r);
-        const VarianceSwap::results* results =
+        const auto* results =
             dynamic_cast<const VarianceSwap::results*>(r);
         variance_ = results->variance;
     }

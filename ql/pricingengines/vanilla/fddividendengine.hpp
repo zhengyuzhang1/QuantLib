@@ -50,7 +50,7 @@ namespace QuantLib {
         void setGridLimits() const override = 0;
         void executeIntermediateStep(Size step) const override = 0;
         Real getDividendAmount(Size i) const {
-            const Dividend *dividend =
+            const auto *dividend =
                 dynamic_cast<const Dividend *>(this->events_[i].get());
             if (dividend) {
                 return dividend->amount();
@@ -140,7 +140,7 @@ namespace QuantLib {
     template <template <class> class Scheme>
     void FDDividendEngineBase<Scheme>::setupArguments(
                                     const PricingEngine::arguments *a) const {
-        const DividendVanillaOption::arguments *args =
+        const auto *args =
             dynamic_cast<const DividendVanillaOption::arguments *>(a);
         QL_REQUIRE(args, "incorrect argument type");
         std::vector<ext::shared_ptr<Event> > events(args->cashFlow.size());
@@ -211,7 +211,7 @@ namespace QuantLib {
     void FDDividendEngineShiftScale<Scheme>::setGridLimits() const {
         Real underlying = this->process_->stateVariable()->value();
         for (Size i=0; i<this->events_.size(); i++) {
-            const Dividend *dividend =
+            const auto *dividend =
                 dynamic_cast<const Dividend *>(this->events_[i].get());
             if (!dividend) continue;
             if (this->getDividendTime(i) < 0.0) continue;
@@ -226,7 +226,7 @@ namespace QuantLib {
     template <template <class> class Scheme>
     void FDDividendEngineShiftScale<Scheme>::executeIntermediateStep(
                                                              Size step) const{
-        const Dividend *dividend =
+        const auto *dividend =
             dynamic_cast<const Dividend *>(this->events_[step].get());
         if (!dividend) return;
         detail::DividendAdder adder(dividend);

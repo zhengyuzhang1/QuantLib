@@ -1611,7 +1611,7 @@ void HestonSLVModelTest::testLocalVolsvSLVPropDensity() {
     const SquareRootProcessRNDCalculator squareRootRndCalculator(
         v0, kappa, theta, sigma);
 
-    for (std::list<HestonSLVFDMModel::LogEntry>::const_iterator iter
+    for (auto iter
              = logEntries.begin(); iter != logEntries.end(); ++iter) {
 
         const Time t = iter->t;

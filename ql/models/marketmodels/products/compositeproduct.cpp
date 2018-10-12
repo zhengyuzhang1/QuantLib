@@ -41,7 +41,7 @@ namespace QuantLib {
     }
 
     void MarketModelComposite::reset() {
-        for (iterator i=components_.begin(); i!=components_.end(); ++i) {
+        for (auto i=components_.begin(); i!=components_.end(); ++i) {
             i->product->reset();
             i->done = false;
         }
@@ -116,7 +116,7 @@ namespace QuantLib {
         // all information having been collected, we can sort and
         // compact the vector of all cash-flow times...
         std::sort(allCashflowTimes.begin(), allCashflowTimes.end());
-        std::vector<Time>::iterator end = std::unique(allCashflowTimes.begin(),
+        auto end = std::unique(allCashflowTimes.begin(),
                                                       allCashflowTimes.end());
         //std::copy(allCashflowTimes.begin(), end,
         //          std::back_inserter(cashflowTimes_));

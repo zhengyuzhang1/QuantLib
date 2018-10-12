@@ -171,7 +171,7 @@ namespace QuantLib {
                 values_.clear();
             }
             Real value(const Array&, Time t) const override {
-                std::vector<Time>::const_iterator result =
+                auto result =
                     std::find(times_.begin(), times_.end(), t);
                 QL_REQUIRE(result!=times_.end(),
                            "fitting parameter not set!");

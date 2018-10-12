@@ -48,7 +48,7 @@ namespace QuantLib {
                                                           std::vector<Time>())
         : evolver_(L,bcs), stoppingTimes_(std::move(stoppingTimes)) {
             std::sort(stoppingTimes_.begin(), stoppingTimes_.end());
-            std::vector<Time>::iterator last =
+            auto last =
                 std::unique(stoppingTimes_.begin(), stoppingTimes_.end());
             stoppingTimes_.erase(last, stoppingTimes_.end());
         }
@@ -57,7 +57,7 @@ namespace QuantLib {
                                                           std::vector<Time>())
         : evolver_(std::move(evolver)), stoppingTimes_(std::move(stoppingTimes)) {
             std::sort(stoppingTimes_.begin(), stoppingTimes_.end());
-            std::vector<Time>::iterator last =
+            auto last =
                 std::unique(stoppingTimes_.begin(), stoppingTimes_.end());
             stoppingTimes_.erase(last, stoppingTimes_.end());
         }

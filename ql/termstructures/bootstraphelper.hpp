@@ -204,7 +204,7 @@ namespace QuantLib {
 
     template <class TS>
     void BootstrapHelper<TS>::accept(AcyclicVisitor& v) {
-        Visitor<BootstrapHelper<TS> >* v1 =
+        auto* v1 =
             dynamic_cast<Visitor<BootstrapHelper<TS> >*>(&v);
         if (v1 != 0)
             v1->visit(*this);

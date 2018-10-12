@@ -61,7 +61,7 @@ namespace QuantLib {
 
         void setupArguments(const PricingEngine::arguments* a) const override {
             FDVanillaEngine::setupArguments(a);
-            const OneAssetOption::arguments *args =
+            const auto *args =
                 dynamic_cast<const OneAssetOption::arguments*>(a);
             QL_REQUIRE(args, "incorrect argument type");
             events_.clear();
@@ -97,7 +97,7 @@ namespace QuantLib {
     template <template <class> class Scheme>
     void FDMultiPeriodEngine<Scheme>::calculate(
                                             PricingEngine::results* r) const {
-        OneAssetOption::results *results =
+        auto *results =
             dynamic_cast<OneAssetOption::results *>(r);
         QL_REQUIRE(results, "incorrect argument type");
         Time beginDate, endDate;

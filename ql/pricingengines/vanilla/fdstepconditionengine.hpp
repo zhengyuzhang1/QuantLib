@@ -60,7 +60,7 @@ namespace QuantLib {
     template <template <class> class Scheme>
     void FDStepConditionEngine<Scheme>::calculate(
                                             PricingEngine::results* r) const {
-        OneAssetOption::results * results =
+        auto * results =
             dynamic_cast<OneAssetOption::results *>(r);
         setGridLimits();
         initializeInitialCondition();

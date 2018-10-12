@@ -54,7 +54,7 @@ namespace QuantLib {
     }
 
     void InterestRateVolSurface::accept(AcyclicVisitor& v) {
-        Visitor<InterestRateVolSurface>* v1 =
+        auto* v1 =
             dynamic_cast<Visitor<InterestRateVolSurface>*>(&v);
         if (v1 != 0)
             v1->visit(*this);

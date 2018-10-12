@@ -103,7 +103,7 @@ namespace {
         }
 
         void applyTo(Array& a, Time t) const override {
-            std::vector<Time>::const_iterator iter
+            auto iter
                 = std::find(exerciseTimes_.begin(), exerciseTimes_.end(), t);
 
             if (iter != exerciseTimes_.end()) {

@@ -74,7 +74,7 @@ namespace QuantLib {
 
     inline void VanillaStorageOption::setupArguments(
                                 PricingEngine::arguments* args) const {
-        VanillaStorageOption::arguments* arguments =
+        auto* arguments =
             dynamic_cast<VanillaStorageOption::arguments*>(args);
         QL_REQUIRE(arguments != 0, "wrong argument type");
 

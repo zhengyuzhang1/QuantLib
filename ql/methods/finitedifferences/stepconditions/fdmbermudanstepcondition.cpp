@@ -34,7 +34,7 @@ namespace QuantLib {
       calculator_(std::move(calculator)) {
     
         exerciseTimes_.reserve(exerciseDates.size());
-        for (std::vector<Date>::const_iterator iter = exerciseDates.begin();
+        for (auto iter = exerciseDates.begin();
             iter != exerciseDates.end(); ++iter) {
             exerciseTimes_.push_back(
                              dayCounter.yearFraction(referenceDate, *iter));

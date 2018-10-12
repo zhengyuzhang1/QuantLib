@@ -229,7 +229,7 @@ namespace QuantLib {
 
    Real CallableBond::NPVSpreadHelper::operator()(Real x) const
    {
-       CallableBond::arguments* args=
+       auto* args=
            dynamic_cast<CallableBond::arguments*>(bond_.engine_->getArguments());
        // Pops the original value when function finishes
        RestoreVal<Spread> restorer(args->spread);
@@ -428,7 +428,7 @@ namespace QuantLib {
                                        PricingEngine::arguments* args) const {
 
         Bond::setupArguments(args);
-        CallableBond::arguments* arguments =
+        auto* arguments =
             dynamic_cast<CallableBond::arguments*>(args);
 
         QL_REQUIRE(arguments != 0, "no arguments given");

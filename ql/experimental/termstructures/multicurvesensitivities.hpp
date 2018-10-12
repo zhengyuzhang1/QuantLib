@@ -72,7 +72,7 @@ public:
       ext::shared_ptr< PiecewiseYieldCurve< ZeroYield, Linear > > curve =
           ext::dynamic_pointer_cast< PiecewiseYieldCurve< ZeroYield, Linear > >(it->second.currentLink());
       QL_REQUIRE(curve != NULL, "Couldn't cast curvename: " << it->first);
-      for (std::vector< ext::shared_ptr< BootstrapHelper< YieldTermStructure > > >::iterator inst =
+      for (auto inst =
                curve->instruments_.begin();
            inst != curve->instruments_.end(); ++inst) {
         allQuotes_.push_back((*inst)->quote());
@@ -106,7 +106,7 @@ private:
 inline void MultiCurveSensitivities::performCalculations() const {
   std::vector< Rate > sensiVector;
   origZeros_ = allZeros();
-  for (std::vector< Handle< Quote > >::const_iterator it = allQuotes_.begin(); it != allQuotes_.end(); ++it) {
+  for (auto it = allQuotes_.begin(); it != allQuotes_.end(); ++it) {
     Rate bps = +1e-4;
     Rate origQuote = (*it)->value();
     ext::shared_ptr< SimpleQuote > q = ext::dynamic_pointer_cast< SimpleQuote >((*it).currentLink());
@@ -138,7 +138,7 @@ inline Matrix MultiCurveSensitivities::inverseSensitivities() const {
 
 inline std::vector< std::pair< Date, Real > > MultiCurveSensitivities::allNodes() const {
   std::vector< std::pair< Date, Real > > result;
-  for (curvespec::const_iterator it = curves_.begin(); it != curves_.end(); ++it) {
+  for (auto it = curves_.begin(); it != curves_.end(); ++it) {
     ext::shared_ptr< PiecewiseYieldCurve< ZeroYield, Linear > > curve =
         ext::dynamic_pointer_cast< PiecewiseYieldCurve< ZeroYield, Linear > >(it->second.currentLink());
     result.reserve(result.size() + curve->nodes().size() - 1);

@@ -84,7 +84,7 @@ namespace QuantLib {
 
         Swap::setupArguments(args);
 
-        VanillaSwap::arguments* arguments =
+        auto* arguments =
             dynamic_cast<VanillaSwap::arguments*>(args);
 
         if (!arguments)  // it's a swap engine...
@@ -184,7 +184,7 @@ namespace QuantLib {
 
         Swap::fetchResults(r);
 
-        const VanillaSwap::results* results =
+        const auto* results =
             dynamic_cast<const VanillaSwap::results*>(r);
         if (results) { // might be a swap engine, so no error is thrown
             fairRate_ = results->fairRate;

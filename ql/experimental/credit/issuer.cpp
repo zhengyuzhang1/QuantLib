@@ -76,7 +76,7 @@ namespace QuantLib {
                              ) const
     {
         // to do: the set is ordered, see how to use it to speed this up
-        for(DefaultEventSet::const_iterator itev = events_.begin();
+        for(auto itev = events_.begin();
             // am i really speeding things up with the date comp?
             itev != events_.end(); // && (*itev)->date() > start;
             ++itev) {
@@ -97,7 +97,7 @@ namespace QuantLib {
     {
         std::vector<ext::shared_ptr<DefaultEvent> > defaults;
         // to do: the set is ordered, see how to use it to speed this up
-        for(DefaultEventSet::const_iterator itev = events_.begin();
+        for(auto itev = events_.begin();
             // am i really speeding things up with the date comp?
             itev != events_.end(); // && (*itev)->date() > start;
             ++itev) {

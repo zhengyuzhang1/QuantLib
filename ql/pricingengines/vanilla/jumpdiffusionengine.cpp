@@ -82,7 +82,7 @@ namespace QuantLib {
 
         AnalyticEuropeanEngine baseEngine(bsProcess);
 
-        VanillaOption::arguments* baseArguments =
+        auto* baseArguments =
             dynamic_cast<VanillaOption::arguments*>(baseEngine.getArguments());
 
         baseArguments->payoff   = arguments_.payoff;
@@ -90,7 +90,7 @@ namespace QuantLib {
 
         baseArguments->validate();
 
-        const VanillaOption::results* baseResults =
+        const auto* baseResults =
             dynamic_cast<const VanillaOption::results*>(
                                                      baseEngine.getResults());
 

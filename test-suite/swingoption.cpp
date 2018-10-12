@@ -162,7 +162,7 @@ void SwingOptionTest::testFdmExponentialJump1dMesher() {
     for (Real x=1e-12; x < 1.0; x*=10) {
         const Real v = mesher.jumpSizeDistribution(x);
 
-        std::vector<Real>::iterator iter
+        auto iter
             = std::lower_bound(path.begin(), path.end(), x);
         const Real q = std::distance(path.begin(), iter)/Real(n);
         QL_REQUIRE(std::fabs(q - v) < relTol1

@@ -55,7 +55,7 @@ namespace QuantLib {
     }
 
     void LocalVolTermStructure::accept(AcyclicVisitor& v) {
-        Visitor<LocalVolTermStructure>* v1 =
+        auto* v1 =
             dynamic_cast<Visitor<LocalVolTermStructure>*>(&v);
         if (v1 != 0)
             v1->visit(*this);

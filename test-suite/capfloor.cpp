@@ -220,7 +220,7 @@ void CapFloorTest::testStrikeDependency() {
                 floor_values.push_back(floor->NPV());
             }
             // and check that they go the right way
-            std::vector<Real>::iterator it =
+            auto it =
                 std::adjacent_find(cap_values.begin(),cap_values.end(),
                                    std::less<Real>());
             if (it != cap_values.end()) {

@@ -24,7 +24,7 @@
 namespace QuantLib {
 
     void CommodityCashFlow::accept(AcyclicVisitor& v) {
-        Visitor<CommodityCashFlow>* v1 =
+        auto* v1 =
             dynamic_cast<Visitor<CommodityCashFlow>*>(&v);
         if (v1 != 0)
             v1->visit(*this);
@@ -40,7 +40,7 @@ namespace QuantLib {
         std::string currencyCode; //= cashFlows[0]->discountedAmount().currency().code();
         Real totalDiscounted = 0;
         Real totalUndiscounted = 0;
-        for (CommodityCashFlows::const_iterator i = cashFlows.begin();
+        for (auto i = cashFlows.begin();
              i != cashFlows.end(); ++i) {
             //const ext::shared_ptr<CommodityCashFlow> cashFlow = *i;
             const ext::shared_ptr<CommodityCashFlow> cashFlow = i->second;

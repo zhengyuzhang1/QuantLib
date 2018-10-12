@@ -155,7 +155,7 @@ void SwaptionTest::testStrikeDependency() {
                 }
                 // and check that they go the right way
                 if (type[k]==VanillaSwap::Payer) {
-                    std::vector<Real>::iterator it =
+                    auto it =
                         std::adjacent_find(values.begin(), values.end(),
                                            std::less<Real>());
                     if (it != values.end()) {
@@ -169,7 +169,7 @@ void SwaptionTest::testStrikeDependency() {
                                     "\nvalue:        " << values[n  ] <<" at strike: " << io::rate(strikes[n  ]) <<
                                     "\nvalue:        " << values[n+1] << " at strike: " << io::rate(strikes[n+1]));
                     }
-                    std::vector<Real>::iterator it_cash =
+                    auto it_cash =
                         std::adjacent_find(values_cash.begin(), values_cash.end(),
                                            std::less<Real>());
                     if (it_cash != values_cash.end()) {
@@ -184,7 +184,7 @@ void SwaptionTest::testStrikeDependency() {
                                     "\nvalue:        " << values_cash[n+1] << " at strike: " << io::rate(strikes[n+1]));
                     }
                 } else {
-                    std::vector<Real>::iterator it =
+                    auto it =
                         std::adjacent_find(values.begin(), values.end(),
                                            std::greater<Real>());
                     if (it != values.end()) {
@@ -198,7 +198,7 @@ void SwaptionTest::testStrikeDependency() {
                                     "\nvalue:        " << values[n  ] << " at strike: " << io::rate(strikes[n  ]) <<
                                     "\nvalue:        " << values[n+1] << " at strike: " << io::rate(strikes[n+1]));
                     }
-                    std::vector<Real>::iterator it_cash =
+                    auto it_cash =
                         std::adjacent_find(values_cash.begin(), values_cash.end(),
                                            std::greater<Real>());
                     if (it_cash != values_cash.end()) {
@@ -256,7 +256,7 @@ void SwaptionTest::testSpreadDependency() {
                 }
                 // and check that they go the right way
                 if (type[k]==VanillaSwap::Payer) {
-                    std::vector<Real>::iterator it =
+                    auto it =
                         std::adjacent_find(values.begin(), values.end(),
                                            std::greater<Real>());
                     if (it != values.end()) {
@@ -268,7 +268,7 @@ void SwaptionTest::testSpreadDependency() {
                             "\nvalue:         " << values[n  ] << " for spread: " << io::rate(spreads[n]) <<
                             "\nvalue:         " << values[n+1] << " for spread: " << io::rate(spreads[n+1]));
                     }
-                    std::vector<Real>::iterator it_cash =
+                    auto it_cash =
                         std::adjacent_find(values_cash.begin(), values_cash.end(),
                                            std::greater<Real>());
                     if (it_cash != values_cash.end()) {
@@ -281,7 +281,7 @@ void SwaptionTest::testSpreadDependency() {
                             "\nvalue:  " << values_cash[n+1] << " for spread: " << io::rate(spreads[n+1]));
                     }
                 } else {
-                    std::vector<Real>::iterator it =
+                    auto it =
                         std::adjacent_find(values.begin(), values.end(),
                                            std::less<Real>());
                     if (it != values.end()) {
@@ -293,7 +293,7 @@ void SwaptionTest::testSpreadDependency() {
                             "\nvalue:  " << values[n  ] << " for spread: " << io::rate(spreads[n]) <<
                             "\nvalue:  " << values[n+1] << " for spread: " << io::rate(spreads[n+1]));
                     }
-                    std::vector<Real>::iterator it_cash =
+                    auto it_cash =
                         std::adjacent_find(values_cash.begin(), values_cash.end(),
                                            std::less<Real>());
                     if (it_cash != values_cash.end()) {
