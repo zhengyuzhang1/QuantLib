@@ -33,7 +33,7 @@
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #endif
 
-#include <boost/bind.hpp>
+#include <ql/bind.hpp>
 #include <utility>
 
 #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
@@ -62,6 +62,8 @@ namespace QuantLib {
       sparkSpreadPrice_(std::move(sparkSpreadPrice)),
       stateEvolveFcts_ (nStates_) {
 
+        using namespace ext::placeholders;
+
         QL_REQUIRE(nStates_ == mesher_->layout()->dim()[stateDirection_],
                    "mesher does not fit to vpp arguments");
 
@@ -70,11 +72,11 @@ namespace QuantLib {
 
             if (j < tMinUp_) {
                 stateEvolveFcts_[i] = ext::function<Real (Real)>(
-                    boost::bind(&FdmVPPStepCondition::evolveAtPMin,this, _1));
+                    ext::bind(&FdmVPPStepCondition::evolveAtPMin,this, _1));
             }
             else if (j < 2*tMinUp_){
                 stateEvolveFcts_[i] = ext::function<Real (Real)>(
-                    boost::bind(&FdmVPPStepCondition::evolveAtPMax,this, _1));
+                    ext::bind(&FdmVPPStepCondition::evolveAtPMax,this, _1));
             }
         }
     }

@@ -89,6 +89,7 @@ namespace QuantLib {
 
 #else
 
+#include <ql/bind.hpp>
 #include <boost/signals2/signal_type.hpp>
 
 namespace QuantLib {
@@ -146,7 +147,7 @@ namespace QuantLib {
             }
         }
 
-        sig_->disconnect(boost::bind(&Observer::Proxy::update,
+        sig_->disconnect(ext::bind(&Observer::Proxy::update,
                              observerProxy.get()));
     }
 

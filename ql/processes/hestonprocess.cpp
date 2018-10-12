@@ -32,7 +32,7 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #endif
-#include <boost/bind.hpp>
+#include <ql/bind.hpp>
 #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
 #pragma GCC diagnostic pop
 #endif
@@ -184,6 +184,7 @@ namespace QuantLib {
 
         Real int_ph(const HestonProcess& process,
                     Real a, Real x, Real y, Real nu_0, Real nu_t, Time t) {
+            using namespace ext::placeholders;
             static const GaussLaguerreIntegration gaussLaguerreIntegration(128);
 
             const Real rho   = process.rho();
@@ -192,7 +193,7 @@ namespace QuantLib {
             const Real x0    = std::log(process.s0()->value());
 
             return gaussLaguerreIntegration(
-                boost::bind(&ph, process, y,
+                ext::bind(&ph, process, y,
                             _1, nu_0, nu_t, t))
                 / std::sqrt(2*M_PI*(1-rho*rho)*y)
                 * std::exp(-0.5*square<Real>()(  x - x0 - a
@@ -303,6 +304,7 @@ namespace QuantLib {
         Real cdf_nu_ds(const HestonProcess& process,
                        Real x, Real nu_0, Real nu_t, Time dt,
                        HestonProcess::Discretization discretization) {
+            using namespace ext::placeholders;
             const Real eps = 1e-4;
             const Real u_eps = std::min(100.0,
                 std::max(0.1, cornishFisherEps(process, nu_0, nu_t, dt, eps)));
@@ -321,7 +323,7 @@ namespace QuantLib {
                 return (x < upper)
                     ? std::max(0.0, std::min(1.0,
                         gaussLaguerreIntegration(
-                            boost::bind(&ch, process, x,
+                            ext::bind(&ch, process, x,
                                         _1, nu_0, nu_t, dt))))
                     : 1.0;
               }
@@ -335,7 +337,7 @@ namespace QuantLib {
                 return (x < upper)
                     ? std::max(0.0, std::min(1.0,
                         GaussLobattoIntegral(Null<Size>(), eps)(
-                            boost::bind(&ch, process, x,
+                            ext::bind(&ch, process, x,
                                         _1, nu_0, nu_t, dt),
                             QL_EPSILON, upper)))
                     : 1.0;
@@ -375,6 +377,7 @@ namespace QuantLib {
     }
 
     Real HestonProcess::pdf(Real x, Real v, Time t, Real eps) const {
+         using namespace ext::placeholders;
          const Real k = sigma_*sigma_*(1-std::exp(-kappa_*t))/(4*kappa_);
          const Real a = std::log(  dividendYield_->discount(t)
                                    / riskFreeRate_->discount(t))
@@ -400,7 +403,7 @@ namespace QuantLib {
          upper = 2.0*cornishFisherEps(*this, v0_, v, t,1e-3);
 
          return SegmentIntegral(100)(
-             boost::bind(&int_ph, *this, a, x,
+             ext::bind(&int_ph, *this, a, x,
                          _1, v0_, v, t),
                QL_EPSILON, upper)
                * boost::math::pdf(
@@ -413,6 +416,8 @@ namespace QuantLib {
 
     Disposable<Array> HestonProcess::evolve(Time t0, const Array& x0,
                                             Time dt, const Array& dw) const {
+        using namespace ext::placeholders;
+
         Array retVal(2);
         Real vol, vol2, mu, nu, dy;
 
@@ -543,7 +548,7 @@ namespace QuantLib {
                 std::max(0.0, CumulativeNormalDistribution()(dw[2])));
 
             const Real vds = Brent().solve(
-                boost::bind(&cdf_nu_ds_minus_x, *this, _1,
+                ext::bind(&cdf_nu_ds_minus_x, *this, _1,
                             nu_0, nu_t, dt, discretization_, x),
                 1e-5, theta_*dt, 0.1*theta_*dt);
 

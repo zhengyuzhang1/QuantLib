@@ -41,7 +41,7 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #endif
-#include <boost/bind.hpp>
+#include <ql/bind.hpp>
 #include <utility>
 #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
 #pragma GCC diagnostic pop
@@ -151,6 +151,8 @@ namespace QuantLib {
     }
 
     Real LocalVolRNDCalculator::cdf(Real x, Time t) const {
+        using namespace ext::placeholders;
+
         calculate();
 
         // get the left side of the integral
@@ -170,13 +172,13 @@ namespace QuantLib {
         if (x > 0.5*(xr+xl)) {
             while (pdf(xr, t) > 0.01*localVolProbEps_) xr*=1.1;
             return 1.0-GaussLobattoIntegral(maxIter_, 0.1*localVolProbEps_)(
-                boost::bind(&LocalVolRNDCalculator::pdf, this, _1, t), x, xr);
+                ext::bind(&LocalVolRNDCalculator::pdf, this, _1, t), x, xr);
         }
         else {
             while (pdf(xl, t) > 0.01*localVolProbEps_) xl*=0.9;
 
             return GaussLobattoIntegral(maxIter_, 0.1*localVolProbEps_)(
-                boost::bind(&LocalVolRNDCalculator::pdf, this, _1, t), xl, x);
+                ext::bind(&LocalVolRNDCalculator::pdf, this, _1, t), xl, x);
         }
     }
 
