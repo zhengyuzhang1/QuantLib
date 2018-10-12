@@ -66,9 +66,9 @@ namespace QuantLib {
         Time lastDivTime = 0.0;
         Real fwd = S, mi = S, ma = S;
 
-        for (Size i=0; i < intermediateSteps.size(); ++i) {
-            const Time divTime = intermediateSteps[i].first;
-            const Real divAmount = intermediateSteps[i].second;
+        for (auto & intermediateStep : intermediateSteps) {
+            const Time divTime = intermediateStep.first;
+            const Real divAmount = intermediateStep.second;
 
             fwd = fwd / rTS->discount(divTime) * rTS->discount(lastDivTime)
                       * qTS->discount(divTime) / qTS->discount(lastDivTime);

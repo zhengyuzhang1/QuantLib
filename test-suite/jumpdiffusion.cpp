@@ -293,37 +293,37 @@ void JumpDiffusionTest::testMerton76() {
     ext::shared_ptr<PricingEngine> engine(
                                        new JumpDiffusionEngine(stochProcess));
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(new
-            PlainVanillaPayoff(values[i].type, values[i].strike));
+            PlainVanillaPayoff(value.type, value.strike));
 
-        Date exDate = today + Integer(values[i].t*360+0.5);
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
 
 
-        jumpIntensity->setValue(values[i].jumpIntensity);
+        jumpIntensity->setValue(value.jumpIntensity);
 
         // delta in Haug's notation
-        Real jVol = values[i].v *
-            std::sqrt(values[i].gamma / values[i].jumpIntensity);
+        Real jVol = value.v *
+            std::sqrt(value.gamma / value.jumpIntensity);
         jumpVol->setValue(jVol);
 
         // z in Haug's notation
-        Real diffusionVol = values[i].v * std::sqrt(1.0 - values[i].gamma);
+        Real diffusionVol = value.v * std::sqrt(1.0 - value.gamma);
         vol  ->setValue(diffusionVol);
 
         // Haug is assuming zero meanJump
         Real meanJump = 0.0;
         meanLogJump->setValue(std::log(1.0+meanJump)-0.5*jVol*jVol);
 
-        Volatility totalVol = std::sqrt(values[i].jumpIntensity*jVol*jVol +
+        Volatility totalVol = std::sqrt(value.jumpIntensity*jVol*jVol +
                                       diffusionVol*diffusionVol);
-        Volatility volError = std::fabs(totalVol-values[i].v);
+        Volatility volError = std::fabs(totalVol-value.v);
         QL_REQUIRE(volError<1e-13,
                    volError << " mismatch");
 
@@ -331,13 +331,13 @@ void JumpDiffusionTest::testMerton76() {
         option.setPricingEngine(engine);
 
         Real calculated = option.NPV();
-        Real error = std::fabs(calculated-values[i].result);
-        if (error>values[i].tol) {
+        Real error = std::fabs(calculated-value.result);
+        if (error>value.tol) {
             REPORT_FAILURE_2("value", payoff, exercise,
-                             values[i].s, values[i].q, values[i].r,
-                             today, values[i].v, values[i].jumpIntensity,
-                             values[i].gamma, values[i].result, calculated,
-                             error, values[i].tol);
+                             value.s, value.q, value.r,
+                             today, value.v, value.jumpIntensity,
+                             value.gamma, value.result, calculated,
+                             error, value.tol);
         }
     }
 
@@ -402,44 +402,40 @@ void JumpDiffusionTest::testGreeks() {
     ext::shared_ptr<PricingEngine> engine(
                                  new JumpDiffusionEngine(stochProcess,1e-08));
 
-    for (Size i=0; i<LENGTH(types); i++) {
-      for (Size j=0; j<LENGTH(strikes); j++) {
-      for (Size jj1=0; jj1<LENGTH(jInt); jj1++) {
-        jumpIntensity->setValue(jInt[jj1]);
-      for (Size jj2=0; jj2<LENGTH(mLJ); jj2++) {
-        meanLogJump->setValue(mLJ[jj2]);
-      for (Size jj3=0; jj3<LENGTH(jV); jj3++) {
-        jumpVol->setValue(jV[jj3]);
-        for (Size k=0; k<LENGTH(residualTimes); k++) {
-          Date exDate = today + Integer(residualTimes[k]*360+0.5);
+    for (auto & type : types) {
+      for (double strike : strikes) {
+      for (double jj1 : jInt) {
+        jumpIntensity->setValue(jj1);
+      for (double jj2 : mLJ) {
+        meanLogJump->setValue(jj2);
+      for (double jj3 : jV) {
+        jumpVol->setValue(jj3);
+        for (double residualTime : residualTimes) {
+          Date exDate = today + Integer(residualTime*360+0.5);
           ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
           for (Size kk=0; kk<1; kk++) {
               // option to check
               if (kk==0) {
                   payoff = ext::shared_ptr<StrikedTypePayoff>(new
-                    PlainVanillaPayoff(types[i], strikes[j]));
+                    PlainVanillaPayoff(type, strike));
               } else if (kk==1) {
                   payoff = ext::shared_ptr<StrikedTypePayoff>(new
-                    CashOrNothingPayoff(types[i], strikes[j],
+                    CashOrNothingPayoff(type, strike,
                     100.0));
               } else if (kk==2) {
                   payoff = ext::shared_ptr<StrikedTypePayoff>(new
-                    AssetOrNothingPayoff(types[i], strikes[j]));
+                    AssetOrNothingPayoff(type, strike));
               } else if (kk==3) {
                   payoff = ext::shared_ptr<StrikedTypePayoff>(new
-                    GapPayoff(types[i], strikes[j], 100.0));
+                    GapPayoff(type, strike, 100.0));
               }
               EuropeanOption option(payoff, exercise);
               option.setPricingEngine(engine);
 
-              for (Size l=0; l<LENGTH(underlyings); l++) {
-                Real u = underlyings[l];
-                for (Size m=0; m<LENGTH(qRates); m++) {
-                  Rate q = qRates[m];
-                  for (Size n=0; n<LENGTH(rRates); n++) {
-                    Rate r = rRates[n];
-                    for (Size p=0; p<LENGTH(vols); p++) {
-                      Volatility v = vols[p];
+              for (double u : underlyings) {
+                for (double q : qRates) {
+                  for (double r : rRates) {
+                    for (double v : vols) {
                       spot->setValue(u);
                       qRate->setValue(q);
                       rRate->setValue(r);
@@ -512,8 +508,8 @@ void JumpDiffusionTest::testGreeks() {
                               if (error>tol) {
                                   REPORT_FAILURE_1(greek, payoff, exercise,
                                                    u, q, r, today, v,
-                                                   jInt[jj1], mLJ[jj2],
-                                                   jV[jj3], expct, calcl,
+                                                   jj1, jj2,
+                                                   jj3, expct, calcl,
                                                    error, tol);
                               }
                           }

@@ -212,11 +212,11 @@ void DateTest::asxDates() {
             << " is not the ASX code matching " << asx);
 
         // check that for every date the 120 ASX codes refer to future dates
-        for (int i = 0; i<120; ++i) {
-            if (ASX::date(ASXcodes[i], counter)<counter)
+        for (const auto & ASXcode : ASXcodes) {
+            if (ASX::date(ASXcode, counter)<counter)
                 BOOST_FAIL("\n  "
-                << ASX::date(ASXcodes[i], counter)
-                << " is wrong for " << ASXcodes[i]
+                << ASX::date(ASXcode, counter)
+                << " is wrong for " << ASXcode
                 << " at reference date " << counter);
         }
 

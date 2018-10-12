@@ -34,10 +34,9 @@ namespace QuantLib {
       calculator_(std::move(calculator)) {
     
         exerciseTimes_.reserve(exerciseDates.size());
-        for (auto iter = exerciseDates.begin();
-            iter != exerciseDates.end(); ++iter) {
+        for (auto exerciseDate : exerciseDates) {
             exerciseTimes_.push_back(
-                             dayCounter.yearFraction(referenceDate, *iter));
+                             dayCounter.yearFraction(referenceDate, exerciseDate));
         }
     }
 

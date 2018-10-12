@@ -140,21 +140,21 @@ namespace {
                             new BlackScholesMertonProcess(Handle<Quote>(spot),
                                                           qTS, rTS, volTS));
 
-        for (Size i=0; i<LENGTH(types); i++) {
-          for (Size j=0; j<LENGTH(moneyness); j++) {
-            for (Size k=0; k<LENGTH(lengths); k++) {
-              for (Size kk=0; kk<LENGTH(frequencies); kk++) {
+        for (auto & type : types) {
+          for (double moneynes : moneyness) {
+            for (int length : lengths) {
+              for (auto & frequencie : frequencies) {
 
                 ext::shared_ptr<EuropeanExercise> maturity(
-                              new EuropeanExercise(today + lengths[k]*Years));
+                              new EuropeanExercise(today + length*Years));
 
                 ext::shared_ptr<PercentageStrikePayoff> payoff(
-                          new PercentageStrikePayoff(types[i], moneyness[j]));
+                          new PercentageStrikePayoff(type, moneynes));
 
                 std::vector<Date> reset;
-                for (Date d = today + Period(frequencies[kk]);
+                for (Date d = today + Period(frequencie);
                      d < maturity->lastDate();
-                     d += Period(frequencies[kk]))
+                     d += Period(frequencie))
                     reset.push_back(d);
 
                 ext::shared_ptr<PricingEngine> engine(new T(process));
@@ -162,15 +162,13 @@ namespace {
                 CliquetOption option(payoff, maturity, reset);
                 option.setPricingEngine(engine);
 
-                for (Size l=0; l<LENGTH(underlyings); l++) {
-                  for (Size m=0; m<LENGTH(qRates); m++) {
-                    for (Size n=0; n<LENGTH(rRates); n++) {
-                      for (Size p=0; p<LENGTH(vols); p++) {
+                for (double u : underlyings) {
+                  for (double m : qRates) {
+                    for (double n : rRates) {
+                      for (double v : vols) {
 
-                        Real u = underlyings[l];
-                        Rate q = qRates[m],
-                             r = rRates[n];
-                        Volatility v = vols[p];
+                        Rate q = m,
+                             r = n;
                         spot->setValue(u);
                         qRate->setValue(q);
                         rRate->setValue(r);
@@ -304,17 +302,17 @@ void CliquetOptionTest::testMcPerformance() {
                             new BlackScholesMertonProcess(Handle<Quote>(spot),
                                                           qTS, rTS, volTS));
 
-    for (Size i=0; i<LENGTH(types); i++) {
-      for (Size j=0; j<LENGTH(moneyness); j++) {
-        for (Size k=0; k<LENGTH(lengths); k++) {
-          for (Size kk=0; kk<LENGTH(frequencies); kk++) {
+    for (auto & type : types) {
+      for (double moneynes : moneyness) {
+        for (int length : lengths) {
+          for (auto & frequencie : frequencies) {
 
-              Period tenor = Period(frequencies[kk]);
+              Period tenor = Period(frequencie);
               ext::shared_ptr<EuropeanExercise> maturity(
-                              new EuropeanExercise(today + lengths[k]*tenor));
+                              new EuropeanExercise(today + length*tenor));
 
               ext::shared_ptr<PercentageStrikePayoff> payoff(
-                          new PercentageStrikePayoff(types[i], moneyness[j]));
+                          new PercentageStrikePayoff(type, moneynes));
 
               std::vector<Date> reset;
               for (Date d = today + tenor; d < maturity->lastDate(); d += tenor)
@@ -331,15 +329,13 @@ void CliquetOptionTest::testMcPerformance() {
                   .withAbsoluteTolerance(5.0e-3)
                   .withSeed(42);
 
-              for (Size l=0; l<LENGTH(underlyings); l++) {
-                for (Size m=0; m<LENGTH(qRates); m++) {
-                  for (Size n=0; n<LENGTH(rRates); n++) {
-                    for (Size p=0; p<LENGTH(vols); p++) {
+              for (double u : underlyings) {
+                for (double m : qRates) {
+                  for (double n : rRates) {
+                    for (double v : vols) {
 
-                      Real u = underlyings[l];
-                      Rate q = qRates[m],
-                           r = rRates[n];
-                      Volatility v = vols[p];
+                      Rate q = m,
+                           r = n;
                       spot->setValue(u);
                       qRate->setValue(q);
                       rRate->setValue(r);

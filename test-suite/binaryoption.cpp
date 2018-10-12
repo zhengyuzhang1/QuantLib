@@ -148,20 +148,20 @@ void BinaryOptionTest::testCashOrNothingHaugValues() {
     ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.25));
     ext::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(new CashOrNothingPayoff(
-            values[i].type, values[i].strike, values[i].cash));
+            value.type, value.strike, value.cash));
 
-        Date exDate = today + Integer(values[i].t*360+0.5);
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> amExercise(new AmericanExercise(today,
                                                                     exDate,
                                                                     true));
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
         ext::shared_ptr<BlackScholesMertonProcess> stochProcess(new
             BlackScholesMertonProcess(Handle<Quote>(spot),
@@ -171,8 +171,8 @@ void BinaryOptionTest::testCashOrNothingHaugValues() {
         ext::shared_ptr<PricingEngine> engine(
                              new AnalyticBinaryBarrierEngine(stochProcess));
 
-        BarrierOption opt(values[i].barrierType, 
-                          values[i].barrier, 
+        BarrierOption opt(value.barrierType, 
+                          value.barrier, 
                           0,
                           payoff,
                           amExercise);
@@ -180,12 +180,12 @@ void BinaryOptionTest::testCashOrNothingHaugValues() {
         opt.setPricingEngine(engine);
 
         Real calculated = opt.NPV();
-        Real error = std::fabs(calculated-values[i].result);
-        if (error > values[i].tol) {
-            REPORT_FAILURE("value", payoff, amExercise, values[i].barrierType, 
-                           values[i].barrier, values[i].s,
-                           values[i].q, values[i].r, today, values[i].v,
-                           values[i].result, calculated, error, values[i].tol);
+        Real error = std::fabs(calculated-value.result);
+        if (error > value.tol) {
+            REPORT_FAILURE("value", payoff, amExercise, value.barrierType, 
+                           value.barrier, value.s,
+                           value.q, value.r, today, value.v,
+                           value.result, calculated, error, value.tol);
         }
     }
 }
@@ -234,20 +234,20 @@ void BinaryOptionTest::testAssetOrNothingHaugValues() {
     ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.25));
     ext::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(new AssetOrNothingPayoff(
-            values[i].type, values[i].strike));
+            value.type, value.strike));
 
-        Date exDate = today + Integer(values[i].t*360+0.5);
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> amExercise(new AmericanExercise(today,
                                                                     exDate,
                                                                     true));
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
         ext::shared_ptr<BlackScholesMertonProcess> stochProcess(new
             BlackScholesMertonProcess(Handle<Quote>(spot),
@@ -257,8 +257,8 @@ void BinaryOptionTest::testAssetOrNothingHaugValues() {
         ext::shared_ptr<PricingEngine> engine(
                              new AnalyticBinaryBarrierEngine(stochProcess));
 
-        BarrierOption opt(values[i].barrierType, 
-                          values[i].barrier, 
+        BarrierOption opt(value.barrierType, 
+                          value.barrier, 
                           0,
                           payoff,
                           amExercise);
@@ -266,12 +266,12 @@ void BinaryOptionTest::testAssetOrNothingHaugValues() {
         opt.setPricingEngine(engine);
 
         Real calculated = opt.NPV();
-        Real error = std::fabs(calculated-values[i].result);
-        if (error > values[i].tol) {
-            REPORT_FAILURE("value", payoff, amExercise, values[i].barrierType, 
-                           values[i].barrier, values[i].s,
-                           values[i].q, values[i].r, today, values[i].v,
-                           values[i].result, calculated, error, values[i].tol);
+        Real error = std::fabs(calculated-value.result);
+        if (error > value.tol) {
+            REPORT_FAILURE("value", payoff, amExercise, value.barrierType, 
+                           value.barrier, value.s,
+                           value.q, value.r, today, value.v,
+                           value.result, calculated, error, value.tol);
         }
     }
 }

@@ -55,10 +55,10 @@ namespace QuantLib {
         DayCounter voldc = process_->blackVolatility()->dayCounter();
 
         std::vector<Time> fixingTimes;
-        for (Size i=0; i<arguments_.fixingDates.size(); i++) {
-            if (arguments_.fixingDates[i]>=arguments_.fixingDates[0]) {
+        for (auto fixingDate : arguments_.fixingDates) {
+            if (fixingDate>=arguments_.fixingDates[0]) {
                 Time t = voldc.yearFraction(arguments_.fixingDates[0],
-                    arguments_.fixingDates[i]);
+                    fixingDate);
                 fixingTimes.push_back(t);
             }
         }

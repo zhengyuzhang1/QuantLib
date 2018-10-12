@@ -87,10 +87,9 @@ namespace QuantLib {
         typedef std::map<Date, PayoffList> PayoffMap;
         PayoffMap payoffMap;
         
-        for (auto optIt = optionList.begin();
-            optIt != optionList.end(); ++optIt)
+        for (const auto & optIt : optionList)
         {
-            ext::shared_ptr<VanillaOption> option = ext::dynamic_pointer_cast<VanillaOption>(*optIt);
+            ext::shared_ptr<VanillaOption> option = ext::dynamic_pointer_cast<VanillaOption>(optIt);
             QL_REQUIRE(option, "instrument must be option");
             QL_REQUIRE(option->exercise()->type() == Exercise::European,
                 "not an European Option");
@@ -111,11 +110,8 @@ namespace QuantLib {
 
             // Calculate n large enough for maximum strike, and round up to a power of 2
             Real maxStrike = 0.0;
-            for (auto it = payIt->second.begin();
-                it != payIt->second.end(); ++it)
+            for (auto payoff : payIt->second)
             {
-                ext::shared_ptr<StrikedTypePayoff> payoff = *it;
-
                 if (payoff->strike() > maxStrike)
                     maxStrike = payoff->strike();
             }
@@ -167,11 +163,8 @@ namespace QuantLib {
                 strikes[i] = std::exp(k_u);
             }
 
-            for (auto it = payIt->second.begin();
-                it != payIt->second.end(); ++it)
+            for (auto payoff : payIt->second)
             {
-                ext::shared_ptr<StrikedTypePayoff> payoff = *it;
-
                 Real callPrice = LinearInterpolation(strikes.begin(), strikes.end(), prices.begin())(payoff->strike());
                 switch (payoff->optionType())
                 {

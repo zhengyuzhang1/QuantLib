@@ -296,8 +296,8 @@ namespace {
             .withCaps(caps)
             .withFloors(floors);
 
-            for(Size i=0; i<yoyLeg.size(); i++) {
-                ext::dynamic_pointer_cast<YoYInflationCoupon>(yoyLeg[i])->setPricer(pricer);
+            for(const auto & i : yoyLeg) {
+                ext::dynamic_pointer_cast<YoYInflationCoupon>(i)->setPricer(pricer);
             }
 
 
@@ -707,22 +707,22 @@ void InflationCapFlooredCouponTest::testInstrumentEquality() {
     // capped coupon = fwd - cap, and fwd = swap(0)
     // floored coupon = fwd + floor
     for (Size whichPricer = 0; whichPricer < 3; whichPricer++) {
-        for (Size i=0; i<LENGTH(lengths); i++) {
-            for (Size j=0; j<LENGTH(strikes); j++) {
-                for (Size k=0; k<LENGTH(vols); k++) {
+        for (int length : lengths) {
+            for (double strike : strikes) {
+                for (double vol : vols) {
 
-                    Leg leg = vars.makeYoYLeg(vars.evaluationDate,lengths[i]);
+                    Leg leg = vars.makeYoYLeg(vars.evaluationDate,length);
 
                     ext::shared_ptr<Instrument> cap
                     = vars.makeYoYCapFloor(YoYInflationCapFloor::Cap,
-                                           leg, strikes[j], vols[k], whichPricer);
+                                           leg, strike, vol, whichPricer);
 
                     ext::shared_ptr<Instrument> floor
                     = vars.makeYoYCapFloor(YoYInflationCapFloor::Floor,
-                                           leg, strikes[j], vols[k], whichPricer);
+                                           leg, strike, vol, whichPricer);
 
                     Date from = vars.nominalTS->referenceDate();
-                    Date to = from+lengths[i]*Years;
+                    Date to = from+length*Years;
                     Schedule yoySchedule = MakeSchedule().from(from).to(to)
                     .withTenor(1*Years)
                     .withCalendar(UnitedKingdom())
@@ -747,18 +747,18 @@ void InflationCapFlooredCouponTest::testInstrumentEquality() {
                     swap.setPricingEngine(sppe);
 
                     Leg leg2 = vars.makeYoYCapFlooredLeg(whichPricer, from,
-                                                         lengths[i],
-                                                         std::vector<Rate>(lengths[i],strikes[j]),//cap
+                                                         length,
+                                                         std::vector<Rate>(length,strike),//cap
                                                          std::vector<Rate>(),//floor
-                                                         vols[k],
+                                                         vol,
                                                          1.0,   // gearing
                                                          0.0);// spread
 
                     Leg leg3 = vars.makeYoYCapFlooredLeg(whichPricer, from,
-                                                         lengths[i],
+                                                         length,
                                                          std::vector<Rate>(),// cap
-                                                         std::vector<Rate>(lengths[i],strikes[j]),//floor
-                                                         vols[k],
+                                                         std::vector<Rate>(length,strike),//floor
+                                                         vol,
                                                          1.0,   // gearing
                                                          0.0);// spread
 
@@ -767,9 +767,9 @@ void InflationCapFlooredCouponTest::testInstrumentEquality() {
                     if ( fabs(capped - (swap.NPV() - cap->NPV())) > 1.0e-6) {
                         BOOST_FAIL(
                                    "capped coupon != swap(0) - cap:\n"
-                                   << "    length:      " << lengths[i] << " years\n"
-                                   << "    volatility:  " << io::volatility(vols[k]) << "\n"
-                                   << "    strike:      " << io::rate(strikes[j]) << "\n"
+                                   << "    length:      " << length << " years\n"
+                                   << "    volatility:  " << io::volatility(vol) << "\n"
+                                   << "    strike:      " << io::rate(strike) << "\n"
                                    << "    cap value:   " << cap->NPV() << "\n"
                                    << "    swap value:  " << swap.NPV() << "\n"
                                    << "   capped coupon " << capped);
@@ -781,9 +781,9 @@ void InflationCapFlooredCouponTest::testInstrumentEquality() {
                     if ( fabs(floored - (swap.NPV() + floor->NPV())) > 1.0e-6) {
                         BOOST_FAIL(
                                    "floored coupon != swap(0) + floor :\n"
-                                   << "    length:      " << lengths[i] << " years\n"
-                                   << "    volatility:  " << io::volatility(vols[k]) << "\n"
-                                   << "    strike:      " << io::rate(strikes[j]) << "\n"
+                                   << "    length:      " << length << " years\n"
+                                   << "    volatility:  " << io::volatility(vol) << "\n"
+                                   << "    strike:      " << io::rate(strike) << "\n"
                                    << "    floor value: " << floor->NPV() << "\n"
                                    << "    swap value:  " << swap.NPV() << "\n"
                                    << "  floored coupon " << floored);

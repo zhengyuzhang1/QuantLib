@@ -106,31 +106,31 @@ void ForwardOptionTest::testValues() {
     ext::shared_ptr<PricingEngine> engine(
               new ForwardVanillaEngine<AnalyticEuropeanEngine>(stochProcess));
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(
-                                 new PlainVanillaPayoff(values[i].type, 0.0));
-        Date exDate = today + Integer(values[i].t*360+0.5);
+                                 new PlainVanillaPayoff(value.type, 0.0));
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
-        Date reset = today + Integer(values[i].start*360+0.5);
+        Date reset = today + Integer(value.start*360+0.5);
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
-        ForwardVanillaOption option(values[i].moneyness, reset,
+        ForwardVanillaOption option(value.moneyness, reset,
                                     payoff, exercise);
         option.setPricingEngine(engine);
 
         Real calculated = option.NPV();
-        Real error = std::fabs(calculated-values[i].result);
+        Real error = std::fabs(calculated-value.result);
         Real tolerance = 1e-4;
         if (error>tolerance) {
-            REPORT_FAILURE("value", payoff, exercise, values[i].s,
-                           values[i].q, values[i].r, today,
-                           values[i].v, values[i].moneyness, reset,
-                           values[i].result, calculated,
+            REPORT_FAILURE("value", payoff, exercise, value.s,
+                           value.q, value.r, today,
+                           value.v, value.moneyness, reset,
+                           value.result, calculated,
                            error, tolerance);
         }
     }
@@ -173,31 +173,31 @@ void ForwardOptionTest::testPerformanceValues() {
         new ForwardPerformanceVanillaEngine<AnalyticEuropeanEngine>(
                                                                stochProcess));
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(
-                                 new PlainVanillaPayoff(values[i].type, 0.0));
-        Date exDate = today + Integer(values[i].t*360+0.5);
+                                 new PlainVanillaPayoff(value.type, 0.0));
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
-        Date reset = today + Integer(values[i].start*360+0.5);
+        Date reset = today + Integer(value.start*360+0.5);
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
-        ForwardVanillaOption option(values[i].moneyness, reset,
+        ForwardVanillaOption option(value.moneyness, reset,
                                     payoff, exercise);
         option.setPricingEngine(engine);
 
         Real calculated = option.NPV();
-        Real error = std::fabs(calculated-values[i].result);
+        Real error = std::fabs(calculated-value.result);
         Real tolerance = 1e-4;
         if (error>tolerance) {
-            REPORT_FAILURE("value", payoff, exercise, values[i].s,
-                           values[i].q, values[i].r, today,
-                           values[i].v, values[i].moneyness, reset,
-                           values[i].result, calculated,
+            REPORT_FAILURE("value", payoff, exercise, value.s,
+                           value.q, value.r, today,
+                           value.v, value.moneyness, reset,
+                           value.result, calculated,
                            error, tolerance);
         }
     }
@@ -245,33 +245,31 @@ namespace {
         ext::shared_ptr<PricingEngine> engine(
                             new Engine<AnalyticEuropeanEngine>(stochProcess));
 
-        for (Size i=0; i<LENGTH(types); i++) {
-          for (Size j=0; j<LENGTH(moneyness); j++) {
-            for (Size k=0; k<LENGTH(lengths); k++) {
-              for (Size h=0; h<LENGTH(startMonths); h++) {
+        for (auto & type : types) {
+          for (double moneynes : moneyness) {
+            for (int length : lengths) {
+              for (int startMonth : startMonths) {
 
-                Date exDate = today + lengths[k]*Years;
+                Date exDate = today + length*Years;
                 ext::shared_ptr<Exercise> exercise(
                                                 new EuropeanExercise(exDate));
 
-                Date reset = today + startMonths[h]*Months;
+                Date reset = today + startMonth*Months;
 
                 ext::shared_ptr<StrikedTypePayoff> payoff(
-                                       new PlainVanillaPayoff(types[i], 0.0));
+                                       new PlainVanillaPayoff(type, 0.0));
 
-                ForwardVanillaOption option(moneyness[j], reset,
+                ForwardVanillaOption option(moneynes, reset,
                                             payoff, exercise);
                 option.setPricingEngine(engine);
 
-                for (Size l=0; l<LENGTH(underlyings); l++) {
-                  for (Size m=0; m<LENGTH(qRates); m++) {
-                    for (Size n=0; n<LENGTH(rRates); n++) {
-                      for (Size p=0; p<LENGTH(vols); p++) {
+                for (double u : underlyings) {
+                  for (double m : qRates) {
+                    for (double n : rRates) {
+                      for (double v : vols) {
 
-                        Real u = underlyings[l];
-                        Rate q = qRates[m],
-                             r = rRates[n];
-                        Volatility v = vols[p];
+                        Rate q = m,
+                             r = n;
                         spot->setValue(u);
                         qRate->setValue(q);
                         rRate->setValue(r);
@@ -345,7 +343,7 @@ namespace {
                               if (error>tol) {
                                   REPORT_FAILURE(greek, payoff, exercise,
                                                  u, q, r, today, v,
-                                                 moneyness[j], reset,
+                                                 moneynes, reset,
                                                  expct, calcl, error, tol);
                               }
                           }

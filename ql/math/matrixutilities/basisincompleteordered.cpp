@@ -36,13 +36,13 @@ namespace QuantLib {
         if (currentBasis_.size()==euclideanDimension_)
             return false;
 
-        for (Size j=0; j<currentBasis_.size(); ++j) {
+        for (auto & currentBasi : currentBasis_) {
             Real innerProd = std::inner_product(newVector_.begin(),
                 newVector_.end(),
-                currentBasis_[j].begin(), 0.0);
+                currentBasi.begin(), 0.0);
 
             for (Size k=0; k<euclideanDimension_; ++k)
-                newVector_[k] -=innerProd*currentBasis_[j][k];
+                newVector_[k] -=innerProd*currentBasi[k];
         }
 
         Real norm = std::sqrt(std::inner_product(newVector_.begin(),

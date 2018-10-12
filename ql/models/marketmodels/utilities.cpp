@@ -31,10 +31,10 @@ namespace QuantLib {
                     std::vector<std::valarray<bool> >& isPresent) {
 
         std::vector<Time> allTimes;
-        for (Size i=0; i<times.size(); i++) {
+        for (const auto & time : times) {
             allTimes.insert(allTimes.end(),
-                            times[i].begin(),
-                            times[i].end());
+                            time.begin(),
+                            time.end());
         }
 
         // ...sort and compact the vector mergedTimes...

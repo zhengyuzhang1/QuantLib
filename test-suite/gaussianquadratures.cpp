@@ -117,12 +117,12 @@ namespace {
                              Real expected, Real tolerance) {
         const Size order[] = { 6, 7, 12, 20 };
         TabulatedGaussLegendre quad;
-        for (Size i=0; i<LENGTH(order); i++) {
-            quad.order(order[i]);
+        for (unsigned long i : order) {
+            quad.order(i);
             Real realised = quad(f);
             if (std::fabs(realised-expected) > tolerance) {
                 BOOST_ERROR(" integrating " << tag << "\n"
-                            << "    order " << order[i] << "\n"
+                            << "    order " << i << "\n"
                             << "    realised: " << realised << "\n"
                             << "    expected: " << expected);
             }

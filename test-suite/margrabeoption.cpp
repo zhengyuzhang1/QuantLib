@@ -180,18 +180,18 @@ void MargrabeOptionTest::testEuroExchangeTwoAssets() {
     ext::shared_ptr<SimpleQuote> vol2(new SimpleQuote(0.0));
     ext::shared_ptr<BlackVolTermStructure> volTS2 = flatVol(today, vol2, dc);
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
-        Date exDate = today + Integer(values[i].t*360+0.5);
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
-        spot1 ->setValue(values[i].s1);
-        spot2 ->setValue(values[i].s2);
-        qRate1->setValue(values[i].q1);
-        qRate2->setValue(values[i].q2);
-        rRate ->setValue(values[i].r );
-        vol1  ->setValue(values[i].v1);
-        vol2  ->setValue(values[i].v2);
+        spot1 ->setValue(value.s1);
+        spot2 ->setValue(value.s2);
+        qRate1->setValue(value.q1);
+        qRate2->setValue(value.q2);
+        rRate ->setValue(value.r );
+        vol1  ->setValue(value.v1);
+        vol2  ->setValue(value.v2);
 
         ext::shared_ptr<BlackScholesMertonProcess> stochProcess1(new
             BlackScholesMertonProcess(Handle<Quote>(spot1),
@@ -209,7 +209,7 @@ void MargrabeOptionTest::testEuroExchangeTwoAssets() {
         procs.push_back(stochProcess1);
         procs.push_back(stochProcess2);
 
-        Matrix correlationMatrix(2,2, values[i].rho);
+        Matrix correlationMatrix(2,2, value.rho);
         for (Integer j=0; j < 2; j++) {
             correlationMatrix[j][j] = 1.0;
         }
@@ -217,95 +217,95 @@ void MargrabeOptionTest::testEuroExchangeTwoAssets() {
         ext::shared_ptr<PricingEngine> engine(
                              new AnalyticEuropeanMargrabeEngine(stochProcess1,
                                                                 stochProcess2,
-                                                                values[i].rho));
+                                                                value.rho));
 
-        MargrabeOption margrabeOption(values[i].Q1, values[i].Q2, exercise);
+        MargrabeOption margrabeOption(value.Q1, value.Q2, exercise);
 
         // analytic engine
         margrabeOption.setPricingEngine(engine);
 
         Real calculated = margrabeOption.NPV();
-        Real expected = values[i].result;
+        Real expected = value.result;
         Real error = std::fabs(calculated-expected);
-        Real tolerance = values[i].tol;
+        Real tolerance = value.tol;
         if (error > tolerance) {
             REPORT_FAILURE("value", exercise,
-                             values[i].s1, values[i].s2, values[i].Q1,
-                             values[i].Q2, values[i].q1, values[i].q2,
-                             values[i].r, today, values[i].v1,
-                             values[i].v2, values[i].rho, expected,
+                             value.s1, value.s2, value.Q1,
+                             value.Q2, value.q1, value.q2,
+                             value.r, today, value.v1,
+                             value.v2, value.rho, expected,
                              calculated, error, tolerance);
         }
 
         calculated = margrabeOption.delta1();
-        expected = values[i].delta1;
+        expected = value.delta1;
         error= std::fabs(calculated-expected);
         if (error>tolerance) {
             REPORT_FAILURE("delta1", exercise,
-                             values[i].s1, values[i].s2, values[i].Q1,
-                             values[i].Q2, values[i].q1, values[i].q2,
-                             values[i].r, today, values[i].v1,
-                             values[i].v2, values[i].rho, expected,
+                             value.s1, value.s2, value.Q1,
+                             value.Q2, value.q1, value.q2,
+                             value.r, today, value.v1,
+                             value.v2, value.rho, expected,
                              calculated, error, tolerance);
         }
 
         calculated = margrabeOption.delta2();
-        expected = values[i].delta2;
+        expected = value.delta2;
         error= std::fabs(calculated-expected);
         if (error>tolerance) {
             REPORT_FAILURE("delta2", exercise,
-                             values[i].s1, values[i].s2, values[i].Q1,
-                             values[i].Q2, values[i].q1, values[i].q2,
-                             values[i].r, today, values[i].v1,
-                             values[i].v2, values[i].rho, expected,
+                             value.s1, value.s2, value.Q1,
+                             value.Q2, value.q1, value.q2,
+                             value.r, today, value.v1,
+                             value.v2, value.rho, expected,
                              calculated, error, tolerance);
         }
 
         calculated = margrabeOption.gamma1();
-        expected = values[i].gamma1;
+        expected = value.gamma1;
         error= std::fabs(calculated-expected);
         if (error>tolerance) {
             REPORT_FAILURE("gamma1", exercise,
-                             values[i].s1, values[i].s2, values[i].Q1,
-                             values[i].Q2, values[i].q1, values[i].q2,
-                             values[i].r, today, values[i].v1,
-                             values[i].v2, values[i].rho, expected,
+                             value.s1, value.s2, value.Q1,
+                             value.Q2, value.q1, value.q2,
+                             value.r, today, value.v1,
+                             value.v2, value.rho, expected,
                              calculated, error, tolerance);
         }
 
         calculated = margrabeOption.gamma2();
-        expected = values[i].gamma2;
+        expected = value.gamma2;
         error= std::fabs(calculated-expected);
         if (error>tolerance) {
             REPORT_FAILURE("gamma2", exercise,
-                             values[i].s1, values[i].s2, values[i].Q1,
-                             values[i].Q2, values[i].q1, values[i].q2,
-                             values[i].r, today, values[i].v1,
-                             values[i].v2, values[i].rho, expected,
+                             value.s1, value.s2, value.Q1,
+                             value.Q2, value.q1, value.q2,
+                             value.r, today, value.v1,
+                             value.v2, value.rho, expected,
                              calculated, error, tolerance);
         }
 
         calculated = margrabeOption.theta();
-        expected = values[i].theta;
+        expected = value.theta;
         error= std::fabs(calculated-expected);
         if (error>tolerance) {
             REPORT_FAILURE("theta", exercise,
-                             values[i].s1, values[i].s2, values[i].Q1,
-                             values[i].Q2, values[i].q1, values[i].q2,
-                             values[i].r, today, values[i].v1,
-                             values[i].v2, values[i].rho, expected,
+                             value.s1, value.s2, value.Q1,
+                             value.Q2, value.q1, value.q2,
+                             value.r, today, value.v1,
+                             value.v2, value.rho, expected,
                              calculated, error, tolerance);
         }
 
         calculated = margrabeOption.rho();
-        expected = values[i].rho_greek;
+        expected = value.rho_greek;
         error= std::fabs(calculated-expected);
         if (error>tolerance) {
             REPORT_FAILURE("rho_greek", exercise,
-                             values[i].s1, values[i].s2, values[i].Q1,
-                             values[i].Q2, values[i].q1, values[i].q2,
-                             values[i].r, today, values[i].v1,
-                             values[i].v2, values[i].rho, expected,
+                             value.s1, value.s2, value.Q1,
+                             value.Q2, value.q1, value.q2,
+                             value.r, today, value.v1,
+                             value.v2, value.rho, expected,
                              calculated, error, tolerance);
         }
     }
@@ -354,8 +354,8 @@ void MargrabeOptionTest::testGreeks() {
     ext::shared_ptr<SimpleQuote> vol2(new SimpleQuote(0.0));
     ext::shared_ptr<BlackVolTermStructure> volTS2 = flatVol(vol2, dc);
 
-    for (Size k=0; k<LENGTH(residualTimes); k++) {
-          Date exDate = today + timeToDays(residualTimes[k]);
+    for (double residualTime : residualTimes) {
+          Date exDate = today + timeToDays(residualTime);
           ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
           // option to check
@@ -394,14 +394,14 @@ void MargrabeOptionTest::testGreeks() {
 
               for (Size l=0; l<LENGTH(underlyings1); l++) {
                 for (Size m=0; m<LENGTH(qRates1); m++) {
-                  for (Size n=0; n<LENGTH(rRates); n++) {
+                  for (double n : rRates) {
                     for (Size p=0; p<LENGTH(vols1); p++) {
                       Real u1 = underlyings1[l],
                            u2 = underlyings2[l],
                            u;
                       Rate q1 = qRates1[m],
                            q2 = qRates2[m],
-                           r = rRates[n];
+                           r = n;
                       Volatility v1 = vols1[p],
                                  v2 = vols2[p];
 
@@ -541,18 +541,18 @@ void MargrabeOptionTest::testAmericanExchangeTwoAssets() {
     ext::shared_ptr<SimpleQuote> vol2(new SimpleQuote(0.0));
     ext::shared_ptr<BlackVolTermStructure> volTS2 = flatVol(today, vol2, dc);
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
-        Date exDate = today + Integer(values[i].t*360+0.5);
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> exercise(new AmericanExercise(today, exDate));
 
-        spot1 ->setValue(values[i].s1);
-        spot2 ->setValue(values[i].s2);
-        qRate1->setValue(values[i].q1);
-        qRate2->setValue(values[i].q2);
-        rRate ->setValue(values[i].r );
-        vol1  ->setValue(values[i].v1);
-        vol2  ->setValue(values[i].v2);
+        spot1 ->setValue(value.s1);
+        spot2 ->setValue(value.s2);
+        qRate1->setValue(value.q1);
+        qRate2->setValue(value.q2);
+        rRate ->setValue(value.r );
+        vol1  ->setValue(value.v1);
+        vol2  ->setValue(value.v2);
 
         ext::shared_ptr<BlackScholesMertonProcess> stochProcess1(new
             BlackScholesMertonProcess(Handle<Quote>(spot1),
@@ -570,7 +570,7 @@ void MargrabeOptionTest::testAmericanExchangeTwoAssets() {
         procs.push_back(stochProcess1);
         procs.push_back(stochProcess2);
 
-        Matrix correlationMatrix(2,2, values[i].rho);
+        Matrix correlationMatrix(2,2, value.rho);
         for (Integer j=0; j < 2; j++) {
             correlationMatrix[j][j] = 1.0;
         }
@@ -578,23 +578,23 @@ void MargrabeOptionTest::testAmericanExchangeTwoAssets() {
         ext::shared_ptr<PricingEngine> engine(
                              new AnalyticAmericanMargrabeEngine(stochProcess1,
                                                                 stochProcess2,
-                                                                values[i].rho));
+                                                                value.rho));
 
-        MargrabeOption margrabeOption(values[i].Q1, values[i].Q2, exercise);
+        MargrabeOption margrabeOption(value.Q1, value.Q2, exercise);
 
         // analytic engine
         margrabeOption.setPricingEngine(engine);
 
         Real calculated = margrabeOption.NPV();
-        Real expected = values[i].result;
+        Real expected = value.result;
         Real error = std::fabs(calculated-expected);
-        Real tolerance = values[i].tol;
+        Real tolerance = value.tol;
         if (error > tolerance) {
             REPORT_FAILURE("value", exercise,
-                             values[i].s1, values[i].s2, values[i].Q1,
-                             values[i].Q2, values[i].q1, values[i].q2,
-                             values[i].r, today, values[i].v1,
-                             values[i].v2, values[i].rho, expected,
+                             value.s1, value.s2, value.Q1,
+                             value.Q2, value.q1, value.q2,
+                             value.r, today, value.v1,
+                             value.v2, value.rho, expected,
                              calculated, error, tolerance);
         }
     }

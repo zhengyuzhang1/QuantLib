@@ -81,15 +81,15 @@ namespace QuantLib {
         }
 
         bool minStrikeAdded = false, maxStrikeAdded = false;
-        for (Size i = 0; i < tmp.size(); i++) {
+        for (double i : tmp) {
             Real k = section.volatilityType() == Normal
-                         ? f_ + tmp[i]
-                         : tmp[i] * (f_ + shift) - shift;
+                         ? f_ + i
+                         : i * (f_ + shift) - shift;
             if ((section.volatilityType() == ShiftedLognormal &&
-                 tmp[i] <= QL_EPSILON) ||
+                 i <= QL_EPSILON) ||
                 (k >= section.minStrike() && k <= section.maxStrike())) {
                 if (!minStrikeAdded || !close(k, section.minStrike())) {
-                    m_.push_back(tmp[i]);
+                    m_.push_back(i);
                     k_.push_back(k);
                 }
                 if (close(k, section.maxStrike()))

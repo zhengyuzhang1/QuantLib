@@ -58,8 +58,8 @@ namespace QuantLib {
                 applySpecificCondition();
             break;
           case Exercise::Bermudan:
-            for (Size i=0; i<stoppingTimes_.size(); i++) {
-                if (isOnTime(stoppingTimes_[i]))
+            for (double stoppingTime : stoppingTimes_) {
+                if (isOnTime(stoppingTime))
                     applySpecificCondition();
             }
             break;

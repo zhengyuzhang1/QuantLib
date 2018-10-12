@@ -141,10 +141,9 @@ namespace QuantLib {
                                            const UnitOfMeasure& source,
                                            const UnitOfMeasure& target) const {
 
-        for (auto i = data_.begin();
-             i != data_.end(); ++i) {
-            if (matches(*i, commodityType, source, target)) {
-                return *i;
+        for (const auto & i : data_) {
+            if (matches(i, commodityType, source, target)) {
+                return i;
             }
         }
 
@@ -181,12 +180,11 @@ namespace QuantLib {
         // to avoid cycles.
         forbidden.push_back(source.code());
 
-        for (auto i = data_.begin();
-             i != data_.end(); ++i) {
+        for (const auto & i : data_) {
             // we look for conversion data which involve our source unit...
-            if (matches(*i, commodityType, source)) {
+            if (matches(i, commodityType, source)) {
                 const UnitOfMeasure& other =
-                    source == i->source() ? i->target() : i->source();
+                    source == i.source() ? i.target() : i.source();
                 if (find(forbidden.begin(),forbidden.end(),
                          other.code()) == forbidden.end()) {
                     // if we can get to the target from here...
@@ -194,7 +192,7 @@ namespace QuantLib {
                         UnitOfMeasureConversion tail =
                             smartLookup(commodityType,other,target);
                         // ..we're done.
-                        return UnitOfMeasureConversion::chain(*i,tail);
+                        return UnitOfMeasureConversion::chain(i,tail);
                     } catch (Error&) {
                         // otherwise, we just discard this conversion.
                         ;

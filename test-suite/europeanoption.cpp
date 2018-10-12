@@ -265,17 +265,17 @@ void EuropeanOptionTest::testValues() {
     ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
     ext::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(new
-            PlainVanillaPayoff(values[i].type, values[i].strike));
-        Date exDate = today + timeToDays(values[i].t);
+            PlainVanillaPayoff(value.type, value.strike));
+        Date exDate = today + timeToDays(value.t);
         ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
         ext::shared_ptr<BlackScholesMertonProcess> stochProcess(new
             BlackScholesMertonProcess(Handle<Quote>(spot),
@@ -289,12 +289,12 @@ void EuropeanOptionTest::testValues() {
         option.setPricingEngine(engine);
 
         Real calculated = option.NPV();
-        Real error = std::fabs(calculated-values[i].result);
-        Real tolerance = values[i].tol;
+        Real error = std::fabs(calculated-value.result);
+        Real tolerance = value.tol;
         if (error>tolerance) {
-            REPORT_FAILURE("value", payoff, exercise, values[i].s,
-                           values[i].q, values[i].r, today,
-                           values[i].v, values[i].result, calculated,
+            REPORT_FAILURE("value", payoff, exercise, value.s,
+                           value.q, value.r, today,
+                           value.v, value.result, calculated,
                            error, tolerance);
         }
 
@@ -303,12 +303,12 @@ void EuropeanOptionTest::testValues() {
         option.setPricingEngine(engine);
 
         calculated = option.NPV();
-        error = std::fabs(calculated-values[i].result);
+        error = std::fabs(calculated-value.result);
         tolerance = 1.0e-3;
         if (error>tolerance) {
-            REPORT_FAILURE("value", payoff, exercise, values[i].s,
-                           values[i].q, values[i].r, today,
-                           values[i].v, values[i].result, calculated,
+            REPORT_FAILURE("value", payoff, exercise, value.s,
+                           value.q, value.r, today,
+                           value.v, value.result, calculated,
                            error, tolerance);
         }
     }
@@ -642,26 +642,26 @@ void EuropeanOptionTest::testGreeks() {
 
     ext::shared_ptr<StrikedTypePayoff> payoff;
 
-    for (Size i=0; i<LENGTH(types); i++) {
-      for (Size j=0; j<LENGTH(strikes); j++) {
-        for (Size k=0; k<LENGTH(residualTimes); k++) {
-          Date exDate = today + timeToDays(residualTimes[k]);
+    for (auto & type : types) {
+      for (double strike : strikes) {
+        for (double residualTime : residualTimes) {
+          Date exDate = today + timeToDays(residualTime);
           ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
           for (Size kk=0; kk<4; kk++) {
               // option to check
               if (kk==0) {
                   payoff = ext::shared_ptr<StrikedTypePayoff>(new
-                    PlainVanillaPayoff(types[i], strikes[j]));
+                    PlainVanillaPayoff(type, strike));
               } else if (kk==1) {
                   payoff = ext::shared_ptr<StrikedTypePayoff>(new
-                    CashOrNothingPayoff(types[i], strikes[j],
+                    CashOrNothingPayoff(type, strike,
                     100.0));
               } else if (kk==2) {
                   payoff = ext::shared_ptr<StrikedTypePayoff>(new
-                    AssetOrNothingPayoff(types[i], strikes[j]));
+                    AssetOrNothingPayoff(type, strike));
               } else if (kk==3) {
                   payoff = ext::shared_ptr<StrikedTypePayoff>(new
-                    GapPayoff(types[i], strikes[j], 100.0));
+                    GapPayoff(type, strike, 100.0));
               }
 
               ext::shared_ptr<BlackScholesMertonProcess> stochProcess(
@@ -672,14 +672,12 @@ void EuropeanOptionTest::testGreeks() {
               EuropeanOption option(payoff, exercise);
               option.setPricingEngine(engine);
 
-              for (Size l=0; l<LENGTH(underlyings); l++) {
-                for (Size m=0; m<LENGTH(qRates); m++) {
-                  for (Size n=0; n<LENGTH(rRates); n++) {
-                    for (Size p=0; p<LENGTH(vols); p++) {
-                      Real u = underlyings[l];
-                      Rate q = qRates[m],
-                           r = rRates[n];
-                      Volatility v = vols[p];
+              for (double u : underlyings) {
+                for (double m : qRates) {
+                  for (double n : rRates) {
+                    for (double v : vols) {
+                      Rate q = m,
+                           r = n;
                       spot->setValue(u);
                       qRate->setValue(q);
                       rRate->setValue(r);
@@ -798,14 +796,14 @@ void EuropeanOptionTest::testImpliedVol() {
     ext::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
     ext::shared_ptr<YieldTermStructure> rTS = flatRate(today, rRate, dc);
 
-    for (Size i=0; i<LENGTH(types); i++) {
-      for (Size j=0; j<LENGTH(strikes); j++) {
-        for (Size k=0; k<LENGTH(lengths); k++) {
+    for (auto & type : types) {
+      for (double strike : strikes) {
+        for (int length : lengths) {
           // option to check
-          Date exDate = today + lengths[k];
+          Date exDate = today + length;
           ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
           ext::shared_ptr<StrikedTypePayoff> payoff(
-                                new PlainVanillaPayoff(types[i], strikes[j]));
+                                new PlainVanillaPayoff(type, strike));
           ext::shared_ptr<VanillaOption> option =
               makeOption(payoff, exercise, spot, qTS, rTS, volTS,
                          Analytic, Null<Size>(), Null<Size>());
@@ -813,14 +811,12 @@ void EuropeanOptionTest::testImpliedVol() {
           ext::shared_ptr<GeneralizedBlackScholesProcess> process =
               makeProcess(spot, qTS, rTS,volTS);
 
-          for (Size l=0; l<LENGTH(underlyings); l++) {
-            for (Size m=0; m<LENGTH(qRates); m++) {
-              for (Size n=0; n<LENGTH(rRates); n++) {
-                for (Size p=0; p<LENGTH(vols); p++) {
-                  Real u = underlyings[l];
-                  Rate q = qRates[m],
-                       r = rRates[n];
-                  Volatility v = vols[p];
+          for (double u : underlyings) {
+            for (double m : qRates) {
+              for (double n : rRates) {
+                for (double v : vols) {
+                  Rate q = m,
+                       r = n;
                   spot->setValue(u);
                   qRate->setValue(q);
                   rRate->setValue(r);
@@ -844,8 +840,8 @@ void EuropeanOptionTest::testImpliedVol() {
                       } catch (std::exception& e) {
                           BOOST_ERROR(
                               "\nimplied vol calculation failed:" <<
-                              "\n   option:         " << types[i] <<
-                              "\n   strike:         " << strikes[j] <<
+                              "\n   option:         " << type <<
+                              "\n   strike:         " << strike <<
                               "\n   spot value:     " << u <<
                               "\n   dividend yield: " << io::rate(q) <<
                               "\n   risk-free rate: " << io::rate(r) <<
@@ -862,10 +858,10 @@ void EuropeanOptionTest::testImpliedVol() {
                           Real error = relativeError(value,value2,u);
                           if (error > tolerance) {
                               BOOST_ERROR(
-                                  types[i] << " option :\n"
+                                  type << " option :\n"
                                   << "    spot value:          " << u << "\n"
                                   << "    strike:              "
-                                  << strikes[j] << "\n"
+                                  << strike << "\n"
                                   << "    dividend yield:      "
                                   << io::rate(q) << "\n"
                                   << "    risk-free rate:      "
@@ -1007,14 +1003,14 @@ namespace {
         ext::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
         ext::shared_ptr<YieldTermStructure> rTS = flatRate(today,rRate,dc);
 
-        for (Size i=0; i<LENGTH(types); i++) {
-          for (Size j=0; j<LENGTH(strikes); j++) {
-            for (Size k=0; k<LENGTH(lengths); k++) {
-              Date exDate = today + lengths[k]*360;
+        for (auto & type : types) {
+          for (double strike : strikes) {
+            for (int length : lengths) {
+              Date exDate = today + length*360;
               ext::shared_ptr<Exercise> exercise(
                                                 new EuropeanExercise(exDate));
               ext::shared_ptr<StrikedTypePayoff> payoff(new
-                                    PlainVanillaPayoff(types[i], strikes[j]));
+                                    PlainVanillaPayoff(type, strike));
               // reference option
               ext::shared_ptr<VanillaOption> refOption =
                   makeOption(payoff, exercise, spot, qTS, rTS, volTS,
@@ -1024,14 +1020,12 @@ namespace {
                   makeOption(payoff, exercise, spot, qTS, rTS, volTS,
                              engine, binomialSteps, samples);
 
-              for (Size l=0; l<LENGTH(underlyings); l++) {
-                for (Size m=0; m<LENGTH(qRates); m++) {
-                  for (Size n=0; n<LENGTH(rRates); n++) {
-                    for (Size p=0; p<LENGTH(vols); p++) {
-                      Real u = underlyings[l];
-                      Rate q = qRates[m],
-                           r = rRates[n];
-                      Volatility v = vols[p];
+              for (double u : underlyings) {
+                for (double m : qRates) {
+                  for (double n : rRates) {
+                    for (double v : vols) {
+                      Rate q = m,
+                           r = n;
                       spot->setValue(u);
                       qRate->setValue(q);
                       rRate->setValue(r);
@@ -1321,26 +1315,26 @@ void EuropeanOptionTest::testPriceCurve() {
                                                                  timeSteps,
                                                                  gridPoints));
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(new
-            PlainVanillaPayoff(values[i].type, values[i].strike));
+            PlainVanillaPayoff(value.type, value.strike));
         // FLOATING_POINT_EXCEPTION
-        Date exDate = today + timeToDays(values[i].t);
+        Date exDate = today + timeToDays(value.t);
         ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
         EuropeanOption option(payoff, exercise);
         option.setPricingEngine(engine);
         SampledCurve price_curve = option.result<SampledCurve>("priceCurve");
         if (price_curve.empty()) {
-            REPORT_FAILURE("no price curve", payoff, exercise, values[i].s,
-                           values[i].q, values[i].r, today,
-                           values[i].v, values[i].result, 0.0,
+            REPORT_FAILURE("no price curve", payoff, exercise, value.s,
+                           value.q, value.r, today,
+                           value.v, value.result, 0.0,
                            0.0, 0.0);
             continue;
         }
@@ -1646,15 +1640,15 @@ void EuropeanOptionTest::testPDESchemes() {
     const Real expected = option.NPV();
 
     const Real tol = 0.006;
-    for (Size i=0; i < nEngines; ++i) {
-        option.setPricingEngine(engines[i].first);
+    for (const auto & engine : engines) {
+        option.setPricingEngine(engine.first);
         const Real calculated = option.NPV();
 
         const Real diff = std::fabs(expected - calculated);
 
         if (diff > tol) {
             BOOST_FAIL("Failed to reproduce European option values with the "
-                    << engines[i].second << " PDE scheme"
+                    << engine.second << " PDE scheme"
                        << "\n    calculated: " << calculated
                        << "\n    expected:   " << expected
                        << "\n    difference: " << diff

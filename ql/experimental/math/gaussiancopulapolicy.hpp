@@ -45,11 +45,11 @@ namespace QuantLib {
         : numFactors_(factorWeights.size() + factorWeights[0].size())
         {
             /* check factors in LM are normalized. */
-            for(Size iLVar=0; iLVar<factorWeights.size(); iLVar++) {
+            for(const auto & factorWeight : factorWeights) {
                 Real factorsNorm = 
-                    std::inner_product(factorWeights[iLVar].begin(), 
-                        factorWeights[iLVar].end(), 
-                        factorWeights[iLVar].begin(), 0.);
+                    std::inner_product(factorWeight.begin(), 
+                        factorWeight.end(), 
+                        factorWeight.begin(), 0.);
                 QL_REQUIRE(factorsNorm < 1., 
                     "Non normal random factor combination.");
             }

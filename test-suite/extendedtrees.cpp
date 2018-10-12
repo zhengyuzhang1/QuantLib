@@ -171,14 +171,14 @@ namespace {
         ext::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
         ext::shared_ptr<YieldTermStructure> rTS = flatRate(today,rRate,dc);
 
-        for (Size i=0; i<LENGTH(types); i++) {
-          for (Size j=0; j<LENGTH(strikes); j++) {
-            for (Size k=0; k<LENGTH(lengths); k++) {
-              Date exDate = today + lengths[k]*360;
+        for (auto & type : types) {
+          for (double strike : strikes) {
+            for (int length : lengths) {
+              Date exDate = today + length*360;
               ext::shared_ptr<Exercise> exercise(
                                                 new EuropeanExercise(exDate));
               ext::shared_ptr<StrikedTypePayoff> payoff(new
-                                    PlainVanillaPayoff(types[i], strikes[j]));
+                                    PlainVanillaPayoff(type, strike));
               // reference option
               ext::shared_ptr<VanillaOption> refOption =
                   makeOption(payoff, exercise, spot, qTS, rTS, volTS,
@@ -188,14 +188,12 @@ namespace {
                   makeOption(payoff, exercise, spot, qTS, rTS, volTS,
                              engine, binomialSteps);
 
-              for (Size l=0; l<LENGTH(underlyings); l++) {
-                for (Size m=0; m<LENGTH(qRates); m++) {
-                  for (Size n=0; n<LENGTH(rRates); n++) {
-                    for (Size p=0; p<LENGTH(vols); p++) {
-                      Real u = underlyings[l];
-                      Rate q = qRates[m],
-                           r = rRates[n];
-                      Volatility v = vols[p];
+              for (double u : underlyings) {
+                for (double m : qRates) {
+                  for (double n : rRates) {
+                    for (double v : vols) {
+                      Rate q = m,
+                           r = n;
                       spot->setValue(u);
                       qRate->setValue(q);
                       rRate->setValue(r);

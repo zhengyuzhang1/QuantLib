@@ -192,9 +192,9 @@ namespace QuantLib {
         // premium leg pricing (npv is always positive at this stage)
 
         Real premiumNpv = 0.0, defaultAccrualNpv = 0.0;
-        for (Size i = 0; i < arguments_.leg.size(); ++i) {
+        for (auto & i : arguments_.leg) {
             ext::shared_ptr<FixedRateCoupon> coupon =
-                ext::dynamic_pointer_cast<FixedRateCoupon>(arguments_.leg[i]);
+                ext::dynamic_pointer_cast<FixedRateCoupon>(i);
 
             QL_REQUIRE(coupon->dayCounter() == dc ||
                            coupon->dayCounter() == dc1 ||
@@ -203,7 +203,7 @@ namespace QuantLib {
                            << "or Act/360 (" << coupon->dayCounter() << ")");
 
             // premium coupons
-            if (!arguments_.leg[i]->hasOccurred(effectiveProtectionStart,
+            if (!i->hasOccurred(effectiveProtectionStart,
                                                 includeSettlementDateFlows_)) {
                 premiumNpv +=
                     coupon->amount() *

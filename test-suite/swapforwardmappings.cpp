@@ -173,8 +173,8 @@ namespace {
         const std::vector<Time>& rateTimes, Real strike ){
             std::vector<Time> paymentTimes(rateTimes.begin(), rateTimes.end()-1);
             std::vector<ext::shared_ptr<StrikedTypePayoff> > payoffs(paymentTimes.size());
-            for (Size i = 0; i < payoffs.size(); ++i){
-                payoffs[i] = ext::shared_ptr<StrikedTypePayoff>(new
+            for (auto & payoff : payoffs){
+                payoff = ext::shared_ptr<StrikedTypePayoff>(new
                     PlainVanillaPayoff(Option::Call, strike));
             }
             return MultiStepCoterminalSwaptions (rateTimes,

@@ -134,9 +134,9 @@ void BermudanSwaptionTest::testCachedValues() {
                                                      a, sigma));
     std::vector<Date> exerciseDates;
     const Leg& leg = atmSwap->fixedLeg();
-    for (Size i=0; i<leg.size(); i++) {
+    for (const auto & i : leg) {
         ext::shared_ptr<Coupon> coupon =
-            ext::dynamic_pointer_cast<Coupon>(leg[i]);
+            ext::dynamic_pointer_cast<Coupon>(i);
             exerciseDates.push_back(coupon->accrualStartDate());
     }
     ext::shared_ptr<Exercise> exercise(new BermudanExercise(exerciseDates));
@@ -197,8 +197,8 @@ void BermudanSwaptionTest::testCachedValues() {
                     << "expected:   " << otmValueFdm);
 
 
-    for (Size j=0; j<exerciseDates.size(); j++)
-        exerciseDates[j] = vars.calendar.adjust(exerciseDates[j]-10);
+    for (auto & exerciseDate : exerciseDates)
+        exerciseDate = vars.calendar.adjust(exerciseDate-10);
     exercise =
         ext::shared_ptr<Exercise>(new BermudanExercise(exerciseDates));
 
@@ -250,9 +250,9 @@ void BermudanSwaptionTest::testCachedG2Values() {
         const ext::shared_ptr<VanillaSwap> swap(vars.makeSwap(s*atmRate));
 
         std::vector<Date> exerciseDates;
-        for (Size i=0; i < swap->fixedLeg().size(); i++) {
+        for (const auto & i : swap->fixedLeg()) {
             exerciseDates.push_back(ext::dynamic_pointer_cast<Coupon>(
-                swap->fixedLeg()[i])->accrualStartDate());
+                i)->accrualStartDate());
         }
         swaptions.push_back(ext::make_shared<Swaption>(swap,
             ext::make_shared<BermudanExercise>(exerciseDates)));

@@ -94,18 +94,18 @@ void DigitalOptionTest::testCashOrNothingEuropeanValues() {
     ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
     ext::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(new CashOrNothingPayoff(
-            values[i].type, values[i].strike, 10.0));
+            value.type, value.strike, 10.0));
 
-        Date exDate = today + Integer(values[i].t*360+0.5);
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
         ext::shared_ptr<BlackScholesMertonProcess> stochProcess(new
             BlackScholesMertonProcess(Handle<Quote>(spot),
@@ -119,11 +119,11 @@ void DigitalOptionTest::testCashOrNothingEuropeanValues() {
         opt.setPricingEngine(engine);
 
         Real calculated = opt.NPV();
-        Real error = std::fabs(calculated-values[i].result);
-        if (error > values[i].tol) {
-            REPORT_FAILURE("value", payoff, exercise, values[i].s, values[i].q,
-                           values[i].r, today, values[i].v, values[i].result,
-                           calculated, error, values[i].tol, values[i].knockin);
+        Real error = std::fabs(calculated-value.result);
+        if (error > value.tol) {
+            REPORT_FAILURE("value", payoff, exercise, value.s, value.q,
+                           value.r, today, value.v, value.result,
+                           calculated, error, value.tol, value.knockin);
         }
     }
 }
@@ -149,18 +149,18 @@ void DigitalOptionTest::testAssetOrNothingEuropeanValues() {
     ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
     ext::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(new AssetOrNothingPayoff(
-            values[i].type, values[i].strike));
+            value.type, value.strike));
 
-        Date exDate = today + Integer(values[i].t*360+0.5);
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
         ext::shared_ptr<BlackScholesMertonProcess> stochProcess(new
             BlackScholesMertonProcess(Handle<Quote>(spot),
@@ -174,11 +174,11 @@ void DigitalOptionTest::testAssetOrNothingEuropeanValues() {
         opt.setPricingEngine(engine);
 
         Real calculated = opt.NPV();
-        Real error = std::fabs(calculated-values[i].result);
-        if (error > values[i].tol) {
-            REPORT_FAILURE("value", payoff, exercise, values[i].s, values[i].q,
-                           values[i].r, today, values[i].v, values[i].result,
-                           calculated, error, values[i].tol, values[i].knockin);
+        Real error = std::fabs(calculated-value.result);
+        if (error > value.tol) {
+            REPORT_FAILURE("value", payoff, exercise, value.s, value.q,
+                           value.r, today, value.v, value.result,
+                           calculated, error, value.tol, value.knockin);
         }
     }
 }
@@ -204,18 +204,18 @@ void DigitalOptionTest::testGapEuropeanValues() {
     ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
     ext::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(new GapPayoff(
-            values[i].type, values[i].strike, 57.00));
+            value.type, value.strike, 57.00));
 
-        Date exDate = today + Integer(values[i].t*360+0.5);
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
         ext::shared_ptr<BlackScholesMertonProcess> stochProcess(new
             BlackScholesMertonProcess(Handle<Quote>(spot),
@@ -229,11 +229,11 @@ void DigitalOptionTest::testGapEuropeanValues() {
         opt.setPricingEngine(engine);
 
         Real calculated = opt.NPV();
-        Real error = std::fabs(calculated-values[i].result);
-        if (error > values[i].tol) {
-            REPORT_FAILURE("value", payoff, exercise, values[i].s, values[i].q,
-                           values[i].r, today, values[i].v, values[i].result,
-                           calculated, error, values[i].tol, values[i].knockin);
+        Real error = std::fabs(calculated-value.result);
+        if (error > value.tol) {
+            REPORT_FAILURE("value", payoff, exercise, value.s, value.q,
+                           value.r, today, value.v, value.result,
+                           calculated, error, value.tol, value.knockin);
         }
     }
 }
@@ -271,19 +271,19 @@ void DigitalOptionTest::testCashAtHitOrNothingAmericanValues() {
     ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
     ext::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(new CashOrNothingPayoff(
-            values[i].type, values[i].strike, 15.00));
+            value.type, value.strike, 15.00));
 
-        Date exDate = today + Integer(values[i].t*360+0.5);
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> amExercise(new AmericanExercise(today,
                                                                     exDate));
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
         ext::shared_ptr<BlackScholesMertonProcess> stochProcess(new
             BlackScholesMertonProcess(Handle<Quote>(spot),
@@ -297,11 +297,11 @@ void DigitalOptionTest::testCashAtHitOrNothingAmericanValues() {
         opt.setPricingEngine(engine);
 
         Real calculated = opt.NPV();
-        Real error = std::fabs(calculated-values[i].result);
-        if (error > values[i].tol) {
-            REPORT_FAILURE("value", payoff, amExercise, values[i].s,
-                           values[i].q, values[i].r, today, values[i].v,
-                           values[i].result, calculated, error, values[i].tol, values[i].knockin);
+        Real error = std::fabs(calculated-value.result);
+        if (error > value.tol) {
+            REPORT_FAILURE("value", payoff, amExercise, value.s,
+                           value.q, value.r, today, value.v,
+                           value.result, calculated, error, value.tol, value.knockin);
         }
     }
 }
@@ -337,19 +337,19 @@ void DigitalOptionTest::testAssetAtHitOrNothingAmericanValues() {
     ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.25));
     ext::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(new AssetOrNothingPayoff(
-            values[i].type, values[i].strike));
+            value.type, value.strike));
 
-        Date exDate = today + Integer(values[i].t*360+0.5);
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> amExercise(new AmericanExercise(today,
                                                                     exDate));
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
         ext::shared_ptr<BlackScholesMertonProcess> stochProcess(new
             BlackScholesMertonProcess(Handle<Quote>(spot),
@@ -363,11 +363,11 @@ void DigitalOptionTest::testAssetAtHitOrNothingAmericanValues() {
         opt.setPricingEngine(engine);
 
         Real calculated = opt.NPV();
-        Real error = std::fabs(calculated-values[i].result);
-        if (error > values[i].tol) {
-            REPORT_FAILURE("value", payoff, amExercise, values[i].s,
-                           values[i].q, values[i].r, today, values[i].v,
-                           values[i].result, calculated, error, values[i].tol, values[i].knockin);
+        Real error = std::fabs(calculated-value.result);
+        if (error > value.tol) {
+            REPORT_FAILURE("value", payoff, amExercise, value.s,
+                           value.q, value.r, today, value.v,
+                           value.result, calculated, error, value.tol, value.knockin);
         }
     }
 }
@@ -402,20 +402,20 @@ void DigitalOptionTest::testCashAtExpiryOrNothingAmericanValues() {
     ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.25));
     ext::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(new CashOrNothingPayoff(
-            values[i].type, values[i].strike, 15.0));
+            value.type, value.strike, 15.0));
 
-        Date exDate = today + Integer(values[i].t*360+0.5);
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> amExercise(new AmericanExercise(today,
                                                                     exDate,
                                                                     true));
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
         ext::shared_ptr<BlackScholesMertonProcess> stochProcess(new
             BlackScholesMertonProcess(Handle<Quote>(spot),
@@ -423,7 +423,7 @@ void DigitalOptionTest::testCashAtExpiryOrNothingAmericanValues() {
                                       Handle<YieldTermStructure>(rTS),
                                       Handle<BlackVolTermStructure>(volTS)));
         ext::shared_ptr<PricingEngine> engine;
-        if (values[i].knockin)
+        if (value.knockin)
            engine.reset(new AnalyticDigitalAmericanEngine(stochProcess));
         else
            engine.reset(new AnalyticDigitalAmericanKOEngine(stochProcess));
@@ -432,11 +432,11 @@ void DigitalOptionTest::testCashAtExpiryOrNothingAmericanValues() {
         opt.setPricingEngine(engine);
 
         Real calculated = opt.NPV();
-        Real error = std::fabs(calculated-values[i].result);
-        if (error > values[i].tol) {
-            REPORT_FAILURE("value", payoff, amExercise, values[i].s,
-                           values[i].q, values[i].r, today, values[i].v,
-                           values[i].result, calculated, error, values[i].tol, values[i].knockin);
+        Real error = std::fabs(calculated-value.result);
+        if (error > value.tol) {
+            REPORT_FAILURE("value", payoff, amExercise, value.s,
+                           value.q, value.r, today, value.v,
+                           value.result, calculated, error, value.tol, value.knockin);
         }
     }
 }
@@ -475,20 +475,20 @@ void DigitalOptionTest::testAssetAtExpiryOrNothingAmericanValues() {
     ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.25));
     ext::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(new AssetOrNothingPayoff(
-            values[i].type, values[i].strike));
+            value.type, value.strike));
 
-        Date exDate = today + Integer(values[i].t*360+0.5);
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> amExercise(new AmericanExercise(today,
                                                                     exDate,
                                                                     true));
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
         ext::shared_ptr<BlackScholesMertonProcess> stochProcess(new
             BlackScholesMertonProcess(Handle<Quote>(spot),
@@ -496,7 +496,7 @@ void DigitalOptionTest::testAssetAtExpiryOrNothingAmericanValues() {
                                       Handle<YieldTermStructure>(rTS),
                                       Handle<BlackVolTermStructure>(volTS)));
         ext::shared_ptr<PricingEngine> engine;
-        if (values[i].knockin)
+        if (value.knockin)
            engine.reset(new AnalyticDigitalAmericanEngine(stochProcess));
         else
            engine.reset(new AnalyticDigitalAmericanKOEngine(stochProcess));
@@ -505,11 +505,11 @@ void DigitalOptionTest::testAssetAtExpiryOrNothingAmericanValues() {
         opt.setPricingEngine(engine);
 
         Real calculated = opt.NPV();
-        Real error = std::fabs(calculated-values[i].result);
-        if (error > values[i].tol) {
-            REPORT_FAILURE("value", payoff, amExercise, values[i].s,
-                           values[i].q, values[i].r, today, values[i].v,
-                           values[i].result, calculated, error, values[i].tol, values[i].knockin);
+        Real error = std::fabs(calculated-value.result);
+        if (error > value.tol) {
+            REPORT_FAILURE("value", payoff, amExercise, value.s,
+                           value.q, value.r, today, value.v,
+                           value.result, calculated, error, value.tol, value.knockin);
         }
     }
 }
@@ -571,24 +571,20 @@ void DigitalOptionTest::testCashAtHitOrNothingAmericanGreeks() {
 
     bool knockin=true;
     for (Size j=0; j<LENGTH(engines); j++) {
-      for (Size i1=0; i1<LENGTH(types); i1++) {
-        for (Size i6=0; i6<LENGTH(strikes); i6++) {
+      for (auto & type : types) {
+        for (double strike : strikes) {
           ext::shared_ptr<StrikedTypePayoff> payoff(
-                            new CashOrNothingPayoff(types[i1],
-                                                    strikes[i6], cashPayoff));
+                            new CashOrNothingPayoff(type,
+                                                    strike, cashPayoff));
 
           VanillaOption opt(payoff, exercises[j]);
           opt.setPricingEngine(engines[j]);
 
-          for (Size i2=0; i2<LENGTH(underlyings); i2++) {
-            for (Size i4=0; i4<LENGTH(qRates); i4++) {
-              for (Size i3=0; i3<LENGTH(rRates); i3++) {
-                for (Size i7=0; i7<LENGTH(vols); i7++) {
+          for (double u : underlyings) {
+            for (double q : qRates) {
+              for (double r : rRates) {
+                for (double v : vols) {
                   // test data
-                  Real u = underlyings[i2];
-                  Rate q = qRates[i4];
-                  Rate r = rRates[i3];
-                  Volatility v = vols[i7];
                   spot->setValue(u);
                   qRate->setValue(q);
                   rRate->setValue(r);
@@ -712,19 +708,19 @@ void DigitalOptionTest::testMCCashAtHit() {
     Size maxSamples = 1000000;
     BigNatural seed = 1;
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(new CashOrNothingPayoff(
-            values[i].type, values[i].strike, 15.0));
+            value.type, value.strike, 15.0));
         //FLOATING_POINT_EXCEPTION
-        Date exDate = today + Integer(values[i].t*360+0.5);
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> amExercise(
                                          new AmericanExercise(today, exDate));
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
         ext::shared_ptr<BlackScholesMertonProcess> stochProcess(new
             BlackScholesMertonProcess(Handle<Quote>(spot),
@@ -745,11 +741,11 @@ void DigitalOptionTest::testMCCashAtHit() {
         opt.setPricingEngine(mcldEngine);
 
         Real calculated = opt.NPV();
-        Real error = std::fabs(calculated-values[i].result);
-        if (error > values[i].tol) {
-            REPORT_FAILURE("value", payoff, amExercise, values[i].s,
-                           values[i].q, values[i].r, today, values[i].v,
-                           values[i].result, calculated, error, values[i].tol, values[i].knockin);
+        Real error = std::fabs(calculated-value.result);
+        if (error > value.tol) {
+            REPORT_FAILURE("value", payoff, amExercise, value.s,
+                           value.q, value.r, today, value.v,
+                           value.result, calculated, error, value.tol, value.knockin);
         }
     }
 }

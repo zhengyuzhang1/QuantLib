@@ -167,8 +167,7 @@ void SquareRootCLVModelTest::testSquareRootCLVVanillaPricing() {
     const chi_squared_type dist(df, ncp);
         
     const Real strikes[] = { 50, 75, 100, 125, 150, 200 };
-    for (Size i=0; i < LENGTH(strikes); ++i) {
-        const Real strike = strikes[i];
+    for (double strike : strikes) {
         const Option::Type optionType =
             (strike > fwd) ? Option::Call : Option::Put;
 
@@ -253,8 +252,8 @@ void SquareRootCLVModelTest::testSquareRootCLVMappingFunction() {
 
     const Real strikes[] = { 80, 100, 120 };
     const Size offsets[] = { 7, 14, 28, 91, 182, 183, 184, 185, 186, 365 };
-    for (Size i=0; i < LENGTH(offsets); ++i) {
-        const Date m = todaysDate + Period(offsets[i], Days);
+    for (unsigned long offset : offsets) {
+        const Date m = todaysDate + Period(offset, Days);
         const Time t = dc.yearFraction(todaysDate, m);
 
         const Real df  = 4*theta*kappa/(sigma*sigma);
@@ -265,8 +264,7 @@ void SquareRootCLVModelTest::testSquareRootCLVMappingFunction() {
 
         const Real fwd = s0*qTS->discount(m)/rTS->discount(m);
 
-        for (Size j=0; j < LENGTH(strikes); ++j) {
-            const Real strike = strikes[j];
+        for (double strike : strikes) {
             const Option::Type optionType =
                 (strike > fwd) ? Option::Call : Option::Put;
 
@@ -323,8 +321,8 @@ namespace {
             const Array diff = values(params);
 
             Real retVal = 0.0;
-            for (Size i=0; i < diff.size(); ++i)
-                retVal += diff[i]*diff[i];
+            for (double i : diff)
+                retVal += i*i;
 
             return retVal;
         }
@@ -442,8 +440,8 @@ namespace {
             }
 
             Real s = 0.0;
-            for (Size i=0; i < retVal.size(); ++i)
-                s+=retVal[i]*retVal[i];
+            for (double i : retVal)
+                s+=i*i;
 
             return retVal;
         }
@@ -578,9 +576,9 @@ void SquareRootCLVModelTest::testForwardSkew() {
 
     // forward skew of the Heston-SLV model
     std::vector<Time> mandatoryTimes;
-    for (Size i=0, n = calibrationDates.size(); i < n; ++i)
+    for (auto calibrationDate : calibrationDates)
         mandatoryTimes.push_back(
-            dc.yearFraction(todaysDate, calibrationDates[i]));
+            dc.yearFraction(todaysDate, calibrationDate));
 
     const Size tSteps = 200;
     const TimeGrid grid(mandatoryTimes.begin(), mandatoryTimes.end(), tSteps);

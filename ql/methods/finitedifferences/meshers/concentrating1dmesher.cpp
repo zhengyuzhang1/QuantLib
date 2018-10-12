@@ -159,10 +159,9 @@ namespace QuantLib {
         QL_REQUIRE(end > start, "end must be larger than start");
 
         std::vector<Real> points, betas;
-        for (auto
-                iter = cPoints.begin(); iter != cPoints.end(); ++iter) {
-            points.push_back(iter->get<0>());
-            betas.push_back(square<Real>()(iter->get<1>()*(end-start)));
+        for (const auto & cPoint : cPoints) {
+            points.push_back(cPoint.get<0>());
+            betas.push_back(square<Real>()(cPoint.get<1>()*(end-start)));
         }
 
         // get scaling factor a so that y(1) = end

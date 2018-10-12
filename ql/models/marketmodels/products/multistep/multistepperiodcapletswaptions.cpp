@@ -47,8 +47,8 @@ namespace QuantLib {
 
         checkIncreasingTimes(forwardOptionPaymentTimes);
         checkIncreasingTimes(swaptionPaymentTimes);
-        for (Size i=0; i < swaptionPaymentTimes_.size(); ++i)
-            paymentTimes_.push_back(swaptionPaymentTimes_[i]);
+        for (double swaptionPaymentTime : swaptionPaymentTimes_)
+            paymentTimes_.push_back(swaptionPaymentTime);
         lastIndex_ = rateTimes.size()-1;
         numberFRAs_ = rateTimes.size()-1;
         numberBigFRAs_ = (numberFRAs_-offset_)/period_;
@@ -82,8 +82,8 @@ namespace QuantLib {
                                                                genCashFlows)
     {
 
-     for (Size i=0; i < numberCashFlowsThisStep.size(); ++i)
-        numberCashFlowsThisStep[i]=0UL;
+     for (unsigned long & i : numberCashFlowsThisStep)
+        i=0UL;
 
     if (currentIndex_ >=offset_ && (currentIndex_ - offset_) % period_ ==0)
     {

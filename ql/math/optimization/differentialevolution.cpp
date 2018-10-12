@@ -113,8 +113,8 @@ namespace QuantLib {
               Array jitter(population[0].values.size(), 0.0);
 
               for (Size popIter = 0; popIter < population.size(); popIter++) {
-                  for (Size jitterIter = 0; jitterIter < jitter.size(); jitterIter++) {
-                      jitter[jitterIter] = rng_.nextReal();
+                  for (double & jitterIter : jitter) {
+                      jitterIter = rng_.nextReal();
                   }
                   population[popIter].values = bestMemberEver_.values
                       + (shuffledPop1[popIter].values - population[popIter].values)
@@ -149,8 +149,8 @@ namespace QuantLib {
               randomize(population.begin(), population.end(), rng_);
               mirrorPopulation = shuffledPop1;
               Array FWeight = Array(population.front().values.size(), 0.0);
-              for (Size fwIter = 0; fwIter < FWeight.size(); fwIter++)
-                  FWeight[fwIter] = (1.0 - configuration().stepsizeWeight)
+              for (double & fwIter : FWeight)
+                  fwIter = (1.0 - configuration().stepsizeWeight)
                       * rng_.nextReal() + configuration().stepsizeWeight;
               for (Size popIter = 0; popIter < population.size(); popIter++) {
                   population[popIter].values = population[popIter].values
@@ -334,17 +334,17 @@ namespace QuantLib {
          // [=tau1] A Comparative Study on Numerical Benchmark
          // Problems." page 649 for reference
         Real sizeWeightChangeProb = 0.1;
-        for (Size coIter = 0;coIter < currGenSizeWeights_.size(); coIter++){
+        for (double & currGenSizeWeight : currGenSizeWeights_){
             if (rng_.nextReal() < sizeWeightChangeProb)
-                currGenSizeWeights_[coIter] = sizeWeightLowerBound + rng_.nextReal() * sizeWeightUpperBound;
+                currGenSizeWeight = sizeWeightLowerBound + rng_.nextReal() * sizeWeightUpperBound;
         }
     }
 
     void DifferentialEvolution::adaptCrossover() const {
         Real crossoverChangeProb = 0.1; // [=tau2]
-        for (Size coIter = 0;coIter < currGenCrossover_.size(); coIter++){
+        for (double & coIter : currGenCrossover_){
             if (rng_.nextReal() < crossoverChangeProb)
-                currGenCrossover_[coIter] = rng_.nextReal();
+                coIter = rng_.nextReal();
         }
     }
 

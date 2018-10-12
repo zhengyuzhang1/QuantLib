@@ -227,39 +227,39 @@ void OvernightIndexedSwapTest::testFairRate() {
     Period lengths[] = { 1*Years, 2*Years, 5*Years, 10*Years, 20*Years };
     Spread spreads[] = { -0.001, -0.01, 0.0, 0.01, 0.001 };
 
-    for (Size i=0; i<LENGTH(lengths); i++) {
-        for (Size j=0; j<LENGTH(spreads); j++) {
+    for (auto length : lengths) {
+        for (double spread : spreads) {
 
             shared_ptr<OvernightIndexedSwap> swap =
-                vars.makeSwap(lengths[i],0.0,spreads[j],false);
+                vars.makeSwap(length,0.0,spread,false);
             shared_ptr<OvernightIndexedSwap> swap2 =
-                vars.makeSwap(lengths[i],0.0,spreads[j],true);
+                vars.makeSwap(length,0.0,spread,true);
             if(std::fabs(swap->fairRate()-swap2->fairRate()) > 1.0e-10) {
                 BOOST_ERROR("fair rates are different:\n"
                             << std::setprecision(2)
-                            << "    length: " << lengths[i] << " \n"
+                            << "    length: " << length << " \n"
                             << "    floating spread: "
-                            << io::rate(spreads[j]) << "\n"
+                            << io::rate(spread) << "\n"
                             << std::setprecision(12)
                             << "    fair rate (non telescopic value dates): " << swap->fairRate() << "\n"
                             << "    fair rate (telescopic value dates)    : " << swap2->fairRate());
             }
-            swap = vars.makeSwap(lengths[i],swap->fairRate(),spreads[j],false);
+            swap = vars.makeSwap(length,swap->fairRate(),spread,false);
             if (std::fabs(swap->NPV()) > 1.0e-10) {
                 BOOST_ERROR("recalculating with implied rate (non telescopic value dates):\n"
                             << std::setprecision(2)
-                            << "    length: " << lengths[i] << " \n"
+                            << "    length: " << length << " \n"
                             << "    floating spread: "
-                            << io::rate(spreads[j]) << "\n"
+                            << io::rate(spread) << "\n"
                             << "    swap value: " << swap->NPV());
             }
-            swap = vars.makeSwap(lengths[i],swap->fairRate(),spreads[j],true);
+            swap = vars.makeSwap(length,swap->fairRate(),spread,true);
             if (std::fabs(swap->NPV()) > 1.0e-10) {
                 BOOST_ERROR("recalculating with implied rate (telescopic value dates):\n"
                             << std::setprecision(2)
-                            << "    length: " << lengths[i] << " \n"
+                            << "    length: " << length << " \n"
                             << "    floating spread: "
-                            << io::rate(spreads[j]) << "\n"
+                            << io::rate(spread) << "\n"
                             << "    swap value: " << swap->NPV());
             }
         }
@@ -277,39 +277,39 @@ void OvernightIndexedSwapTest::testFairSpread() {
     Period lengths[] = { 1*Years, 2*Years, 5*Years, 10*Years, 20*Years };
     Rate rates[] = { 0.04, 0.05, 0.06, 0.07 };
 
-    for (Size i=0; i<LENGTH(lengths); i++) {
-        for (Size j=0; j<LENGTH(rates); j++) {
+    for (auto length : lengths) {
+        for (double j : rates) {
 
             shared_ptr<OvernightIndexedSwap> swap =
-                vars.makeSwap(lengths[i], rates[j], 0.0,false);
+                vars.makeSwap(length, j, 0.0,false);
             shared_ptr<OvernightIndexedSwap> swap2 =
-                vars.makeSwap(lengths[i], rates[j], 0.0,true);
+                vars.makeSwap(length, j, 0.0,true);
             Spread fairSpread = swap->fairSpread();
             Spread fairSpread2 = swap2->fairSpread();
             if(std::fabs(fairSpread-fairSpread2) > 1.0e-10) {
                 BOOST_ERROR("fair spreads are different:\n" <<
                             std::setprecision(2) <<
-                            "\n     length: " << lengths[i] <<
-                            "\n fixed rate: " << io::rate(rates[j]) <<
+                            "\n     length: " << length <<
+                            "\n fixed rate: " << io::rate(j) <<
                             "\nfair spread (non telescopic value dates): " << io::rate(fairSpread) <<
                             "\nfair spread (telescopic value dates)    : " << io::rate(fairSpread2));
 
             }
-            swap = vars.makeSwap(lengths[i], rates[j], fairSpread,false);
+            swap = vars.makeSwap(length, j, fairSpread,false);
             if (std::fabs(swap->NPV()) > 1.0e-10) {
                 BOOST_ERROR("\nrecalculating with implied spread (non telescopic value dates):" <<
                             std::setprecision(2) <<
-                            "\n     length: " << lengths[i] <<
-                            "\n fixed rate: " << io::rate(rates[j]) <<
+                            "\n     length: " << length <<
+                            "\n fixed rate: " << io::rate(j) <<
                             "\nfair spread: " << io::rate(fairSpread) <<
                             "\n swap value: " << swap->NPV());
             }
-            swap = vars.makeSwap(lengths[i], rates[j], fairSpread,true);
+            swap = vars.makeSwap(length, j, fairSpread,true);
             if (std::fabs(swap->NPV()) > 1.0e-10) {
                 BOOST_ERROR("\nrecalculating with implied spread (telescopic value dates):" <<
                             std::setprecision(2) <<
-                            "\n     length: " << lengths[i] <<
-                            "\n fixed rate: " << io::rate(rates[j]) <<
+                            "\n     length: " << length <<
+                            "\n fixed rate: " << io::rate(j) <<
                             "\nfair spread: " << io::rate(fairSpread) <<
                             "\n swap value: " << swap->NPV());
             }
@@ -359,15 +359,15 @@ void testBootstrap(bool telescopicValueDates) {
     shared_ptr<IborIndex> euribor3m(new Euribor3M);
     shared_ptr<Eonia> eonia(new Eonia);
 
-    for (Size i = 0; i < LENGTH(depositData); i++) {
-        Real rate = 0.01 * depositData[i].rate;
+    for (auto & i : depositData) {
+        Real rate = 0.01 * i.rate;
         shared_ptr<SimpleQuote> simple = ext::make_shared<SimpleQuote>(rate);
         shared_ptr<Quote> quote (simple);
-        Period term = depositData[i].n * depositData[i].unit;
+        Period term = i.n * i.unit;
         shared_ptr<RateHelper> helper(new
                     DepositRateHelper(Handle<Quote>(quote),
                                       term,
-                                      depositData[i].settlementDays,
+                                      i.settlementDays,
                                       euribor3m->fixingCalendar(),
                                       euribor3m->businessDayConvention(),
                                       euribor3m->endOfMonth(),
@@ -379,15 +379,15 @@ void testBootstrap(bool telescopicValueDates) {
             swap3mHelpers.push_back(helper);
     }
 
-    for (Size i = 0; i < LENGTH(fraData); i++) {
-        Real rate = 0.01 * fraData[i].rate;
+    for (auto & i : fraData) {
+        Real rate = 0.01 * i.rate;
         shared_ptr<SimpleQuote> simple = ext::make_shared<SimpleQuote>(rate);
         shared_ptr<Quote> quote (simple);
         shared_ptr<RateHelper> helper(new
                                FraRateHelper(Handle<Quote>(quote),
-                                             fraData[i].nExpiry,
-                                             fraData[i].nMaturity,
-                                             fraData[i].settlementDays,
+                                             i.nExpiry,
+                                             i.nMaturity,
+                                             i.settlementDays,
                                              euribor3m->fixingCalendar(),
                                              euribor3m->businessDayConvention(),
                                              euribor3m->endOfMonth(),
@@ -395,13 +395,13 @@ void testBootstrap(bool telescopicValueDates) {
         swap3mHelpers.push_back(helper);
     }
 
-    for (Size i = 0; i < LENGTH(eoniaSwapData); i++) {
-        Real rate = 0.01 * eoniaSwapData[i].rate;
+    for (auto & i : eoniaSwapData) {
+        Real rate = 0.01 * i.rate;
         shared_ptr<SimpleQuote> simple = ext::make_shared<SimpleQuote>(rate);
         shared_ptr<Quote> quote (simple);
-        Period term = eoniaSwapData[i].n * eoniaSwapData[i].unit;
+        Period term = i.n * i.unit;
         shared_ptr<RateHelper> helper(new
-                     OISRateHelper(eoniaSwapData[i].settlementDays,
+                     OISRateHelper(i.settlementDays,
                                    term,
                                    Handle<Quote>(quote),
                                    eonia,
@@ -410,12 +410,12 @@ void testBootstrap(bool telescopicValueDates) {
         eoniaHelpers.push_back(helper);
     }
 
-    for (Size i = 0; i < LENGTH(swapData); i++) {
-        Real rate = 0.01 * swapData[i].rate;
+    for (auto & i : swapData) {
+        Real rate = 0.01 * i.rate;
         shared_ptr<SimpleQuote> simple = ext::make_shared<SimpleQuote>(rate);
         shared_ptr<Quote> quote (simple);
-        Period tenor = swapData[i].nIndexUnits * swapData[i].indexUnit;
-        Period term = swapData[i].nTermUnits * swapData[i].termUnit;
+        Period tenor = i.nIndexUnits * i.indexUnit;
+        Period term = i.nTermUnits * i.termUnit;
         shared_ptr<RateHelper> helper(new SwapRateHelper(
                                Handle<Quote>(quote),
                                term,
@@ -438,9 +438,9 @@ void testBootstrap(bool telescopicValueDates) {
 
     // test curve consistency
     Real tolerance = 1.0e-8;
-    for (Size i = 0; i < LENGTH(eoniaSwapData); i++) {
-        Rate expected = eoniaSwapData[i].rate;
-        Period term = eoniaSwapData[i].n * eoniaSwapData[i].unit;
+    for (auto & i : eoniaSwapData) {
+        Rate expected = i.rate;
+        Period term = i.n * i.unit;
         // test telescopic value dates (in bootstrap) against non telescopic value dates (swap here)
         shared_ptr<OvernightIndexedSwap> swap = vars.makeSwap(term, 0.0, 0.0, false);
         Rate calculated = 100.0 * swap->fairRate();
@@ -484,19 +484,19 @@ void OvernightIndexedSwapTest::testSeasonedSwaps() {
     vars.eoniaIndex->addFixing(Date(4,February,2009), 0.0012);
     vars.eoniaIndex->addFixing(Date(5,February,2009), 0.0013);
 
-    for (Size i=0; i<LENGTH(lengths); i++) {
-        for (Size j=0; j<LENGTH(spreads); j++) {
+    for (auto length : lengths) {
+        for (double spread : spreads) {
 
             shared_ptr<OvernightIndexedSwap> swap =
-                vars.makeSwap(lengths[i],0.0,spreads[j],false,effectiveDate);
+                vars.makeSwap(length,0.0,spread,false,effectiveDate);
             shared_ptr<OvernightIndexedSwap> swap2 =
-                vars.makeSwap(lengths[i],0.0,spreads[j],true,effectiveDate);
+                vars.makeSwap(length,0.0,spread,true,effectiveDate);
             if (std::fabs(swap->NPV() - swap2->NPV()) > 1.0e-10) {
                 BOOST_ERROR("swap npv is different:\n"
                             << std::setprecision(2)
-                            << "    length: " << lengths[i] << " \n"
+                            << "    length: " << length << " \n"
                             << "    floating spread: "
-                            << io::rate(spreads[j]) << "\n"
+                            << io::rate(spread) << "\n"
                             << "    swap value (non telescopic value dates): " << swap->NPV()
                             << "\n    swap value (telescopic value dates    ): " << swap2->NPV());
             }

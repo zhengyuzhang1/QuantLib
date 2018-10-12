@@ -53,22 +53,22 @@ namespace {
         void makeAtmVolTest(const SwaptionVolatilityCube& volCube,
                             Real tolerance) {
 
-            for (Size i=0; i<atm.tenors.options.size(); i++) {
-              for (Size j=0; j<atm.tenors.swaps.size(); j++) {
-                Rate strike = volCube.atmStrike(atm.tenors.options[i],
-                                                atm.tenors.swaps[j]);
+            for (auto option : atm.tenors.options) {
+              for (auto swap : atm.tenors.swaps) {
+                Rate strike = volCube.atmStrike(option,
+                                                swap);
                 Volatility expVol =
-                    atmVolMatrix->volatility(atm.tenors.options[i],
-                                             atm.tenors.swaps[j],
+                    atmVolMatrix->volatility(option,
+                                             swap,
                                              strike, true);
-                Volatility actVol = volCube.volatility(atm.tenors.options[i],
-                                                       atm.tenors.swaps[j],
+                Volatility actVol = volCube.volatility(option,
+                                                       swap,
                                                        strike, true);
                 Volatility error = std::abs(expVol-actVol);
                 if (error>tolerance)
                   BOOST_ERROR("\nrecovery of atm vols failed:"
-                              "\nexpiry time = " << atm.tenors.options[i] <<
-                              "\nswap length = " << atm.tenors.swaps[j] <<
+                              "\nexpiry time = " << option <<
+                              "\nswap length = " << swap <<
                               "\n atm strike = " << io::rate(strike) <<
                               "\n   exp. vol = " << io::volatility(expVol) <<
                               "\n actual vol = " << io::volatility(actVol) <<
@@ -271,8 +271,7 @@ void SwaptionVolatilityCubeTest::testSpreadedCube() {
                 volCube->smileSection(vars.cube.tenors.options[i], vars.cube.tenors.swaps[j]);
             ext::shared_ptr<SmileSection> smileSectionBySpreadedCube =
                 spreadedVolCube->smileSection(vars.cube.tenors.options[i], vars.cube.tenors.swaps[j]);
-            for (Size k=0; k<strikes.size(); k++) {
-                Real strike = strikes[k];
+            for (double strike : strikes) {
                 Real diff = spreadedVolCube->volatility(vars.cube.tenors.options[i], vars.cube.tenors.swaps[j], strike)
                             - volCube->volatility(vars.cube.tenors.options[i], vars.cube.tenors.swaps[j], strike);
                 if (std::fabs(diff-spread->value())>1e-16)

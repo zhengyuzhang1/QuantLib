@@ -276,8 +276,8 @@ namespace QuantLib {
     }
 
     inline void FittedBondDiscountCurve::setup() {
-        for (Size i=0; i<bondHelpers_.size(); ++i)
-            registerWith(bondHelpers_[i]);
+        for (const auto & bondHelper : bondHelpers_)
+            registerWith(bondHelper);
     }
 
     inline DiscountFactor FittedBondDiscountCurve::discountImpl(Time t) const {

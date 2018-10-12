@@ -128,9 +128,9 @@ namespace QuantLib {
         {
             std::vector<Real> condLgds;
             const std::vector<Size>& evalDateLives = basket_->liveList();
-            for(Size i=0; i<evalDateLives.size(); i++) 
+            for(unsigned long evalDateLive : evalDateLives) 
                 condLgds.push_back(1.-copula_->conditionalRecovery(d, 
-                    evalDateLives[i], mktFactors));
+                    evalDateLive, mktFactors));
             return condLgds;
         }
 

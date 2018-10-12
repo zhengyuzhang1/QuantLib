@@ -114,14 +114,13 @@ namespace QuantLib {
         Leg resultLeg;
         resultLeg.reserve(underlyingLeg_.size());
         ext::shared_ptr<CappedFlooredCoupon> c;
-        for (auto i = underlyingLeg_.begin();
-             i != underlyingLeg_.end(); ++i) {
-            if ((c = ext::dynamic_pointer_cast<CappedFlooredCoupon>(*i)) !=
+        for (const auto & i : underlyingLeg_) {
+            if ((c = ext::dynamic_pointer_cast<CappedFlooredCoupon>(i)) !=
                 NULL) {
                 resultLeg.push_back(
                     ext::make_shared<StrippedCappedFlooredCoupon>(c));
             } else {
-                resultLeg.push_back(*i);
+                resultLeg.push_back(i);
             }
         }
         return resultLeg;

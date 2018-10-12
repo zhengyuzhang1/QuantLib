@@ -94,29 +94,29 @@ void SpreadOptionTest::testKirkEngine() {
         { 122.0, 120.0, 3.0, 0.10, 0.20, 0.25,  0.5, 180,  6.9284,  6.6761 }
     };
 
-    for (Size i=0; i<LENGTH(cases); ++i) {
+    for (auto & i : cases) {
 
         // First step: preparing the test values
         // Useful dates
         DayCounter dc = Actual360();
         Date today = Date::todaysDate();
-        Date exerciseDate = today  + cases[i].length;
+        Date exerciseDate = today  + i.length;
 
         // Futures values
-        ext::shared_ptr<SimpleQuote> F1(new SimpleQuote(cases[i].F1));
-        ext::shared_ptr<SimpleQuote> F2(new SimpleQuote(cases[i].F2));
+        ext::shared_ptr<SimpleQuote> F1(new SimpleQuote(i.F1));
+        ext::shared_ptr<SimpleQuote> F2(new SimpleQuote(i.F2));
 
         // Risk-free interest rate
-        Rate riskFreeRate = cases[i].r;
+        Rate riskFreeRate = i.r;
         ext::shared_ptr<YieldTermStructure> forwardRate =
             flatRate(today,riskFreeRate,dc);
 
         // Correlation
-        ext::shared_ptr<Quote> rho(new SimpleQuote(cases[i].rho));
+        ext::shared_ptr<Quote> rho(new SimpleQuote(i.rho));
 
         // Volatilities
-        Volatility vol1 = cases[i].sigma1;
-        Volatility vol2 = cases[i].sigma2;
+        Volatility vol1 = i.sigma1;
+        Volatility vol2 = i.sigma2;
         ext::shared_ptr<BlackVolTermStructure> volTS1 =
             flatVol(today,vol1,dc);
         ext::shared_ptr<BlackVolTermStructure> volTS2 =
@@ -141,7 +141,7 @@ void SpreadOptionTest::testKirkEngine() {
 
         // Finally, create the option:
         Option::Type type = Option::Call;
-        Real strike = cases[i].X;
+        Real strike = i.X;
         ext::shared_ptr<PlainVanillaPayoff> payoff(
                                         new PlainVanillaPayoff(type, strike));
         ext::shared_ptr<Exercise> exercise(
@@ -155,16 +155,16 @@ void SpreadOptionTest::testKirkEngine() {
         Real theta = option.theta();
         Real tolerance = 1e-4;
 
-        if (std::fabs(value-cases[i].value) > tolerance) {
+        if (std::fabs(value-i.value) > tolerance) {
             REPORT_FAILURE("value",
                            payoff, exercise,
-                           cases[i].value, value, tolerance);
+                           i.value, value, tolerance);
         }
 
-        if (std::fabs(theta-cases[i].theta) > tolerance) {
+        if (std::fabs(theta-i.theta) > tolerance) {
             REPORT_FAILURE("theta",
                             payoff, exercise,
-                            cases[i].theta, theta, tolerance);
+                            i.theta, theta, tolerance);
         }
     }
 }

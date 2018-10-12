@@ -39,9 +39,9 @@ namespace QuantLib {
 
         if (!putCallSchedule_.empty()) {
             Date finalOptionDate = Date::minDate();
-            for (Size i=0; i<putCallSchedule_.size();++i) {
+            for (auto & i : putCallSchedule_) {
                 finalOptionDate=std::max(finalOptionDate,
-                                         putCallSchedule_[i]->date());
+                                         i->date());
             }
             QL_REQUIRE(finalOptionDate <= maturityDate_ ,
                        "Bond cannot mature before last call/put date");
@@ -407,11 +407,11 @@ namespace QuantLib {
         if (settlement == Date()) settlement = settlementDate();
 
         const bool IncludeToday = false;
-        for (Size i = 0; i<cashflows_.size(); ++i) {
+        for (const auto & cashflow : cashflows_) {
             // the first coupon paying after d is the one we're after
-            if (!cashflows_[i]->hasOccurred(settlement,IncludeToday)) {
+            if (!cashflow->hasOccurred(settlement,IncludeToday)) {
                 ext::shared_ptr<Coupon> coupon =
-                    ext::dynamic_pointer_cast<Coupon>(cashflows_[i]);
+                    ext::dynamic_pointer_cast<Coupon>(cashflow);
                 if (coupon)
                     // !!!
                     return coupon->accruedAmount(settlement) /
@@ -461,14 +461,14 @@ namespace QuantLib {
         arguments->frequency = frequency_;
 
         arguments->putCallSchedule = putCallSchedule_;
-        for (Size i=0; i<putCallSchedule_.size(); i++) {
-            if (!putCallSchedule_[i]->hasOccurred(settlement, false)) {
+        for (const auto & i : putCallSchedule_) {
+            if (!i->hasOccurred(settlement, false)) {
                 arguments->callabilityDates.push_back(
-                                                 putCallSchedule_[i]->date());
+                                                 i->date());
                 arguments->callabilityPrices.push_back(
-                                       putCallSchedule_[i]->price().amount());
+                                       i->price().amount());
 
-                if (putCallSchedule_[i]->price().type()==
+                if (i->price().type()==
                     Callability::Price::Clean) {
                     /* calling accrued() forces accrued interest to be zero
                        if future option date is also coupon date, so that dirty
@@ -476,7 +476,7 @@ namespace QuantLib {
                        always applied before coupon in the tree engine.
                     */
                     arguments->callabilityPrices.back() +=
-                        this->accrued(putCallSchedule_[i]->date());
+                        this->accrued(i->date());
                 }
             }
         }

@@ -121,19 +121,19 @@ namespace QuantLib {
             Real NPV(ext::shared_ptr<VanillaSwap> swap, Real fixedRate,
                      Real nominal, Real y, int type) const {
                 Real npv = 0.0;
-                for (Size i = 0; i < swap->fixedLeg().size(); i++) {
+                for (const auto & i : swap->fixedLeg()) {
                     ext::shared_ptr<FixedRateCoupon> c =
                         ext::dynamic_pointer_cast<FixedRateCoupon>(
-                            swap->fixedLeg()[i]);
+                            i);
                     npv -=
                         fixedRate * c->accrualPeriod() * nominal *
                         mdl_->zerobond(c->date(), expiry_, y,
                                        indexBase_->discountingTermStructure());
                 }
-                for (Size i = 0; i < swap->floatingLeg().size(); i++) {
+                for (const auto & i : swap->floatingLeg()) {
                     ext::shared_ptr<IborCoupon> c =
                         ext::dynamic_pointer_cast<IborCoupon>(
-                            swap->floatingLeg()[i]);
+                            i);
                     npv +=
                         mdl_->forwardRate(c->fixingDate(), expiry_, y,
                                           c->iborIndex()) *
@@ -147,8 +147,8 @@ namespace QuantLib {
             Real value(const Array &v) const override {
                 Array vals = values(v);
                 Real res = 0.0;
-                for (Size i = 0; i < vals.size(); i++) {
-                    res += vals[i] * vals[i];
+                for (double val : vals) {
+                    res += val * val;
                 }
                 return std::sqrt(res / vals.size());
             }

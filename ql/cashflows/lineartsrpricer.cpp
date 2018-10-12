@@ -169,9 +169,9 @@ namespace QuantLib {
             // compute linear model's parameters
 
             Real gx = 0.0, gy = 0.0;
-            for (Size i = 0; i < swap_->fixedLeg().size(); i++) {
+            for (const auto & i : swap_->fixedLeg()) {
                 ext::shared_ptr<Coupon> c =
-                    ext::dynamic_pointer_cast<Coupon>(swap_->fixedLeg()[i]);
+                    ext::dynamic_pointer_cast<Coupon>(i);
                 Real yf = c->accrualPeriod();
                 Date d = c->date();
                 Real pv = yf * discountCurve_->discount(d);

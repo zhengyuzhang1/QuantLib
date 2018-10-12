@@ -300,11 +300,11 @@ namespace QuantLib {
 
         innerCashFlowSizes_.resize(accruals.size());
         innerCashFlowsGenerated_.resize(accruals.size());
-        for (Size i=0; i <  innerCashFlowsGenerated_.size(); ++i)
+        for (auto & i : innerCashFlowsGenerated_)
         {
-            innerCashFlowsGenerated_[i].resize(underlyingCaplets_.maxNumberOfCashFlowsPerProductPerStep());
+            i.resize(underlyingCaplets_.maxNumberOfCashFlowsPerProductPerStep());
             for (Size j=0; j < underlyingCaplets_.maxNumberOfCashFlowsPerProductPerStep(); ++j)
-                innerCashFlowsGenerated_[i][j].amount.resize(accruals.size()+1);
+                i[j].amount.resize(accruals.size()+1);
 
 
         }

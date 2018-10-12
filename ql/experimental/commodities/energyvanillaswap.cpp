@@ -124,10 +124,7 @@ namespace QuantLib {
             Real totalQuantityAmount = 0;
 
             // price each period
-            for (auto pi = pricingPeriods_.begin();
-                 pi != pricingPeriods_.end(); ++pi) {
-                const ext::shared_ptr<PricingPeriod>& pricingPeriod = *pi;
-
+            for (const auto & pricingPeriod : pricingPeriods_) {
                 QL_REQUIRE(pricingPeriod->quantity().amount() != 0,
                            "quantity is zero");
 

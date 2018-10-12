@@ -254,33 +254,33 @@ void QuantoOptionTest::testValues() {
                                                  stochProcess, fxrTS, fxVolTS,
                                                  Handle<Quote>(correlation)));
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(
-                    new PlainVanillaPayoff(values[i].type, values[i].strike));
-        Date exDate = today + Integer(values[i].t*360+0.5);
+                    new PlainVanillaPayoff(value.type, value.strike));
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
-        fxRate->setValue(values[i].fxr);
-        fxVol->setValue(values[i].fxv);
-        correlation->setValue(values[i].corr);
+        fxRate->setValue(value.fxr);
+        fxVol->setValue(value.fxv);
+        correlation->setValue(value.corr);
 
         QuantoVanillaOption option(payoff, exercise);
         option.setPricingEngine(engine);
 
         Real calculated = option.NPV();
-        Real error = std::fabs(calculated-values[i].result);
+        Real error = std::fabs(calculated-value.result);
         Real tolerance = 1e-4;
         if (error>tolerance) {
-            QUANTO_REPORT_FAILURE("value", payoff, exercise, values[i].s,
-                           values[i].q, values[i].r, today,
-                           values[i].v, values[i].fxr, values[i].fxv,
-                           values[i].corr, values[i].result, calculated,
+            QUANTO_REPORT_FAILURE("value", payoff, exercise, value.s,
+                           value.q, value.r, today,
+                           value.v, value.fxr, value.fxv,
+                           value.corr, value.result, calculated,
                            error, tolerance);
         }
     }
@@ -339,34 +339,29 @@ void QuantoOptionTest::testGreeks() {
                                                   stochProcess,fxrTS, fxVolTS,
                                                   Handle<Quote>(correlation)));
 
-    for (Size i=0; i<LENGTH(types); i++) {
-      for (Size j=0; j<LENGTH(strikes); j++) {
-        for (Size k=0; k<LENGTH(lengths); k++) {
+    for (auto & type : types) {
+      for (double strike : strikes) {
+        for (int length : lengths) {
 
-          Date exDate = today + lengths[k]*Years;
+          Date exDate = today + length*Years;
           ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
           ext::shared_ptr<StrikedTypePayoff> payoff(
-                                new PlainVanillaPayoff(types[i], strikes[j]));
+                                new PlainVanillaPayoff(type, strike));
 
           QuantoVanillaOption option(payoff, exercise);
           option.setPricingEngine(engine);
 
-          for (Size l=0; l<LENGTH(underlyings); l++) {
-            for (Size m=0; m<LENGTH(qRates); m++) {
-              for (Size n=0; n<LENGTH(rRates); n++) {
-                for (Size p=0; p<LENGTH(vols); p++) {
-                  for (Size a=0; a<LENGTH(rRates); a++) {
-                    for (Size b=0; b<LENGTH(vols); b++) {
-                      for (Size c=0; c<LENGTH(correlations); c++) {
+          for (double u : underlyings) {
+            for (double m : qRates) {
+              for (double n : rRates) {
+                for (double v : vols) {
+                  for (double fxr : rRates) {
+                    for (double fxv : vols) {
+                      for (double corr : correlations) {
 
-                        Real u = underlyings[l];
-                        Rate q = qRates[m],
-                             r = rRates[n];
-                        Volatility v = vols[p];
-                        Rate fxr = rRates[a];
-                        Volatility fxv = vols[b];
-                        Rate corr = correlations[c];
+                        Rate q = m,
+                             r = n;
                         spot->setValue(u);
                         qRate->setValue(q);
                         rRate->setValue(r);
@@ -537,36 +532,36 @@ void QuantoOptionTest::testForwardValues() {
                                                  stochProcess, fxrTS, fxVolTS,
                                                  Handle<Quote>(correlation)));
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(
-                                 new PlainVanillaPayoff(values[i].type, 0.0));
-        Date exDate = today + Integer(values[i].t*360+0.5);
+                                 new PlainVanillaPayoff(value.type, 0.0));
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
-        Date reset = today + Integer(values[i].start*360+0.5);
+        Date reset = today + Integer(value.start*360+0.5);
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
-        fxRate->setValue(values[i].fxr);
-        fxVol->setValue(values[i].fxv);
-        correlation->setValue(values[i].corr);
+        fxRate->setValue(value.fxr);
+        fxVol->setValue(value.fxv);
+        correlation->setValue(value.corr);
 
-        QuantoForwardVanillaOption option(values[i].moneyness, reset,
+        QuantoForwardVanillaOption option(value.moneyness, reset,
                                           payoff, exercise);
         option.setPricingEngine(engine);
 
         Real calculated = option.NPV();
-        Real error = std::fabs(calculated-values[i].result);
+        Real error = std::fabs(calculated-value.result);
         Real tolerance = 1e-4;
         if (error>tolerance) {
-            QUANTO_FORWARD_REPORT_FAILURE("value", payoff, values[i].moneyness,
-                            exercise, values[i].s,
-                            values[i].q, values[i].r, today, reset,
-                            values[i].v, values[i].fxr, values[i].fxv,
-                            values[i].corr, values[i].result, calculated,
+            QUANTO_FORWARD_REPORT_FAILURE("value", payoff, value.moneyness,
+                            exercise, value.s,
+                            value.q, value.r, today, reset,
+                            value.v, value.fxr, value.fxv,
+                            value.corr, value.result, calculated,
                             error, tolerance);
         }
     }
@@ -627,38 +622,33 @@ void QuantoOptionTest::testForwardGreeks() {
                                                  stochProcess, fxrTS, fxVolTS,
                                                  Handle<Quote>(correlation)));
 
-    for (Size i=0; i<LENGTH(types); i++) {
-      for (Size j=0; j<LENGTH(moneyness); j++) {
-        for (Size k=0; k<LENGTH(lengths); k++) {
-          for (Size h=0; h<LENGTH(startMonths); h++) {
+    for (auto & type : types) {
+      for (double moneynes : moneyness) {
+        for (int length : lengths) {
+          for (int startMonth : startMonths) {
 
-            Date exDate = today + lengths[k]*Years;
+            Date exDate = today + length*Years;
             ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
-            Date reset = today + startMonths[h]*Months;
+            Date reset = today + startMonth*Months;
 
             ext::shared_ptr<StrikedTypePayoff> payoff(
-                                       new PlainVanillaPayoff(types[i], 0.0));
+                                       new PlainVanillaPayoff(type, 0.0));
 
-            QuantoForwardVanillaOption option(moneyness[j], reset,
+            QuantoForwardVanillaOption option(moneynes, reset,
                                               payoff, exercise);
             option.setPricingEngine(engine);
 
-            for (Size l=0; l<LENGTH(underlyings); l++) {
-              for (Size m=0; m<LENGTH(qRates); m++) {
-                for (Size n=0; n<LENGTH(rRates); n++) {
-                  for (Size p=0; p<LENGTH(vols); p++) {
-                    for (Size a=0; a<LENGTH(rRates); a++) {
-                      for (Size b=0; b<LENGTH(vols); b++) {
-                        for (Size c=0; c<LENGTH(correlations); c++) {
+            for (double u : underlyings) {
+              for (double m : qRates) {
+                for (double n : rRates) {
+                  for (double v : vols) {
+                    for (double fxr : rRates) {
+                      for (double fxv : vols) {
+                        for (double corr : correlations) {
 
-                          Real u = underlyings[l];
-                          Rate q = qRates[m],
-                               r = rRates[n];
-                          Volatility v = vols[p];
-                          Rate fxr = rRates[a];
-                          Volatility fxv = vols[b];
-                          Real corr = correlations[c];
+                          Rate q = m,
+                               r = n;
                           spot->setValue(u);
                           qRate->setValue(q);
                           rRate->setValue(r);
@@ -765,7 +755,7 @@ void QuantoOptionTest::testForwardGreeks() {
                               Real error = relativeError(expct,calcl,u);
                               if (error>tol) {
                                   QUANTO_FORWARD_REPORT_FAILURE(greek, payoff,
-                                      moneyness[j],
+                                      moneynes,
                                       exercise, u, q, r, today, reset, v, fxr,
                                       fxv, corr, expct, calcl, error, tol);
                               }
@@ -831,37 +821,37 @@ void QuantoOptionTest::testForwardPerformanceValues() {
                                                  stochProcess, fxrTS, fxVolTS,
                                                  Handle<Quote>(correlation)));
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(
 //                               new PercentageStrikePayoff(values[i].type, values[i].moneyness));
-                                 new PlainVanillaPayoff(values[i].type, 0.0));
-        Date exDate = today + Integer(values[i].t*360+0.5);
+                                 new PlainVanillaPayoff(value.type, 0.0));
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
-        Date reset = today + Integer(values[i].start*360+0.5);
+        Date reset = today + Integer(value.start*360+0.5);
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
-        fxRate->setValue(values[i].fxr);
-        fxVol->setValue(values[i].fxv);
-        correlation->setValue(values[i].corr);
+        fxRate->setValue(value.fxr);
+        fxVol->setValue(value.fxv);
+        correlation->setValue(value.corr);
 
-        QuantoForwardVanillaOption option(values[i].moneyness, reset,
+        QuantoForwardVanillaOption option(value.moneyness, reset,
                                           payoff, exercise);
         option.setPricingEngine(engine);
 
         Real calculated = option.NPV();
-        Real error = std::fabs(calculated-values[i].result);
+        Real error = std::fabs(calculated-value.result);
         Real tolerance = 1e-4;
         if (error>tolerance) {
-            QUANTO_FORWARD_REPORT_FAILURE("value", payoff, values[i].moneyness,
+            QUANTO_FORWARD_REPORT_FAILURE("value", payoff, value.moneyness,
                 exercise,
-                values[i].s, values[i].q, values[i].r, today, reset,
-                values[i].v, values[i].fxr, values[i].fxv, values[i].corr,
-                values[i].result, calculated, error, tolerance);
+                value.s, value.q, value.r, today, reset,
+                value.v, value.fxr, value.fxv, value.corr,
+                value.result, calculated, error, tolerance);
         }
     }
 
@@ -913,44 +903,44 @@ void QuantoOptionTest::testBarrierValues()  {
                                                  stochProcess, fxrTS, fxVolTS,
                                                  Handle<Quote>(correlation)));
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(
-                    new PlainVanillaPayoff(values[i].type, values[i].strike));
+                    new PlainVanillaPayoff(value.type, value.strike));
 
-        Date exDate = today + Integer(values[i].t*360+0.5);
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
-        fxRate->setValue(values[i].fxr);
-        fxVol->setValue(values[i].fxv);
-        correlation->setValue(values[i].corr);
+        fxRate->setValue(value.fxr);
+        fxVol->setValue(value.fxv);
+        correlation->setValue(value.corr);
 
-        QuantoBarrierOption option(values[i].barrierType,
-                                   values[i].barrier,
-                                   values[i].rebate,
+        QuantoBarrierOption option(value.barrierType,
+                                   value.barrier,
+                                   value.rebate,
                                    payoff,
                                    exercise);
 
         option.setPricingEngine(engine);
 
         Real calculated = option.NPV();
-        Real error = std::fabs(calculated-values[i].result);
-        Real tolerance = values[i].tol;
+        Real error = std::fabs(calculated-value.result);
+        Real tolerance = value.tol;
 
         if (error>tolerance) {
             QUANTO_BARRIER_REPORT_FAILURE("value", payoff,
-                values[i].barrierType,
-                values[i].barrier,
-                values[i].rebate,
+                value.barrierType,
+                value.barrier,
+                value.rebate,
                 exercise,
-                values[i].s, values[i].q, values[i].r, today,
-                values[i].v, values[i].fxr, values[i].fxv, values[i].corr,
-                values[i].result, calculated, error, tolerance);
+                value.s, value.q, value.r, today,
+                value.v, value.fxr, value.fxv, value.corr,
+                value.result, calculated, error, tolerance);
         }
     }
 }
@@ -998,46 +988,46 @@ void QuantoOptionTest::testDoubleBarrierValues()  {
                                                  stochProcess, fxrTS, fxVolTS,
                                                  Handle<Quote>(correlation)));
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(
-                    new PlainVanillaPayoff(values[i].type, values[i].strike));
+                    new PlainVanillaPayoff(value.type, value.strike));
 
-        Date exDate = today + Integer(values[i].t*360+0.5);
+        Date exDate = today + Integer(value.t*360+0.5);
         ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
-        fxRate->setValue(values[i].fxr);
-        fxVol->setValue(values[i].fxv);
-        correlation->setValue(values[i].corr);
+        fxRate->setValue(value.fxr);
+        fxVol->setValue(value.fxv);
+        correlation->setValue(value.corr);
 
-        QuantoDoubleBarrierOption option(values[i].barrierType,
-                                   values[i].barrier_lo,
-                                   values[i].barrier_hi,
-                                   values[i].rebate,
+        QuantoDoubleBarrierOption option(value.barrierType,
+                                   value.barrier_lo,
+                                   value.barrier_hi,
+                                   value.rebate,
                                    payoff,
                                    exercise);
 
         option.setPricingEngine(engine);
 
         Real calculated = option.NPV();
-        Real error = std::fabs(calculated-values[i].result);
-        Real tolerance = values[i].tol;
+        Real error = std::fabs(calculated-value.result);
+        Real tolerance = value.tol;
 
         if (error>tolerance) {
             QUANTO_DOUBLE_BARRIER_REPORT_FAILURE("value", payoff,
-                values[i].barrierType,
-                values[i].barrier_lo,
-                values[i].barrier_hi,
-                values[i].rebate,
+                value.barrierType,
+                value.barrier_lo,
+                value.barrier_hi,
+                value.rebate,
                 exercise,
-                values[i].s, values[i].q, values[i].r, today,
-                values[i].v, values[i].fxr, values[i].fxv, values[i].corr,
-                values[i].result, calculated, error, tolerance);
+                value.s, value.q, value.r, today,
+                value.v, value.fxr, value.fxv, value.corr,
+                value.result, calculated, error, tolerance);
         }
     }
 }

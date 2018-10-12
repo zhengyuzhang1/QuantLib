@@ -670,18 +670,18 @@ void CreditDefaultSwapTest::testIsdaEngine() {
 
     size_t l = 0;
 
-    for(size_t i = 0; i < sizeof(termDates) / sizeof(Date); i++) {
-        for(size_t j = 0; j < 2; j++) {
-            for(size_t k = 0; k < 2; k++) {
+    for(auto termDate : termDates) {
+        for(double spread : spreads) {
+            for(double & recoverie : recoveries) {
 
             ext::shared_ptr<CreditDefaultSwap> quotedTrade =
-                MakeCreditDefaultSwap(termDates[i], spreads[j])
+                MakeCreditDefaultSwap(termDate, spread)
                 .withNominal(10000000.);
 
             Rate h = quotedTrade->impliedHazardRate(0.,
                                                     discountCurve,
                                                     Actual365Fixed(),
-                                                    recoveries[k],
+                                                    recoverie,
                                                     1e-10,
                                                     CreditDefaultSwap::ISDA);
 
@@ -691,12 +691,12 @@ void CreditDefaultSwapTest::testIsdaEngine() {
                 );
 
             ext::shared_ptr<IsdaCdsEngine> engine = ext::make_shared<IsdaCdsEngine>(
-                probabilityCurve, recoveries[k], discountCurve,
+                probabilityCurve, recoverie, discountCurve,
                 boost::none, IsdaCdsEngine::Taylor, IsdaCdsEngine::HalfDayBias,
                 IsdaCdsEngine::Piecewise);
 
             ext::shared_ptr<CreditDefaultSwap> conventionalTrade =
-                MakeCreditDefaultSwap(termDates[i], 0.01)
+                MakeCreditDefaultSwap(termDate, 0.01)
                 .withNominal(10000000.)
                 .withPricingEngine(engine);
 

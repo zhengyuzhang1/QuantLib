@@ -229,23 +229,23 @@ void BlackDeltaCalculatorTest::testDeltaPriceConsistency() {
 
     Real tolerance=1.0e-10;
 
-    for(Size i=0; i<LENGTH(values);++i){
+    for(auto & value : values){
 
         payoff = ext::shared_ptr<StrikedTypePayoff>(
-                    new PlainVanillaPayoff(values[i].type, values[i].strike));
-        exDate = today + timeToDays(values[i].t);
+                    new PlainVanillaPayoff(value.type, value.strike));
+        exDate = today + timeToDays(value.t);
         exercise = ext::shared_ptr<Exercise>(new EuropeanExercise(exDate));
 
-        spotQuote   ->setValue(values[i].s);
-        volQuote    ->setValue(values[i].v);
-        rQuote      ->setValue(values[i].r);
-        qQuote      ->setValue(values[i].q);
+        spotQuote   ->setValue(value.s);
+        volQuote    ->setValue(value.v);
+        rQuote      ->setValue(value.r);
+        qQuote      ->setValue(value.q);
 
         discDom =rTS->discount(exDate);
         discFor =qTS->discount(exDate);
         implVol =sqrt(volTS->blackVariance(exDate,0.0));
 
-        BlackDeltaCalculator myCalc(values[i].type, DeltaVolQuote::PaSpot,
+        BlackDeltaCalculator myCalc(value.type, DeltaVolQuote::PaSpot,
                                     spotQuote->value(),
                                     discDom, discFor, implVol);
 
@@ -260,7 +260,7 @@ void BlackDeltaCalculatorTest::testDeltaPriceConsistency() {
         EuropeanOption option(payoff, exercise);
         option.setPricingEngine(engine);
 
-        calculatedVal=myCalc.deltaFromStrike(values[i].strike);
+        calculatedVal=myCalc.deltaFromStrike(value.strike);
 
         Real delta = 0.0;
         if (implVol > 0.0) {
@@ -287,7 +287,7 @@ void BlackDeltaCalculatorTest::testDeltaPriceConsistency() {
 
         myCalc.setDeltaType(DeltaVolQuote::PaFwd);
 
-        calculatedVal=myCalc.deltaFromStrike(values[i].strike);
+        calculatedVal=myCalc.deltaFromStrike(value.strike);
         expectedVal=expectedVal/discFor; // Premium adjusted Fwd Delta is PA spot without discount
         error=std::fabs(expectedVal-calculatedVal);
 
@@ -302,7 +302,7 @@ void BlackDeltaCalculatorTest::testDeltaPriceConsistency() {
         // Test consistency with BlackScholes Calculator for Spot Delta
         myCalc.setDeltaType(DeltaVolQuote::Spot);
 
-        calculatedVal=myCalc.deltaFromStrike(values[i].strike);
+        calculatedVal=myCalc.deltaFromStrike(value.strike);
         expectedVal=delta;
         error=std::fabs(calculatedVal-expectedVal);
 
@@ -416,17 +416,17 @@ void BlackDeltaCalculatorTest::testPutCallParity(){
 
     Real tolerance=1.0e-10;
 
-    for(Size i=0; i<LENGTH(values);++i){
+    for(auto & value : values){
 
         payoff = ext::shared_ptr<StrikedTypePayoff>(new
-                            PlainVanillaPayoff(Option::Call, values[i].strike));
-        exDate = today + timeToDays(values[i].t);
+                            PlainVanillaPayoff(Option::Call, value.strike));
+        exDate = today + timeToDays(value.t);
         exercise = ext::shared_ptr<Exercise>(new EuropeanExercise(exDate));
 
-        spotQuote->setValue(values[i].s);
-        volQuote->setValue(values[i].v);
-        rQuote->setValue(values[i].r);
-        qQuote->setValue(values[i].q);
+        spotQuote->setValue(value.s);
+        volQuote->setValue(value.v);
+        rQuote->setValue(value.r);
+        qQuote->setValue(value.q);
         discDom=rTS->discount(exDate);
         discFor=qTS->discount(exDate);
         implVol=sqrt(volTS->blackVariance(exDate,0.0));
@@ -436,9 +436,9 @@ void BlackDeltaCalculatorTest::testPutCallParity(){
                                     spotQuote->value(),
                                     discDom, discFor, implVol);
 
-        deltaCall=myCalc.deltaFromStrike(values[i].strike);;
+        deltaCall=myCalc.deltaFromStrike(value.strike);;
         myCalc.setOptionType(Option::Put);
-        deltaPut=myCalc.deltaFromStrike(values[i].strike);;
+        deltaPut=myCalc.deltaFromStrike(value.strike);;
         myCalc.setOptionType(Option::Call);
 
         expectedDiff=discFor;
@@ -454,9 +454,9 @@ void BlackDeltaCalculatorTest::testPutCallParity(){
         }
         myCalc.setDeltaType(DeltaVolQuote::Fwd);
 
-        deltaCall=myCalc.deltaFromStrike(values[i].strike);;
+        deltaCall=myCalc.deltaFromStrike(value.strike);;
         myCalc.setOptionType(Option::Put);
-        deltaPut=myCalc.deltaFromStrike(values[i].strike);;
+        deltaPut=myCalc.deltaFromStrike(value.strike);;
         myCalc.setOptionType(Option::Call);
 
         expectedDiff=1.0;
@@ -473,12 +473,12 @@ void BlackDeltaCalculatorTest::testPutCallParity(){
 
         myCalc.setDeltaType(DeltaVolQuote::PaSpot);
 
-        deltaCall=myCalc.deltaFromStrike(values[i].strike);;
+        deltaCall=myCalc.deltaFromStrike(value.strike);;
         myCalc.setOptionType(Option::Put);
-        deltaPut=myCalc.deltaFromStrike(values[i].strike);;
+        deltaPut=myCalc.deltaFromStrike(value.strike);;
         myCalc.setOptionType(Option::Call);
 
-        expectedDiff=discFor*values[i].strike/forward;
+        expectedDiff=discFor*value.strike/forward;
         calculatedDiff=deltaCall-deltaPut;
         error=std::fabs(expectedDiff-calculatedDiff);
 
@@ -493,12 +493,12 @@ void BlackDeltaCalculatorTest::testPutCallParity(){
 
         myCalc.setDeltaType(DeltaVolQuote::PaFwd);
 
-        deltaCall=myCalc.deltaFromStrike(values[i].strike);;
+        deltaCall=myCalc.deltaFromStrike(value.strike);;
         myCalc.setOptionType(Option::Put);
-        deltaPut=myCalc.deltaFromStrike(values[i].strike);;
+        deltaPut=myCalc.deltaFromStrike(value.strike);;
         myCalc.setOptionType(Option::Call);
 
-        expectedDiff = values[i].strike/forward;
+        expectedDiff = value.strike/forward;
         calculatedDiff=deltaCall-deltaPut;
         error=std::fabs(expectedDiff-calculatedDiff);
 

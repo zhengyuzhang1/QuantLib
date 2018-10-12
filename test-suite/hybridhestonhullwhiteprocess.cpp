@@ -219,19 +219,19 @@ void HybridHestonHullWhiteProcessTest::testCompareBsmHWandHestonHW() {
     const Size maturity[] = { 1, 2, 3, 5, 10, 15, 20, 25, 30 };
     const Option::Type types[] = { Option::Put, Option::Call };
 
-    for (Size i=0; i < LENGTH(types); ++i) {
-        for (Size j=0; j < LENGTH(strike); ++j) {
-            for (Size l=0; l < LENGTH(maturity); ++l) {
-                const Date maturityDate = today + Period(maturity[l], Years);
+    for (auto type : types) {
+        for (double j : strike) {
+            for (unsigned long l : maturity) {
+                const Date maturityDate = today + Period(l, Years);
 
                 ext::shared_ptr<Exercise> exercise(
                                          new EuropeanExercise(maturityDate));
 
-                Real fwd = strike[j] * spot->value()
+                Real fwd = j * spot->value()
                     *qTS->discount(maturityDate)/rTS->discount(maturityDate);
 
                 ext::shared_ptr<StrikedTypePayoff> payoff(new
-                                          PlainVanillaPayoff(types[i], fwd));
+                                          PlainVanillaPayoff(type, fwd));
 
                 EuropeanOption option(payoff, exercise);
 
@@ -246,10 +246,10 @@ void HybridHestonHullWhiteProcessTest::testCompareBsmHWandHestonHW() {
                     BOOST_ERROR("Failed to reproduce npvs"
                                 << "\n    calculated: " << calculated
                                 << "\n    expected  : " << expected
-                                << "\n    strike    : " << strike[j]
-                                << "\n    maturity  : " << maturity[l]
+                                << "\n    strike    : " << j
+                                << "\n    maturity  : " << l
                                 << "\n    type      : "
-                                << ((types[i] == Option::Put)? "Put" : "Call")
+                                << ((type == Option::Put)? "Put" : "Call")
                                 );
                 }
             }
@@ -420,14 +420,14 @@ void HybridHestonHullWhiteProcessTest::testMcVanillaPricing() {
     const Real corr[] = {-0.9, -0.5, 0.0, 0.5, 0.9 };
     const Real strike[] = { 100 };
 
-    for (Size i=0; i < LENGTH(corr); ++i) {
-        for (Size j=0; j < LENGTH(strike); ++j) {
+    for (double i : corr) {
+        for (double j : strike) {
             ext::shared_ptr<HybridHestonHullWhiteProcess> jointProcess(
                 new HybridHestonHullWhiteProcess(hestonProcess,
-                                                 hwProcess, corr[i]));
+                                                 hwProcess, i));
 
             ext::shared_ptr<StrikedTypePayoff> payoff(
-                               new PlainVanillaPayoff(Option::Put, strike[j]));
+                               new PlainVanillaPayoff(Option::Put, j));
             ext::shared_ptr<Exercise> exercise(
                                new EuropeanExercise(maturity));
 
@@ -449,18 +449,18 @@ void HybridHestonHullWhiteProcessTest::testMcVanillaPricing() {
             VanillaOption optionBsmHW(payoff, exercise);
             optionBsmHW.setPricingEngine(
                 ext::shared_ptr<PricingEngine>(
-                           new AnalyticBSMHullWhiteEngine(corr[i], bsmProcess,
+                           new AnalyticBSMHullWhiteEngine(i, bsmProcess,
                                                           hwModel)));
 
             const Real calculated = optionHestonHW.NPV();
             const Real error      = optionHestonHW.errorEstimate();
             const Real expected   = optionBsmHW.NPV();
 
-            if (  (corr[i] != 0.0 && std::fabs(calculated - expected) > 3*error)
-                ||(corr[i] == 0.0 &&  std::fabs(calculated - expected)> 1e-4)) {
+            if (  (i != 0.0 && std::fabs(calculated - expected) > 3*error)
+                ||(i == 0.0 &&  std::fabs(calculated - expected)> 1e-4)) {
                 BOOST_ERROR("Failed to reproduce BSM-HW vanilla prices"
-                        << "\n   corr:       " << corr[i]
-                        << "\n   strike:     " << strike[j]
+                        << "\n   corr:       " << i
+                        << "\n   strike:     " << j
                         << "\n   calculated: " << calculated
                         << "\n   error:      " << error
                         << "\n   expected:   " << expected);
@@ -513,15 +513,15 @@ void HybridHestonHullWhiteProcessTest::testMcPureHestonPricing() {
     const Real corr[] = { -0.45, 0.45, 0.25 };
     const Real strike[] = { 100, 75, 50, 150 };
 
-    for (Size i=0; i < LENGTH(corr); ++i) {
-        for (Size j=0; j < LENGTH(strike); ++j) {
+    for (double i : corr) {
+        for (double j : strike) {
             ext::shared_ptr<HybridHestonHullWhiteProcess> jointProcess(
                 new HybridHestonHullWhiteProcess(
                         hestonProcess, hwProcess,
-                        corr[i], HybridHestonHullWhiteProcess::Euler));
+                        i, HybridHestonHullWhiteProcess::Euler));
 
             ext::shared_ptr<StrikedTypePayoff> payoff(
-                               new PlainVanillaPayoff(Option::Put, strike[j]));
+                               new PlainVanillaPayoff(Option::Put, j));
             ext::shared_ptr<Exercise> exercise(
                                new EuropeanExercise(maturity));
 
@@ -549,8 +549,8 @@ void HybridHestonHullWhiteProcessTest::testMcPureHestonPricing() {
             if (   std::fabs(calculated - expected) > 3*error
                 && std::fabs(calculated - expected) > tol) {
                 BOOST_ERROR("Failed to reproduce pure heston vanilla prices"
-                        << "\n   corr:       " << corr[i]
-                        << "\n   strike:     " << strike[j]
+                        << "\n   corr:       " << i
+                        << "\n   strike:     " << j
                         << "\n   calculated: " << calculated
                         << "\n   error:      " << error
                         << "\n   expected:   " << expected);
@@ -606,15 +606,15 @@ void HybridHestonHullWhiteProcessTest::testAnalyticHestonHullWhitePricing() {
     const Real strike[] = { 80, 120 };
     const Option::Type types[] = { Option::Put, Option::Call };
 
-    for (Size i=0; i < LENGTH(types); ++i) {
-        for (Size j=0; j < LENGTH(strike); ++j) {
+    for (auto type : types) {
+        for (double j : strike) {
             ext::shared_ptr<HybridHestonHullWhiteProcess> jointProcess(
                 new HybridHestonHullWhiteProcess(
                         hestonProcess, hwFwdProcess, 0.0,
                         HybridHestonHullWhiteProcess::Euler));
 
             ext::shared_ptr<StrikedTypePayoff> payoff(
-                               new PlainVanillaPayoff(types[i], strike[j]));
+                               new PlainVanillaPayoff(type, j));
             ext::shared_ptr<Exercise> exercise(
                                new EuropeanExercise(maturity));
 
@@ -640,7 +640,7 @@ void HybridHestonHullWhiteProcessTest::testAnalyticHestonHullWhitePricing() {
             if (   std::fabs(calculated - expected) > 3*error
                 && std::fabs(calculated - expected) > tol) {
                 BOOST_ERROR("Failed to reproduce hw heston vanilla prices"
-                        << "\n   strike:     " << strike[j]
+                        << "\n   strike:     " << j
                         << "\n   calculated: " << calculated
                         << "\n   error:      " << error
                         << "\n   expected:   " << expected);
@@ -816,10 +816,10 @@ void HybridHestonHullWhiteProcessTest::testDiscretizationError() {
     const Real corr[] = {-0.85, 0.5 };
     const Real strike[] = { 50, 100, 125 };
 
-    for (Size i=0; i < LENGTH(corr); ++i) {
-        for (Size j=0; j < LENGTH(strike); ++j) {
+    for (double i : corr) {
+        for (double j : strike) {
             ext::shared_ptr<StrikedTypePayoff> payoff(
-                               new PlainVanillaPayoff(Option::Put, strike[j]));
+                               new PlainVanillaPayoff(Option::Put, j));
             ext::shared_ptr<Exercise> exercise(
                                new EuropeanExercise(maturity));
 
@@ -828,7 +828,7 @@ void HybridHestonHullWhiteProcessTest::testDiscretizationError() {
                                rTS, hwProcess->a(), hwProcess->sigma()));
             optionBsmHW.setPricingEngine(
                 ext::shared_ptr<PricingEngine>(
-                         new AnalyticBSMHullWhiteEngine(corr[i], bsmProcess,
+                         new AnalyticBSMHullWhiteEngine(i, bsmProcess,
                                                         hwModel)));
 
             Real expected = optionBsmHW.NPV();
@@ -836,7 +836,7 @@ void HybridHestonHullWhiteProcessTest::testDiscretizationError() {
             VanillaOption optionHestonHW(payoff, exercise);
             ext::shared_ptr<HybridHestonHullWhiteProcess> jointProcess(
                 new HybridHestonHullWhiteProcess(hestonProcess,
-                                                 hwProcess, corr[i]));
+                                                 hwProcess, i));
             optionHestonHW.setPricingEngine(
                     MakeMCHestonHullWhiteEngine<PseudoRandom>(jointProcess)
                     .withSteps(1)
@@ -850,8 +850,8 @@ void HybridHestonHullWhiteProcessTest::testDiscretizationError() {
             if ((   std::fabs(calculated - expected) > 3*error
                  && std::fabs(calculated - expected) > 1e-5)) {
                 BOOST_ERROR("Failed to reproduce discretization error"
-                        << "\n   corr:       " << corr[i]
-                        << "\n   strike:     " << strike[j]
+                        << "\n   corr:       " << i
+                        << "\n   strike:     " << j
                         << "\n   calculated: " << calculated
                         << "\n   error:      " << error
                         << "\n   expected:   " << expected);
@@ -894,23 +894,23 @@ void HybridHestonHullWhiteProcessTest::testFdmHestonHullWhiteEngine() {
     const Real corr[] = {-0.85, 0.5 };
     const Real strike[] = { 75, 120, 160 };
 
-    for (Size i=0; i < LENGTH(corr); ++i) {
-        for (Size j=0; j < LENGTH(strike); ++j) {
+    for (double i : corr) {
+        for (double j : strike) {
             ext::shared_ptr<StrikedTypePayoff> payoff(
-                              new PlainVanillaPayoff(Option::Call, strike[j]));
+                              new PlainVanillaPayoff(Option::Call, j));
             VanillaOption option(payoff, exercise);
             
             option.setPricingEngine(ext::shared_ptr<PricingEngine>(
                 new FdHestonHullWhiteVanillaEngine(
                     ext::make_shared<HestonModel>(
                         hestonProcess),
-                                        hwProcess, corr[i], 50, 200, 10, 15)));
+                                        hwProcess, i, 50, 200, 10, 15)));
             const Real calculated = option.NPV();
             const Real calculatedDelta = option.delta();
             const Real calculatedGamma = option.gamma();
             
             option.setPricingEngine(ext::shared_ptr<PricingEngine>(
-                new AnalyticBSMHullWhiteEngine(corr[i],
+                new AnalyticBSMHullWhiteEngine(i,
                                                stochProcess, hwModel)));
             const Real expected = option.NPV();
             const Real expectedDelta = option.delta();
@@ -919,24 +919,24 @@ void HybridHestonHullWhiteProcessTest::testFdmHestonHullWhiteEngine() {
             const Real npvTol = 0.01;
             if (std::fabs(calculated - expected) > npvTol) {
                  BOOST_ERROR("Failed to reproduce analytic npv values"
-                         << "\n   corr:       " << corr[i]
-                         << "\n   strike:     " << strike[j]
+                         << "\n   corr:       " << i
+                         << "\n   strike:     " << j
                          << "\n   calculated: " << calculated
                          << "\n   expected:   " << expected);
             }
             const Real deltaTol = 0.001;
             if (std::fabs(calculatedDelta - expectedDelta) > deltaTol) {
                  BOOST_ERROR("Failed to reproduce analytic delta values"
-                         << "\n   corr:       " << corr[i]
-                         << "\n   strike:     " << strike[j]
+                         << "\n   corr:       " << i
+                         << "\n   strike:     " << j
                          << "\n   calculated: " << calculated
                          << "\n   expected:   " << expected);
             }
             const Real gammaTol = 0.001;
             if (std::fabs(calculatedGamma - expectedGamma) > gammaTol) {
                  BOOST_ERROR("Failed to reproduce analytic gamma values"
-                         << "\n   corr:       " << corr[i]
-                         << "\n   strike:     " << strike[j]
+                         << "\n   corr:       " << i
+                         << "\n   strike:     " << j
                          << "\n   calculated: " << calculated
                          << "\n   expected:   " << expected);
             }
@@ -1081,22 +1081,22 @@ void HybridHestonHullWhiteProcessTest::testBsmHullWhitePricing() {
     Real tolWithOutCV[] = { 5e-3, 5e-3, 5e-3, 5e-3, 0.02 };
     for (Size l=0; l < LENGTH(schemes); ++l) {
         SchemeData scheme = schemes[l];
-        for (Size i=0; i < LENGTH(controlVariate); ++i) {
-            for (Size u=0; u < LENGTH(listOfTimeStepsPerYear); ++u) {
-                Size tSteps = Size(maturity*listOfTimeStepsPerYear[u]);
+        for (bool i : controlVariate) {
+            for (unsigned long u : listOfTimeStepsPerYear) {
+                Size tSteps = Size(maturity*u);
     
                 ext::shared_ptr<FdHestonHullWhiteVanillaEngine> fdEngine(
                     new FdHestonHullWhiteVanillaEngine(
                                     hestonModel, hwProcess, equityIrCorr,  
-                                    tSteps, 400, 2, 10, 0, controlVariate[i],
+                                    tSteps, 400, 2, 10, 0, i,
                                     scheme.schemeDesc));
                 fdEngine->enableMultipleStrikesCaching(
                     std::vector<Real>(strikes, strikes + LENGTH(strikes)));
     
                 Real avgPriceDiff = 0.0;
-                for (Size k=0; k < LENGTH(strikes); ++k) {
+                for (double & strike : strikes) {
                     VanillaOptionData optionData 
-                                  = { strikes[k], maturity, Option::Call }; 
+                                  = { strike, maturity, Option::Call }; 
                     ext::shared_ptr<VanillaOption> option 
                                         = makeVanillaOption(optionData);
                     option->setPricingEngine(bsmhwEngine);
@@ -1108,7 +1108,7 @@ void HybridHestonHullWhiteProcessTest::testBsmHullWhitePricing() {
                         +=std::fabs(expected-calculated)/LENGTH(strikes);
                 }
                 
-                if (controlVariate[i] && tolWithCV[l] < avgPriceDiff) {
+                if (i && tolWithCV[l] < avgPriceDiff) {
                      BOOST_ERROR("Failed to reproduce BSM-Hull-White prices"
                              << "\n   scheme       : " << scheme.name
                              << "\n   model        : " << hestonModelData.name
@@ -1116,7 +1116,7 @@ void HybridHestonHullWhiteProcessTest::testBsmHullWhitePricing() {
                 }
                 
                 
-                if (!controlVariate[i] && tolWithOutCV[l] < avgPriceDiff) {
+                if (!i && tolWithOutCV[l] < avgPriceDiff) {
                     BOOST_ERROR("Failed to reproduce BSM-Hull-White prices"
                             << "\n   scheme       : " << scheme.name
                             << "\n   model        : " << hestonModelData.name
@@ -1140,19 +1140,19 @@ void HybridHestonHullWhiteProcessTest::testSpatialDiscretizatinError() {
     Size listOfTimeStepsPerYear[] = { 40 };
     
     const Real tol[] = { 0.02, 0.02, 0.02, 0.02, 0.05 };
-    for (Size u=0; u < LENGTH(listOfTimeStepsPerYear); ++u) {
+    for (unsigned long u : listOfTimeStepsPerYear) {
         for (Size i=0; i < LENGTH(schemes); ++i) {
-            for (Size j=0; j < LENGTH(hestonModels); ++j) {
+            for (auto & j : hestonModels) {
                 Real avgPriceDiff = 0;
                 ext::shared_ptr<HestonProcess> hestonProcess(
-                                        makeHestonProcess(hestonModels[j]));
+                                        makeHestonProcess(j));
                 ext::shared_ptr<HestonModel> hestonModel(
                                         new HestonModel(hestonProcess));
     
                 ext::shared_ptr<PricingEngine> analyticEngine(
                                new AnalyticHestonEngine(hestonModel, 172));
     
-                Size tSteps = Size(maturity*listOfTimeStepsPerYear[u]);
+                Size tSteps = Size(maturity*u);
     
                 ext::shared_ptr<FdHestonVanillaEngine> fdEngine(
                     new FdHestonVanillaEngine(
@@ -1161,9 +1161,9 @@ void HybridHestonHullWhiteProcessTest::testSpatialDiscretizatinError() {
                 fdEngine->enableMultipleStrikesCaching(
                     std::vector<Real>(strikes, strikes + LENGTH(strikes)));
     
-                for (Size k=0; k < LENGTH(strikes); ++k) {
+                for (double & strike : strikes) {
                     VanillaOptionData optionData 
-                                  = { strikes[k], maturity, Option::Call }; 
+                                  = { strike, maturity, Option::Call }; 
                     ext::shared_ptr<VanillaOption> option 
                                         = makeVanillaOption(optionData);
                     option->setPricingEngine(analyticEngine);
@@ -1179,7 +1179,7 @@ void HybridHestonHullWhiteProcessTest::testSpatialDiscretizatinError() {
                 if (avgPriceDiff > tol[i]) {
                     BOOST_ERROR("\nFailed to reproduce Heston prices" <<
                         "\n scheme    : " << schemes[i].name <<
-                        "\n model     : " << hestonModels[j].name <<
+                        "\n model     : " << j.name <<
                         "\n error     : " << avgPriceDiff <<
                         "\n tolerance : " << tol[i]);
                 }

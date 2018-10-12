@@ -117,9 +117,9 @@ void example01() {
     vector<pair<Date, Real> > hr_curve_data = hazardRateStructure->nodes();
 
     cout << "Calibrated hazard rate values: " << endl;
-    for (Size i = 0; i < hr_curve_data.size(); i++) {
-        cout << "hazard rate on " << hr_curve_data[i].first << " is "
-             << hr_curve_data[i].second << endl;
+    for (auto & i : hr_curve_data) {
+        cout << "hazard rate on " << i.first << " is "
+             << i.second << endl;
     }
     cout << endl;
 
@@ -355,8 +355,8 @@ std::copy(cdsSchedule.begin(), cdsSchedule.end(),
 
     // output rate curve
     std::cout << "ISDA rate curve: " << std::endl;
-    for(Size i=0;i<isdaRateHelper.size(); i++) {
-        Date d = isdaRateHelper[i]->latestDate();
+    for(auto & i : isdaRateHelper) {
+        Date d = i->latestDate();
         std::cout << d << "\t" << setprecision(6) <<
             rateTs->zeroRate(d,Actual365Fixed(),Continuous).rate() << "\t" <<
             rateTs->discount(d) << std::endl;
@@ -405,8 +405,8 @@ std::copy(cdsSchedule.begin(), cdsSchedule.end(),
         0, WeekendsOnly(), isdaCdsHelper, Actual365Fixed()));
 
     std::cout << "ISDA credit curve: " << std::endl;
-    for(Size i=0;i<isdaCdsHelper.size();i++) {
-        Date d = isdaCdsHelper[i]->latestDate();
+    for(auto & i : isdaCdsHelper) {
+        Date d = i->latestDate();
         Real pd = defaultTs->defaultProbability(d);
         Real t = defaultTs->timeFromReference(d);
         std::cout << d << ";" << pd << ";" << 1.0 - pd << ";" <<
@@ -622,8 +622,8 @@ void example03() {
     // check the curves
     std::cout << "ISDA yield curve:" << std::endl;
     std::cout << "date;time;zeroyield" << std::endl;
-    for (Size i = 0; i < isdaYieldHelpers.size(); i++) {
-        Date d = isdaYieldHelpers[i]->latestDate();
+    for (auto & isdaYieldHelper : isdaYieldHelpers) {
+        Date d = isdaYieldHelper->latestDate();
         Real t = isdaYts->timeFromReference(d);
         std::cout << d << ";" << t << ";"
                   << isdaYts->zeroRate(d, Actual365Fixed(), Continuous).rate()
@@ -632,8 +632,8 @@ void example03() {
 
     std::cout << "ISDA credit curve:" << std::endl;
     std::cout << "date;time;survivalprob" << std::endl;
-    for (Size i = 0; i < isdaCdsHelpers.size(); i++) {
-        Date d = isdaCdsHelpers[i]->latestDate();
+    for (auto & isdaCdsHelper : isdaCdsHelpers) {
+        Date d = isdaCdsHelper->latestDate();
         Real t = isdaCts->timeFromReference(d);
         std::cout << d << ";" << t << ";" << isdaCts->survivalProbability(d)
                   << std::endl;

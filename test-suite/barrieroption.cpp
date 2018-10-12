@@ -386,17 +386,17 @@ void BarrierOptionTest::testHaugValues() {
     ext::shared_ptr<SimpleQuote> vol = ext::make_shared<SimpleQuote>(0.0);
     ext::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
 
-    for (Size i=0; i<LENGTH(values); i++) {
-        Date exDate = today + Integer(values[i].t*360+0.5);
+    for (auto & value : values) {
+        Date exDate = today + Integer(value.t*360+0.5);
 
-        spot ->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol  ->setValue(values[i].v);
+        spot ->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol  ->setValue(value.v);
 
         ext::shared_ptr<StrikedTypePayoff> payoff =
-            ext::make_shared<PlainVanillaPayoff>(values[i].type,
-                                                   values[i].strike);
+            ext::make_shared<PlainVanillaPayoff>(value.type,
+                                                   value.strike);
 
         ext::shared_ptr<BlackScholesMertonProcess> stochProcess =
             ext::make_shared<BlackScholesMertonProcess>(
@@ -406,15 +406,15 @@ void BarrierOptionTest::testHaugValues() {
                                       Handle<BlackVolTermStructure>(volTS));
 
         ext::shared_ptr<Exercise> exercise;
-        if (values[i].exType == Exercise::European)
+        if (value.exType == Exercise::European)
             exercise = ext::make_shared<EuropeanExercise>(exDate);
         else
             exercise = ext::make_shared<AmericanExercise>(exDate);
 
         BarrierOption barrierOption(
-                values[i].barrierType,
-                values[i].barrier,
-                values[i].rebate,
+                value.barrierType,
+                value.barrier,
+                value.rebate,
                 payoff,
                 exercise);
 
@@ -422,33 +422,33 @@ void BarrierOptionTest::testHaugValues() {
         Real calculated;
         Real expected;
         Real error;
-        if (values[i].exType == Exercise::European) {
+        if (value.exType == Exercise::European) {
            // these engines support only european options
            engine = ext::make_shared<AnalyticBarrierEngine>(stochProcess);
 
            barrierOption.setPricingEngine(engine);
 
            Real calculated = barrierOption.NPV();
-           Real expected = values[i].result;
+           Real expected = value.result;
            Real error = std::fabs(calculated-expected);
-           if (error>values[i].tol) {
-               REPORT_FAILURE("value", values[i].barrierType, values[i].barrier,
-                              values[i].rebate, payoff, exercise, values[i].s,
-                              values[i].q, values[i].r, today, values[i].v,
-                              expected, calculated, error, values[i].tol);
+           if (error>value.tol) {
+               REPORT_FAILURE("value", value.barrierType, value.barrier,
+                              value.rebate, payoff, exercise, value.s,
+                              value.q, value.r, today, value.v,
+                              expected, calculated, error, value.tol);
            }
 
            engine = ext::make_shared<FdBlackScholesBarrierEngine>(stochProcess, 200, 400);
            barrierOption.setPricingEngine(engine);
 
            calculated = barrierOption.NPV();
-           expected = values[i].result;
+           expected = value.result;
            error = std::fabs(calculated-expected);
            if (error>5.0e-3) {
-               REPORT_FAILURE("fd value", values[i].barrierType, values[i].barrier,
-                              values[i].rebate, payoff, exercise, values[i].s,
-                              values[i].q, values[i].r, today, values[i].v,
-                              expected, calculated, error, values[i].tol);
+               REPORT_FAILURE("fd value", value.barrierType, value.barrier,
+                              value.rebate, payoff, exercise, value.s,
+                              value.q, value.r, today, value.v,
+                              expected, calculated, error, value.tol);
            }
         }
 
@@ -456,13 +456,13 @@ void BarrierOptionTest::testHaugValues() {
         barrierOption.setPricingEngine(engine);
 
         calculated = barrierOption.NPV();
-        expected = values[i].result;
+        expected = value.result;
         error = std::fabs(calculated-expected);
         double tol = 1.1e-2;
         if (error>tol) {
-            REPORT_FAILURE("Binomial (Boyle-lau) value", values[i].barrierType, values[i].barrier,
-                           values[i].rebate, payoff, exercise, values[i].s,
-                           values[i].q, values[i].r, today, values[i].v,
+            REPORT_FAILURE("Binomial (Boyle-lau) value", value.barrierType, value.barrier,
+                           value.rebate, payoff, exercise, value.s,
+                           value.q, value.r, today, value.v,
                            expected, calculated, error, tol);
         }
 
@@ -473,13 +473,13 @@ void BarrierOptionTest::testHaugValues() {
         engine = ext::make_shared<BinomialBarrierEngine<CoxRossRubinstein,DiscretizedDermanKaniBarrierOption> >(stochProcess, 400);
         barrierOption.setPricingEngine(engine);
         calculated = barrierOption.NPV();
-        expected = values[i].result;
+        expected = value.result;
         error = std::fabs(calculated-expected);
         tol = 4e-2;
         if (error>tol) {
-            REPORT_FAILURE("Binomial (Derman) value", values[i].barrierType, values[i].barrier,
-                           values[i].rebate, payoff, exercise, values[i].s,
-                           values[i].q, values[i].r, today, values[i].v,
+            REPORT_FAILURE("Binomial (Derman) value", value.barrierType, value.barrier,
+                           value.rebate, payoff, exercise, value.s,
+                           value.q, value.r, today, value.v,
                            expected, calculated, error, tol);
         }
     }
@@ -533,12 +533,12 @@ void BarrierOptionTest::testBabsiriValues() {
     ext::shared_ptr<Exercise> exercise =
         ext::make_shared<EuropeanExercise>(exDate);
 
-    for (Size i=0; i<LENGTH(values); i++) {
-        volatility->setValue(values[i].volatility);
+    for (auto & value : values) {
+        volatility->setValue(value.volatility);
 
         ext::shared_ptr<StrikedTypePayoff> callPayoff =
             ext::make_shared<PlainVanillaPayoff>(Option::Call,
-                                                   values[i].strike);
+                                                   value.strike);
 
         ext::shared_ptr<BlackScholesMertonProcess> stochProcess =
             ext::make_shared<BlackScholesMertonProcess>(
@@ -553,20 +553,20 @@ void BarrierOptionTest::testBabsiriValues() {
 
         // analytic
         BarrierOption barrierCallOption(
-                values[i].type,
-                values[i].barrier,
+                value.type,
+                value.barrier,
                 rebate,
                 callPayoff,
                 exercise);
         barrierCallOption.setPricingEngine(engine);
         Real calculated = barrierCallOption.NPV();
-        Real expected = values[i].callValue;
+        Real expected = value.callValue;
         Real error = std::fabs(calculated-expected);
         Real maxErrorAllowed = 1.0e-5;
         if (error>maxErrorAllowed) {
-            REPORT_FAILURE("value", values[i].type, values[i].barrier,
+            REPORT_FAILURE("value", value.type, value.barrier,
                            rebate, callPayoff, exercise, underlyingPrice,
-                           q, r, today, values[i].volatility,
+                           q, r, today, value.volatility,
                            expected, calculated, error, maxErrorAllowed);
         }
 
@@ -584,9 +584,9 @@ void BarrierOptionTest::testBabsiriValues() {
         calculated = barrierCallOption.NPV();
         error = std::fabs(calculated-expected)/expected;
         if (error>maxMcRelativeErrorAllowed) {
-            REPORT_FAILURE("value", values[i].type, values[i].barrier,
+            REPORT_FAILURE("value", value.type, value.barrier,
                            rebate, callPayoff, exercise, underlyingPrice,
-                           q, r, today, values[i].volatility,
+                           q, r, today, value.volatility,
                            expected, calculated, error,
                            maxMcRelativeErrorAllowed);
         }
@@ -637,12 +637,12 @@ void BarrierOptionTest::testBeagleholeValues() {
     ext::shared_ptr<Exercise> exercise =
         ext::make_shared<EuropeanExercise>(exDate);
 
-    for (Size i=0; i<LENGTH(values); i++) {
-        volatility->setValue(values[i].volatility);
+    for (auto & value : values) {
+        volatility->setValue(value.volatility);
 
         ext::shared_ptr<StrikedTypePayoff> callPayoff =
             ext::make_shared<PlainVanillaPayoff>(Option::Call,
-                                                   values[i].strike);
+                                                   value.strike);
 
         ext::shared_ptr<BlackScholesMertonProcess> stochProcess =
             ext::make_shared<BlackScholesMertonProcess>(
@@ -655,20 +655,20 @@ void BarrierOptionTest::testBeagleholeValues() {
             ext::make_shared<AnalyticBarrierEngine>(stochProcess);
 
         BarrierOption barrierCallOption(
-                values[i].type,
-                values[i].barrier,
+                value.type,
+                value.barrier,
                 rebate,
                 callPayoff,
                 exercise);
         barrierCallOption.setPricingEngine(engine);
         Real calculated = barrierCallOption.NPV();
-        Real expected = values[i].callValue;
+        Real expected = value.callValue;
         Real maxErrorAllowed = 1.0e-3;
         Real error = std::fabs(calculated-expected);
         if (error > maxErrorAllowed) {
-            REPORT_FAILURE("value", values[i].type, values[i].barrier,
+            REPORT_FAILURE("value", value.type, value.barrier,
                            rebate, callPayoff, exercise, underlyingPrice,
-                           q, r, today, values[i].volatility,
+                           q, r, today, value.volatility,
                            expected, calculated, error, maxErrorAllowed);
         }
 
@@ -685,9 +685,9 @@ void BarrierOptionTest::testBeagleholeValues() {
         calculated = barrierCallOption.NPV();
         error = std::fabs(calculated-expected)/expected;
         if (error>maxMcRelativeErrorAllowed) {
-            REPORT_FAILURE("value", values[i].type, values[i].barrier,
+            REPORT_FAILURE("value", value.type, value.barrier,
                            rebate, callPayoff, exercise, underlyingPrice,
-                           q, r, today, values[i].volatility,
+                           q, r, today, value.volatility,
                            expected, calculated, error,
                            maxMcRelativeErrorAllowed);
         }
@@ -1093,20 +1093,20 @@ void BarrierOptionTest::testVannaVolgaSimpleBarrierValues() {
     ext::shared_ptr<SimpleQuote> volAtm = ext::make_shared<SimpleQuote>(0.0);
     ext::shared_ptr<SimpleQuote> vol25Call = ext::make_shared<SimpleQuote>(0.0);
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (auto & value : values) {
 
-        spot->setValue(values[i].s);
-        qRate->setValue(values[i].q);
-        rRate->setValue(values[i].r);
-        vol25Put->setValue(values[i].vol25Put);
-        volAtm->setValue(values[i].volAtm);
-        vol25Call->setValue(values[i].vol25Call);
+        spot->setValue(value.s);
+        qRate->setValue(value.q);
+        rRate->setValue(value.r);
+        vol25Put->setValue(value.vol25Put);
+        volAtm->setValue(value.volAtm);
+        vol25Call->setValue(value.vol25Call);
 
         ext::shared_ptr<StrikedTypePayoff> payoff =
-            ext::make_shared<PlainVanillaPayoff>(values[i].type,
-                                                   values[i].strike);
+            ext::make_shared<PlainVanillaPayoff>(value.type,
+                                                   value.strike);
 
-        Date exDate = today + Integer(values[i].t*365+0.5);
+        Date exDate = today + Integer(value.t*365+0.5);
         ext::shared_ptr<Exercise> exercise =
             ext::make_shared<EuropeanExercise>(exDate);
 
@@ -1114,14 +1114,14 @@ void BarrierOptionTest::testVannaVolgaSimpleBarrierValues() {
 						ext::make_shared<DeltaVolQuote>(
 							Handle<Quote>(volAtm),
 							DeltaVolQuote::Fwd,
-							values[i].t,
+							value.t,
 							DeltaVolQuote::AtmDeltaNeutral));
 
         Handle<DeltaVolQuote> vol25PutQuote(Handle<DeltaVolQuote>(
 						ext::make_shared<DeltaVolQuote>(
 							-0.25,
 							Handle<Quote>(vol25Put),
-							values[i].t,
+							value.t,
 							DeltaVolQuote::Fwd
 							)));
 
@@ -1129,20 +1129,20 @@ void BarrierOptionTest::testVannaVolgaSimpleBarrierValues() {
 						ext::make_shared<DeltaVolQuote>(
 							0.25,
 							Handle<Quote>(vol25Call),
-							values[i].t,
+							value.t,
 							DeltaVolQuote::Fwd
 							)));
 
-        BarrierOption barrierOption(values[i].barrierType,
-                                    values[i].barrier,
-                                    values[i].rebate,
+        BarrierOption barrierOption(value.barrierType,
+                                    value.barrier,
+                                    value.rebate,
                                     payoff,
                                     exercise);
 
         Real bsVanillaPrice =
-            blackFormula(values[i].type, values[i].strike,
-                         spot->value()*qTS->discount(values[i].t)/rTS->discount(values[i].t),
-						 values[i].v * sqrt(values[i].t), rTS->discount(values[i].t));
+            blackFormula(value.type, value.strike,
+                         spot->value()*qTS->discount(value.t)/rTS->discount(value.t),
+						 value.v * sqrt(value.t), rTS->discount(value.t));
         ext::shared_ptr<PricingEngine> vannaVolgaEngine =
             ext::make_shared<VannaVolgaBarrierEngine>(
                             volAtmQuote,
@@ -1156,15 +1156,15 @@ void BarrierOptionTest::testVannaVolgaSimpleBarrierValues() {
         barrierOption.setPricingEngine(vannaVolgaEngine);
 
         Real calculated = barrierOption.NPV();
-        Real expected = values[i].result;
+        Real expected = value.result;
         Real error = std::fabs(calculated-expected);
-        if (error>values[i].tol) {
+        if (error>value.tol) {
             REPORT_FX_FAILURE(
-                "value", values[i].barrierType, values[i].barrier,
-                values[i].rebate, payoff, exercise, values[i].s,
-                values[i].q, values[i].r, today, values[i].vol25Put,
-                values[i].volAtm, values[i].vol25Call, values[i].v,
-                expected, calculated, error, values[i].tol);
+                "value", value.barrierType, value.barrier,
+                value.rebate, payoff, exercise, value.s,
+                value.q, value.r, today, value.vol25Put,
+                value.volAtm, value.vol25Call, value.v,
+                expected, calculated, error, value.tol);
         }
     }
 }
@@ -1248,7 +1248,7 @@ void BarrierOptionTest::testDividendBarrierOption() {
 
     const Real relTol = 1e-4;
     for (Size i=0; i < LENGTH(barriers); ++i) {
-        for (Size j=0; j < LENGTH(engines); ++j) {
+        for (const auto & engine : engines) {
             const Real barrier = barriers[i];
             const Barrier::Type barrierType = barrierTypes[i];
 
@@ -1257,7 +1257,7 @@ void BarrierOptionTest::testDividendBarrierOption() {
                 std::vector<Date>(1, divDate),
                 std::vector<Real>(1, divAmount));
 
-            barrierOption.setPricingEngine(engines[j]);
+            barrierOption.setPricingEngine(engine);
 
             const Real calculated = barrierOption.NPV();
 

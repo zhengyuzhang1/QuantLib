@@ -202,15 +202,15 @@ void AsianOptionTest::testAnalyticContinuousGeometricAveragePriceGreeks() {
     ext::shared_ptr<BlackScholesMertonProcess> process(
          new BlackScholesMertonProcess(Handle<Quote>(spot), qTS, rTS, volTS));
 
-    for (Size i=0; i<LENGTH(types); i++) {
-      for (Size j=0; j<LENGTH(strikes); j++) {
-        for (Size k=0; k<LENGTH(lengths); k++) {
+    for (auto & type : types) {
+      for (double strike : strikes) {
+        for (int length : lengths) {
 
             ext::shared_ptr<EuropeanExercise> maturity(
-                              new EuropeanExercise(today + lengths[k]*Years));
+                              new EuropeanExercise(today + length*Years));
 
             ext::shared_ptr<PlainVanillaPayoff> payoff(
-                                new PlainVanillaPayoff(types[i], strikes[j]));
+                                new PlainVanillaPayoff(type, strike));
 
             ext::shared_ptr<PricingEngine> engine(new
                  AnalyticContinuousGeometricAveragePriceAsianEngine(process));
@@ -222,15 +222,13 @@ void AsianOptionTest::testAnalyticContinuousGeometricAveragePriceGreeks() {
             Size pastFixings = Null<Size>();
             Real runningAverage = Null<Real>();
 
-            for (Size l=0; l<LENGTH(underlyings); l++) {
-              for (Size m=0; m<LENGTH(qRates); m++) {
-                for (Size n=0; n<LENGTH(rRates); n++) {
-                  for (Size p=0; p<LENGTH(vols); p++) {
+            for (double u : underlyings) {
+              for (double m : qRates) {
+                for (double n : rRates) {
+                  for (double v : vols) {
 
-                      Real u = underlyings[l];
-                      Rate q = qRates[m],
-                           r = rRates[n];
-                      Volatility v = vols[p];
+                      Rate q = m,
+                           r = n;
                       spot->setValue(u);
                       qRate->setValue(q);
                       rRate->setValue(r);
@@ -621,27 +619,27 @@ void AsianOptionTest::testMCDiscreteArithmeticAveragePrice() {
     Average::Type averageType = Average::Arithmetic;
     Real runningSum = 0.0;
     Size pastFixings = 0;
-    for (Size l=0; l<LENGTH(cases4); l++) {
+    for (auto & l : cases4) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(new
-            PlainVanillaPayoff(cases4[l].type, cases4[l].strike));
+            PlainVanillaPayoff(l.type, l.strike));
 
-        Time dt = cases4[l].length/(cases4[l].fixings-1);
-        std::vector<Time> timeIncrements(cases4[l].fixings);
-        std::vector<Date> fixingDates(cases4[l].fixings);
-        timeIncrements[0] = cases4[l].first;
+        Time dt = l.length/(l.fixings-1);
+        std::vector<Time> timeIncrements(l.fixings);
+        std::vector<Date> fixingDates(l.fixings);
+        timeIncrements[0] = l.first;
         fixingDates[0] = today + Integer(timeIncrements[0]*360+0.5);
-        for (Size i=1; i<cases4[l].fixings; i++) {
-            timeIncrements[i] = i*dt + cases4[l].first;
+        for (Size i=1; i<l.fixings; i++) {
+            timeIncrements[i] = i*dt + l.first;
             fixingDates[i] = today + Integer(timeIncrements[i]*360+0.5);
         }
         ext::shared_ptr<Exercise> exercise(new
-            EuropeanExercise(fixingDates[cases4[l].fixings-1]));
+            EuropeanExercise(fixingDates[l.fixings-1]));
 
-        spot ->setValue(cases4[l].underlying);
-        qRate->setValue(cases4[l].dividendYield);
-        rRate->setValue(cases4[l].riskFreeRate);
-        vol  ->setValue(cases4[l].volatility);
+        spot ->setValue(l.underlying);
+        qRate->setValue(l.dividendYield);
+        rRate->setValue(l.riskFreeRate);
+        vol  ->setValue(l.volatility);
 
         ext::shared_ptr<BlackScholesMertonProcess> stochProcess(new
             BlackScholesMertonProcess(Handle<Quote>(spot),
@@ -653,7 +651,7 @@ void AsianOptionTest::testMCDiscreteArithmeticAveragePrice() {
         ext::shared_ptr<PricingEngine> engine =
             MakeMCDiscreteArithmeticAPEngine<LowDiscrepancy>(stochProcess)
             .withSamples(2047)
-            .withControlVariate(cases4[l].controlVariate);
+            .withControlVariate(l.controlVariate);
 
         DiscreteAveragingAsianOption option(averageType, runningSum,
                                             pastFixings, fixingDates,
@@ -661,7 +659,7 @@ void AsianOptionTest::testMCDiscreteArithmeticAveragePrice() {
         option.setPricingEngine(engine);
 
         Real calculated = option.NPV();
-        Real expected = cases4[l].result;
+        Real expected = l.result;
         Real tolerance = 2.0e-2;
         if (std::fabs(calculated-expected) > tolerance) {
             REPORT_FAILURE("value", averageType, runningSum, pastFixings,
@@ -670,7 +668,7 @@ void AsianOptionTest::testMCDiscreteArithmeticAveragePrice() {
                         vol->value(), expected, calculated, tolerance);
         }
 
-        if(cases4[l].fixings < 100) {
+        if(l.fixings < 100) {
             engine = ext::shared_ptr<PricingEngine>(
                     new FdBlackScholesAsianEngine(stochProcess, 100, 100, 100));
             option.setPricingEngine(engine);
@@ -774,27 +772,27 @@ void AsianOptionTest::testMCDiscreteArithmeticAverageStrike() {
     Average::Type averageType = Average::Arithmetic;
     Real runningSum = 0.0;
     Size pastFixings = 0;
-    for (Size l=0; l<LENGTH(cases5); l++) {
+    for (auto & l : cases5) {
 
         ext::shared_ptr<StrikedTypePayoff> payoff(new
-            PlainVanillaPayoff(cases5[l].type, cases5[l].strike));
+            PlainVanillaPayoff(l.type, l.strike));
 
-        Time dt = cases5[l].length/(cases5[l].fixings-1);
-        std::vector<Time> timeIncrements(cases5[l].fixings);
-        std::vector<Date> fixingDates(cases5[l].fixings);
-        timeIncrements[0] = cases5[l].first;
+        Time dt = l.length/(l.fixings-1);
+        std::vector<Time> timeIncrements(l.fixings);
+        std::vector<Date> fixingDates(l.fixings);
+        timeIncrements[0] = l.first;
         fixingDates[0] = today + Integer(timeIncrements[0]*360+0.5);
-        for (Size i=1; i<cases5[l].fixings; i++) {
-            timeIncrements[i] = i*dt + cases5[l].first;
+        for (Size i=1; i<l.fixings; i++) {
+            timeIncrements[i] = i*dt + l.first;
             fixingDates[i] = today + Integer(timeIncrements[i]*360+0.5);
         }
         ext::shared_ptr<Exercise> exercise(new
-            EuropeanExercise(fixingDates[cases5[l].fixings-1]));
+            EuropeanExercise(fixingDates[l.fixings-1]));
 
-        spot ->setValue(cases5[l].underlying);
-        qRate->setValue(cases5[l].dividendYield);
-        rRate->setValue(cases5[l].riskFreeRate);
-        vol  ->setValue(cases5[l].volatility);
+        spot ->setValue(l.underlying);
+        qRate->setValue(l.dividendYield);
+        rRate->setValue(l.riskFreeRate);
+        vol  ->setValue(l.volatility);
 
         ext::shared_ptr<BlackScholesMertonProcess> stochProcess(new
             BlackScholesMertonProcess(Handle<Quote>(spot),
@@ -813,7 +811,7 @@ void AsianOptionTest::testMCDiscreteArithmeticAverageStrike() {
         option.setPricingEngine(engine);
 
         Real calculated = option.NPV();
-        Real expected = cases5[l].result;
+        Real expected = l.result;
         Real tolerance = 2.0e-2;
         if (std::fabs(calculated-expected) > tolerance) {
             REPORT_FAILURE("value", averageType, runningSum, pastFixings,
@@ -862,15 +860,15 @@ void AsianOptionTest::testAnalyticDiscreteGeometricAveragePriceGreeks() {
     ext::shared_ptr<BlackScholesMertonProcess> process(
          new BlackScholesMertonProcess(Handle<Quote>(spot), qTS, rTS, volTS));
 
-    for (Size i=0; i<LENGTH(types); i++) {
-      for (Size j=0; j<LENGTH(strikes); j++) {
-        for (Size k=0; k<LENGTH(lengths); k++) {
+    for (auto & type : types) {
+      for (double strike : strikes) {
+        for (int length : lengths) {
 
             ext::shared_ptr<EuropeanExercise> maturity(
-                              new EuropeanExercise(today + lengths[k]*Years));
+                              new EuropeanExercise(today + length*Years));
 
             ext::shared_ptr<PlainVanillaPayoff> payoff(
-                                new PlainVanillaPayoff(types[i], strikes[j]));
+                                new PlainVanillaPayoff(type, strike));
 
             Real runningAverage = 120;
             Size pastFixings = 1;
@@ -890,15 +888,13 @@ void AsianOptionTest::testAnalyticDiscreteGeometricAveragePriceGreeks() {
                                                 fixingDates, payoff, maturity);
             option.setPricingEngine(engine);
 
-            for (Size l=0; l<LENGTH(underlyings); l++) {
-              for (Size m=0; m<LENGTH(qRates); m++) {
-                for (Size n=0; n<LENGTH(rRates); n++) {
-                  for (Size p=0; p<LENGTH(vols); p++) {
+            for (double u : underlyings) {
+              for (double m : qRates) {
+                for (double n : rRates) {
+                  for (double v : vols) {
 
-                      Real u = underlyings[l];
-                      Rate q = qRates[m],
-                           r = rRates[n];
-                      Volatility v = vols[p];
+                      Rate q = m,
+                           r = n;
                       spot->setValue(u);
                       qRate->setValue(q);
                       rRate->setValue(r);
@@ -1310,25 +1306,25 @@ void AsianOptionTest::testLevyEngine() {
     DayCounter dc = Actual360();
     Date today = Settings::instance().evaluationDate();
 
-    for (Size l=0; l<LENGTH(cases); l++) {
+    for (auto & l : cases) {
 
-        ext::shared_ptr<SimpleQuote> spot(new SimpleQuote(cases[l].spot));
+        ext::shared_ptr<SimpleQuote> spot(new SimpleQuote(l.spot));
         ext::shared_ptr<YieldTermStructure> qTS =
-            flatRate(today, cases[l].dividendYield, dc);
+            flatRate(today, l.dividendYield, dc);
         ext::shared_ptr<YieldTermStructure> rTS =
-            flatRate(today, cases[l].riskFreeRate, dc);
+            flatRate(today, l.riskFreeRate, dc);
         ext::shared_ptr<BlackVolTermStructure> volTS =
-            flatVol(today, cases[l].volatility, dc);
+            flatVol(today, l.volatility, dc);
 
         Average::Type averageType = Average::Arithmetic;
         ext::shared_ptr<Quote> average(
-                                    new SimpleQuote(cases[l].currentAverage));
+                                    new SimpleQuote(l.currentAverage));
 
         ext::shared_ptr<StrikedTypePayoff> payoff(
-                      new PlainVanillaPayoff(cases[l].type, cases[l].strike));
+                      new PlainVanillaPayoff(l.type, l.strike));
 
-        Date startDate = today - cases[l].elapsed;
-        Date maturity = startDate + cases[l].length;
+        Date startDate = today - l.elapsed;
+        Date maturity = startDate + l.length;
 
         ext::shared_ptr<Exercise> exercise(new EuropeanExercise(maturity));
 
@@ -1347,20 +1343,20 @@ void AsianOptionTest::testLevyEngine() {
         option.setPricingEngine(engine);
 
         Real calculated = option.NPV();
-        Real expected = cases[l].result;
+        Real expected = l.result;
         Real tolerance = 1.0e-4;
         Real error = std::fabs(expected-calculated);
         if (error > tolerance) {
             BOOST_ERROR("Asian option with Levy engine:"
-                        << "\n    spot:            " << cases[l].spot
-                        << "\n    current average: " << cases[l].currentAverage
-                        << "\n    strike:          " << cases[l].strike
-                        << "\n    dividend yield:  " << cases[l].dividendYield
-                        << "\n    risk-free rate:  " << cases[l].riskFreeRate
-                        << "\n    volatility:      " << cases[l].volatility
+                        << "\n    spot:            " << l.spot
+                        << "\n    current average: " << l.currentAverage
+                        << "\n    strike:          " << l.strike
+                        << "\n    dividend yield:  " << l.dividendYield
+                        << "\n    risk-free rate:  " << l.riskFreeRate
+                        << "\n    volatility:      " << l.volatility
                         << "\n    reference date:  " << today
-                        << "\n    length:          " << cases[l].length
-                        << "\n    elapsed:         " << cases[l].elapsed
+                        << "\n    length:          " << l.length
+                        << "\n    elapsed:         " << l.elapsed
                         << "\n    expected value:  " << expected
                         << "\n    calculated:      " << calculated
                         << "\n    error:           " << error);
@@ -1404,22 +1400,22 @@ void AsianOptionTest::testVecerEngine() {
     Size timeSteps = 200;
     Size assetSteps = 200;
 
-    for (Size i=0; i<LENGTH(cases); ++i) {
-        Handle<Quote> u(ext::make_shared<SimpleQuote>(cases[i].spot));
+    for (auto & i : cases) {
+        Handle<Quote> u(ext::make_shared<SimpleQuote>(i.spot));
         Handle<YieldTermStructure> r(flatRate(today,
-                                              cases[i].riskFreeRate,
+                                              i.riskFreeRate,
                                               dayCounter));
         Handle<BlackVolTermStructure> sigma(flatVol(today,
-                                                    cases[i].volatility,
+                                                    i.volatility,
                                                     dayCounter));
         ext::shared_ptr<BlackScholesMertonProcess> process =
             ext::make_shared<BlackScholesMertonProcess>(u, q, r, sigma);
 
-        Date maturity = today + cases[i].length*360;
+        Date maturity = today + i.length*360;
         ext::shared_ptr<Exercise> exercise =
             ext::make_shared<EuropeanExercise>(maturity);
         ext::shared_ptr<StrikedTypePayoff> payoff =
-            ext::make_shared<PlainVanillaPayoff>(type, cases[i].strike);
+            ext::make_shared<PlainVanillaPayoff>(type, i.strike);
         Handle<Quote> average(ext::make_shared<SimpleQuote>(0.0));
 
         ContinuousAveragingAsianOption option(Average::Arithmetic,
@@ -1429,14 +1425,14 @@ void AsianOptionTest::testVecerEngine() {
                 process,average,today,timeSteps,assetSteps,-1.0,1.0));
 
         Real calculated = option.NPV();
-        Real error = std::fabs(calculated - cases[i].result);
-        if (error > cases[i].tolerance)
+        Real error = std::fabs(calculated - i.result);
+        if (error > i.tolerance)
             BOOST_ERROR("Failed to reproduce expected NPV"
                         << "\n    calculated: " << calculated
-                        << "\n    expected:   " << cases[i].result
-                        << "\n    expected:   " << cases[i].result
+                        << "\n    expected:   " << i.result
+                        << "\n    expected:   " << i.result
                         << "\n    error:      " << error
-                        << "\n    tolerance:  " << cases[i].tolerance);
+                        << "\n    tolerance:  " << i.tolerance);
     }
 }
 

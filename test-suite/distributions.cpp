@@ -164,16 +164,16 @@ namespace {
         const Real x(0.0);
         const Real y(0.0);
 
-        for (Size i=0;i<LENGTH(rho);i++) {
+        for (double i : rho) {
             for (Integer sgn=-1; sgn < 2; sgn+=2) {
-                Bivariate bvn(sgn*rho[i]);
-                Real expected = 0.25 + std::asin(sgn*rho[i]) / (2*M_PI) ;
+                Bivariate bvn(sgn*i);
+                Real expected = 0.25 + std::asin(sgn*i) / (2*M_PI) ;
                 Real realised = bvn(x,y);
 
                 if (std::fabs(realised-expected)>=tolerance) {
                     BOOST_ERROR(tag << " bivariate cumulative distribution\n"
                                 << std::scientific
-                                << "    rho: " << sgn*rho[i] << "\n"
+                                << "    rho: " << sgn*i << "\n"
                                 << "    expected:  " << expected << "\n"
                                 << "    realised:  " << realised << "\n"
                                 << "    tolerance: " << tolerance);
@@ -582,16 +582,16 @@ void DistributionTest::testBivariateCumulativeStudent() {
     };
 
     tolerance = 1.0e-6;
-    for (Size i=0; i < LENGTH(cases); ++i) {
-		BivariateCumulativeStudentDistribution f(cases[i].n,  cases[i].rho);
-        Real calculated = f(cases[i].x, cases[i].y);
-        Real expected = cases[i].result;
+    for (auto & i : cases) {
+		BivariateCumulativeStudentDistribution f(i.n,  i.rho);
+        Real calculated = f(i.x, i.y);
+        Real expected = i.result;
         if (std::fabs(calculated - expected) > tolerance)
             BOOST_ERROR("Failed to reproduce CDF value:" <<
-                        "\n    n:   " << cases[i].n <<
-                        "\n    rho: " << cases[i].rho <<
-                        "\n    x:   " << cases[i].x <<
-                        "\n    y:   " << cases[i].y <<
+                        "\n    n:   " << i.n <<
+                        "\n    rho: " << i.rho <<
+                        "\n    x:   " << i.x <<
+                        "\n    y:   " << i.y <<
                         "\n    calculated: " << calculated <<
                         "\n    expected:   " << expected);
     }

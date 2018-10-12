@@ -687,12 +687,12 @@ namespace QuantLib {
     : nFactors_(1),
       nVariables_(factorWeights.size())
     {
-        for(Size iName=0; iName < factorWeights.size(); iName++)
+        for(double factorWeight : factorWeights)
             factorWeights_.push_back(std::vector<Real>(1, 
-                factorWeights[iName]));
-        for(Size iName=0; iName < factorWeights.size(); iName++)
+                factorWeight));
+        for(double factorWeight : factorWeights)
             idiosyncFctrs_.push_back(std::sqrt(1. - 
-                factorWeights[iName]*factorWeights[iName]));
+                factorWeight*factorWeight));
         //convert row to column vector....
         copula_ = copulaType(factorWeights_, ini);
     }
@@ -799,9 +799,9 @@ namespace QuantLib {
           urng_(seed) {
             // 1 == urng.dimension() is enforced by the sample type
             const std::vector<Real>& varF = copula.varianceFactors();
-            for(Size i=0; i<varF.size(); i++)// ...use back inserter lambda
+            for(double i : varF)// ...use back inserter lambda
                 trng_.push_back(
-                    PolarStudentTRng<urng_type>(2./(1.-varF[i]*varF[i]), urng_));
+                    PolarStudentTRng<urng_type>(2./(1.-i*i), urng_));
         }
         const sample_type& nextSequence() const {
             Size i=0;
