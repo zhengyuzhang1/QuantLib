@@ -55,7 +55,7 @@ namespace QuantLib {
         }
 
         Real digitalOptionPrice(Rate strike, Option::Type type = Option::Call,
-                                Real discount = 1.0, Real gap = 1.0E-8) const override {
+                                Real discount = 1.0, Real gap = 1.0e-5) const override {
             return source_->digitalOptionPrice(adjustedStrike(strike), type,
                                                discount, gap);
         }
