@@ -587,7 +587,7 @@ void CreditDefaultSwapTest::testIsdaEngine() {
                            0.015488};
 
     for(size_t i = 0; i < sizeof(dep_tenors) / sizeof(int); i++) {
-        isdaRateHelpers.push_back(ext::make_shared<DepositRateHelper>(
+        isdaRateHelpers.emplace_back(ext::make_shared<DepositRateHelper>(
                                      dep_quotes[i], dep_tenors[i] * Months, 2,
                                      WeekendsOnly(), ModifiedFollowing,
                                      false, Actual360()
@@ -614,7 +614,7 @@ void CreditDefaultSwapTest::testIsdaEngine() {
         "IsdaIbor", 3 * Months, 2, USDCurrency(), WeekendsOnly(),
         ModifiedFollowing, false, Actual360());
     for(size_t i = 0; i < sizeof(swap_tenors) / sizeof(int); i++) {
-        isdaRateHelpers.push_back(ext::make_shared<SwapRateHelper>(
+        isdaRateHelpers.emplace_back(ext::make_shared<SwapRateHelper>(
                                       swap_quotes[i], swap_tenors[i] * Years,
                                       WeekendsOnly(),
                                       Semiannual,

@@ -245,7 +245,7 @@ namespace {
         }
 
         for (int i = 0; i < 10; i++) {
-            r6m.push_back(ext::make_shared<DepositRateHelper>(
+            r6m.emplace_back(ext::make_shared<DepositRateHelper>(
                 Handle<Quote>(q6m[i]), q6mh1[i],
                                       i < 2 ? i : 2, TARGET(),
                                       ModifiedFollowing, false, Actual360()));
@@ -256,7 +256,7 @@ namespace {
 #ifndef QL_NEGATIVE_RATES
                 if (i + 10 != 16 && i + 10 != 17)
 #endif
-                    r6m.push_back(ext::make_shared<FraRateHelper>(
+                    r6m.emplace_back(ext::make_shared<FraRateHelper>(
                         Handle<Quote>(q6m[10 + i]), i + 1,
                                           i + 7, 2, TARGET(), ModifiedFollowing,
                                           false, Actual360()));
@@ -265,7 +265,7 @@ namespace {
 
         for (int i = 0; i < 15 + 35; i++) {
             if (i + 7 == 12 || i + 7 == 18 || i + 7 >= 24) {
-                r6m.push_back(ext::make_shared<SwapRateHelper>(
+                r6m.emplace_back(ext::make_shared<SwapRateHelper>(
                     Handle<Quote>(q6m[10 + i]), q6mh2[i],
                                        TARGET(), Annual, ModifiedFollowing,
                                        Actual360(), euribor6mEmpty));
@@ -342,8 +342,8 @@ namespace {
         for (int i = 0; i < 20; i++) {
             std::vector<Handle<Quote> > qSwAtmTmp;
             for (int j = 0; j < 14; j++) {
-                qSwAtmTmp.push_back(Handle<Quote>(ext::shared_ptr<Quote>(
-                    new SimpleQuote(qSwAtmh[i * 14 + j]))));
+                qSwAtmTmp.emplace_back(ext::shared_ptr<Quote>(
+                    new SimpleQuote(qSwAtmh[i * 14 + j])));
             }
             qSwAtm.push_back(qSwAtmTmp);
         }
@@ -419,8 +419,8 @@ namespace {
         for (int i = 0; i < 30; i++) {
             std::vector<Handle<Quote> > qSwSmileTmp;
             for (int j = 0; j < 9; j++) {
-                qSwSmileTmp.push_back(Handle<Quote>(ext::shared_ptr<Quote>(
-                    new SimpleQuote(qSwSmileh[i * 9 + j]))));
+                qSwSmileTmp.emplace_back(ext::shared_ptr<Quote>(
+                    new SimpleQuote(qSwSmileh[i * 9 + j])));
             }
             qSwSmile.push_back(qSwSmileTmp);
         }
@@ -448,9 +448,8 @@ namespace {
         for (int i = 0; i < 30; i++) {
             std::vector<Handle<Quote> > parameterGuessTmp;
             for (int j = 0; j < 4; j++) {
-                parameterGuessTmp.push_back(
-                    Handle<Quote>(ext::shared_ptr<Quote>(
-                        new SimpleQuote(qSwSmileh1[i * 4 + j]))));
+                parameterGuessTmp.emplace_back(ext::shared_ptr<Quote>(
+                        new SimpleQuote(qSwSmileh1[i * 4 + j])));
             }
             parameterGuess.push_back(parameterGuessTmp);
         }
@@ -1716,8 +1715,7 @@ void MarkovFunctionalTest::testBermudanSwaption() {
     for (Size i = 0; i < expiries.size(); i++) {
         europeanExercises.push_back(
             ext::shared_ptr<Exercise>(new EuropeanExercise(expiries[i])));
-        europeanSwaptions.push_back(
-            Swaption(underlyingCall, europeanExercises[i]));
+        europeanSwaptions.emplace_back(underlyingCall, europeanExercises[i]);
         europeanSwaptions.back().setPricingEngine(mfSwaptionEngine1);
     }
 

@@ -92,7 +92,7 @@ namespace QuantLib {
         std::list<Real> errors(1, g/bn);
 
         for (Size j=0; j < maxIter_ && errors.back() >= relTol_; ++j) {
-            h.push_back(Array(maxIter_, 0.0));
+            h.emplace_back(maxIter_, 0.0);
             Array w = A_((M_)? M_(v[j]) : v[j]);
 
             for (Size i=0; i <= j; ++i) {

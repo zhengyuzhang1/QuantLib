@@ -144,7 +144,7 @@ void VPPTest::testGemanRoncoroniProcess() {
                            ExtendedOrnsteinUhlenbeckProcess::Trapezodial));
 
     std::vector<ext::shared_ptr<StochasticProcess1D> > processes;
-    processes.push_back(grProcess);
+    processes.emplace_back(grProcess);
     processes.push_back(eouProcess);
 
     Matrix correlation(2, 2, 1.0);

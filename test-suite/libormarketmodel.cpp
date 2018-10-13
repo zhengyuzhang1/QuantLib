@@ -80,8 +80,8 @@ namespace {
     ext::shared_ptr<IborIndex> makeIndex() {
         std::vector<Date> dates;
         std::vector<Rate> rates;
-        dates.push_back(Date(4,September,2005));
-        dates.push_back(Date(4,September,2018));
+        dates.emplace_back(4,September,2005);
+        dates.emplace_back(4,September,2018);
         rates.push_back(0.039);
         rates.push_back(0.041);
 
@@ -361,8 +361,8 @@ void LiborMarketModelTest::testSwaptionPricing() {
 
     std::vector<Date> dates;
     std::vector<Rate> rates;
-    dates.push_back(Date(4,September,2005));
-    dates.push_back(Date(4,September,2011));
+    dates.emplace_back(4,September,2005);
+    dates.emplace_back(4,September,2011);
     rates.push_back(0.04);
     rates.push_back(0.08);
 

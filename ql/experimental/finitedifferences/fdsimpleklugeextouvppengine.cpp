@@ -169,7 +169,7 @@ namespace QuantLib {
             stepConditionFactory.build(mesh, fuelCostAddon_,
                                        fuelPrice, sparkSpread));
 
-        stepConditions.push_back(stepCondition);
+        stepConditions.emplace_back(stepCondition);
 
         const ext::shared_ptr<FdmStepConditionComposite> conditions(
             new FdmStepConditionComposite(stoppingTimes, stepConditions));

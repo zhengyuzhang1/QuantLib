@@ -204,7 +204,7 @@ int main(int, char* []) {
             // specialized helper, such as floating-rate bonds.
 
 
-            bondsHelpers.push_back(bondHelper);
+            bondsHelpers.emplace_back(bondHelper);
         }
 
         /*********************
@@ -228,7 +228,7 @@ int main(int, char* []) {
 
          // Adding the Fixed rate bonds to the curve for the long end
          for (Size i=0; i<numberOfBonds; i++) {
-             bondInstruments.push_back(bondsHelpers[i]);
+             bondInstruments.emplace_back(bondsHelpers[i]);
          }
 
          ext::shared_ptr<YieldTermStructure> bondDiscountingTermStructure(

@@ -336,8 +336,8 @@ void BasketOptionTest::testEuroTwoValues() {
         }
         
         std::vector<ext::shared_ptr<StochasticProcess1D> > procs;
-        procs.push_back(p1);
-        procs.push_back(p2);
+        procs.emplace_back(p1);
+        procs.emplace_back(p2);
 
         Matrix correlationMatrix(2,2, value.rho);
         for (Integer j=0; j < 2; j++) {

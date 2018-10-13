@@ -264,7 +264,7 @@ namespace QuantLib {
                        // gets underlying pointer & removes const
                        const_cast<ConstantYoYOptionletVolatility*>(
                                                           yoyVolBLACK.get()));
-                helperInstruments.push_back(helpers[j]);
+                helperInstruments.emplace_back(helpers[j]);
             }
             // ***bootstrap***
             // this is the artificial vol at zero so that first section works

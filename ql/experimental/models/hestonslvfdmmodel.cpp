@@ -377,7 +377,7 @@ namespace QuantLib {
         vMesher.reserve(timeGrid->size());
 
         xMesher.push_back(localVolRND.mesher(0.0));
-        vMesher.push_back(ext::make_shared<Predefined1dMesher>(
+        vMesher.emplace_back(ext::make_shared<Predefined1dMesher>(
             std::vector<Real>(vGrid, v0)));
 
         Size rescaleIdx = 0;

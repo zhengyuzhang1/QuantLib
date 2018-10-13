@@ -104,7 +104,7 @@ namespace QuantLib {
                                    process->riskFreeRate()->dayCounter(), 0));
 
         if(!arguments_.cashFlow.empty()) {
-            stepConditions.push_back(dividendCondition);
+            stepConditions.emplace_back(dividendCondition);
             stoppingTimes.push_back(dividendCondition->dividendTimes());
         }
 

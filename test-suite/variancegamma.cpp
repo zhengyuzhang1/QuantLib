@@ -180,7 +180,7 @@ void VarianceGammaTest::testVarianceGamma() {
                     processes[i].theta, expected, calculated,
                     error, tol);  
             }
-            optionList.push_back(option);
+            optionList.emplace_back(option);
         }
 
         // Test FFT engine

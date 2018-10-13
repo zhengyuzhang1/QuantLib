@@ -1065,8 +1065,7 @@ void PiecewiseYieldCurveTest::testBadPreviousCurve() {
     std::vector<ext::shared_ptr<RateHelper> > helpers;
     ext::shared_ptr<Euribor> euribor1m(new Euribor1M);
     for (auto & i : data) {
-        helpers.push_back(
-           ext::make_shared<SwapRateHelper>(i.rate,
+        helpers.emplace_back(ext::make_shared<SwapRateHelper>(i.rate,
                                               Period(i.n, i.units),
                                               TARGET(), Monthly, Unadjusted,
                                               Thirty360(), euribor1m));

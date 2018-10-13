@@ -328,25 +328,25 @@ std::copy(cdsSchedule.begin(), cdsSchedule.end(),
 
     std::vector<ext::shared_ptr<RateHelper> > isdaRateHelper;
 
-    isdaRateHelper.push_back(dp1m);
-    isdaRateHelper.push_back(dp2m);
-    isdaRateHelper.push_back(dp3m);
-    isdaRateHelper.push_back(dp6m);
-    isdaRateHelper.push_back(dp9m);
-    isdaRateHelper.push_back(dp12m);
-    isdaRateHelper.push_back(sw2y);
-    isdaRateHelper.push_back(sw3y);
-    isdaRateHelper.push_back(sw4y);
-    isdaRateHelper.push_back(sw5y);
-    isdaRateHelper.push_back(sw6y);
-    isdaRateHelper.push_back(sw7y);
-    isdaRateHelper.push_back(sw8y);
-    isdaRateHelper.push_back(sw9y);
-    isdaRateHelper.push_back(sw10y);
-    isdaRateHelper.push_back(sw12y);
-    isdaRateHelper.push_back(sw15y);
-    isdaRateHelper.push_back(sw20y);
-    isdaRateHelper.push_back(sw30y);
+    isdaRateHelper.emplace_back(dp1m);
+    isdaRateHelper.emplace_back(dp2m);
+    isdaRateHelper.emplace_back(dp3m);
+    isdaRateHelper.emplace_back(dp6m);
+    isdaRateHelper.emplace_back(dp9m);
+    isdaRateHelper.emplace_back(dp12m);
+    isdaRateHelper.emplace_back(sw2y);
+    isdaRateHelper.emplace_back(sw3y);
+    isdaRateHelper.emplace_back(sw4y);
+    isdaRateHelper.emplace_back(sw5y);
+    isdaRateHelper.emplace_back(sw6y);
+    isdaRateHelper.emplace_back(sw7y);
+    isdaRateHelper.emplace_back(sw8y);
+    isdaRateHelper.emplace_back(sw9y);
+    isdaRateHelper.emplace_back(sw10y);
+    isdaRateHelper.emplace_back(sw12y);
+    isdaRateHelper.emplace_back(sw15y);
+    isdaRateHelper.emplace_back(sw20y);
+    isdaRateHelper.emplace_back(sw30y);
 
     Handle<YieldTermStructure> rateTs(
         ext::make_shared<PiecewiseYieldCurve<Discount, LogLinear> >(
@@ -398,7 +398,7 @@ std::copy(cdsSchedule.begin(), cdsSchedule.end(),
         Following, DateGeneration::CDS, Actual360(), 0.4, rateTs, true, true,
         Date(), Actual360(true), true, CreditDefaultSwap::ISDA));
 
-    isdaCdsHelper.push_back(cds5y);
+    isdaCdsHelper.emplace_back(cds5y);
 
     Handle<DefaultProbabilityTermStructure> defaultTs(ext::make_shared<
         PiecewiseDefaultCurve<SurvivalProbability, LogLinear> >(
@@ -544,27 +544,27 @@ void example03() {
 
     std::vector<ext::shared_ptr<RateHelper> > isdaYieldHelpers;
 
-    isdaYieldHelpers.push_back(dp1m);
-    isdaYieldHelpers.push_back(dp2m);
-    isdaYieldHelpers.push_back(dp3m);
-    isdaYieldHelpers.push_back(dp6m);
-    isdaYieldHelpers.push_back(dp9m);
-    isdaYieldHelpers.push_back(dp1y);
-    isdaYieldHelpers.push_back(sw2y);
-    isdaYieldHelpers.push_back(sw3y);
-    isdaYieldHelpers.push_back(sw4y);
-    isdaYieldHelpers.push_back(sw5y);
-    isdaYieldHelpers.push_back(sw6y);
-    isdaYieldHelpers.push_back(sw7y);
-    isdaYieldHelpers.push_back(sw8y);
-    isdaYieldHelpers.push_back(sw9y);
-    isdaYieldHelpers.push_back(sw10y);
-    isdaYieldHelpers.push_back(sw11y);
-    isdaYieldHelpers.push_back(sw12y);
-    isdaYieldHelpers.push_back(sw15y);
-    isdaYieldHelpers.push_back(sw20y);
-    isdaYieldHelpers.push_back(sw25y);
-    isdaYieldHelpers.push_back(sw30y);
+    isdaYieldHelpers.emplace_back(dp1m);
+    isdaYieldHelpers.emplace_back(dp2m);
+    isdaYieldHelpers.emplace_back(dp3m);
+    isdaYieldHelpers.emplace_back(dp6m);
+    isdaYieldHelpers.emplace_back(dp9m);
+    isdaYieldHelpers.emplace_back(dp1y);
+    isdaYieldHelpers.emplace_back(sw2y);
+    isdaYieldHelpers.emplace_back(sw3y);
+    isdaYieldHelpers.emplace_back(sw4y);
+    isdaYieldHelpers.emplace_back(sw5y);
+    isdaYieldHelpers.emplace_back(sw6y);
+    isdaYieldHelpers.emplace_back(sw7y);
+    isdaYieldHelpers.emplace_back(sw8y);
+    isdaYieldHelpers.emplace_back(sw9y);
+    isdaYieldHelpers.emplace_back(sw10y);
+    isdaYieldHelpers.emplace_back(sw11y);
+    isdaYieldHelpers.emplace_back(sw12y);
+    isdaYieldHelpers.emplace_back(sw15y);
+    isdaYieldHelpers.emplace_back(sw20y);
+    isdaYieldHelpers.emplace_back(sw25y);
+    isdaYieldHelpers.emplace_back(sw30y);
 
     // build yield curve
     Handle<YieldTermStructure> isdaYts = Handle<YieldTermStructure>(
@@ -601,12 +601,12 @@ void example03() {
 
     std::vector<ext::shared_ptr<DefaultProbabilityHelper> > isdaCdsHelpers;
 
-    isdaCdsHelpers.push_back(cds6m);
-    isdaCdsHelpers.push_back(cds1y);
-    isdaCdsHelpers.push_back(cds3y);
-    isdaCdsHelpers.push_back(cds5y);
-    isdaCdsHelpers.push_back(cds7y);
-    isdaCdsHelpers.push_back(cds10y);
+    isdaCdsHelpers.emplace_back(cds6m);
+    isdaCdsHelpers.emplace_back(cds1y);
+    isdaCdsHelpers.emplace_back(cds3y);
+    isdaCdsHelpers.emplace_back(cds5y);
+    isdaCdsHelpers.emplace_back(cds7y);
+    isdaCdsHelpers.emplace_back(cds10y);
 
     // build credit curve
     Handle<DefaultProbabilityTermStructure> isdaCts =

@@ -287,10 +287,10 @@ void ScheduleTest::testDateConstructor() {
                        "possibly additional meta information...");
 
     std::vector<Date> dates;
-    dates.push_back(Date(16, May, 2015));
-    dates.push_back(Date(18, May, 2015));
-    dates.push_back(Date(18, May, 2016));
-    dates.push_back(Date(31, December, 2017));
+    dates.emplace_back(16, May, 2015);
+    dates.emplace_back(18, May, 2015);
+    dates.emplace_back(18, May, 2016);
+    dates.emplace_back(31, December, 2017);
 
     // schedule without any additional information
     Schedule schedule1(dates);

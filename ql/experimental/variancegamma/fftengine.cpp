@@ -70,7 +70,7 @@ namespace QuantLib {
     {
         ext::shared_ptr<VanillaOption> option(new VanillaOption(payoff, exercise));
         std::vector<ext::shared_ptr<Instrument> > optionList;
-        optionList.push_back(option);
+        optionList.emplace_back(option);
 
         ext::shared_ptr<FFTEngine> tempEngine(clone().release());
         tempEngine->precalculate(optionList);

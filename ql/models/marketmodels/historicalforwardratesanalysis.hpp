@@ -156,7 +156,7 @@ namespace QuantLib {
                 }
             } catch (std::exception& e) {
                 skippedDates.push_back(currentDate);
-                skippedDatesErrorMessage.push_back(e.what());
+                skippedDatesErrorMessage.emplace_back(e.what());
                 continue;
             }
 
@@ -171,7 +171,7 @@ namespace QuantLib {
                 }
             } catch (std::exception& e) {
                 failedDates.push_back(currentDate);
-                failedDatesErrorMessage.push_back(e.what());
+                failedDatesErrorMessage.emplace_back(e.what());
                 continue;
             }
 

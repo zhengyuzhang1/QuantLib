@@ -69,7 +69,7 @@ namespace QuantLib {
 
         std::list<std::vector<Time> > stoppingTimes;
         stoppingTimes.push_back(c2->stoppingTimes());
-        stoppingTimes.push_back(std::vector<Time>(1, c1->getTime()));
+        stoppingTimes.emplace_back(1, c1->getTime());
 
         FdmStepConditionComposite::Conditions conditions;
         conditions.push_back(c2);
@@ -95,7 +95,7 @@ namespace QuantLib {
             ext::shared_ptr<FdmDividendHandler> dividendCondition(
                 new FdmDividendHandler(cashFlow, mesher,
                                        refDate, dayCounter, 0));
-            stepConditions.push_back(dividendCondition);
+            stepConditions.emplace_back(dividendCondition);
             stoppingTimes.push_back(dividendCondition->dividendTimes());
         }
 
@@ -112,7 +112,7 @@ namespace QuantLib {
                 new FdmBermudanStepCondition(exercise->dates(),
                                              refDate, dayCounter,
                                              mesher, calculator));
-            stepConditions.push_back(bermudanCondition);
+            stepConditions.emplace_back(bermudanCondition);
             stoppingTimes.push_back(bermudanCondition->exerciseTimes());
         }
         

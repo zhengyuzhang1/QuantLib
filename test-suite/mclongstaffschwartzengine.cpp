@@ -282,7 +282,7 @@ void MCLongstaffSchwartzEngineTest::testAmericanMaxOption() {
     std::vector<ext::shared_ptr<StochasticProcess1D> > v;
 
     for (Size i=0; i<numberAssets; ++i) {
-        v.push_back(stochasticProcess);
+        v.emplace_back(stochasticProcess);
         corr[i][i] = 1.0;
     }
 

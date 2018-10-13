@@ -235,7 +235,7 @@ namespace QuantLib {
                                                               << ")");
             }
 
-            result.push_back(helper);
+            result.emplace_back(helper);
         }
 
         return result;

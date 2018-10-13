@@ -479,8 +479,7 @@ namespace QuantLib {
                         {
                         std::vector<ext::shared_ptr<Integrator> > integrals;
                         for(Size i=0; i<dimension; i++)
-                            integrals.push_back(
-                            ext::make_shared<TrapezoidIntegral<Default> >(
+                            integrals.emplace_back(ext::make_shared<TrapezoidIntegral<Default> >(
                                 1.e-4, 20));
                         /* This integration domain is tailored for the T 
                         distribution; it is too wide for normals or Ts of high

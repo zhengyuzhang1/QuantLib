@@ -66,11 +66,11 @@ namespace QuantLib
             Matrix pseudo(pseudoRoot_);
             pseudo += pseudoBumps[i];
             pseudoBumped_.push_back(pseudo);
-            driftsComputers_.push_back(LMMDriftCalculator(pseudo,
+            driftsComputers_.emplace_back(pseudo,
                 displacements,
                 taus,
                 numeraire,
-                aliveIndex));
+                aliveIndex);
         }
 
     }
@@ -166,7 +166,7 @@ namespace QuantLib
 
         for (Size i=0; i < numberRates; ++i)
         {
-            allDerivatives_.push_back(Matrix(numberRates,factors_));
+            allDerivatives_.emplace_back(numberRates,factors_);
         }
 
 

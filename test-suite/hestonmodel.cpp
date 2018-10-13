@@ -126,7 +126,7 @@ namespace {
                 Handle<Quote> vol(ext::make_shared<SimpleQuote>(v[s*8+m]));
         
                 Period maturity((int)((t[m]+3)/7.), Weeks); // round to weeks
-                options.push_back(ext::make_shared<HestonModelHelper>(maturity, calendar,
+                options.emplace_back(ext::make_shared<HestonModelHelper>(maturity, calendar,
                                               s0, strike[s], vol,
                                               riskFreeTS, dividendYield,
                                           BlackCalibrationHelper::ImpliedVolError));
@@ -162,13 +162,13 @@ void HestonModelTest::testBlackCalibration() {
     Handle<YieldTermStructure> dividendTS(flatRate(0.50, dayCounter));
 
     std::vector<Period> optionMaturities;
-    optionMaturities.push_back(Period(1, Months));
-    optionMaturities.push_back(Period(2, Months));
-    optionMaturities.push_back(Period(3, Months));
-    optionMaturities.push_back(Period(6, Months));
-    optionMaturities.push_back(Period(9, Months));
-    optionMaturities.push_back(Period(1, Years));
-    optionMaturities.push_back(Period(2, Years));
+    optionMaturities.emplace_back(1, Months);
+    optionMaturities.emplace_back(2, Months);
+    optionMaturities.emplace_back(3, Months);
+    optionMaturities.emplace_back(6, Months);
+    optionMaturities.emplace_back(9, Months);
+    optionMaturities.emplace_back(1, Years);
+    optionMaturities.emplace_back(2, Years);
 
     std::vector<ext::shared_ptr<BlackCalibrationHelper> > options;
     Handle<Quote> s0(ext::make_shared<SimpleQuote>(1.0));
@@ -187,7 +187,7 @@ void HestonModelTest::testBlackCalibration() {
         const Real strikePrice = fwdPrice * std::exp(-moneyness * volatility
                                                      * std::sqrt(tau));
 
-        options.push_back(ext::make_shared<HestonModelHelper>(optionMaturitie, calendar,
+        options.emplace_back(ext::make_shared<HestonModelHelper>(optionMaturitie, calendar,
                                                 s0, strikePrice, vol,
                                                 riskFreeTS, dividendTS));
         }
@@ -1089,7 +1089,7 @@ void HestonModelTest::testAnalyticPiecewiseTimeDependent() {
 		ext::make_shared<EuropeanExercise>(exerciseDate));
 
     std::vector<Date> dates; 
-    dates.push_back(settlementDate); dates.push_back(Date(01, January, 2007));
+    dates.push_back(settlementDate); dates.emplace_back(01, January, 2007);
     std::vector<Rate> irates;
     irates.push_back(0.0); irates.push_back(0.2);
     Handle<YieldTermStructure> riskFreeTS(

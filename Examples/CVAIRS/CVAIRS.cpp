@@ -78,7 +78,7 @@ int main(int, char* []) {
 
         vector<ext::shared_ptr<RateHelper> > swapHelpers;
         for(Size i=0; i<sizeof(tenorsSwapMkt)/sizeof(Size); i++)
-            swapHelpers.push_back(ext::make_shared<SwapRateHelper>(
+            swapHelpers.emplace_back(ext::make_shared<SwapRateHelper>(
                 Handle<Quote>(ext::shared_ptr<Quote>(
                                    new SimpleQuote(ratesSwapmkt[i]))),
                     tenorsSwapMkt[i] * Years,
@@ -126,27 +126,27 @@ int main(int, char* []) {
             intesitiesVHigh.push_back(intensitiesHigh[i]);
         }
 
-        defaultIntensityTS.push_back(Handle<DefaultProbabilityTermStructure>(
+        defaultIntensityTS.emplace_back(
             ext::shared_ptr<DefaultProbabilityTermStructure>(
                  new InterpolatedHazardRateCurve<BackwardFlat>(
                    defaultTSDates, 
                    intesitiesVLow,
                    Actual360(),
-                   TARGET()))));
-        defaultIntensityTS.push_back(Handle<DefaultProbabilityTermStructure>(
+                   TARGET())));
+        defaultIntensityTS.emplace_back(
             ext::shared_ptr<DefaultProbabilityTermStructure>(
                  new InterpolatedHazardRateCurve<BackwardFlat>(
                    defaultTSDates,
                    intesitiesVMedium,
                    Actual360(),
-                   TARGET()))));
-        defaultIntensityTS.push_back(Handle<DefaultProbabilityTermStructure>(
+                   TARGET())));
+        defaultIntensityTS.emplace_back(
             ext::shared_ptr<DefaultProbabilityTermStructure>(
                  new InterpolatedHazardRateCurve<BackwardFlat>(
                    defaultTSDates, 
                    intesitiesVHigh,
                    Actual360(), 
-                   TARGET()))));
+                   TARGET())));
 
         Volatility blackVol = 0.15;   
         ext::shared_ptr<PricingEngine> ctptySwapCvaLow = 

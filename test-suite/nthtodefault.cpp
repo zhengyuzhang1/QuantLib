@@ -148,7 +148,7 @@ void NthToDefaultTest::testGauss() {
         Handle<Quote> h(ext::shared_ptr<Quote>(new SimpleQuote(i)));
         ext::shared_ptr<DefaultProbabilityTermStructure> ptr (
                                          new FlatHazardRate(asofDate, h, dc));
-        probabilities.push_back(Handle<DefaultProbabilityTermStructure>(ptr));
+        probabilities.emplace_back(ptr);
     }
 
     ext::shared_ptr<SimpleQuote> simpleQuote (new SimpleQuote(0.0));
@@ -194,7 +194,7 @@ void NthToDefaultTest::testGauss() {
                 EURCurrency(), QuantLib::SeniorSec,
                 Period(), 1. // amount threshold
                 ), probabilities[i]));
-        issuers.push_back(Issuer(curves));
+        issuers.emplace_back(curves);
     }
 
     ext::shared_ptr<Pool> thePool = ext::make_shared<Pool>();
@@ -217,8 +217,8 @@ void NthToDefaultTest::testGauss() {
 
     vector<NthToDefault> ntd;
     for (Size i = 1; i <= probabilities.size(); i++) {
-        ntd.push_back (NthToDefault (basket, i, Protection::Seller, 
-            schedule, 0.0, 0.02, Actual360(), namesNotional*names, true));
+        ntd.emplace_back(basket, i, Protection::Seller, 
+            schedule, 0.0, 0.02, Actual360(), namesNotional*names, true);
         ntd.back().setPricingEngine(engine);
     }
 
@@ -295,7 +295,7 @@ void NthToDefaultTest::testGaussStudent() {
         Handle<Quote> h(ext::shared_ptr<Quote>(new SimpleQuote(i)));
         ext::shared_ptr<DefaultProbabilityTermStructure> ptr (
                                          new FlatHazardRate(asofDate, h, dc));
-        probabilities.push_back(Handle<DefaultProbabilityTermStructure>(ptr));
+        probabilities.emplace_back(ptr);
     }
 
     ext::shared_ptr<SimpleQuote> simpleQuote (new SimpleQuote(0.3));
@@ -326,7 +326,7 @@ void NthToDefaultTest::testGaussStudent() {
                 EURCurrency(), QuantLib::SeniorSec,
                 Period(), 1. // amount threshold
                 ), probabilities[i]));
-        issuers.push_back(Issuer(curves));
+        issuers.emplace_back(curves);
     }
 
     ext::shared_ptr<Pool> thePool = ext::make_shared<Pool>();
@@ -345,8 +345,8 @@ void NthToDefaultTest::testGaussStudent() {
 
     vector<NthToDefault> ntd;
     for (Size i = 1; i <= probabilities.size(); i++) {
-        ntd.push_back (NthToDefault (basket, i, Protection::Seller, 
-            schedule, 0.0, 0.02, Actual360(), 100.*names, true));
+        ntd.emplace_back(basket, i, Protection::Seller, 
+            schedule, 0.0, 0.02, Actual360(), 100.*names, true);
         ntd.back().setPricingEngine(engine);
     }
 

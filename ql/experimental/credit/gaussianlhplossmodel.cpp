@@ -61,8 +61,8 @@ namespace QuantLib {
           biphi_(-sqrt(correlation))
         {
             for(double recoverie : recoveries)
-                rrQuotes_.push_back(Handle<RecoveryRateQuote>(
-                ext::make_shared<RecoveryRateQuote>(recoverie)));
+                rrQuotes_.emplace_back(
+                ext::make_shared<RecoveryRateQuote>(recoverie));
         }
 
         GaussianLHPLossModel::GaussianLHPLossModel(
@@ -79,8 +79,8 @@ namespace QuantLib {
         {
             registerWith(correl_);
             for(double recoverie : recoveries)
-                rrQuotes_.push_back(Handle<RecoveryRateQuote>(
-                ext::make_shared<RecoveryRateQuote>(recoverie)));
+                rrQuotes_.emplace_back(
+                ext::make_shared<RecoveryRateQuote>(recoverie));
         }
 
 
