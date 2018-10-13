@@ -39,7 +39,7 @@ namespace QuantLib {
 
     Rate StrippedCappedFlooredCoupon::rate() const {
 
-        QL_REQUIRE(underlying_->underlying()->pricer() != NULL, "pricer not set");
+        QL_REQUIRE(underlying_->underlying()->pricer() != nullptr, "pricer not set");
         underlying_->underlying()->pricer()->initialize(*underlying_->underlying());
         Rate floorletRate = 0.0;
         if (underlying_->isFloored())
@@ -82,7 +82,7 @@ namespace QuantLib {
         underlying_->accept(v);
         auto *v1 =
             dynamic_cast<Visitor<StrippedCappedFlooredCoupon> *>(&v);
-        if (v1 != NULL)
+        if (v1 != nullptr)
             v1->visit(*this);
         else
             FloatingRateCoupon::accept(v);
@@ -116,7 +116,7 @@ namespace QuantLib {
         ext::shared_ptr<CappedFlooredCoupon> c;
         for (const auto & i : underlyingLeg_) {
             if ((c = ext::dynamic_pointer_cast<CappedFlooredCoupon>(i)) !=
-                NULL) {
+                nullptr) {
                 resultLeg.push_back(
                     ext::make_shared<StrippedCappedFlooredCoupon>(c));
             } else {

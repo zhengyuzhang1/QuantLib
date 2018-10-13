@@ -130,7 +130,7 @@ namespace QuantLib {
     // copy args into the non risky engine
     auto * noCVAArgs = dynamic_cast<Swap::arguments*>(
       baseSwapEngine_->getArguments());
-    QL_REQUIRE(noCVAArgs != 0, "wrong argument type");
+    QL_REQUIRE(noCVAArgs != nullptr, "wrong argument type");
 
     noCVAArgs->legs = this->arguments_.legs;
     noCVAArgs->payer = this->arguments_.payer;
@@ -143,7 +143,7 @@ namespace QuantLib {
 
     const auto * vSResults =  
         dynamic_cast<const Swap::results *>(baseSwapEngine_->getResults());
-    QL_REQUIRE(vSResults != 0, "wrong result type");
+    QL_REQUIRE(vSResults != nullptr, "wrong result type");
 
     Rate baseSwapFairRate = -baseSwapRate * vSResults->legNPV[1] / 
         vSResults->legNPV[0];

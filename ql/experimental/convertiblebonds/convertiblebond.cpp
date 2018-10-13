@@ -202,7 +202,7 @@ namespace QuantLib {
 
         auto* moreArgs =
             dynamic_cast<ConvertibleBond::option::arguments*>(args);
-        QL_REQUIRE(moreArgs != 0, "wrong argument type");
+        QL_REQUIRE(moreArgs != nullptr, "wrong argument type");
 
         moreArgs->conversionRatio = conversionRatio_;
 

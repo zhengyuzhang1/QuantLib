@@ -35,7 +35,7 @@ namespace QuantLib {
         MultiAssetOption::setupArguments(args);
         auto* moreArgs =
             dynamic_cast<TwoAssetCorrelationOption::arguments*>(args);
-        QL_REQUIRE(moreArgs != 0, "wrong argument type");
+        QL_REQUIRE(moreArgs != nullptr, "wrong argument type");
 
         moreArgs->X2 = X2_;
     }

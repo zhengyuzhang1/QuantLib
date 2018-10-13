@@ -44,7 +44,7 @@ namespace QuantLib {
         auto* arguments =
             dynamic_cast<PathMultiAssetOption::arguments*>(args);
 
-        QL_REQUIRE(arguments != 0, "wrong argument type");
+        QL_REQUIRE(arguments != nullptr, "wrong argument type");
 
         arguments->payoff            = pathPayoff();
         arguments->fixingDates       = fixingDates();

@@ -106,7 +106,7 @@ namespace QuantLib {
     template <class Curve>
     LocalBootstrap<Curve>::LocalBootstrap(Size localisation,
                                           bool forcePositive)
-    : validCurve_(false), ts_(0), localisation_(localisation),
+    : validCurve_(false), ts_(nullptr), localisation_(localisation),
       forcePositive_(forcePositive)
     {}
 

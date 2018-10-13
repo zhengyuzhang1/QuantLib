@@ -213,7 +213,7 @@ namespace QuantLib {
     void CapFloor::setupArguments(PricingEngine::arguments* args) const {
         auto* arguments =
             dynamic_cast<CapFloor::arguments*>(args);
-        QL_REQUIRE(arguments != 0, "wrong argument type");
+        QL_REQUIRE(arguments != nullptr, "wrong argument type");
 
         Size n = floatingLeg_.size();
 

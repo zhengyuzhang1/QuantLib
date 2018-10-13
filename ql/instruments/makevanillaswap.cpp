@@ -155,7 +155,7 @@ namespace QuantLib {
                              fixedDayCount,
                              floatSchedule, iborIndex_,
                              floatSpread_, floatDayCount_);
-            if (engine_ == 0) {
+            if (engine_ == nullptr) {
                 Handle<YieldTermStructure> disc =
                                         iborIndex_->forwardingTermStructure();
                 QL_REQUIRE(!disc.empty(),
@@ -178,7 +178,7 @@ namespace QuantLib {
                         floatSchedule,
                         iborIndex_, floatSpread_, floatDayCount_));
 
-        if (engine_ == 0) {
+        if (engine_ == nullptr) {
             Handle<YieldTermStructure> disc =
                                     iborIndex_->forwardingTermStructure();
             bool includeSettlementDateFlows = false;

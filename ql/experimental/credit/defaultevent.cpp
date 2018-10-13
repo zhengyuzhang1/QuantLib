@@ -33,7 +33,7 @@ namespace QuantLib {
     void DefaultEvent::accept(AcyclicVisitor& v) {
         auto* v1 =
             dynamic_cast<Visitor<DefaultEvent>*>(&v);
-        if (v1 != 0)
+        if (v1 != nullptr)
             v1->visit(*this);
         else
             Event::accept(v);
@@ -47,7 +47,7 @@ namespace QuantLib {
     void DefaultEvent::DefaultSettlement::accept(AcyclicVisitor& v) {
         auto* v1 =
             dynamic_cast<Visitor<DefaultEvent::DefaultSettlement>*>(&v);
-        if (v1 != 0)
+        if (v1 != nullptr)
             v1->visit(*this);
         else
             Event::accept(v);

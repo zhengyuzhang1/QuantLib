@@ -41,7 +41,7 @@ namespace QuantLib {
 
         auto* moreArgs =
             dynamic_cast<PartialTimeBarrierOption::arguments*>(args);
-        QL_REQUIRE(moreArgs != 0, "wrong argument type");
+        QL_REQUIRE(moreArgs != nullptr, "wrong argument type");
         moreArgs->barrierType = barrierType_;
         moreArgs->barrierRange = barrierRange_;
         moreArgs->barrier = barrier_;

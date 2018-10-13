@@ -93,7 +93,7 @@ namespace QuantLib {
         QL_REQUIRE(arguments_.paysAtDefaultTime,
                    "ISDA engine not compatible with end period payment");
         QL_REQUIRE(ext::dynamic_pointer_cast<FaceValueClaim>(
-                       arguments_.claim) != NULL,
+                       arguments_.claim) != nullptr,
                    "ISDA engine not compatible with non face value claim");
 
         Date maturity = arguments_.maturity;

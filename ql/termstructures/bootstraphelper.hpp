@@ -149,18 +149,18 @@ namespace QuantLib {
 
     template <class TS>
     BootstrapHelper<TS>::BootstrapHelper(Handle<Quote>  quote)
-    : quote_(std::move(quote)), termStructure_(0) {
+    : quote_(std::move(quote)), termStructure_(nullptr) {
         registerWith(quote_);
     }
 
     template <class TS>
     BootstrapHelper<TS>::BootstrapHelper(Real quote)
     : quote_(Handle<Quote>(ext::shared_ptr<Quote>(new SimpleQuote(quote)))),
-      termStructure_(0) {}
+      termStructure_(nullptr) {}
 
     template <class TS>
     void BootstrapHelper<TS>::setTermStructure(TS* t) {
-        QL_REQUIRE(t != 0, "null term structure given");
+        QL_REQUIRE(t != nullptr, "null term structure given");
         termStructure_ = t;
     }
 
@@ -206,7 +206,7 @@ namespace QuantLib {
     void BootstrapHelper<TS>::accept(AcyclicVisitor& v) {
         auto* v1 =
             dynamic_cast<Visitor<BootstrapHelper<TS> >*>(&v);
-        if (v1 != 0)
+        if (v1 != nullptr)
             v1->visit(*this);
         else
             QL_FAIL("not a bootstrap-helper visitor");

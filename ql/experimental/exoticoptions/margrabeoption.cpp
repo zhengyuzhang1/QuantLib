@@ -59,7 +59,7 @@ namespace QuantLib {
 
         auto* moreArgs =
             dynamic_cast<MargrabeOption::arguments*>(args);
-        QL_REQUIRE(moreArgs != 0,
+        QL_REQUIRE(moreArgs != nullptr,
                    "wrong argument type");
 
         moreArgs->Q1 = Q1_;
@@ -80,7 +80,7 @@ namespace QuantLib {
         MultiAssetOption::fetchResults(r);
         const auto* results =
             dynamic_cast<const MargrabeOption::results*>(r);
-        QL_REQUIRE(results != 0, "wrong result type");
+        QL_REQUIRE(results != nullptr, "wrong result type");
         delta1_          = results->delta1;
         delta2_          = results->delta2;
         gamma1_          = results->gamma1;

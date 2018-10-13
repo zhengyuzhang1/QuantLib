@@ -73,7 +73,7 @@ namespace QuantLib {
     void EnergyCommodity::setupArguments(PricingEngine::arguments* args) const {
         auto* arguments =
             dynamic_cast<EnergyCommodity::arguments*>(args);
-        QL_REQUIRE(arguments != 0, "wrong argument type");
+        QL_REQUIRE(arguments != nullptr, "wrong argument type");
         //arguments->legs = legs_;
         //arguments->payer = payer_;
     }
@@ -82,7 +82,7 @@ namespace QuantLib {
         Instrument::fetchResults(r);
         const auto* results =
             dynamic_cast<const EnergyCommodity::results*>(r);
-        QL_REQUIRE(results != 0, "wrong result type");
+        QL_REQUIRE(results != nullptr, "wrong result type");
     }
 
     EnergyCommodity::EnergyCommodity(
@@ -150,7 +150,7 @@ namespace QuantLib {
                                            Real totalQuantityValue,
                                            const Date& evaluationDate) const {
         secondaryCostAmounts_.clear();
-        if (secondaryCosts_ != 0) {
+        if (secondaryCosts_ != nullptr) {
             const Currency& baseCurrency =
                 CommoditySettings::instance().currency();
             try {

@@ -94,7 +94,7 @@ namespace QuantLib {
         auto* arguments =
             dynamic_cast<CdsOption::arguments*>(args);
 
-        QL_REQUIRE(arguments != 0, "wrong argument type");
+        QL_REQUIRE(arguments != nullptr, "wrong argument type");
 
         arguments->swap      = swap_;
         arguments->knocksOut = knocksOut_;
@@ -104,7 +104,7 @@ namespace QuantLib {
         Option::fetchResults(r);
         const auto* results =
             dynamic_cast<const CdsOption::results*>(r);
-        QL_ENSURE(results != 0, "wrong results type");
+        QL_ENSURE(results != nullptr, "wrong results type");
         riskyAnnuity_ = results->riskyAnnuity;
     }
 

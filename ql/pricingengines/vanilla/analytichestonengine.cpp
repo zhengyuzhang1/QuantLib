@@ -244,7 +244,7 @@ namespace QuantLib {
         t0_(kappa - ((j== 1)? rho*sigma : 0)),
         b_(0),
         g_km1_(0),
-        engine_(0)
+        engine_(nullptr)
     {
     }
 
@@ -378,7 +378,7 @@ namespace QuantLib {
           sx_(std::log(strike)),
           dd_(x_-std::log(ratio)),
           enginePtr_(enginePtr) {
-            QL_REQUIRE(enginePtr != 0, "pricing engine required");
+            QL_REQUIRE(enginePtr != nullptr, "pricing engine required");
         }
 
         Real operator()(Real u) const {

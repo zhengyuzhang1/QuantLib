@@ -40,7 +40,7 @@ namespace QuantLib {
 
         auto* arguments =
             dynamic_cast<CatBond::arguments*>(args);
-        QL_REQUIRE(arguments != 0, "wrong arguments type");
+        QL_REQUIRE(arguments != nullptr, "wrong arguments type");
 
         Bond::setupArguments(args);
 
@@ -53,7 +53,7 @@ namespace QuantLib {
 
         const auto* results =
             dynamic_cast<const CatBond::results*>(r);
-        QL_ENSURE(results != 0, "wrong result type");
+        QL_ENSURE(results != nullptr, "wrong result type");
 
         lossProbability_ = results->lossProbability;
         expectedLoss_ = results->expectedLoss;

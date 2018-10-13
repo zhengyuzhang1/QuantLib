@@ -264,7 +264,7 @@ namespace QuantLib {
     }
 
     Real FuturesRateHelper::impliedQuote() const {
-        QL_REQUIRE(termStructure_ != 0, "term structure not set");
+        QL_REQUIRE(termStructure_ != nullptr, "term structure not set");
         Rate forwardRate = (termStructure_->discount(earliestDate_) /
             termStructure_->discount(maturityDate_) - 1.0) / yearFraction_;
         Rate convAdj = convAdj_.empty() ? 0.0 : convAdj_->value();
@@ -282,7 +282,7 @@ namespace QuantLib {
     void FuturesRateHelper::accept(AcyclicVisitor& v) {
         auto* v1 =
             dynamic_cast<Visitor<FuturesRateHelper>*>(&v);
-        if (v1 != 0)
+        if (v1 != nullptr)
             v1->visit(*this);
         else
             RateHelper::accept(v);
@@ -333,7 +333,7 @@ namespace QuantLib {
     }
 
     Real DepositRateHelper::impliedQuote() const {
-        QL_REQUIRE(termStructure_ != 0, "term structure not set");
+        QL_REQUIRE(termStructure_ != nullptr, "term structure not set");
         // the forecast fixing flag is set to true because
         // we do not want to take fixing into account
         return iborIndex_->fixing(fixingDate_, true);
@@ -364,7 +364,7 @@ namespace QuantLib {
     void DepositRateHelper::accept(AcyclicVisitor& v) {
         auto* v1 =
             dynamic_cast<Visitor<DepositRateHelper>*>(&v);
-        if (v1 != 0)
+        if (v1 != nullptr)
             v1->visit(*this);
         else
             RateHelper::accept(v);
@@ -538,7 +538,7 @@ namespace QuantLib {
     }
 
     Real FraRateHelper::impliedQuote() const {
-        QL_REQUIRE(termStructure_ != 0, "term structure not set");
+        QL_REQUIRE(termStructure_ != nullptr, "term structure not set");
         return iborIndex_->fixing(fixingDate_, true);
     }
 
@@ -604,7 +604,7 @@ namespace QuantLib {
     void FraRateHelper::accept(AcyclicVisitor& v) {
         auto* v1 =
             dynamic_cast<Visitor<FraRateHelper>*>(&v);
-        if (v1 != 0)
+        if (v1 != nullptr)
             v1->visit(*this);
         else
             RateHelper::accept(v);
@@ -827,7 +827,7 @@ namespace QuantLib {
     }
 
     Real SwapRateHelper::impliedQuote() const {
-        QL_REQUIRE(termStructure_ != 0, "term structure not set");
+        QL_REQUIRE(termStructure_ != nullptr, "term structure not set");
         // we didn't register as observers - force calculation
         swap_->recalculate();
         // weak implementation... to be improved
@@ -843,7 +843,7 @@ namespace QuantLib {
     void SwapRateHelper::accept(AcyclicVisitor& v) {
         auto* v1 =
             dynamic_cast<Visitor<SwapRateHelper>*>(&v);
-        if (v1 != 0)
+        if (v1 != nullptr)
             v1->visit(*this);
         else
             RateHelper::accept(v);
@@ -936,7 +936,7 @@ namespace QuantLib {
     }
 
     Real BMASwapRateHelper::impliedQuote() const {
-        QL_REQUIRE(termStructure_ != 0, "term structure not set");
+        QL_REQUIRE(termStructure_ != nullptr, "term structure not set");
         // we didn't register as observers - force calculation
         swap_->recalculate();
         return swap_->fairLiborFraction();
@@ -945,7 +945,7 @@ namespace QuantLib {
     void BMASwapRateHelper::accept(AcyclicVisitor& v) {
         auto* v1 =
             dynamic_cast<Visitor<BMASwapRateHelper>*>(&v);
-        if (v1 != 0)
+        if (v1 != nullptr)
             v1->visit(*this);
         else
             RateHelper::accept(v);
@@ -994,7 +994,7 @@ namespace QuantLib {
     }
 
     Real FxSwapRateHelper::impliedQuote() const {
-        QL_REQUIRE(termStructure_ != 0, "term structure not set");
+        QL_REQUIRE(termStructure_ != nullptr, "term structure not set");
 
         QL_REQUIRE(!collHandle_.empty(), "collateral term structure not set");
 
@@ -1028,7 +1028,7 @@ namespace QuantLib {
     void FxSwapRateHelper::accept(AcyclicVisitor& v) {
         auto* v1 =
             dynamic_cast<Visitor<FxSwapRateHelper>*>(&v);
-        if (v1 != 0)
+        if (v1 != nullptr)
             v1->visit(*this);
         else
             RateHelper::accept(v);

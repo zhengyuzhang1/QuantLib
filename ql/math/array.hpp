@@ -214,21 +214,21 @@ namespace QuantLib {
     // inline definitions
 
     inline Array::Array(Size size)
-    : data_(size ? new Real[size] : (Real*)(0)), n_(size) {}
+    : data_(size ? new Real[size] : (Real*)nullptr), n_(size) {}
 
     inline Array::Array(Size size, Real value)
-    : data_(size ? new Real[size] : (Real*)(0)), n_(size) {
+    : data_(size ? new Real[size] : (Real*)nullptr), n_(size) {
         std::fill(begin(),end(),value);
     }
 
     inline Array::Array(Size size, Real value, Real increment)
-    : data_(size ? new Real[size] : (Real*)(0)), n_(size) {
+    : data_(size ? new Real[size] : (Real*)nullptr), n_(size) {
         for (iterator i=begin(); i!=end(); ++i, value+=increment)
             *i = value;
     }
 
     inline Array::Array(const Array& from)
-    : data_(from.n_ ? new Real[from.n_] : (Real*)(0)), n_(from.n_) {
+    : data_(from.n_ ? new Real[from.n_] : (Real*)nullptr), n_(from.n_) {
         #if defined(QL_PATCH_MSVC) && defined(QL_DEBUG)
         if (n_)
         #endif
@@ -236,7 +236,7 @@ namespace QuantLib {
     }
 
     inline Array::Array(const Disposable<Array>& from)
-    : data_((Real*)(0)), n_(0) {
+    : data_((Real*)nullptr), n_(0) {
         swap(const_cast<Disposable<Array>&>(from));
     }
 
@@ -254,7 +254,7 @@ namespace QuantLib {
             // Array with a given value, which we do here.
             Size n = begin;
             Real value = end;
-            data_.reset(n ? new Real[n] : (Real*)(0));
+            data_.reset(n ? new Real[n] : (Real*)nullptr);
             n_ = n;
             std::fill(a.begin(),a.end(),value);
         }
@@ -267,7 +267,7 @@ namespace QuantLib {
                                  const boost::false_type&) {
             // true iterators
             Size n = std::distance(begin, end);
-            data_.reset(n ? new Real[n] : (Real*)(0));
+            data_.reset(n ? new Real[n] : (Real*)nullptr);
             n_ = n;
             #if defined(QL_PATCH_MSVC) && defined(QL_DEBUG)
             if (n_)

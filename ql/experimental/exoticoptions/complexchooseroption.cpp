@@ -43,7 +43,7 @@ namespace QuantLib {
         OneAssetOption::setupArguments(args);
         auto* moreArgs =
             dynamic_cast<ComplexChooserOption::arguments*>(args);
-        QL_REQUIRE(moreArgs != 0, "wrong argument type");
+        QL_REQUIRE(moreArgs != nullptr, "wrong argument type");
         moreArgs->choosingDate=choosingDate_;
         moreArgs->strikeCall=strikeCall_;
         moreArgs->strikePut=strikePut_;

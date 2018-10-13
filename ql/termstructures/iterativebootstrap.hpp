@@ -62,7 +62,7 @@ namespace QuantLib {
 
     template <class Curve>
     IterativeBootstrap<Curve>::IterativeBootstrap()
-        : ts_(0), initialized_(false), validCurve_(false), 
+        : ts_(nullptr), initialized_(false), validCurve_(false), 
           loopRequired_(Interpolator::global) {}
 
     template <class Curve>

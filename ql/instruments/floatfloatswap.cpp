@@ -237,9 +237,9 @@ namespace QuantLib {
         ext::shared_ptr<SwapSpreadIndex> cmsspread2 =
             ext::dynamic_pointer_cast<SwapSpreadIndex>(index2_);
 
-        QL_REQUIRE(ibor1 != NULL || cms1 != NULL || cmsspread1 != NULL,
+        QL_REQUIRE(ibor1 != nullptr || cms1 != nullptr || cmsspread1 != nullptr,
                    "index1 must be ibor or cms or cms spread");
-        QL_REQUIRE(ibor2 != NULL || cms2 != NULL || cmsspread2 != NULL,
+        QL_REQUIRE(ibor2 != nullptr || cms2 != nullptr || cmsspread2 != nullptr,
                    "index2 must be ibor or cms");
 
         if (ibor1) {
@@ -577,8 +577,8 @@ namespace QuantLib {
         QL_REQUIRE(nominal2.size() == leg2IsRedemptionFlow.size(),
                    "nominal2 size is different from redemption2 size");
 
-        QL_REQUIRE(index1 != NULL, "index1 is null");
-        QL_REQUIRE(index2 != NULL, "index2 is null");
+        QL_REQUIRE(index1 != nullptr, "index1 is null");
+        QL_REQUIRE(index2 != nullptr, "index2 is null");
     }
 
     void FloatFloatSwap::results::reset() { Swap::results::reset(); }

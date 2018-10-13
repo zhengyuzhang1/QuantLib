@@ -512,7 +512,7 @@ namespace QuantLib {
                     ext::dynamic_pointer_cast<Coupon>(i);
                 Real df = discountCurve.discount(cf.date());
                 npv += cf.amount() * df;
-                if(cp != NULL)
+                if(cp != nullptr)
                     bps += cp->nominal() * cp->accrualPeriod() * df;
             }
         }

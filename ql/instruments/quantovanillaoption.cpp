@@ -58,7 +58,7 @@ namespace QuantLib {
         OneAssetOption::fetchResults(r);
         const auto* quantoResults =
             dynamic_cast<const QuantoVanillaOption::results*>(r);
-        QL_ENSURE(quantoResults != 0,
+        QL_ENSURE(quantoResults != nullptr,
                   "no quanto results returned from pricing engine");
         qrho_    = quantoResults->qrho;
         qvega_   = quantoResults->qvega;

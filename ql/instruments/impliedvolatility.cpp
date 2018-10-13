@@ -44,7 +44,7 @@ namespace QuantLib {
         : engine_(engine), vol_(vol), targetValue_(targetValue) {
             results_ =
                 dynamic_cast<const Instrument::results*>(engine_.getResults());
-            QL_REQUIRE(results_ != 0,
+            QL_REQUIRE(results_ != nullptr,
                        "pricing engine does not supply needed results");
         }
 

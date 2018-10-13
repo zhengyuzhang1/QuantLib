@@ -53,7 +53,7 @@ namespace QuantLib {
     }
 
     Real BondHelper::impliedQuote() const {
-        QL_REQUIRE(termStructure_ != 0, "term structure not set");
+        QL_REQUIRE(termStructure_ != nullptr, "term structure not set");
         // we didn't register as observers - force calculation
         bond_->recalculate();
         return useCleanPrice_ ? bond_->cleanPrice() : bond_->dirtyPrice();
@@ -62,7 +62,7 @@ namespace QuantLib {
     void BondHelper::accept(AcyclicVisitor& v) {
         auto* v1 =
             dynamic_cast<Visitor<BondHelper>*>(&v);
-        if (v1 != 0)
+        if (v1 != nullptr)
             v1->visit(*this);
         else
             BootstrapHelper<YieldTermStructure>::accept(v);
@@ -98,7 +98,7 @@ namespace QuantLib {
     void FixedRateBondHelper::accept(AcyclicVisitor& v) {
         auto* v1 =
             dynamic_cast<Visitor<FixedRateBondHelper>*>(&v);
-        if (v1 != 0)
+        if (v1 != nullptr)
             v1->visit(*this);
         else
             BootstrapHelper<YieldTermStructure>::accept(v);
@@ -138,7 +138,7 @@ namespace QuantLib {
     void CPIBondHelper::accept(AcyclicVisitor& v) {
         auto* v1 =
             dynamic_cast<Visitor<CPIBondHelper>*>(&v);
-        if (v1 != 0)
+        if (v1 != nullptr)
             v1->visit(*this);
         else
             BootstrapHelper<YieldTermStructure>::accept(v);

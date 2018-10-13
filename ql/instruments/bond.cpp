@@ -283,7 +283,7 @@ namespace QuantLib {
 
     void Bond::setupArguments(PricingEngine::arguments* args) const {
         auto* arguments = dynamic_cast<Bond::arguments*>(args);
-        QL_REQUIRE(arguments != 0, "wrong argument type");
+        QL_REQUIRE(arguments != nullptr, "wrong argument type");
 
         arguments->settlementDate = settlementDate();
         arguments->cashflows = cashflows_;
@@ -296,7 +296,7 @@ namespace QuantLib {
 
         const auto* results =
             dynamic_cast<const Bond::results*>(r);
-        QL_ENSURE(results != 0, "wrong result type");
+        QL_ENSURE(results != nullptr, "wrong result type");
 
         settlementValue_ = results->settlementValue;
     }

@@ -39,7 +39,7 @@ namespace QuantLib {
         OneAssetOption::setupArguments(args);
         auto* moreArgs =
             dynamic_cast<HolderExtensibleOption::arguments*>(args);
-        QL_REQUIRE(moreArgs != 0, "wrong argument type");
+        QL_REQUIRE(moreArgs != nullptr, "wrong argument type");
         moreArgs->premium = premium_;
         moreArgs->secondExpiryDate = secondExpiryDate_;
         moreArgs->secondStrike = secondStrike_;

@@ -35,7 +35,7 @@ namespace QuantLib {
         // set accrued coupon, last fixing, caps, floors
         auto* moreArgs =
             dynamic_cast<CliquetOption::arguments*>(args);
-        QL_REQUIRE(moreArgs != 0,
+        QL_REQUIRE(moreArgs != nullptr,
                    "wrong engine type");
         moreArgs->resetDates = resetDates_;
     }

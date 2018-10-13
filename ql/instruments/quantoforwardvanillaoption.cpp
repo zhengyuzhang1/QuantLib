@@ -60,7 +60,7 @@ namespace QuantLib {
         ForwardVanillaOption::fetchResults(r);
         const auto* quantoResults =
             dynamic_cast<const QuantoForwardVanillaOption::results*>(r);
-        QL_ENSURE(quantoResults != 0,
+        QL_ENSURE(quantoResults != nullptr,
                   "no quanto results returned from pricing engine");
         qrho_    = quantoResults->qrho;
         qvega_   = quantoResults->qvega;

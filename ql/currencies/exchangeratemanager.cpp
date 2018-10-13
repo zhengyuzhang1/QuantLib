@@ -197,7 +197,7 @@ namespace QuantLib {
         auto i =
             std::find_if(rates.begin(), rates.end(), valid_at(date));
         return i == rates.end() ?
-            (const ExchangeRate*) 0 :
+            (const ExchangeRate*) nullptr :
             &(i->rate);
     }
 

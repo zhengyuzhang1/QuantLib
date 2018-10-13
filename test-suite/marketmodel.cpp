@@ -4599,7 +4599,7 @@ void MarketModelTest::testStochVolForwardsAndOptionlets() {
                                              AnalyticHestonEngine::Integration::gaussLaguerre(),
 //                                             AnalyticHestonEngine::Integration::gaussLobatto(1e-8, 1e-8),
                                              AnalyticHestonEngine::Gatheral,
-                                             0,
+                                             nullptr,
                                              trueValue,
                                              evaluations);
 

@@ -37,7 +37,7 @@ namespace QuantLib {
 
         auto* arguments =
             dynamic_cast<PagodaOption::arguments*>(args);
-        QL_REQUIRE(arguments != 0, "wrong argument type");
+        QL_REQUIRE(arguments != nullptr, "wrong argument type");
 
         arguments->fixingDates = fixingDates_;
         arguments->roof = roof_;

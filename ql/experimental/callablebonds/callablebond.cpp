@@ -431,7 +431,7 @@ namespace QuantLib {
         auto* arguments =
             dynamic_cast<CallableBond::arguments*>(args);
 
-        QL_REQUIRE(arguments != 0, "no arguments given");
+        QL_REQUIRE(arguments != nullptr, "no arguments given");
 
         Date settlement = arguments->settlementDate;
 

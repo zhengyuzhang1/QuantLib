@@ -173,7 +173,7 @@ namespace QuantLib {
                                       const PricingEngine::results* r) const {
         const auto* results =
             dynamic_cast<const Instrument::results*>(r);
-        QL_ENSURE(results != 0,
+        QL_ENSURE(results != nullptr,
                   "no results returned from pricing engine");
 
         NPV_ = results->value;

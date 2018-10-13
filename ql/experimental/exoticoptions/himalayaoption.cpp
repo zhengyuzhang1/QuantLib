@@ -36,7 +36,7 @@ namespace QuantLib {
 
         auto* arguments =
             dynamic_cast<HimalayaOption::arguments*>(args);
-        QL_REQUIRE(arguments != 0, "wrong argument type");
+        QL_REQUIRE(arguments != nullptr, "wrong argument type");
 
         arguments->fixingDates = fixingDates_;
     }

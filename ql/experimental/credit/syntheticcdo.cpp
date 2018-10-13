@@ -147,7 +147,7 @@ namespace QuantLib {
     void SyntheticCDO::setupArguments(PricingEngine::arguments* args) const {
         auto* arguments
             = dynamic_cast<SyntheticCDO::arguments*>(args);
-        QL_REQUIRE(arguments != 0, "wrong argument type");
+        QL_REQUIRE(arguments != nullptr, "wrong argument type");
         arguments->basket = basket_;
         arguments->side = side_;
         arguments->normalizedLeg = normalizedLeg_;
@@ -164,7 +164,7 @@ namespace QuantLib {
 
         const auto* results
             = dynamic_cast<const SyntheticCDO::results*>(r);
-        QL_REQUIRE(results != 0, "wrong result type");
+        QL_REQUIRE(results != nullptr, "wrong result type");
 
         premiumValue_ = results->premiumValue;
         protectionValue_ = results->protectionValue;
