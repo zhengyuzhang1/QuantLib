@@ -53,7 +53,7 @@ namespace QuantLib {
     class InflationCouponPricer: public virtual Observer,
                                  public virtual Observable {
     public:
-        ~InflationCouponPricer() override {}
+        ~InflationCouponPricer() override = default;
         //! \name Interface
         //@{
         virtual Real swapletPrice() const = 0;
@@ -132,7 +132,7 @@ namespace QuantLib {
             const Handle<YoYOptionletVolatilitySurface>& capletVol
                         = Handle<YoYOptionletVolatilitySurface>())
         : YoYInflationCouponPricer(capletVol) {}
-        ~BlackYoYInflationCouponPricer() override {}
+        ~BlackYoYInflationCouponPricer() override = default;
 
     protected:
         Real optionletPriceImp(Option::Type, Real strike,
@@ -148,7 +148,7 @@ namespace QuantLib {
             const Handle<YoYOptionletVolatilitySurface>& capletVol
                         = Handle<YoYOptionletVolatilitySurface>())
             : YoYInflationCouponPricer(capletVol) {}
-        ~UnitDisplacedBlackYoYInflationCouponPricer() override {}
+        ~UnitDisplacedBlackYoYInflationCouponPricer() override = default;
     protected:
         Real optionletPriceImp(Option::Type, Real strike,
                                Real forward, Real stdDev) const override;
@@ -163,7 +163,7 @@ namespace QuantLib {
             const Handle<YoYOptionletVolatilitySurface>& capletVol
                         = Handle<YoYOptionletVolatilitySurface>())
             : YoYInflationCouponPricer(capletVol) {}
-        ~BachelierYoYInflationCouponPricer() override {}
+        ~BachelierYoYInflationCouponPricer() override = default;
     protected:
         Real optionletPriceImp(Option::Type, Real strike,
                                Real forward, Real stdDev) const override;

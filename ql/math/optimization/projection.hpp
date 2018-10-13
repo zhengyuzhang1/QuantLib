@@ -43,7 +43,7 @@ namespace QuantLib {
         // of projected parameters
         virtual Disposable<Array>
         include(const Array &projectedParameters) const;
-        virtual ~Projection() {}
+        virtual ~Projection() = default;
       protected:
         void mapFreeParameters(const Array &parameterValues) const;
         Size numberOfFreeParameters_;

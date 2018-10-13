@@ -24,11 +24,9 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 namespace QuantLib
 {
     VolatilityInterpolationSpecifier::VolatilityInterpolationSpecifier()
-    {
-    }
+    = default;
 
     VolatilityInterpolationSpecifier::~VolatilityInterpolationSpecifier()
-    {
-    }
+    = default;
 }
 

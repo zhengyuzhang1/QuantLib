@@ -125,7 +125,7 @@ namespace QuantLib {
     class ParticleSwarmOptimization::Inertia {
         friend class ParticleSwarmOptimization;
       public:
-        virtual ~Inertia() {}
+        virtual ~Inertia() = default;
         //! initialize state for current problem
         virtual void setSize(Size M, Size N, Real c0, const EndCriteria &endCriteria) = 0;
         //! produce changes to PSO state for current iteration
@@ -310,7 +310,7 @@ namespace QuantLib {
     class ParticleSwarmOptimization::Topology {
         friend class ParticleSwarmOptimization;
       public:
-        virtual ~Topology() {}
+        virtual ~Topology() = default;
         //! initialize state for current problem
         virtual void setSize(Size M) = 0;
         //! produce changes to PSO state for current iteration

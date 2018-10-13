@@ -34,7 +34,7 @@ namespace QuantLib {
 
     class VanillaOptionPricer {
       public:
-        virtual ~VanillaOptionPricer() {}
+        virtual ~VanillaOptionPricer() = default;
         virtual Real operator()(Real strike,
                                 Option::Type optionType,
                                 Real deflator) const = 0;
@@ -62,7 +62,7 @@ namespace QuantLib {
 
     class GFunction {
       public:
-        virtual ~GFunction() {}
+        virtual ~GFunction() = default;
         virtual Real operator()(Real x) = 0;
         virtual Real firstDerivative(Real x) = 0;
         virtual Real secondDerivative(Real x) = 0;
@@ -75,6 +75,9 @@ namespace QuantLib {
                                ParallelShifts,
                                NonParallelShifts
         };
+
+        GFunctionFactory() = delete;
+
         static ext::shared_ptr<GFunction>
         newGFunctionStandard(Size q,
                              Real delta,
@@ -85,8 +88,6 @@ namespace QuantLib {
         newGFunctionWithShifts(const CmsCoupon& coupon,
                                const Handle<Quote>& meanReversion);
       private:
-        GFunctionFactory();
-
         class GFunctionStandard : public GFunction {
           public:
             GFunctionStandard(Size q,
@@ -154,7 +155,7 @@ namespace QuantLib {
                 Real Rs_;
                 mutable Real derivative_;
                 public:
-              virtual ~ObjectiveFunction() {}
+              virtual ~ObjectiveFunction() = default;
                 ObjectiveFunction(const GFunctionWithShifts& o,
                                   const Real Rs)
                 : o_(o), Rs_(Rs) {}
@@ -265,7 +266,7 @@ namespace QuantLib {
           public:
             typedef Real argument_type;
             typedef Real result_type;
-            virtual ~Function() {}
+            virtual ~Function() = default;
             virtual Real operator()(Real x) const = 0;
         };
 

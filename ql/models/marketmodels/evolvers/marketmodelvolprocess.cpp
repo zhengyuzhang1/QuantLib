@@ -22,10 +22,10 @@ namespace QuantLib
 {
 
     MarketModelVolProcess::MarketModelVolProcess()     
-    {}
+    = default;
 
     MarketModelVolProcess::~MarketModelVolProcess()
-    {}
+    = default;
 
 }
 

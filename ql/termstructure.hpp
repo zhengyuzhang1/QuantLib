@@ -74,7 +74,7 @@ namespace QuantLib {
                       Calendar ,
                       DayCounter  dc = DayCounter());
         //@}
-        ~TermStructure() override {}
+        ~TermStructure() override = default;
         //! \name Dates and Time
         //@{
         //! the day counter used for date/time conversion

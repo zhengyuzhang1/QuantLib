@@ -42,7 +42,7 @@ namespace QuantLib {
       public:
         //! \name Constructors
         //@{
-        TimeGrid() {}
+        TimeGrid() = default;
         //! Regularly spaced time-grid
         TimeGrid(Time end, Size steps);
         //! Time grid with mandatory time points

@@ -87,7 +87,7 @@ namespace QuantLib {
             const std::vector<Real>& arg)>& f) const {
             QL_FAIL("No vector integration provided");
         }
-        virtual ~LMIntegration() {}
+        virtual ~LMIntegration() = default;
     };
 
     //CRTP-ish for joining the integrations, class above to have the factory
@@ -96,8 +96,8 @@ namespace QuantLib {
         public I_T, public LMIntegration {// diamond on 'integrate'
      // this class template always to be fully specialized:
      private:
-         IntegrationBase() {}
-     ~IntegrationBase() override {} 
+         IntegrationBase() = default;
+     ~IntegrationBase() override = default; 
     };
     //@}
     
@@ -133,7 +133,7 @@ namespace QuantLib {
                 return GaussianQuadMultidimIntegrator::
                     integrate<Disposable<std::vector<Real> > >(f);
         }
-        ~IntegrationBase() override {}
+        ~IntegrationBase() override = default;
     };
 
     #endif
@@ -151,7 +151,7 @@ namespace QuantLib {
                 return MultidimIntegral::operator ()(f, a_, b_);
         }
         // disposable vector version here....
-        ~IntegrationBase() override {}
+        ~IntegrationBase() override = default;
         const std::vector<Real> a_, b_;
     };
 
@@ -501,7 +501,7 @@ namespace QuantLib {
                 }
             }
         private:
-            IntegrationFactory() {}
+            IntegrationFactory() = default;
         };
         //@}
 

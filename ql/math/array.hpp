@@ -146,7 +146,7 @@ namespace QuantLib {
     template <>
     class Null<Array> {
       public:
-        Null() {}
+        Null() = default;
         operator Array() const { return Array(); }
     };
 

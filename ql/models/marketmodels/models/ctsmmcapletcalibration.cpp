@@ -31,7 +31,7 @@
 
 namespace QuantLib {
 
-    CTSMMCapletCalibration::~CTSMMCapletCalibration() {}
+    CTSMMCapletCalibration::~CTSMMCapletCalibration() = default;
 
     CTSMMCapletCalibration::CTSMMCapletCalibration(
                             EvolutionDescription  evolution,

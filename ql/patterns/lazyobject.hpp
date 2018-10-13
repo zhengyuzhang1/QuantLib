@@ -34,7 +34,7 @@ namespace QuantLib {
                        public virtual Observer {
       public:
         LazyObject();
-        ~LazyObject() override {}
+        ~LazyObject() override = default;
         //! \name Observer interface
         //@{
         void update() override;

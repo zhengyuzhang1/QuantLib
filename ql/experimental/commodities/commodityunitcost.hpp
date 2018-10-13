@@ -32,7 +32,7 @@ namespace QuantLib {
 
     class CommodityUnitCost {
       public:
-        CommodityUnitCost() {}
+        CommodityUnitCost() = default;
         CommodityUnitCost(Money  amount,
                           UnitOfMeasure  unitOfMeasure) :
         amount_(std::move(amount)), unitOfMeasure_(std::move(unitOfMeasure)) {}

@@ -41,7 +41,7 @@ namespace QuantLib {
         explicit LineSearch(Real = 0.0)
         : qt_(0.0), qpt_(0.0), succeed_(true) {}
         //! Destructor
-        virtual ~LineSearch() {}
+        virtual ~LineSearch() = default;
 
         //! return last x value
         const Array& lastX() { return xtd_; }

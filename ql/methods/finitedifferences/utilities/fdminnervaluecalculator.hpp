@@ -39,7 +39,7 @@ namespace QuantLib {
 
     class FdmInnerValueCalculator {
       public:
-        virtual ~FdmInnerValueCalculator() {}
+        virtual ~FdmInnerValueCalculator() = default;
 
         virtual Real innerValue(const FdmLinearOpIterator& iter, Time t) = 0;
         virtual Real avgInnerValue(const FdmLinearOpIterator& iter, Time t) = 0;

@@ -42,7 +42,7 @@ namespace QuantLib {
           and must be reassigned to a valid currency before being
           used.
         */
-        CommodityType() {}
+        CommodityType() = default;
         CommodityType(const std::string& code, const std::string& name);
         //! \name Inspectors
         //@{

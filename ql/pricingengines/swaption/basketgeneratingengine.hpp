@@ -85,7 +85,7 @@ namespace QuantLib {
             : onefactormodel_(model), oas_(oas), discountCurve_(discountCurve) {
         }
 
-        virtual ~BasketGeneratingEngine() {}
+        virtual ~BasketGeneratingEngine() = default;
 
         virtual Real underlyingNpv(const Date &expiry,
                                    const Real y) const = 0;

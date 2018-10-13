@@ -109,7 +109,7 @@ namespace QuantLib {
     class Null<IntervalPrice> 
     {
       public:
-        Null() {}
+        Null() = default;
         operator IntervalPrice() const { return IntervalPrice(); }
     };
 

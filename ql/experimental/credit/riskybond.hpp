@@ -56,7 +56,7 @@ namespace QuantLib {
                   Handle<YieldTermStructure>  yieldTS,
                   Natural settlementDays = 0,
                   Calendar calendar = Calendar());
-        ~RiskyBond() override {}
+        ~RiskyBond() override = default;
         virtual std::vector<ext::shared_ptr<CashFlow> > cashflows() const = 0;
         std::vector<ext::shared_ptr<CashFlow> > expectedCashflows();
         virtual Real notional(Date date = Date::minDate()) const = 0;

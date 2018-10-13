@@ -64,7 +64,7 @@ namespace QuantLib {
     class DividendVanillaOption::arguments : public OneAssetOption::arguments {
       public:
         DividendSchedule cashFlow;
-        arguments() {}
+        arguments() = default;
         void validate() const override;
     };
 

@@ -66,7 +66,7 @@ namespace QuantLib {
 #endif
 
       protected:
-        TripleBandLinearOp() {}
+        TripleBandLinearOp() = default;
 
         Size direction_;
         boost::shared_array<Size> i0_, i2_;

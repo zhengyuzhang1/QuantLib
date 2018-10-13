@@ -36,8 +36,8 @@ namespace QuantLib {
     */ 
     class LossDist {
     public:
-        LossDist() {}
-        virtual ~LossDist() {}
+        LossDist() = default;
+        virtual ~LossDist() = default;
 
         virtual Distribution operator()(const std::vector<Real>& volumes, 
                              const std::vector<Real>& probabilities) const = 0;

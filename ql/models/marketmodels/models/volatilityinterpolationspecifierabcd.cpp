@@ -71,8 +71,7 @@ namespace QuantLib
     }
 
     VolatilityInterpolationSpecifierabcd::~VolatilityInterpolationSpecifierabcd()
-    {
-    }
+    = default;
 
     void VolatilityInterpolationSpecifierabcd::setScalingFactors(const std::vector<Real>& scales)
     {

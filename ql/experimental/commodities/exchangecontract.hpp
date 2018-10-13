@@ -49,7 +49,7 @@ namespace QuantLib {
         Date underlyingEndDate_;
     };
 
-    inline ExchangeContract::ExchangeContract() {}
+    inline ExchangeContract::ExchangeContract() = default;
 
     inline ExchangeContract::ExchangeContract(std::string  code,
                                               Date expirationDate,

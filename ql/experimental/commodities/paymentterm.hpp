@@ -87,7 +87,7 @@ namespace QuantLib {
     : name(std::move(name)), eventType(eventType),
       offsetDays(offsetDays), calendar(std::move(calendar)) {}
 
-    inline PaymentTerm::PaymentTerm() {}
+    inline PaymentTerm::PaymentTerm() = default;
 
     inline const std::string& PaymentTerm::name() const {
         return data_->name;

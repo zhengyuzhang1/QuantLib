@@ -78,7 +78,7 @@ namespace QuantLib {
                        Real correlation)
         : xProcess_(std::move(xProcess)), yProcess_(std::move(yProcess)),
           correlation_(correlation) {}
-        virtual ~ShortRateDynamics() {}
+        virtual ~ShortRateDynamics() = default;
 
         virtual Rate shortRate(Time t, Real x, Real y) const = 0;
 

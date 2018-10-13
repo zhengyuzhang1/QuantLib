@@ -40,7 +40,7 @@ namespace QuantLib {
         //! Base class for model parameter implementation
         class Impl {
           public:
-            virtual ~Impl() {}
+            virtual ~Impl() = default;
             virtual Real value(const Array& params, Time t) const = 0;
         };
         ext::shared_ptr<Impl> impl_;

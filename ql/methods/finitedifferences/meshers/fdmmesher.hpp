@@ -38,7 +38,7 @@ namespace QuantLib {
       public:
         explicit FdmMesher(ext::shared_ptr<FdmLinearOpLayout>  layout)
         : layout_(std::move(layout)) {}
-        virtual ~FdmMesher() {}
+        virtual ~FdmMesher() = default;
 
         virtual Real dplus(const FdmLinearOpIterator& iter,
                            Size direction)  const = 0;

@@ -114,7 +114,7 @@ namespace QuantLib {
     class FireflyAlgorithm::Intensity {
         friend class FireflyAlgorithm;
     public:
-        virtual ~Intensity() {}
+        virtual ~Intensity() = default;
         //! find brightest firefly for each firefly
         void findBrightest();
     protected:
@@ -176,7 +176,7 @@ namespace QuantLib {
     class FireflyAlgorithm::RandomWalk {
         friend class FireflyAlgorithm;
     public:
-        virtual ~RandomWalk() {}
+        virtual ~RandomWalk() = default;
         //! perform random walk
         void walk() {
             for (Size i = 0; i < Mfa_; i++) {

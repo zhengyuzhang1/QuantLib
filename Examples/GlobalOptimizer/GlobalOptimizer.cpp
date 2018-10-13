@@ -147,7 +147,7 @@ public:
     typedef ext::function<Disposable<Array>(const Array&)> ArrayFunc;
     TestFunction(RealFunc  f, ArrayFunc  fs = ArrayFunc()) : f_(std::move(f)), fs_(std::move(fs)) {}
     TestFunction(Real(*f)(const Array&), Disposable<Array>(*fs)(const Array&) = NULL) : f_(f), fs_(fs) {}
-    ~TestFunction() override{}
+    ~TestFunction() override= default;
     Real value(const Array& x) const override {
         return f_(x);
     }

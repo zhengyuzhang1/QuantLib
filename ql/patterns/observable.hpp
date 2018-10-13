@@ -89,7 +89,7 @@ namespace QuantLib {
         Observable() : settings_(ObservableSettings::instance()) {}
         Observable(const Observable&);
         Observable& operator=(const Observable&);
-        virtual ~Observable() {}
+        virtual ~Observable() = default;
         /*! This method should be called at the end of non-const methods
             or when the programmer desires to notify any changes.
         */
@@ -114,7 +114,7 @@ namespace QuantLib {
         typedef set_type::iterator iterator;
 
         // constructors, assignment, destructor
-        Observer() {}
+        Observer() = default;
         Observer(const Observer&);
         Observer& operator=(const Observer&);
         virtual ~Observer();

@@ -111,7 +111,7 @@ namespace QuantLib {
 
         class CustomSmileFactory {
         public:
-            virtual ~CustomSmileFactory() {}
+            virtual ~CustomSmileFactory() = default;
             virtual ext::shared_ptr<CustomSmileSection>
             smileSection(const ext::shared_ptr<SmileSection>& source,
                          const Real atm) const = 0;

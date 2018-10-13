@@ -39,7 +39,7 @@ namespace QuantLib {
         DiscretizedAsset()
         : latestPreAdjustment_(QL_MAX_REAL),
           latestPostAdjustment_(QL_MAX_REAL) {}
-        virtual ~DiscretizedAsset() {}
+        virtual ~DiscretizedAsset() = default;
 
         //! \name inspectors
         //@{
@@ -144,7 +144,7 @@ namespace QuantLib {
     //! Useful discretized discount bond asset
     class DiscretizedDiscountBond : public DiscretizedAsset {
       public:
-        DiscretizedDiscountBond() {}
+        DiscretizedDiscountBond() = default;
         void reset(Size size) override {
             values_ = Array(size, 1.0);
         }

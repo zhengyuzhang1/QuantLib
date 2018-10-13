@@ -43,7 +43,7 @@ namespace QuantLib {
             : model_(model, null_deleter()), instruments_(h),
               weights_(std::move(weights)), projection_(projection) { }
 
-        ~CalibrationFunction() override {}
+        ~CalibrationFunction() override = default;
 
         Real value(const Array& params) const override {
             model_->setParams(projection_.include(params));

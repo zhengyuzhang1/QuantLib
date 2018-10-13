@@ -106,7 +106,7 @@ namespace QuantLib {
     //! %Arguments for asset swap calculation
     class AssetSwap::arguments : public Swap::arguments {
       public:
-        arguments() {}
+        arguments() = default;
         std::vector<Date> fixedResetDates;
         std::vector<Date> fixedPayDates;
         std::vector<Real> fixedCoupons;

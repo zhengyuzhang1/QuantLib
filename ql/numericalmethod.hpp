@@ -37,7 +37,7 @@ namespace QuantLib {
     class Lattice {
       public:
         explicit Lattice(TimeGrid  timeGrid) : t_(std::move(timeGrid)) {}
-        virtual ~Lattice() {}
+        virtual ~Lattice() = default;
 
         //!\name Inspectors
         //{

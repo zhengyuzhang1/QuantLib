@@ -48,7 +48,7 @@ namespace QuantLib {
                 : Bond(settlementDays, calendar, issueDate), 
                   notionalRisk_(std::move(notionalRisk))
         {}
-        ~CatBond() override {}
+        ~CatBond() override = default;
 
         void setupArguments(PricingEngine::arguments*) const override;
         void fetchResults(const PricingEngine::results*) const override;

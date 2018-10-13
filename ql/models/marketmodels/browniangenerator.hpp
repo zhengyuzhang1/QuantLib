@@ -30,7 +30,7 @@ namespace QuantLib {
     class BrownianGenerator {
       public:
 
-        virtual ~BrownianGenerator() {}
+        virtual ~BrownianGenerator() = default;
 
         virtual Real nextStep(std::vector<Real>&) = 0;
         virtual Real nextPath() = 0;
@@ -41,7 +41,7 @@ namespace QuantLib {
 
     class BrownianGeneratorFactory {
       public:
-        virtual ~BrownianGeneratorFactory() {}
+        virtual ~BrownianGeneratorFactory() = default;
 
         virtual ext::shared_ptr<BrownianGenerator> create(Size factors,
                                                             Size steps) const = 0;

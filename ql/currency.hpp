@@ -110,7 +110,7 @@ namespace QuantLib {
 
     // inline definitions
 
-    inline Currency::Currency() {}
+    inline Currency::Currency() = default;
 
     inline const std::string& Currency::name() const {
         return data_->name;

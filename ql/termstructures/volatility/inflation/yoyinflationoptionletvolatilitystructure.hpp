@@ -48,7 +48,7 @@ namespace QuantLib {
                                       Frequency frequency,
                                       bool indexIsInterpolated);
 
-        ~YoYOptionletVolatilitySurface() override {}
+        ~YoYOptionletVolatilitySurface() override = default;
 
         //! \name Volatility (only)
         //@{
@@ -154,7 +154,7 @@ namespace QuantLib {
                                        Rate minStrike = -1.0,  // -100%
                                        Rate maxStrike = 100.0);  // +10,000%
         //@}
-        ~ConstantYoYOptionletVolatility() override {}
+        ~ConstantYoYOptionletVolatility() override = default;
 
         //! \name Limits
         //@{

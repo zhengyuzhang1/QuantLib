@@ -53,7 +53,7 @@ namespace QuantLib {
         : process_(std::move(process)), timeSteps_(timeSteps), gridPoints_(gridPoints),
           timeDependent_(timeDependent),
           intrinsicValues_(gridPoints), BCs_(2) {}
-        virtual ~FDVanillaEngine() {}
+        virtual ~FDVanillaEngine() = default;
         // accessors
         const Array& grid() const { return intrinsicValues_.grid(); }
       protected:
