@@ -41,8 +41,8 @@ namespace QuantLib {
         const std::vector<Real>& factors
         )
     : degreesFreedom_(degreesFreedom), factors_(factors),
-      polyConvolved_(std::vector<Real>(1, 1.)), // value to start convolution
-      a_(0.)
+      polyConvolved_(std::vector<Real>(1, 1.))
+      
     {
         QL_REQUIRE(degreesFreedom.size() == factors.size(),
             "Incompatible sizes in convolution.");

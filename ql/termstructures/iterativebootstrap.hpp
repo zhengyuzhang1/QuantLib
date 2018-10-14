@@ -51,7 +51,7 @@ namespace QuantLib {
         Size n_;
         Brent firstSolver_;
         FiniteDifferenceNewtonSafe solver_;
-        mutable bool initialized_, validCurve_, loopRequired_;
+        mutable bool initialized_ = false, validCurve_ = false, loopRequired_;
         mutable Size firstAliveHelper_, alive_;
         mutable std::vector<Real> previousData_;
         mutable std::vector<ext::shared_ptr<BootstrapError<Curve> > > errors_;
@@ -62,7 +62,7 @@ namespace QuantLib {
 
     template <class Curve>
     IterativeBootstrap<Curve>::IterativeBootstrap()
-        : ts_(nullptr), initialized_(false), validCurve_(false), 
+        : ts_(nullptr),  
           loopRequired_(Interpolator::global) {}
 
     template <class Curve>

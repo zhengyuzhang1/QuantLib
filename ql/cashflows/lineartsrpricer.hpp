@@ -70,10 +70,9 @@ namespace QuantLib {
         struct Settings {
 
             Settings()
-                : strategy_(RateBound), vegaRatio_(0.01),
-                  priceThreshold_(1.0E-8), stdDevs_(3.0),
-                  lowerRateBound_(defaultLowerBound), upperRateBound_(defaultUpperBound),
-                  defaultBounds_(true) {}
+                : 
+                  lowerRateBound_(defaultLowerBound), upperRateBound_(defaultUpperBound)
+                  {}
 
             Settings &withRateBound(const Real lowerRateBound = defaultLowerBound,
                                     const Real upperRateBound = defaultUpperBound) {
@@ -151,12 +150,12 @@ namespace QuantLib {
                 BSStdDevs
             };
 
-            Strategy strategy_;
-            Real vegaRatio_;
-            Real priceThreshold_;
-            Real stdDevs_;
+            Strategy strategy_ = RateBound;
+            Real vegaRatio_ = 0.01;
+            Real priceThreshold_ = 1.0E-8;
+            Real stdDevs_ = 3.0;
             Real lowerRateBound_, upperRateBound_;
-            bool defaultBounds_;
+            bool defaultBounds_ = true;
         };
 
 

@@ -24,8 +24,7 @@
 namespace QuantLib {
 
     TermStructure::TermStructure(DayCounter  dc)
-    : moving_(false),
-      updated_(true),
+    : 
       settlementDays_(Null<Natural>()),
       dayCounter_(std::move(dc)) {}
 

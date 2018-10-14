@@ -135,9 +135,7 @@ namespace QuantLib {
             };
 
             ModelSettings()
-                : yGridPoints_(64), yStdDevs_(7.0), gaussHermitePoints_(32),
-                  digitalGap_(1E-5), marketRateAccuracy_(1E-7),
-                  lowerRateBound_(0.0), upperRateBound_(2.0),
+                : 
                   adjustments_(KahaleSmile | SmileExponentialExtrapolation),
                   smileMoneynessCheckpoints_(std::vector<Real>()) {}
 
@@ -253,11 +251,11 @@ namespace QuantLib {
                 return *this;
             }
 
-            Size yGridPoints_;
-            Real yStdDevs_;
-            Size gaussHermitePoints_;
-            Real digitalGap_, marketRateAccuracy_;
-            Real lowerRateBound_, upperRateBound_;
+            Size yGridPoints_ = 64;
+            Real yStdDevs_ = 7.0;
+            Size gaussHermitePoints_ = 32;
+            Real digitalGap_ = 1E-5, marketRateAccuracy_ = 1E-7;
+            Real lowerRateBound_ = 0.0, upperRateBound_ = 2.0;
             int adjustments_;
             std::vector<Real> smileMoneynessCheckpoints_;
             ext::shared_ptr<CustomSmileFactory> customSmileFactory_;

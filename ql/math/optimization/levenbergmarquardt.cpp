@@ -36,7 +36,7 @@ namespace QuantLib {
                                            Real xtol,
                                            Real gtol,
                                            bool useCostFunctionsJacobian)
-        : info_(0), epsfcn_(epsfcn), xtol_(xtol), gtol_(gtol),
+        :  epsfcn_(epsfcn), xtol_(xtol), gtol_(gtol),
           useCostFunctionsJacobian_(useCostFunctionsJacobian) {}
 
     Integer LevenbergMarquardt::getInfo() const {

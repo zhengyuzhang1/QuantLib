@@ -68,7 +68,7 @@ namespace QuantLib {
             any rounding.
         */
         Rounding()
-        : type_(None) {}
+         {}
         Rounding(Integer precision,
                  Type type = Closest,
                  Integer digit = 5)
@@ -82,7 +82,7 @@ namespace QuantLib {
         Integer roundingDigit() const { return digit_; }
       private:
         Integer precision_;
-        Type type_;
+        Type type_ = None;
         Integer digit_;
     };
 

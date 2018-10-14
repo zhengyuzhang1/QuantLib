@@ -67,8 +67,7 @@ namespace QuantLib {
     class Solver1D : public CuriouslyRecurringTemplate<Impl> {
       public:
         Solver1D()
-        : maxEvaluations_(MAX_FUNCTION_EVALUATIONS),
-          lowerBoundEnforced_(false), upperBoundEnforced_(false) {}
+         {}
         //! \name Modifiers
         //@{
         /*! This method returns the zero of the function \f$ f \f$,
@@ -225,12 +224,12 @@ namespace QuantLib {
         //@}
       protected:
         mutable Real root_, xMin_, xMax_, fxMin_, fxMax_;
-        Size maxEvaluations_;
+        Size maxEvaluations_ = MAX_FUNCTION_EVALUATIONS;
         mutable Size evaluationNumber_;
       private:
         Real enforceBounds_(Real x) const;
         Real lowerBound_, upperBound_;
-        bool lowerBoundEnforced_, upperBoundEnforced_;
+        bool lowerBoundEnforced_ = false, upperBoundEnforced_ = false;
     };
 
 

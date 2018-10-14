@@ -36,13 +36,13 @@ namespace {
 
     class UpdateCounter : public Observer {
       public:
-        UpdateCounter() : counter_(0) {}
+        UpdateCounter()  {}
         void update() override {
             ++counter_;
         }
         Size counter() { return counter_; }
       private:
-        Size counter_;
+        Size counter_ = 0;
     };
 
     class RestoreUpdates {

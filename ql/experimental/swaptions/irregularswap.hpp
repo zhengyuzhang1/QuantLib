@@ -83,8 +83,8 @@ namespace QuantLib {
     //! %Arguments for irregular-swap calculation
     class IrregularSwap::arguments : public Swap::arguments {
       public:
-        arguments() : type(Receiver){}
-        Type type;
+        arguments()  {}
+        Type type = Receiver;
         
 
         std::vector<Date> fixedResetDates;

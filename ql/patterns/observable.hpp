@@ -66,8 +66,8 @@ namespace QuantLib {
         bool updatesDeferred() {return updatesDeferred_;}
       private:
         ObservableSettings()
-        : updatesEnabled_(true),
-          updatesDeferred_(false) {}
+        
+          {}
 
         void registerDeferredObservers(
             const boost::unordered_set<Observer*>& observers);
@@ -77,7 +77,7 @@ namespace QuantLib {
         typedef set_type::iterator iterator;
         set_type deferredObservers_;
 
-        bool updatesEnabled_,  updatesDeferred_;
+        bool updatesEnabled_ = true,  updatesDeferred_ = false;
     };
 
     //! Object that notifies its changes to a set of observers

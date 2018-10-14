@@ -58,8 +58,8 @@ namespace QuantLib {
 
     DefaultProbKey::DefaultProbKey()
         : eventTypes_(),
-          obligationCurrency_(Currency()),
-          seniority_(NoSeniority) {}
+          obligationCurrency_(Currency())
+          {}
 
     DefaultProbKey::DefaultProbKey(
         std::vector<ext::shared_ptr<DefaultType> >  eventTypes,

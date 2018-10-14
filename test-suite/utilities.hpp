@@ -130,9 +130,9 @@ namespace QuantLib {
 
     class Flag : public QuantLib::Observer {
       private:
-        bool up_;
+        bool up_ = false;
       public:
-        Flag() : up_(false) {}
+        Flag()  {}
         void raise() { up_ = true; }
         void lower() { up_ = false; }
         bool isUp() const { return up_; }

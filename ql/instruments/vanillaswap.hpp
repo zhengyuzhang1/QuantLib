@@ -134,9 +134,9 @@ namespace QuantLib {
     //! %Arguments for simple swap calculation
     class VanillaSwap::arguments : public Swap::arguments {
       public:
-        arguments() : type(Receiver),
+        arguments() : 
                       nominal(Null<Real>()) {}
-        Type type;
+        Type type = Receiver;
         Real nominal;
 
         std::vector<Date> fixedResetDates;
