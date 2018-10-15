@@ -44,7 +44,7 @@ namespace QuantLib {
     class Period {
       public:
         Period()
-         {}
+         = default;
         Period(Integer n, TimeUnit units)
         : length_(n), units_(units) {}
         explicit Period(Frequency f);

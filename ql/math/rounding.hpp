@@ -68,7 +68,7 @@ namespace QuantLib {
             any rounding.
         */
         Rounding()
-         {}
+         = default;
         Rounding(Integer precision,
                  Type type = Closest,
                  Integer digit = 5)

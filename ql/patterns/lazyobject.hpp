@@ -113,7 +113,7 @@ namespace QuantLib {
     // inline definitions
 
     inline LazyObject::LazyObject()
-     {}
+     = default;
 
     inline void LazyObject::update() {
         // forwards notifications only the first time

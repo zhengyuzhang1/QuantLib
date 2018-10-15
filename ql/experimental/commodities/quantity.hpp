@@ -124,7 +124,7 @@ namespace QuantLib {
     // inline definitions
 
     inline Quantity::Quantity()
-     {}
+     = default;
 
     inline Quantity::Quantity(CommodityType  commodityType,
                               UnitOfMeasure  unitOfMeasure,

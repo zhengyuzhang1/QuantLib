@@ -88,9 +88,7 @@ namespace QuantLib {
             unsigned long seed = 0;
             bool applyBounds = true, crossoverIsAdaptive = false;
 
-            Configuration()
-            
-              {}
+            Configuration() {}
 
             Configuration& withBounds(bool b = true) {
                 applyBounds = b;

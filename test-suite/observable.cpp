@@ -36,7 +36,7 @@ namespace {
 
     class UpdateCounter : public Observer {
       public:
-        UpdateCounter()  {}
+        UpdateCounter()  = default;
         void update() override {
             ++counter_;
         }

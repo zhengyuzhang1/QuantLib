@@ -132,7 +132,7 @@ namespace QuantLib {
       private:
         bool up_ = false;
       public:
-        Flag()  {}
+        Flag()  = default;
         void raise() { up_ = true; }
         void lower() { up_ = false; }
         bool isUp() const { return up_; }

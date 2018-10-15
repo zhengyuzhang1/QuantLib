@@ -67,7 +67,7 @@ namespace QuantLib {
     class Solver1D : public CuriouslyRecurringTemplate<Impl> {
       public:
         Solver1D()
-         {}
+         = default;
         //! \name Modifiers
         //@{
         /*! This method returns the zero of the function \f$ f \f$,

@@ -134,7 +134,7 @@ namespace QuantLib {
     // inline definitions
 
     inline Money::Money()
-     {}
+     = default;
 
     inline Money::Money(Currency  currency, Decimal value)
     : value_(value), currency_(std::move(currency)) {}

@@ -67,7 +67,7 @@ namespace QuantLib {
       private:
         ObservableSettings()
         
-          {}
+          = default;
 
         void registerDeferredObservers(
             const boost::unordered_set<Observer*>& observers);
