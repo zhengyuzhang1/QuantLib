@@ -501,7 +501,7 @@ namespace QuantLib {
         if (res!=dates_.end())
             return *res;
         else
-            return Date();
+            return {};
     }
 
     Date Schedule::previousDate(const Date& refDate) const {
@@ -509,7 +509,7 @@ namespace QuantLib {
         if (res!=dates_.begin())
             return *(--res);
         else
-            return Date();
+            return {};
     }
 
     bool Schedule::hasIsRegular() const {

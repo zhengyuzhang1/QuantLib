@@ -56,7 +56,7 @@ namespace {
         }
 
         std::complex<Real> gamma(const HestonParams& p, Real p_x) {
-            return std::complex<Real>(p.kappa, p.rho*p.sigma*p_x);
+            return {p.kappa, p.rho*p.sigma*p_x};
         }
 
         std::complex<Real> omega(const HestonParams& p, Real p_x) {
@@ -90,7 +90,7 @@ namespace {
           private:
             std::complex<Real> transformPhi(Real x) const {
                 if (x < QL_EPSILON) {
-                    return std::complex<Real>(0.0, 0.0);
+                    return {0.0, 0.0};
                 }
 
                 const Real u_x = -std::log(x)/c_inf_;

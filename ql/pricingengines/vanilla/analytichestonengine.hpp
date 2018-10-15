@@ -209,7 +209,7 @@ namespace QuantLib {
     std::complex<Real> AnalyticHestonEngine::addOnTerm(Real,
                                                        Time,
                                                        Size) const {
-        return std::complex<Real>(0,0);
+        return {0,0};
     }
 }
 

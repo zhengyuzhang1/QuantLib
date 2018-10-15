@@ -33,7 +33,7 @@ namespace QuantLib {
         template <class T>  struct I {};
         template <> struct I<Real> { Real value() { return 0.0;} };
         template <> struct I<std::complex<Real> > {
-            std::complex<Real> value() { return std::complex<Real>(0.0,1.0);}
+            std::complex<Real> value() { return {0.0,1.0};}
         };
         template <class T> struct Unweighted {
             T weightSmallX(const T& x) { return 1.0; }

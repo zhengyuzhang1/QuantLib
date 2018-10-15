@@ -50,7 +50,7 @@ namespace QuantLib {
         : ranlux3_(boost::random::ranlux64_base_01(seed)){ }
 
         sample_type next() const {
-            return sample_type(ranlux3_(), 1.0);
+            return {ranlux3_(), 1.0};
         }
 
       private:
@@ -65,7 +65,7 @@ namespace QuantLib {
         : ranlux4_(boost::random::ranlux64_base_01(seed)){ }
 
         sample_type next() const {
-            return sample_type(ranlux4_(), 1.0);
+            return {ranlux4_(), 1.0};
         }
 
       private:

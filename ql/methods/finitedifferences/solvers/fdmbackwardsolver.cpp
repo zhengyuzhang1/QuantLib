@@ -43,43 +43,43 @@ namespace QuantLib {
     : type(aType), theta(aTheta), mu(aMu) { }
 
     FdmSchemeDesc FdmSchemeDesc::Douglas() { 
-        return FdmSchemeDesc(FdmSchemeDesc::DouglasType, 0.5, 0.0);
+        return {FdmSchemeDesc::DouglasType, 0.5, 0.0};
     }
     
     FdmSchemeDesc FdmSchemeDesc::CraigSneyd() {
-        return FdmSchemeDesc(FdmSchemeDesc::CraigSneydType,0.5, 0.5);
+        return {FdmSchemeDesc::CraigSneydType,0.5, 0.5};
     }
     
     FdmSchemeDesc FdmSchemeDesc::ModifiedCraigSneyd() { 
-        return FdmSchemeDesc(FdmSchemeDesc::ModifiedCraigSneydType, 
-                             1.0/3.0, 1.0/3.0);
+        return {FdmSchemeDesc::ModifiedCraigSneydType, 
+                             1.0/3.0, 1.0/3.0};
     }
     
     FdmSchemeDesc FdmSchemeDesc::Hundsdorfer() {
-        return FdmSchemeDesc(FdmSchemeDesc::HundsdorferType, 
-                             0.5+std::sqrt(3.0)/6, 0.5);
+        return {FdmSchemeDesc::HundsdorferType, 
+                             0.5+std::sqrt(3.0)/6, 0.5};
     }
     
     FdmSchemeDesc FdmSchemeDesc::ModifiedHundsdorfer() {
-        return FdmSchemeDesc(FdmSchemeDesc::HundsdorferType, 
-                             1.0-std::sqrt(2.0)/2, 0.5);
+        return {FdmSchemeDesc::HundsdorferType, 
+                             1.0-std::sqrt(2.0)/2, 0.5};
     }
     
     FdmSchemeDesc FdmSchemeDesc::ExplicitEuler() {
-        return FdmSchemeDesc(FdmSchemeDesc::ExplicitEulerType, 0.0, 0.0);
+        return {FdmSchemeDesc::ExplicitEulerType, 0.0, 0.0};
     }
 
     FdmSchemeDesc FdmSchemeDesc::ImplicitEuler() {
-        return FdmSchemeDesc(FdmSchemeDesc::ImplicitEulerType, 0.0, 0.0);
+        return {FdmSchemeDesc::ImplicitEulerType, 0.0, 0.0};
     }
 
     FdmSchemeDesc FdmSchemeDesc::MethodOfLines(Real eps, Real relInitStepSize) {
-        return FdmSchemeDesc(
-            FdmSchemeDesc::MethodOfLinesType, eps, relInitStepSize);
+        return {
+            FdmSchemeDesc::MethodOfLinesType, eps, relInitStepSize};
     }
 
     FdmSchemeDesc FdmSchemeDesc::TrBDF2() {
-        return FdmSchemeDesc(FdmSchemeDesc::TrBDF2Type, 2 - M_SQRT2, 1e-8);
+        return {FdmSchemeDesc::TrBDF2Type, 2 - M_SQRT2, 1e-8};
     }
 
     FdmBackwardSolver::FdmBackwardSolver(
