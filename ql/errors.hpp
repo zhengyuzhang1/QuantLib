@@ -48,9 +48,9 @@ namespace QuantLib {
         /*! the automatically generated destructor would
             not have the throw specifier.
         */
-        ~Error() throw() override = default;
+        ~Error() noexcept override = default;
         //! returns the error message.
-        const char* what() const throw () override;
+        const char* what() const noexcept override;
       private:
         ext::shared_ptr<std::string> message_;
     };
