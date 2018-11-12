@@ -185,12 +185,12 @@ namespace QuantLib {
         // methods
         Probability survivalProbabilityImpl(Time) const override;
         Real defaultDensityImpl(Time) const override;
-        #if defined(__clang__)
+        #if defined(__clang__) && (__clang_major__ > 3 || (__clang_major__ == 3 && __clang_minor__ > 4))
         #pragma clang diagnostic push
         #pragma clang diagnostic ignored "-Winconsistent-missing-override"
         #endif
         Real hazardRateImpl(Time) const; // NOLINT
-        #if defined(__clang__)
+        #if defined(__clang__) && (__clang_major__ > 3 || (__clang_major__ == 3 && __clang_minor__ > 4))
         #pragma clang diagnostic pop
         #endif
         // data members

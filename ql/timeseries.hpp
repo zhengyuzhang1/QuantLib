@@ -34,6 +34,7 @@
 #include <boost/utility.hpp>
 #include <map>
 #include <vector>
+#include <algorithm>
 
 namespace QuantLib {
 
