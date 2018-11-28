@@ -21,8 +21,8 @@
     \brief functionals and combinators not included in the STL
 */
 
-#ifndef quantlib_functional_hpp
-#define quantlib_functional_hpp
+#ifndef quantlib_math_functional_hpp
+#define quantlib_math_functional_hpp
 
 #include <ql/types.hpp>
 #include <ql/utilities/null.hpp>
