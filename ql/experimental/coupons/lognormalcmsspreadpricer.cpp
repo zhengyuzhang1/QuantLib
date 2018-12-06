@@ -55,6 +55,7 @@ namespace QuantLib {
         registerWith(correlation);
         if (!couponDiscountCurve_.empty())
             registerWith(couponDiscountCurve_);
+        registerWith(cmsPricer_);
 
         QL_REQUIRE(integrationPoints >= 4,
                    "at least 4 integration points should be used ("
@@ -63,9 +64,6 @@ namespace QuantLib {
             ext::make_shared<GaussHermiteIntegration>(integrationPoints);
 
         cnd_ = ext::make_shared<CumulativeNormalDistribution>(0.0, 1.0);
-
-        privateObserver_ = ext::make_shared<PrivateObserver>(this);
-        privateObserver_->registerWith(cmsPricer_);
 
         if(volatilityType == boost::none) {
             QL_REQUIRE(shift1 == Null<Real>() && shift2 == Null<Real>(),
@@ -128,8 +126,6 @@ namespace QuantLib {
                       beta * (1.0 - (*cnd_)(-psi_ * beta / alpha_));
         return std::exp(-x * x) * f;
     }
-
-    void LognormalCmsSpreadPricer::flushCache() { cache_.clear(); }
 
     void
     LognormalCmsSpreadPricer::initialize(const FloatingRateCoupon &coupon) {
@@ -199,19 +195,8 @@ namespace QuantLib {
             swapRate1_ = c1_->indexFixing();
             swapRate2_ = c2_->indexFixing();
 
-            // costly part, look up in cache first
-            std::pair<std::string, Date> key =
-                std::make_pair(index_->name(), fixingDate_);
-            CacheType::const_iterator k = cache_.find(key);
-            if (k != cache_.end()) {
-                adjustedRate1_ = k->second.first;
-                adjustedRate2_ = k->second.second;
-            } else {
-                adjustedRate1_ = c1_->adjustedFixing();
-                adjustedRate2_ = c2_->adjustedFixing();
-                cache_.insert(std::make_pair(
-                    key, std::make_pair(adjustedRate1_, adjustedRate2_)));
-            }
+            adjustedRate1_ = c1_->adjustedFixing();
+            adjustedRate2_ = c2_->adjustedFixing();
 
             ext::shared_ptr<SwaptionVolatilityStructure> swvol =
                 *cmsPricer_->swaptionVolatility();
