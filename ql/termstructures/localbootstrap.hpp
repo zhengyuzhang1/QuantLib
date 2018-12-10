@@ -86,6 +86,7 @@ namespace QuantLib {
     class LocalBootstrap {
         typedef typename Curve::traits_type Traits;
         typedef typename Curve::interpolator_type Interpolator;
+        typedef typename Traits::helper helper;
       public:
         LocalBootstrap(Size localisation = 2,
                        bool forcePositive = true);
@@ -137,7 +138,10 @@ namespace QuantLib {
 
         // ensure rate helpers are sorted
         std::sort(ts_->instruments_.begin(), ts_->instruments_.end(),
-                  detail::BootstrapHelperSorter());
+                  [](const ext::shared_ptr<helper>& h1,
+                     const ext::shared_ptr<helper>& h2) {
+                        return h1->pillarDate() < h2->pillarDate();
+                  });
 
         // check that there is no instruments with the same maturity
         for (Size i=1; i<nInsts; ++i) {
