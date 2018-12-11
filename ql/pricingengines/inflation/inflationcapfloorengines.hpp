@@ -37,15 +37,21 @@ namespace QuantLib {
     //! Base YoY inflation cap/floor engine
     /*! This class doesn't know yet what sort of vol it is.  The
         inflation index must be linked to a yoy inflation term
-        structure.  This provides the curves, hence the call uses a
-        shared_ptr<> not a handle<> to the index.
+        structure.
 
         \ingroup inflationcapfloorengines
     */
     class YoYInflationCapFloorEngine : public YoYInflationCapFloor::engine {
-    public:
-        YoYInflationCapFloorEngine(ext::shared_ptr<YoYInflationIndex> ,
-                                   Handle<YoYOptionletVolatilitySurface>  vol);
+      public:
+        YoYInflationCapFloorEngine(ext::shared_ptr<YoYInflationIndex>,
+                                   Handle<YoYOptionletVolatilitySurface> vol,
+                                   Handle<YieldTermStructure> nominalTermStructure);
+        /*! \deprecated Use the constructor with an explicit nominal curve.
+                        Deprecated in version 1.15.
+        */
+        QL_DEPRECATED
+        YoYInflationCapFloorEngine(ext::shared_ptr<YoYInflationIndex>,
+                                   Handle<YoYOptionletVolatilitySurface> vol);
 
         ext::shared_ptr<YoYInflationIndex> index() const { return index_;}
         Handle<YoYOptionletVolatilitySurface> volatility() const { return volatility_; }
@@ -53,7 +59,7 @@ namespace QuantLib {
         void setVolatility(const Handle<YoYOptionletVolatilitySurface>& vol);
 
         void calculate() const override;
-    protected:
+      protected:
         //! descendents only need to implement this
         virtual Real optionletImpl(Option::Type type, Rate strike,
                                    Rate forward, Real stdDev,
@@ -61,6 +67,7 @@ namespace QuantLib {
 
         ext::shared_ptr<YoYInflationIndex> index_;
         Handle<YoYOptionletVolatilitySurface> volatility_;
+        Handle<YieldTermStructure> nominalTermStructure_;
     };
 
 
@@ -68,49 +75,65 @@ namespace QuantLib {
     //! Black-formula inflation cap/floor engine (standalone, i.e. no coupon pricer)
     class YoYInflationBlackCapFloorEngine
     : public YoYInflationCapFloorEngine {
-    public:
+      public:
+        YoYInflationBlackCapFloorEngine(const ext::shared_ptr<YoYInflationIndex>&,
+                                        const Handle<YoYOptionletVolatilitySurface>& vol,
+                                        const Handle<YieldTermStructure>& nominalTermStructure);
+        /*! \deprecated Use the constructor with an explicit nominal curve.
+                        Deprecated in version 1.15.
+        */
+        QL_DEPRECATED
         YoYInflationBlackCapFloorEngine(const ext::shared_ptr<YoYInflationIndex>&,
                                         const Handle<YoYOptionletVolatilitySurface>&);
 
-    protected:
-
+      protected:
         Real optionletImpl(Option::Type, Real strike,
                                    Real forward, Real stdDev,
                                    Real d) const override;
-
     };
 
 
     //! Unit Displaced Black-formula inflation cap/floor engine (standalone, i.e. no coupon pricer)
     class YoYInflationUnitDisplacedBlackCapFloorEngine
     : public YoYInflationCapFloorEngine {
-    public:
+      public:
+        YoYInflationUnitDisplacedBlackCapFloorEngine(
+                    const ext::shared_ptr<YoYInflationIndex>&,
+                    const Handle<YoYOptionletVolatilitySurface>& vol,
+                    const Handle<YieldTermStructure>& nominalTermStructure);
+        /*! \deprecated Use the constructor with an explicit nominal curve.
+                        Deprecated in version 1.15.
+        */
+        QL_DEPRECATED
         YoYInflationUnitDisplacedBlackCapFloorEngine(
                     const ext::shared_ptr<YoYInflationIndex>&,
                     const Handle<YoYOptionletVolatilitySurface>&);
-    protected:
-
+      protected:
         Real optionletImpl(Option::Type, Real strike,
                                    Real forward, Real stdDev,
                                    Real d) const override;
-
     };
 
 
     //! Unit Displaced Black-formula inflation cap/floor engine (standalone, i.e. no coupon pricer)
     class YoYInflationBachelierCapFloorEngine
     : public YoYInflationCapFloorEngine {
-    public:
+      public:
+        YoYInflationBachelierCapFloorEngine(
+                    const ext::shared_ptr<YoYInflationIndex>&,
+                    const Handle<YoYOptionletVolatilitySurface>& vol,
+                    const Handle<YieldTermStructure>& nominalTermStructure);
+        /*! \deprecated Use the constructor with an explicit nominal curve.
+                        Deprecated in version 1.15.
+        */
+        QL_DEPRECATED
         YoYInflationBachelierCapFloorEngine(
                     const ext::shared_ptr<YoYInflationIndex>&,
                     const Handle<YoYOptionletVolatilitySurface>&);
-
-    protected:
-
+      protected:
         Real optionletImpl(Option::Type, Real strike,
                                    Real forward, Real stdDev,
                                    Real d) const override;
-
     };
 
 }

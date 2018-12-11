@@ -22,11 +22,21 @@
 
 namespace QuantLib {
 
-    CPICouponPricer::
-    CPICouponPricer(Handle<CPIVolatilitySurface>  capletVol)
-    : capletVol_(std::move(capletVol)) {
+    CPICouponPricer::CPICouponPricer() {}
 
-        if( !capletVol_.empty() ) registerWith(capletVol_);
+    CPICouponPricer::CPICouponPricer(
+                       Handle<CPIVolatilitySurface> capletVol)
+        : capletVol_(std::move(capletVol)) {
+        registerWith(capletVol_);
+    }
+
+    CPICouponPricer::CPICouponPricer(
+                       Handle<CPIVolatilitySurface> capletVol,
+                       Handle<YieldTermStructure> nominalTermStructure)
+    : capletVol_(std::move(capletVol)),
+      nominalTermStructure_(std::move(nominalTermStructure)) {
+        registerWith(capletVol_);
+        registerWith(nominalTermStructure_);
     }
 
 
@@ -49,13 +59,12 @@ namespace QuantLib {
     }
 
 
-    Rate CPICouponPricer::floorletRate(Rate effectiveFloor) const{
-        return floorletPrice(effectiveFloor)/
-        (coupon_->accrualPeriod()*discount_);
+    Rate CPICouponPricer::floorletRate(Rate effectiveFloor) const {
+        return gearing_ * optionletRate(Option::Put, effectiveFloor);
     }
 
     Rate CPICouponPricer::capletRate(Rate effectiveCap) const{
-        return capletPrice(effectiveCap)/(coupon_->accrualPeriod()*discount_);
+        return gearing_ * optionletRate(Option::Call, effectiveCap);
     }
 
 
@@ -68,7 +77,14 @@ namespace QuantLib {
 
 
     Real CPICouponPricer::optionletPrice(Option::Type optionType,
-                                                  Real effStrike) const {
+                                         Real effStrike) const {
+        QL_REQUIRE(discount_ != Null<Real>(), "no nominal term structure provided");
+        return optionletRate(optionType, effStrike) * coupon_->accrualPeriod() * discount_;
+    }
+
+
+    Real CPICouponPricer::optionletRate(Option::Type optionType,
+                                        Real effStrike) const {
         Date fixingDate = coupon_->fixingDate();
         if (fixingDate <= Settings::instance().evaluationDate()) {
             // the amount is determined
@@ -80,7 +96,7 @@ namespace QuantLib {
                 a = effStrike;
                 b = coupon_->indexFixing();
             }
-            return std::max(a - b, 0.0)* coupon_->accrualPeriod()*discount_;
+            return std::max(a - b, 0.0);
         } else {
             // not yet determined, use Black/DD1/Bachelier/whatever from Impl
             QL_REQUIRE(!capletVolatility().empty(),
@@ -88,11 +104,10 @@ namespace QuantLib {
             Real stdDev =
             std::sqrt(capletVolatility()->totalVariance(fixingDate,
                                                         effStrike));
-            Rate fixing = optionletPriceImp(optionType,
-                                            effStrike,
-                                            adjustedFixing(),
-                                            stdDev);
-            return fixing * coupon_->accrualPeriod() * discount_;
+            return optionletPriceImp(optionType,
+                                     effStrike,
+                                     adjustedFixing(),
+                                     stdDev);
         }
     }
 
@@ -112,7 +127,10 @@ namespace QuantLib {
         gearing_ = coupon_->fixedRate();
         spread_ = coupon_->spread();
         paymentDate_ = coupon_->date();
-        rateCurve_ = ext::dynamic_pointer_cast<ZeroInflationIndex>(coupon.index())
+        rateCurve_ =
+            !nominalTermStructure_.empty() ?
+            nominalTermStructure_ :
+            ext::dynamic_pointer_cast<ZeroInflationIndex>(coupon.index())
             ->zeroInflationTermStructure()
             ->nominalTermStructure();
 
@@ -120,19 +138,20 @@ namespace QuantLib {
         // use yield curve from index (which sets discount)
 
         discount_ = 1.0;
-        if (paymentDate_ > rateCurve_->referenceDate())
-            discount_ = rateCurve_->discount(paymentDate_);
-
-        spreadLegValue_ = spread_ * coupon_->accrualPeriod()* discount_;
-
+        if (paymentDate_ > rateCurve_->referenceDate()) {
+            if (rateCurve_.empty()) {
+                // allow to extract rates, but mark the discount as invalid for prices
+                discount_ = Null<Real>();
+            } else {
+                discount_ = rateCurve_->discount(paymentDate_);
+            }
+        }
     }
 
 
     Real CPICouponPricer::swapletPrice() const {
-
-        Real swapletPrice = adjustedFixing() * coupon_->accrualPeriod() * discount_;
-        //std::cout << swapletPrice << " SWAPLET price" << std::endl;
-        return gearing_ * swapletPrice + spreadLegValue_;
+        QL_REQUIRE(discount_ != Null<Real>(), "no nominal term structure provided");
+        return swapletRate() * coupon_->accrualPeriod() * discount_;
     }
 
 
@@ -141,9 +160,9 @@ namespace QuantLib {
         // a yield curve, i.e. we do not get the problem
         // that a discounting-instrument-pricer is used
         // with a different yield curve
-        //std::cout << (gearing_ * adjustedFixing() + spread_) << " SWAPLET rate" << gearing_ << " " << spread_ << std::endl;
         return gearing_ * adjustedFixing() + spread_;
     }
+
 
     //=========================================================================
     // vol-dependent pricers, note that these do not discount
