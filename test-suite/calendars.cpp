@@ -1656,10 +1656,28 @@ void CalendarTest::testChinaSSE() {
     expectedHol.emplace_back(3, Oct, 2018);
     expectedHol.emplace_back(4, Oct, 2018);
     expectedHol.emplace_back(5, Oct, 2018);
+    expectedHol.emplace_back(31, December, 2018);
+
+    // China Shanghai Securities Exchange holiday list in the year 2019
+    expectedHol.emplace_back(1, Jan, 2019);
+    expectedHol.emplace_back(4, Feb, 2019);
+    expectedHol.emplace_back(5, Feb, 2019);
+    expectedHol.emplace_back(6, Feb, 2019);
+    expectedHol.emplace_back(7, Feb, 2019);
+    expectedHol.emplace_back(8, Feb, 2019);
+    expectedHol.emplace_back(5, April, 2019);
+    expectedHol.emplace_back(1, May, 2019);
+    expectedHol.emplace_back(7, June, 2019);
+    expectedHol.emplace_back(13, September, 2019);
+    expectedHol.emplace_back(30, September, 2019);
+    expectedHol.emplace_back(1, October, 2019);
+    expectedHol.emplace_back(2, October, 2019);
+    expectedHol.emplace_back(3, October, 2019);
+    expectedHol.emplace_back(4, October, 2019);
 
     Calendar c = China(China::SSE);
     std::vector<Date> hol = Calendar::holidayList(c, Date(1, January, 2014),
-        Date(31, December, 2018));
+        Date(31, December, 2019));
 
     for (Size i = 0; i < std::min<Size>(hol.size(), expectedHol.size()); i++) {
         if (hol[i] != expectedHol[i])
@@ -1713,10 +1731,17 @@ void CalendarTest::testChinaIB() {
     expectedWorkingWeekEnds.emplace_back(28, April, 2018);
     expectedWorkingWeekEnds.emplace_back(29, Sep, 2018);
     expectedWorkingWeekEnds.emplace_back(30, Sep, 2018);
+    expectedWorkingWeekEnds.emplace_back(29, December, 2018);
+
+    // China Inter Bank working weekends list in the year 2019
+    expectedWorkingWeekEnds.emplace_back(2, Feb, 2019);
+    expectedWorkingWeekEnds.emplace_back(3, Feb, 2019);
+    expectedWorkingWeekEnds.emplace_back(29, September, 2019);
+    expectedWorkingWeekEnds.emplace_back(12, October, 2019);
 
     Calendar c = China(China::IB);
     Date start(1, Jan, 2014);
-    Date end(31, Dec, 2018);
+    Date end(31, Dec, 2019);
 
     Size k = 0;
 

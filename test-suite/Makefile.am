@@ -11,6 +11,7 @@ QL_TESTS = \
 	autocovariances.hpp autocovariances.cpp \
 	barrieroption.hpp barrieroption.cpp \
 	binaryoption.hpp binaryoption.cpp \
+	basismodels.hpp basismodels.cpp \
 	basketoption.hpp basketoption.cpp \
 	batesmodel.hpp batesmodel.cpp \
 	bermudanswaption.hpp bermudanswaption.cpp \
@@ -135,6 +136,7 @@ QL_TESTS = \
 	swaptionvolstructuresutilities.hpp \
 	swingoption.hpp swingoption.cpp \
 	termstructures.hpp termstructures.cpp \
+	timegrid.hpp timegrid.cpp \
 	timeseries.hpp timeseries.cpp \
 	transformedgrid.hpp transformedgrid.cpp \
 	tqreigendecomposition.hpp tqreigendecomposition.cpp \

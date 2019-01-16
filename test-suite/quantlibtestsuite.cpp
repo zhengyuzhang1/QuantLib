@@ -61,6 +61,7 @@
 #include "assetswap.hpp"
 #include "autocovariances.hpp"
 #include "barrieroption.hpp"
+#include "basismodels.hpp"
 #include "basketoption.hpp"
 #include "batesmodel.hpp"
 #include "bermudanswaption.hpp"
@@ -185,6 +186,7 @@
 #include "swaptionvolatilitycube.hpp"
 #include "swaptionvolatilitymatrix.hpp"
 #include "termstructures.hpp"
+#include "timegrid.hpp"
 #include "timeseries.hpp"
 #include "tqreigendecomposition.hpp"
 #include "tracing.hpp"
@@ -454,6 +456,7 @@ test_suite* init_unit_test_suite(int, char* []) {
     test->add(SwaptionVolatilityCubeTest::suite());
     test->add(SwaptionVolatilityMatrixTest::suite());
     test->add(TermStructureTest::suite());
+    test->add(TimeGridTest::suite());
     test->add(TimeSeriesTest::suite());
     test->add(TqrEigenDecompositionTest::suite());
     test->add(TracingTest::suite());
@@ -464,7 +467,8 @@ test_suite* init_unit_test_suite(int, char* []) {
     // tests for experimental classes
     test->add(AmortizingBondTest::suite());
     test->add(AsianOptionTest::experimental());
-    test->add(BarrierOptionTest::experimental());
+	test->add(BasismodelsTest::suite());
+	test->add(BarrierOptionTest::experimental());
     test->add(DoubleBarrierOptionTest::experimental());
     test->add(BlackDeltaCalculatorTest::suite());
     test->add(CatBondTest::suite());
