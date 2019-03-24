@@ -33,14 +33,42 @@ namespace QuantLib {
 
     FdmOrnsteinUhlenbackOp::FdmOrnsteinUhlenbackOp(
             const ext::shared_ptr<FdmMesher>& mesher,
-            ext::shared_ptr<OrnsteinUhlenbeckProcess>  process,
-            ext::shared_ptr<YieldTermStructure>  rTS,
-            FdmBoundaryConditionSet  bcSet,
+            ext::shared_ptr<OrnsteinUhlenbeckProcess> process,
+            ext::shared_ptr<YieldTermStructure> rTS,
             Size direction)
     : mesher_   (mesher),
       process_  (std::move(process)),
       rTS_      (std::move(rTS)),
-      bcSet_    (std::move(bcSet)),
+      direction_(direction),
+      m_        (direction, mesher),
+      mapX_     (direction, mesher)  {
+
+        const ext::shared_ptr<FdmLinearOpLayout> layout=mesher_->layout();
+
+        Array drift(layout->size());
+        const Array x(mesher_->locations(direction));
+
+        for (FdmLinearOpIterator iter=layout->begin(), endIter=layout->end();
+             iter!=endIter; ++iter) {
+            const Size i = iter.index();
+            drift[i] = process_->drift(0.0, x[i]);
+        }
+
+        m_.axpyb(drift, FirstDerivativeOp(direction, mesher),
+            SecondDerivativeOp(direction, mesher)
+                .mult(0.5*square<Real>()(process_->volatility())
+                      *Array(mesher->layout()->size(), 1.0)), Array());
+    }
+
+    FdmOrnsteinUhlenbackOp::FdmOrnsteinUhlenbackOp(
+            const ext::shared_ptr<FdmMesher>& mesher,
+            ext::shared_ptr<OrnsteinUhlenbeckProcess> process,
+            ext::shared_ptr<YieldTermStructure> rTS,
+            const FdmBoundaryConditionSet&,
+            Size direction)
+    : mesher_   (mesher),
+      process_  (std::move(process)),
+      rTS_      (std::move(rTS)),
       direction_(direction),
       m_        (direction, mesher),
       mapX_     (direction, mesher)  {

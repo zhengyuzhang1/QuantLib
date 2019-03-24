@@ -40,9 +40,19 @@ namespace QuantLib {
       public:
         FdmOrnsteinUhlenbackOp(
             const ext::shared_ptr<FdmMesher>& mesher,
-            ext::shared_ptr<OrnsteinUhlenbeckProcess>  p,
-            ext::shared_ptr<YieldTermStructure>  rTS,
-            FdmBoundaryConditionSet  bcSet,
+            ext::shared_ptr<OrnsteinUhlenbeckProcess> p,
+            ext::shared_ptr<YieldTermStructure> rTS,
+            Size direction = 0);
+
+        /*! \deprecated use the other constructor.
+                        Deprecated in version 1.16.
+        */
+        QL_DEPRECATED
+        FdmOrnsteinUhlenbackOp(
+            const ext::shared_ptr<FdmMesher>& mesher,
+            ext::shared_ptr<OrnsteinUhlenbeckProcess> p,
+            ext::shared_ptr<YieldTermStructure> rTS,
+            const FdmBoundaryConditionSet& bcSet,
             Size direction = 0);
 
         Size size() const override;
@@ -64,7 +74,6 @@ namespace QuantLib {
         const ext::shared_ptr<FdmMesher> mesher_;
         const ext::shared_ptr<OrnsteinUhlenbeckProcess> process_;
         const ext::shared_ptr<YieldTermStructure> rTS_;
-        const FdmBoundaryConditionSet bcSet_;
         const Size direction_;
 
         TripleBandLinearOp m_, mapX_;

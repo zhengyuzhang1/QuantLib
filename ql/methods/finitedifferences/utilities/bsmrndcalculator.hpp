@@ -1,7 +1,8 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2017 Klaus Spanderen
+ Copyright (C) 2015 Johannes Goettker-Schnetmann
+ Copyright (C) 2015 Klaus Spanderen
 
  This file is part of QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -17,30 +18,33 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-/*! \file gbsmrndcalculator.hpp
+/*! \file bsmrndcalculator.hpp
     \brief risk neutral terminal density calculator for the
-           Black-Scholes-Merton model with strike dependent volatility
+           Black-Scholes-Merton model with constant volatility
 */
 
-#ifndef quantlib_gbsm_risk_neutral_density_calculator_hpp
-#define quantlib_gbsm_risk_neutral_density_calculator_hpp
+#ifndef quantlib_bsm_risk_neutral_density_calculator_hpp
+#define quantlib_bsm_risk_neutral_density_calculator_hpp
 
-#include <ql/experimental/finitedifferences/riskneutraldensitycalculator.hpp>
+#include <ql/methods/finitedifferences/utilities/riskneutraldensitycalculator.hpp>
 #include <ql/shared_ptr.hpp>
 
 namespace QuantLib {
     class GeneralizedBlackScholesProcess;
 
-    class GBSMRNDCalculator : public RiskNeutralDensityCalculator {
+    class BSMRNDCalculator : public RiskNeutralDensityCalculator {
     public:
-        explicit GBSMRNDCalculator(
+        explicit BSMRNDCalculator(
             ext::shared_ptr<GeneralizedBlackScholesProcess>  process);
 
-        Real pdf(Real s, Time t) const override;
-        Real cdf(Real s, Time t) const override;
+        // x = ln(S)
+        Real pdf(Real x, Time t) const override;
+        Real cdf(Real x, Time t) const override;
         Real invcdf(Real q, Time t) const override;
 
     private:
+        std::pair<Real, Volatility> distributionParams(Real x, Time t) const;
+
         const ext::shared_ptr<GeneralizedBlackScholesProcess> process_;
     };
 }

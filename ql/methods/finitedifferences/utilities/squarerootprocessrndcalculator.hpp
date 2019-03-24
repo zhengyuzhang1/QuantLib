@@ -22,15 +22,14 @@
     \brief risk neutral terminal density calculator for the square root process
 */
 
-#ifndef quantlib_square_rootprocess_risk_neutral_density_calculator_hpp
-#define quantlib_square_rootprocess_risk_neutral_density_calculator_hpp
+#ifndef quantlib_square_root_process_risk_neutral_density_calculator_hpp
+#define quantlib_square_root_process_risk_neutral_density_calculator_hpp
 
-#include <ql/experimental/finitedifferences/riskneutraldensitycalculator.hpp>
+#include <ql/methods/finitedifferences/utilities/riskneutraldensitycalculator.hpp>
 
 namespace QuantLib {
-    class SquareRootProcessRNDCalculator
-        : public RiskNeutralDensityCalculator {
-    public:
+    class SquareRootProcessRNDCalculator : public RiskNeutralDensityCalculator {
+      public:
         SquareRootProcessRNDCalculator(
             Real v0, Real kappa, Real theta, Real sigma);
 
@@ -42,7 +41,7 @@ namespace QuantLib {
         Real stationary_cdf(Real v) const;
         Real stationary_invcdf(Real q) const;
 
-    private:
+      private:
         const Real v0_, kappa_, theta_, d_, df_;
     };
 }
