@@ -1667,6 +1667,8 @@ void CalendarTest::testChinaSSE() {
     expectedHol.emplace_back(8, Feb, 2019);
     expectedHol.emplace_back(5, April, 2019);
     expectedHol.emplace_back(1, May, 2019);
+    expectedHol.emplace_back(2, May, 2019);
+    expectedHol.emplace_back(3, May, 2019);
     expectedHol.emplace_back(7, June, 2019);
     expectedHol.emplace_back(13, September, 2019);
     expectedHol.emplace_back(30, September, 2019);
@@ -1736,6 +1738,8 @@ void CalendarTest::testChinaIB() {
     // China Inter Bank working weekends list in the year 2019
     expectedWorkingWeekEnds.emplace_back(2, Feb, 2019);
     expectedWorkingWeekEnds.emplace_back(3, Feb, 2019);
+    expectedWorkingWeekEnds.emplace_back(28, April, 2019);
+    expectedWorkingWeekEnds.emplace_back(5, May, 2019);
     expectedWorkingWeekEnds.emplace_back(29, September, 2019);
     expectedWorkingWeekEnds.emplace_back(12, October, 2019);
 
