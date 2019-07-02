@@ -1805,7 +1805,7 @@ void HestonSLVModelTest::testBarrierPricingMixedModels() {
 
     const Real localDeltaExpected =  -0.439068;
     const Real hestonDeltaExpected = -0.342059;
-    const Real tol = 0.0001;
+    const Real tol = 0.0005;
     if (std::fabs(hestonDeltaExpected - hestonDeltaCalculated) > tol) {
         BOOST_ERROR("Heston Delta does not match"
                 << "\n calculated : " << hestonDeltaCalculated

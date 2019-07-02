@@ -100,6 +100,10 @@ namespace QuantLib {
     inline Integer PaymentTerm::offsetDays() const {
         return data_->offsetDays;
     }
+ 
+    inline const Calendar& PaymentTerm::calendar() const {
+        return data_->calendar;
+    }
 
     inline Date PaymentTerm::getPaymentDate(const Date& date) const {
         return data_->calendar.adjust(date + data_->offsetDays);

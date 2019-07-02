@@ -30,7 +30,6 @@
 #include <ql/methods/finitedifferences/meshers/fdmmesher.hpp>
 #include <ql/methods/finitedifferences/operators/fdmlinearoplayout.hpp>
 #include <ql/methods/finitedifferences/utilities/fdminnervaluecalculator.hpp>
-
 #include <deque>
 #include <utility>
 
@@ -40,13 +39,13 @@ namespace QuantLib {
         struct mapped_payoff {
             explicit mapped_payoff(
                 const Payoff& payoff,
-                const boost::function<Real(Real)>& gridMapping)
+                const ext::function<Real(Real)>& gridMapping)
             : payoff(payoff), gridMapping_(gridMapping) {}
 
             Real operator()(Real x) const { return payoff(gridMapping_(x)); }
 
             const Payoff& payoff;
-            const boost::function<Real(Real)>& gridMapping_;
+            const ext::function<Real(Real)>& gridMapping_;
         };
     }
 
@@ -54,7 +53,7 @@ namespace QuantLib {
         ext::shared_ptr<Payoff> payoff,
         ext::shared_ptr<FdmMesher> mesher,
         Size direction,
-        const boost::function<Real(Real)>& gridMapping)
+        const ext::function<Real(Real)>& gridMapping)
     : payoff_(std::move(payoff)), 
       mesher_(std::move(mesher)),
       direction_ (direction),
@@ -125,7 +124,7 @@ namespace QuantLib {
         Size direction)
     : FdmCellAveragingInnerValue(
         std::move(payoff), std::move(mesher), direction,
-        boost::function<Real(Real)>(static_cast<Real2RealFct>(std::exp))) {
+        ext::function<Real(Real)>(static_cast<Real2RealFct>(std::exp))) {
     }
 
     
