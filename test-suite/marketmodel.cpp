@@ -125,9 +125,6 @@ using namespace boost::unit_test_framework;
 using std::fabs;
 using std::sqrt;
 
-#define BEGIN(x) (x+0)
-#define END(x) (x+LENGTH(x))
-
 namespace {
 
     Date todaysDate, startDate, endDate;
@@ -220,7 +217,7 @@ namespace {
         }
 
         // Cap/Floor Volatilities
-        Volatility mktVols[] = {
+        std::vector<Volatility> mktVols = {
             0.15541283,
             0.18719678,
             0.20890740,
@@ -249,7 +246,7 @@ namespace {
         volatilities = std::vector<Volatility>(todaysForwards.size());
         blackVols = std::vector<Volatility>(todaysForwards.size());
         normalVols = std::vector<Volatility>(todaysForwards.size());
-        for (Size i=0; i<std::min(LENGTH(mktVols),todaysForwards.size()); i++) {
+        for (Size i=0; i<std::min(mktVols.size(),todaysForwards.size()); i++) {
             volatilities[i] = todaysForwards[i]*mktVols[i]/
                 (todaysForwards[i]+displacement);
             blackVols[i]= mktVols[i];
@@ -747,18 +744,18 @@ void MarketModelTest::testOneStepForwardsAndOptionlets() {
 
     EvolutionDescription evolution = product.evolution();
 
-    MarketModelType marketModels[] = {
+    std::vector<MarketModelType> marketModels = {
         // CalibratedMM,
         ExponentialCorrelationFlatVolatility,
         ExponentialCorrelationAbcdVolatility };
         for (auto & j : marketModels) {
 
             // one step must be always full factors
-            Size testedFactors[] = { todaysForwards.size()};
+            std::vector<Size> testedFactors = { todaysForwards.size()};
             for (unsigned long factors : testedFactors) {
                 // for one step product ProductSuggested is equal to Terminal
                 // for one step product MoneyMarketPlus is equal to Terminal
-                MeasureType measures[] = { MoneyMarket,
+                std::vector<MeasureType> measures = { MoneyMarket,
                     Terminal };
                 for (auto & measure : measures) {
                     std::vector<Size> numeraires = makeMeasure(product, measure);
@@ -767,11 +764,11 @@ void MarketModelTest::testOneStepForwardsAndOptionlets() {
                     ext::shared_ptr<MarketModel> marketModel =
                         makeMarketModel(logNormal, evolution, factors, j);
 
-                    EvolverType evolvers[] = { Pc,  Balland, Ipc};
+                    std::vector<EvolverType> evolvers = { Pc,  Balland, Ipc};
                     ext::shared_ptr<MarketModelEvolver> evolver;
                     Size stop =
                         isInTerminalMeasure(evolution, numeraires) ? 0 : 1;
-                    for (Size i=0; i<LENGTH(evolvers)-stop; i++) {
+                    for (Size i=0; i<evolvers.size()-stop; i++) {
 
                         for (Size n=0; n<1; n++) {
                             MTBrownianGeneratorFactory generatorFactory(seed_);
@@ -836,18 +833,18 @@ void MarketModelTest::testOneStepNormalForwardsAndOptionlets() {
 
     EvolutionDescription evolution = product.evolution();
 
-    MarketModelType marketModels[] = {
+    std::vector<MarketModelType> marketModels = {
         // CalibratedMM,
         ExponentialCorrelationFlatVolatility,
         ExponentialCorrelationAbcdVolatility };
         for (auto & j : marketModels) {
 
             // one step must be always full factors
-            Size testedFactors[] = { todaysForwards.size()};
+            std::vector<Size> testedFactors = { todaysForwards.size()};
             for (unsigned long factors : testedFactors) {
                 // for one step product ProductSuggested is equal to Terminal
                 // for one step product MoneyMarketPlus is equal to Terminal
-                MeasureType measures[] = { MoneyMarket,
+                std::vector<MeasureType> measures = { MoneyMarket,
                     Terminal };
                 for (auto & measure : measures) {
                     std::vector<Size> numeraires = makeMeasure(product, measure);
@@ -856,11 +853,11 @@ void MarketModelTest::testOneStepNormalForwardsAndOptionlets() {
                     ext::shared_ptr<MarketModel> marketModel =
                         makeMarketModel(logNormal, evolution, factors, j);
 
-                    EvolverType evolvers[] = { NormalPc};
+                    std::vector<EvolverType> evolvers = { NormalPc};
                     ext::shared_ptr<MarketModelEvolver> evolver;
                     Size stop =
                         isInTerminalMeasure(evolution, numeraires) ? 0 : 1;
-                    for (Size i=0; i<LENGTH(evolvers)-stop; i++) {
+                    for (Size i=0; i<evolvers.size()-stop; i++) {
 
                         for (Size n=0; n<1; n++) {
                             MTBrownianGeneratorFactory generatorFactory(seed_);
@@ -1050,17 +1047,17 @@ void testMultiProductComposite(const MarketModelMultiProduct& product,
 
                                    EvolutionDescription evolution = product.evolution();
 
-                                   MarketModelTest::MarketModelType marketModels[] = {
+                                   std::vector<MarketModelTest::MarketModelType> marketModels = {
                                        // CalibratedMM,
                                            MarketModelTest::ExponentialCorrelationFlatVolatility,
                                            MarketModelTest::ExponentialCorrelationAbcdVolatility };
                                        for (auto & j : marketModels) {
 
-                                           Size testedFactors[] = { 4, 8,
+                                           std::vector<Size> testedFactors = { 4, 8,
                                                todaysForwards.size()};
                                            for (unsigned long factors : testedFactors) {
                                                // Composite's ProductSuggested is the Terminal one
-                                               MeasureType measures[] = { // ProductSuggested,
+                                               std::vector<MeasureType> measures = { // ProductSuggested,
                                                    Terminal,
                                                    MoneyMarketPlus,
                                                    MoneyMarket};
@@ -1072,11 +1069,11 @@ void testMultiProductComposite(const MarketModelMultiProduct& product,
                                                            makeMarketModel(logNormal, evolution, factors, j);
 
 
-                                                       EvolverType evolvers[] = { Pc, Balland, Ipc };
+                                                       std::vector<EvolverType> evolvers = { Pc, Balland, Ipc };
                                                        ext::shared_ptr<MarketModelEvolver> evolver;
                                                        Size stop =
                                                            isInTerminalMeasure(evolution, numeraires) ? 0 : 1;
-                                                       for (Size i=0; i<LENGTH(evolvers)-stop; i++) {
+                                                       for (Size i=0; i<evolvers.size()-stop; i++) {
 
                                                            for (Size n=0; n<1; n++) {
                                                                //MTBrownianGeneratorFactory generatorFactory(seed_);
@@ -1456,17 +1453,17 @@ void MarketModelTest::testCallableSwapNaif() {
 
     EvolutionDescription evolution = dummyProduct.evolution();
 
-    MarketModelType marketModels[] = {
+    std::vector<MarketModelType> marketModels = {
         // CalibratedMM,
         ExponentialCorrelationFlatVolatility,
         ExponentialCorrelationAbcdVolatility };
         for (auto & j : marketModels) {
 
-            Size testedFactors[] = { 4, // 8,
+            std::vector<Size> testedFactors = { 4, // 8,
                 todaysForwards.size()};
             for (unsigned long factors : testedFactors) {
                 // Composite's ProductSuggested is the Terminal one
-                MeasureType measures[] = { // ProductSuggested,
+                std::vector<MeasureType> measures = { // ProductSuggested,
                     MoneyMarketPlus
                     // MoneyMarket,
                     // Terminal
@@ -1479,11 +1476,11 @@ void MarketModelTest::testCallableSwapNaif() {
                         makeMarketModel(logNormal, evolution, factors, j);
 
 
-                    EvolverType evolvers[] = { Pc, Balland, Ipc };
+                    std::vector<EvolverType> evolvers = { Pc, Balland, Ipc };
                     ext::shared_ptr<MarketModelEvolver> evolver;
                     Size stop =
                         isInTerminalMeasure(evolution, numeraires) ? 0 : 1;
-                    for (Size i=0; i<LENGTH(evolvers)-stop; i++) {
+                    for (Size i=0; i<evolvers.size()-stop; i++) {
 
                         for (Size n=0; n<1; n++) {
                             //MTBrownianGeneratorFactory generatorFactory(seed_);
@@ -1623,17 +1620,17 @@ void MarketModelTest::testCallableSwapLS() {
 
     EvolutionDescription evolution = dummyProduct.evolution();
 
-    MarketModelType marketModels[] = {
+    std::vector<MarketModelType> marketModels = {
         // CalibratedMM,
         ExponentialCorrelationFlatVolatility,
         ExponentialCorrelationAbcdVolatility };
         for (auto & j : marketModels) {
 
-            Size testedFactors[] = { 4, // 8,
+            std::vector<Size> testedFactors = { 4, // 8,
                 todaysForwards.size()};
             for (unsigned long factors : testedFactors) {
                 // Composite's ProductSuggested is the Terminal one
-                MeasureType measures[] = { // ProductSuggested,
+                std::vector<MeasureType> measures = { // ProductSuggested,
                     // MoneyMarketPlus,
                     MoneyMarket
                     //Terminal
@@ -1646,11 +1643,11 @@ void MarketModelTest::testCallableSwapLS() {
                         makeMarketModel(logNormal, evolution, factors, j);
 
 
-                    EvolverType evolvers[] = { Pc, Balland, Ipc };
+                    std::vector<EvolverType> evolvers = { Pc, Balland, Ipc };
                     ext::shared_ptr<MarketModelEvolver> evolver;
                     Size stop =
                         isInTerminalMeasure(evolution, numeraires) ? 0 : 1;
-                    for (Size i=0; i<LENGTH(evolvers)-stop; i++) {
+                    for (Size i=0; i<evolvers.size()-stop; i++) {
 
                         for (Size n=0; n<1; n++) {
                             //MTBrownianGeneratorFactory generatorFactory(seed_);
@@ -1808,7 +1805,7 @@ void MarketModelTest::testCallableSwapAnderson(
     Size factors = testedFactor;
 
     // Composite's ProductSuggested is the Terminal one
-    MeasureType measures[] = { // ProductSuggested,
+    std::vector<MeasureType> measures = { // ProductSuggested,
         // MoneyMarketPlus,
         // MoneyMarket,
         Terminal
@@ -1818,11 +1815,11 @@ void MarketModelTest::testCallableSwapAnderson(
         bool logNormal = true;
         ext::shared_ptr<MarketModel> marketModel =
             makeMarketModel(logNormal, evolution, factors, marketModelType);
-        EvolverType evolvers[] = { Pc, Balland, Ipc };
+        std::vector<EvolverType> evolvers = { Pc, Balland, Ipc };
         ext::shared_ptr<MarketModelEvolver> evolver;
         Size stop =
             isInTerminalMeasure(evolution, numeraires) ? 0 : 1;
-        for (Size i=0; i<LENGTH(evolvers)-stop; i++) {
+        for (Size i=0; i<evolvers.size()-stop; i++) {
             for (Size n=0; n<1; n++) {
                 //MTBrownianGeneratorFactory generatorFactory(seed_);
                 SobolBrownianGeneratorFactory generatorFactory(
@@ -2476,7 +2473,7 @@ void MarketModelTest::testPathwiseVegas()
     Real initialNumeraireValue =0.95;
 
 
-    MarketModelType marketModels[] =
+    std::vector<MarketModelType> marketModels =
     {
         // CalibratedMM,
         // ExponentialCorrelationFlatVolatility,
@@ -2487,7 +2484,7 @@ void MarketModelTest::testPathwiseVegas()
     for (auto & j : marketModels)
     {
 
-        Size testedFactors[] = { std::min<Size>(3UL,todaysForwards.size())
+        std::vector<Size> testedFactors = { std::min<Size>(3UL,todaysForwards.size())
             //    todaysForwards.size()
             //, 4, 8,
         };
@@ -2590,7 +2587,7 @@ void MarketModelTest::testPathwiseVegas()
     for (auto & j : marketModels)
     {
 
-        Size testedFactors[] = { std::min<Size>(3UL,todaysForwards.size())
+        std::vector<Size> testedFactors = { std::min<Size>(3UL,todaysForwards.size())
             //    todaysForwards.size()
             //, 4, 8,
                                                           };
@@ -2845,10 +2842,10 @@ void MarketModelTest::testPathwiseVegas()
 
     /////////////////////////////////////
 
-    for (Size j=0; j<LENGTH(marketModels); j++)
+    for (Size j=0; j<marketModels.size(); j++)
     {
 
-        Size testedFactors[] = { 
+        std::vector<Size> testedFactors = { 
                                                                 std::min<Size>(1UL,todaysForwards.size())
             //    todaysForwards.size()
             //, 4, 8,
@@ -2863,7 +2860,7 @@ void MarketModelTest::testPathwiseVegas()
             Size factorsToTest = std::min<Size>(2,factors); // doing all possible vegas is combinatorially explosive
 
 
-            MeasureType measures[] = {
+            std::vector<MeasureType> measures = {
                                                                                MoneyMarket
                                                                        };
 
@@ -3842,8 +3839,8 @@ void MarketModelTest::testPathwiseMarketVegas()
                 << " and " << numberDiagonalFailures << " on the diagonal." );
 
 
-        } // end of  for (Size m=0; m<LENGTH(testedFactors); ++m)
-    } // end of   for (Size j=0; j<LENGTH(marketModels); j++)
+        }
+    }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // test numerically differentiated swaptions against analytically done ones
     // we require equality on very path so we don't need many paths
@@ -3950,8 +3947,8 @@ void MarketModelTest::testPathwiseMarketVegas()
             }
 
 
-        } // end of  for (Size m=0; m<LENGTH(testedFactors); ++m)
-    } // end of   for (Size j=0; j<LENGTH(marketModels); j++)
+        }
+    }
 
     /////////////////////////////////////
 
@@ -4102,8 +4099,8 @@ void MarketModelTest::testPathwiseMarketVegas()
 
 
 
-        } // end of  for (Size m=0; m<LENGTH(testedFactors); ++m)
-    } // end of   for (Size j=0; j<LENGTH(marketModels); j++)
+        }
+    }
 
     /////////////////////////////////////
     /////////////////////////////////////
@@ -4272,8 +4269,8 @@ void MarketModelTest::testPathwiseMarketVegas()
 
 
 
-        } // end of  for (Size m=0; m<LENGTH(testedFactors); ++m)
-    } // end of   for (Size j=0; j<LENGTH(marketModels); j++)
+        }
+    }
 
     /////////////////////////////////////
 
@@ -4860,12 +4857,12 @@ test_suite* MarketModelTest::suite(SpeedLevel speed) {
             ExponentialCorrelationAbcdVolatility
         };
 
-        Size testedFactors[] = { 4, 8, todaysForwards.size() };
+        std::vector<Size> testedFactors = { 4, 8, todaysForwards.size() };
         #define BOOST_PP_LOCAL_MACRO(n)                                 \
             suite->add(QUANTLIB_TEST_CASE(                              \
                 ext::bind(&MarketModelTest::testCallableSwapAnderson, \
-                    marketModels[n/LENGTH(testedFactors)],              \
-                    testedFactors[n%LENGTH(testedFactors)])));
+                          marketModels[n/testedFactors.size()],       \
+                          testedFactors[n%testedFactors.size()])));
 
         #define BOOST_PP_LOCAL_LIMITS (0, 5)
         #include BOOST_PP_LOCAL_ITERATE()

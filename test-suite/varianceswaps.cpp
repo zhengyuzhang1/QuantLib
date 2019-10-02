@@ -97,7 +97,7 @@ void VarianceSwapTest::testReplicatingVarianceSwap() {
 
     BOOST_TEST_MESSAGE("Testing variance swap with replicating cost engine...");
 
-    ReplicatingVarianceSwapData values[] = {
+    std::vector<ReplicatingVarianceSwapData> values = {
 
         // data from "A Guide to Volatility and Variance Swaps",
         //   Derman, Kamal & Zou, 1999
@@ -109,7 +109,7 @@ void VarianceSwapTest::testReplicatingVarianceSwap() {
 
     };
 
-    Datum replicatingOptionData[] = {
+    std::vector<Datum> replicatingOptionData = {
 
         // data from "A Guide to Volatility and Variance Swaps",
         //   Derman, Kamal & Zou, 1999
@@ -154,7 +154,7 @@ void VarianceSwapTest::testReplicatingVarianceSwap() {
         qRate->setValue(value.q);
         rRate->setValue(value.r);
 
-        Size options = LENGTH(replicatingOptionData);
+        Size options = replicatingOptionData.size();
         std::vector<Real> callStrikes, putStrikes, callVols, putVols;
 
         // Assumes ascending strikes and same min call and max put strikes

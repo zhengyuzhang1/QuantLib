@@ -71,7 +71,7 @@ namespace {
     template <class Bivariate>
     void checkBivariate(const char* tag) {
 
-        BivariateTestData values[] = {
+        std::vector<BivariateTestData> values = {
             /* The data below are from
                "Option pricing formulas", E.G. Haug, McGraw-Hill 1998
                pag 193
@@ -131,7 +131,7 @@ namespace {
             { -30,  1.0,   1.0, 0.000000 }
         };
 
-        for (Size i=0; i<LENGTH(values); i++) {
+        for (Size i=0; i<values.size(); i++) {
             Bivariate bcd(values[i].rho);
             Real value = bcd(values[i].a, values[i].b);
 
@@ -412,21 +412,22 @@ void DistributionTest::testInverseCumulativePoisson() {
 
     InverseCumulativePoisson icp(1.0);
 
-    Real data[] = { 0.2,
-                    0.5,
-                    0.9,
-                    0.98,
-                    0.99,
-                    0.999,
-                    0.9999,
-                    0.99995,
-                    0.99999,
-                    0.999999,
-                    0.9999999,
-                    0.99999999
+    std::vector<Real> data = {
+        0.2,
+        0.5,
+        0.9,
+        0.98,
+        0.99,
+        0.999,
+        0.9999,
+        0.99995,
+        0.99999,
+        0.999999,
+        0.9999999,
+        0.99999999
     };
 
-    for (Size i=0; i<LENGTH(data); i++) {
+    for (Size i=0; i<data.size(); i++) {
         if (!close(icp(data[i]), static_cast<Real>(i))) {
             BOOST_ERROR(std::setprecision(8)
                         << "failed to reproduce known value for x = "
@@ -442,10 +443,10 @@ void DistributionTest::testBivariateCumulativeStudent() {
     BOOST_TEST_MESSAGE(
         "Testing bivariate cumulative Student t distribution...");
 
-    Real xs[14] = { 0.00,  0.50,  1.00,  1.50,  2.00,  2.50, 3.00, 4.00,  5.00,  6.00,  7.00,  8.00, 9.00, 10.00 };
-    Natural ns[20] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 60, 90, 120, 150, 300, 600 };
+    std::vector<Real> xs = { 0.00,  0.50,  1.00,  1.50,  2.00,  2.50, 3.00, 4.00,  5.00,  6.00,  7.00,  8.00, 9.00, 10.00 };
+    std::vector<Natural> ns = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 60, 90, 120, 150, 300, 600 };
     // Part of table 1 from the reference paper
-    Real expected1[280] = {
+    std::vector<Real> expected1 = {
         0.33333,  0.50000,  0.63497,  0.72338,  0.78063,  0.81943,  0.84704,  0.88332,  0.90590,  0.92124,  0.93231,  0.94066,  0.94719,  0.95243,
         0.33333,  0.52017,  0.68114,  0.78925,  0.85607,  0.89754,  0.92417,  0.95433,  0.96978,  0.97862,  0.98411,  0.98774,  0.99026,  0.99208,
         0.33333,  0.52818,  0.70018,  0.81702,  0.88720,  0.92812,  0.95238,  0.97667,  0.98712,  0.99222,  0.99497,  0.99657,  0.99756,  0.99821,
@@ -468,7 +469,7 @@ void DistributionTest::testBivariateCumulativeStudent() {
         0.33333,  0.54615,  0.74495,  0.88432,  0.95818,  0.98801,  0.99728,  0.99993,  1.00000,  1.00000,  1.00000,  1.00000,  1.00000,  1.00000
     };
     // Part of table 2 from the reference paper
-    Real expected2[280] = {
+    std::vector<Real> expected2 = {
         0.16667,  0.36554,  0.54022,  0.65333,  0.72582,  0.77465,  0.80928,  0.85466,  0.88284,  0.90196,  0.91575,  0.92616,  0.93429,  0.94081,
         0.16667,  0.38889,  0.59968,  0.73892,  0.82320,  0.87479,  0.90763,  0.94458,  0.96339,  0.97412,  0.98078,  0.98518,  0.98823,  0.99044,
         0.16667,  0.39817,  0.62478,  0.77566,  0.86365,  0.91391,  0.94330,  0.97241,  0.98483,  0.99086,  0.99410,  0.99598,  0.99714,  0.99790,
@@ -492,14 +493,14 @@ void DistributionTest::testBivariateCumulativeStudent() {
     };
 
     Real tolerance = 1.0e-5;
-    for (Size i=0; i < LENGTH(ns); ++i) {
+    for (Size i=0; i < ns.size(); ++i) {
 		BivariateCumulativeStudentDistribution f1(ns[i],  0.5);
 		BivariateCumulativeStudentDistribution f2(ns[i], -0.5);
-        for (Size j=0; j < LENGTH(xs); ++j) {
+        for (Size j=0; j < xs.size(); ++j) {
 			Real calculated1 = f1(xs[j], xs[j]);
-            Real reference1 = expected1[i*LENGTH(xs)+j];
+            Real reference1 = expected1[i*xs.size()+j];
 			Real calculated2 = f2(xs[j], xs[j]);
-            Real reference2 = expected2[i*LENGTH(xs)+j];
+            Real reference2 = expected2[i*xs.size()+j];
             if (std::fabs(calculated1 - reference1) > tolerance)
                 BOOST_ERROR("Failed to reproduce CDF value at " << xs[j] <<
                             "\n    calculated: " << calculated1 <<
@@ -724,11 +725,9 @@ void DistributionTest::testSankaranApproximation() {
     const Real ncps[] = {1,2,3,1,2,3};
 
     const Real tol = 0.01;
-    for (Size i=0; i < LENGTH(dfs); ++i) {
-        const Real df = dfs[i];
+    for (Real df: dfs) {
 
-        for (Size j=0; j < LENGTH(ncps); ++j) {
-            Real ncp = ncps[j];
+        for (Real ncp: ncps) {
 
             const NonCentralCumulativeChiSquareDistribution d(df, ncp);
             const NonCentralCumulativeChiSquareSankaranApprox sankaran(df, ncp);

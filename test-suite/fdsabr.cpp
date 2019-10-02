@@ -144,9 +144,7 @@ void FdSabrTest::testFdmSabrOp() {
             Handle<Quote>(ext::make_shared<SimpleQuote>(f0)),
             rTS, rTS, Handle<BlackVolTermStructure>(flatVol(0.2, dc)));
 
-    for (Size j=0; j < LENGTH(betas); ++j) {
-
-        const Real beta = betas[j];
+    for (const Real beta: betas) {
 
         const ext::shared_ptr<PricingEngine> pdeEngine =
             ext::make_shared<FdSabrVanillaEngine>(
@@ -232,19 +230,16 @@ void FdSabrTest::testFdmSabrCevPricing() {
 
     const Real tol = 5e-5;
 
-    for (Size i=0; i < LENGTH(optionTypes); ++i) {
-        const Option::Type optionType = optionTypes[i];
+    for (const Option::Type optionType: optionTypes) {
 
-        for (Size j=0; j < LENGTH(strikes); ++j) {
-            const Real strike = strikes[j];
+        for (const Real strike : strikes) {
 
             const ext::shared_ptr<PlainVanillaPayoff> payoff =
                 ext::make_shared<PlainVanillaPayoff>(optionType, strike);
 
             VanillaOption option(payoff, exercise);
 
-            for (Size k=0; k < LENGTH(betas); ++k) {
-                const Real beta = betas[k];
+            for (const Real beta : betas) {
 
                 option.setPricingEngine(ext::make_shared<FdSabrVanillaEngine>(
                     f0, alpha, beta, nu, rho, rTS, 100, 400, 3));
@@ -305,10 +300,8 @@ void FdSabrTest::testFdmSabrVsVolApproximation() {
     const Option::Type optionTypes[] = {Option::Put, Option::Call};
 
     const Real tol = 2.5e-3;
-    for (Size i=0; i < LENGTH(optionTypes); ++i) {
-        const Option::Type optionType = optionTypes[i];
-        for (Size j=0; j < LENGTH(strikes); ++j) {
-            const Real strike = strikes[j];
+    for (const Option::Type optionType : optionTypes) {
+        for (const Real strike : strikes) {
 
             VanillaOption option(
                 ext::make_shared<PlainVanillaPayoff>(optionType, strike),
@@ -395,14 +388,14 @@ void FdSabrTest::testOosterleeTestCaseIV() {
     const Real beta  =  0.4;
     const Real rho   = -0.6;
 
-    const Period maturities[] = {
+    std::vector<Period> maturities = {
         Period(2, Years), Period(5, Years), Period(10, Years)
     };
 
-    const Real strikes[] = { 0.4*f0, f0, 1.6*f0 };
+    std::vector<Real> strikes = { 0.4*f0, f0, 1.6*f0 };
 
     const Real tol = 0.00035;
-    for (Size i=0; i < LENGTH(maturities); ++i) {
+    for (Size i=0; i < maturities.size(); ++i) {
         const Date maturityDate = today + maturities[i];
         const Time maturityTime = dc.yearFraction(today, maturityDate);
 
@@ -415,7 +408,7 @@ void FdSabrTest::testOosterleeTestCaseIV() {
         const ext::shared_ptr<Exercise> exercise =
             ext::make_shared<EuropeanExercise>(maturityDate);
 
-        for (Size j=0; j < LENGTH(strikes); ++j) {
+        for (Size j=0; j < strikes.size(); ++j) {
             const ext::shared_ptr<StrikedTypePayoff> payoff =
                 ext::make_shared<PlainVanillaPayoff>(Option::Call, strikes[j]);
 
@@ -465,13 +458,13 @@ void FdSabrTest::testBenchOpSabrCase() {
     const Handle<YieldTermStructure> rTS =
         Handle<YieldTermStructure>(flatRate(today, 0.0, dc));
 
-    const Size maturityInYears[] = { 2, 10 };
+    std::vector<Size> maturityInYears = { 2, 10 };
 
-    const Real f0s[]    = { 0.5, 0.07 };
-    const Real alphas[] = { 0.5, 0.4 };
-    const Real nus[]    = { 0.4, 0.8 };
-    const Real betas[]  = { 0.5, 0.5 };
-    const Real rhos[]   = { 0.0, -0.6 };
+    std::vector<Real> f0s    = { 0.5, 0.07 };
+    std::vector<Real> alphas = { 0.5, 0.4 };
+    std::vector<Real> nus    = { 0.4, 0.8 };
+    std::vector<Real> betas  = { 0.5, 0.5 };
+    std::vector<Real> rhos   = { 0.0, -0.6 };
 
     const Real expected[2][3] = {
         { 0.221383196830866, 0.193836689413803, 0.166240814653231 },
@@ -486,7 +479,7 @@ void FdSabrTest::testBenchOpSabrCase() {
 
     const Real tol = 2e-4;
 
-    for (Size i=0; i < LENGTH(f0s); ++i) {
+    for (Size i=0; i < f0s.size(); ++i) {
 
         const Date maturity = today + Period(maturityInYears[i]*365, Days);
         const Time T = dc.yearFraction(today, maturity);
@@ -497,11 +490,11 @@ void FdSabrTest::testBenchOpSabrCase() {
         const Real beta  = betas[i];
         const Real rho   = rhos[i];
 
-        const Real strikes[] = {
+        std::vector<Real> strikes = {
             f0*std::exp(-0.1*std::sqrt(T)), f0, f0*std::exp(0.1*std::sqrt(T))
         };
 
-        for (Size j=0; j < LENGTH(strikes); ++j) {
+        for (Size j=0; j < strikes.size(); ++j) {
             const Real strike = strikes[j];
 
             VanillaOption option(

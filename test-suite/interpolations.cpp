@@ -53,9 +53,6 @@
 using namespace QuantLib;
 using namespace boost::unit_test_framework;
 
-#define BEGIN(x) (x+0)
-#define END(x) (x+LENGTH(x))
-
 namespace {
 
     std::vector<Real> xRange(Real start, Real finish, Size points) {
@@ -214,18 +211,18 @@ void InterpolationTest::testSplineErrorOnGaussianValues() {
 
     BOOST_TEST_MESSAGE("Testing spline approximation on Gaussian data sets...");
 
-    Size points[]                = {      5,      9,     17,     33 };
+    std::vector<Size> points                = {      5,      9,     17,     33 };
 
     // complete spline data from the original 1983 Hyman paper
-    Real tabulatedErrors[]     = { 3.5e-2, 2.0e-3, 4.0e-5, 1.8e-6 };
-    Real toleranceOnTabErr[]   = { 0.1e-2, 0.1e-3, 0.1e-5, 0.1e-6 };
+    std::vector<Real> tabulatedErrors     = { 3.5e-2, 2.0e-3, 4.0e-5, 1.8e-6 };
+    std::vector<Real> toleranceOnTabErr   = { 0.1e-2, 0.1e-3, 0.1e-5, 0.1e-6 };
 
     // (complete) MC spline data from the original 1983 Hyman paper
     // NB: with the improved Hyman filter from the Dougherty, Edelman, and
     //     Hyman 1989 paper the n=17 nonmonotonicity is not filtered anymore
     //     so the error agrees with the non MC method.
-    Real tabulatedMCErrors[]   = { 1.7e-2, 2.0e-3, 4.0e-5, 1.8e-6 };
-    Real toleranceOnTabMCErr[] = { 0.1e-2, 0.1e-3, 0.1e-5, 0.1e-6 };
+    std::vector<Real> tabulatedMCErrors   = { 1.7e-2, 2.0e-3, 4.0e-5, 1.8e-6 };
+    std::vector<Real> toleranceOnTabMCErr = { 0.1e-2, 0.1e-3, 0.1e-5, 0.1e-6 };
 
     SimpsonIntegral integral(1e-12, 10000);
     std::vector<Real> x, y;
@@ -234,7 +231,7 @@ void InterpolationTest::testSplineErrorOnGaussianValues() {
     // results from the paper
     Real scaleFactor = 1.9;
 
-    for (Size i=0; i<LENGTH(points); i++) {
+    for (Size i=0; i<points.size(); i++) {
         Size n = points[i];
         std::vector<Real> x = xRange(-1.7, 1.9, n);
         std::vector<Real> y = gaussian(x);
@@ -348,11 +345,11 @@ void InterpolationTest::testSplineOnRPN15AValues() {
 
     BOOST_TEST_MESSAGE("Testing spline interpolation on RPN15A data set...");
 
-    const Real RPN15A_x[] = {
+    const std::vector<Real> RPN15A_x = {
         7.99,       8.09,       8.19,      8.7,
         9.2,     10.0,     12.0,     15.0,     20.0
     };
-    const Real RPN15A_y[] = {
+    const std::vector<Real> RPN15A_y = {
         0.0, 2.76429e-5, 4.37498e-5, 0.169183,
         0.469428, 0.943740, 0.998636, 0.999919, 0.999994
     };
@@ -361,18 +358,18 @@ void InterpolationTest::testSplineOnRPN15AValues() {
 
     // Natural spline
     CubicInterpolation f = CubicInterpolation(
-                                    BEGIN(RPN15A_x), END(RPN15A_x),
-                                    BEGIN(RPN15A_y),
+                                    RPN15A_x.begin(), RPN15A_x.end(),
+                                    RPN15A_y.begin(),
                                     CubicInterpolation::Spline, false,
                                     CubicInterpolation::SecondDerivative, 0.0,
                                     CubicInterpolation::SecondDerivative, 0.0);
     f.update();
     checkValues("Natural spline", f,
-                BEGIN(RPN15A_x), END(RPN15A_x), BEGIN(RPN15A_y));
+                RPN15A_x.begin(), RPN15A_x.end(), RPN15A_y.begin());
     check2ndDerivativeValue("Natural spline", f,
-                            *BEGIN(RPN15A_x), 0.0);
+                            *RPN15A_x.begin(), 0.0);
     check2ndDerivativeValue("Natural spline", f,
-                            *(END(RPN15A_x)-1), 0.0);
+                            *(RPN15A_x.end()-1), 0.0);
     // poor performance
     Real x_bad = 11.0;
     interpolated = f(x_bad);
@@ -386,17 +383,17 @@ void InterpolationTest::testSplineOnRPN15AValues() {
 
 
     // Clamped spline
-    f = CubicInterpolation(BEGIN(RPN15A_x), END(RPN15A_x), BEGIN(RPN15A_y),
+    f = CubicInterpolation(RPN15A_x.begin(), RPN15A_x.end(), RPN15A_y.begin(),
                            CubicInterpolation::Spline, false,
                            CubicInterpolation::FirstDerivative, 0.0,
                            CubicInterpolation::FirstDerivative, 0.0);
     f.update();
     checkValues("Clamped spline", f,
-                BEGIN(RPN15A_x), END(RPN15A_x), BEGIN(RPN15A_y));
+                RPN15A_x.begin(), RPN15A_x.end(), RPN15A_y.begin());
     check1stDerivativeValue("Clamped spline", f,
-                            *BEGIN(RPN15A_x), 0.0);
+                            *RPN15A_x.begin(), 0.0);
     check1stDerivativeValue("Clamped spline", f,
-                            *(END(RPN15A_x)-1), 0.0);
+                            *(RPN15A_x.end()-1), 0.0);
     // poor performance
     interpolated = f(x_bad);
     if (interpolated<1.0) {
@@ -409,13 +406,13 @@ void InterpolationTest::testSplineOnRPN15AValues() {
 
 
     // Not-a-knot spline
-    f = CubicInterpolation(BEGIN(RPN15A_x), END(RPN15A_x), BEGIN(RPN15A_y),
+    f = CubicInterpolation(RPN15A_x.begin(), RPN15A_x.end(), RPN15A_y.begin(),
                            CubicInterpolation::Spline, false,
                            CubicInterpolation::NotAKnot, Null<Real>(),
                            CubicInterpolation::NotAKnot, Null<Real>());
     f.update();
     checkValues("Not-a-knot spline", f,
-                BEGIN(RPN15A_x), END(RPN15A_x), BEGIN(RPN15A_y));
+                RPN15A_x.begin(), RPN15A_x.end(), RPN15A_y.begin());
     checkNotAKnotCondition("Not-a-knot spline", f);
     // poor performance
     interpolated = f(x_bad);
@@ -429,14 +426,14 @@ void InterpolationTest::testSplineOnRPN15AValues() {
 
 
     // MC natural spline values
-    f = CubicInterpolation(BEGIN(RPN15A_x), END(RPN15A_x),
-                           BEGIN(RPN15A_y),
+    f = CubicInterpolation(RPN15A_x.begin(), RPN15A_x.end(),
+                           RPN15A_y.begin(),
                            CubicInterpolation::Spline, true,
                            CubicInterpolation::SecondDerivative, 0.0,
                            CubicInterpolation::SecondDerivative, 0.0);
     f.update();
     checkValues("MC natural spline", f,
-                BEGIN(RPN15A_x), END(RPN15A_x), BEGIN(RPN15A_y));
+                RPN15A_x.begin(), RPN15A_x.end(), RPN15A_y.begin());
     // good performance
     interpolated = f(x_bad);
     if (interpolated>1.0) {
@@ -449,17 +446,17 @@ void InterpolationTest::testSplineOnRPN15AValues() {
 
 
     // MC clamped spline values
-    f = CubicInterpolation(BEGIN(RPN15A_x), END(RPN15A_x), BEGIN(RPN15A_y),
+    f = CubicInterpolation(RPN15A_x.begin(), RPN15A_x.end(), RPN15A_y.begin(),
                            CubicInterpolation::Spline, true,
                            CubicInterpolation::FirstDerivative, 0.0,
                            CubicInterpolation::FirstDerivative, 0.0);
     f.update();
     checkValues("MC clamped spline", f,
-                BEGIN(RPN15A_x), END(RPN15A_x), BEGIN(RPN15A_y));
+                RPN15A_x.begin(), RPN15A_x.end(), RPN15A_y.begin());
     check1stDerivativeValue("MC clamped spline", f,
-                            *BEGIN(RPN15A_x), 0.0);
+                            *RPN15A_x.begin(), 0.0);
     check1stDerivativeValue("MC clamped spline", f,
-                            *(END(RPN15A_x)-1), 0.0);
+                            *(RPN15A_x.end()-1), 0.0);
     // good performance
     interpolated = f(x_bad);
     if (interpolated>1.0) {
@@ -472,13 +469,13 @@ void InterpolationTest::testSplineOnRPN15AValues() {
 
 
     // MC not-a-knot spline values
-    f = CubicInterpolation(BEGIN(RPN15A_x), END(RPN15A_x), BEGIN(RPN15A_y),
+    f = CubicInterpolation(RPN15A_x.begin(), RPN15A_x.end(), RPN15A_y.begin(),
                            CubicInterpolation::Spline, true,
                            CubicInterpolation::NotAKnot, Null<Real>(),
                            CubicInterpolation::NotAKnot, Null<Real>());
     f.update();
     checkValues("MC not-a-knot spline", f,
-                BEGIN(RPN15A_x), END(RPN15A_x), BEGIN(RPN15A_y));
+                RPN15A_x.begin(), RPN15A_x.end(), RPN15A_y.begin());
     // good performance
     interpolated = f(x_bad);
     if (interpolated>1.0) {
@@ -498,17 +495,17 @@ void InterpolationTest::testSplineOnGenericValues() {
 
     BOOST_TEST_MESSAGE("Testing spline interpolation on generic values...");
 
-    const Real generic_x[] = { 0.0, 1.0, 3.0, 4.0 };
-    const Real generic_y[] = { 0.0, 0.0, 2.0, 2.0 };
-    const Real generic_natural_y2[] = { 0.0, 1.5, -1.5, 0.0 };
+    const std::vector<Real> generic_x = { 0.0, 1.0, 3.0, 4.0 };
+    const std::vector<Real> generic_y = { 0.0, 0.0, 2.0, 2.0 };
+    const std::vector<Real> generic_natural_y2 = { 0.0, 1.5, -1.5, 0.0 };
 
     Real interpolated, error;
-    Size i, n = LENGTH(generic_x);
+    Size i, n = generic_x.size();
     std::vector<Real> x35(3);
 
     // Natural spline
-    CubicInterpolation f(BEGIN(generic_x), END(generic_x),
-                         BEGIN(generic_y),
+    CubicInterpolation f(generic_x.begin(), generic_x.end(),
+                         generic_y.begin(),
                          CubicInterpolation::Spline, false,
                          CubicInterpolation::SecondDerivative,
                          generic_natural_y2[0],
@@ -516,7 +513,7 @@ void InterpolationTest::testSplineOnGenericValues() {
                          generic_natural_y2[n-1]);
     f.update();
     checkValues("Natural spline", f,
-                BEGIN(generic_x), END(generic_x), BEGIN(generic_y));
+                generic_x.begin(), generic_x.end(), generic_y.begin());
     // cached second derivative
     for (i=0; i<n; i++) {
         interpolated = f.secondDerivative(generic_x[i]);
@@ -534,28 +531,28 @@ void InterpolationTest::testSplineOnGenericValues() {
 
     // Clamped spline
     Real y1a = 0.0, y1b = 0.0;
-    f = CubicInterpolation(BEGIN(generic_x), END(generic_x), BEGIN(generic_y),
+    f = CubicInterpolation(generic_x.begin(), generic_x.end(), generic_y.begin(),
                     CubicInterpolation::Spline, false,
                     CubicInterpolation::FirstDerivative, y1a,
                     CubicInterpolation::FirstDerivative, y1b);
     f.update();
     checkValues("Clamped spline", f,
-                BEGIN(generic_x), END(generic_x), BEGIN(generic_y));
+                generic_x.begin(), generic_x.end(), generic_y.begin());
     check1stDerivativeValue("Clamped spline", f,
-                            *BEGIN(generic_x), 0.0);
+                            *generic_x.begin(), 0.0);
     check1stDerivativeValue("Clamped spline", f,
-                            *(END(generic_x)-1), 0.0);
+                            *(generic_x.end()-1), 0.0);
     x35[0] = f(3.5);
 
 
     // Not-a-knot spline
-    f = CubicInterpolation(BEGIN(generic_x), END(generic_x), BEGIN(generic_y),
+    f = CubicInterpolation(generic_x.begin(), generic_x.end(), generic_y.begin(),
                            CubicInterpolation::Spline, false,
                            CubicInterpolation::NotAKnot, Null<Real>(),
                            CubicInterpolation::NotAKnot, Null<Real>());
     f.update();
     checkValues("Not-a-knot spline", f,
-                BEGIN(generic_x), END(generic_x), BEGIN(generic_y));
+                generic_x.begin(), generic_x.end(), generic_y.begin());
     checkNotAKnotCondition("Not-a-knot spline", f);
 
     x35[2] = f(3.5);
@@ -904,20 +901,20 @@ void InterpolationTest::testAsFunctor() {
 
     BOOST_TEST_MESSAGE("Testing use of interpolations as functors...");
 
-    const Real x[] = { 0.0, 1.0, 2.0, 3.0, 4.0 };
-    const Real y[] = { 5.0, 4.0, 3.0, 2.0, 1.0 };
+    const std::vector<Real> x = { 0.0, 1.0, 2.0, 3.0, 4.0 };
+    const std::vector<Real> y = { 5.0, 4.0, 3.0, 2.0, 1.0 };
 
-   Interpolation f = LinearInterpolation(BEGIN(x), END(x), BEGIN(y));
+    Interpolation f = LinearInterpolation(x.begin(), x.end(), y.begin());
     f.update();
 
-    const Real x2[] = { -2.0, -1.0, 0.0, 1.0, 3.0, 4.0, 5.0, 6.0, 7.0 };
-    Size N = LENGTH(x2);
+    const std::vector<Real> x2 = { -2.0, -1.0, 0.0, 1.0, 3.0, 4.0, 5.0, 6.0, 7.0 };
+    Size N = x2.size();
     std::vector<Real> y2(N);
     Real tolerance = 1.0e-12;
 
     // case 1: extrapolation not allowed
     try {
-        std::transform(BEGIN(x2), END(x2), y2.begin(), f);
+        std::transform(x2.begin(), x2.end(), y2.begin(), f);
         throw NotThrown();
     }
     catch (Error&) {
@@ -930,7 +927,7 @@ void InterpolationTest::testAsFunctor() {
     // case 2: enable extrapolation
     f.enableExtrapolation();
     y2 = std::vector<Real>(N);
-    std::transform(BEGIN(x2), END(x2), y2.begin(), f);
+    std::transform(x2.begin(), x2.end(), y2.begin(), f);
     for (Size i=0; i<N; i++) {
         Real expected = 5.0-x2[i];
         if (std::fabs(y2[i]-expected) > tolerance)
@@ -959,14 +956,15 @@ void InterpolationTest::testFritschButland() {
 
     BOOST_TEST_MESSAGE("Testing Fritsch-Butland interpolation...");
 
-    const Real x[5] = { 0.0, 1.0, 2.0, 3.0, 4.0 };
-    const Real y[][5] = {{ 1.0, 2.0, 1.0, 1.0, 2.0 },
+    const std::vector<Real> x = { 0.0, 1.0, 2.0, 3.0, 4.0 };
+    const std::vector<std::vector<Real>> y = {
+                         { 1.0, 2.0, 1.0, 1.0, 2.0 },
                          { 1.0, 2.0, 1.0, 1.0, 1.0 },
                          { 2.0, 1.0, 0.0, 2.0, 3.0 }};
 
     for (Size i=0; i<3; ++i) {
 
-        Interpolation f = FritschButlandCubic(BEGIN(x), END(x), BEGIN(y[i]));
+        Interpolation f = FritschButlandCubic(x.begin(), x.end(), y[i].begin());
         f.update();
 
         for (Size j=0; j<4; ++j) {
@@ -995,13 +993,13 @@ void InterpolationTest::testBackwardFlat() {
 
     BOOST_TEST_MESSAGE("Testing backward-flat interpolation...");
 
-    const Real x[] = { 0.0, 1.0, 2.0, 3.0, 4.0 };
-    const Real y[] = { 5.0, 4.0, 3.0, 2.0, 1.0 };
+    const std::vector<Real> x = { 0.0, 1.0, 2.0, 3.0, 4.0 };
+    const std::vector<Real> y = { 5.0, 4.0, 3.0, 2.0, 1.0 };
 
-    Interpolation f = BackwardFlatInterpolation(BEGIN(x), END(x), BEGIN(y));
+    Interpolation f = BackwardFlatInterpolation(x.begin(), x.end(), y.begin());
     f.update();
 
-    Size N = LENGTH(x);
+    Size N = x.size();
     Size i;
     Real tolerance = 1.0e-12;
 
@@ -1113,13 +1111,13 @@ void InterpolationTest::testForwardFlat() {
 
     BOOST_TEST_MESSAGE("Testing forward-flat interpolation...");
 
-    const Real x[] = { 0.0, 1.0, 2.0, 3.0, 4.0 };
-    const Real y[] = { 5.0, 4.0, 3.0, 2.0, 1.0 };
+    const std::vector<Real> x = { 0.0, 1.0, 2.0, 3.0, 4.0 };
+    const std::vector<Real> y = { 5.0, 4.0, 3.0, 2.0, 1.0 };
 
-    Interpolation f = ForwardFlatInterpolation(BEGIN(x), END(x), BEGIN(y));
+    Interpolation f = ForwardFlatInterpolation(x.begin(), x.end(), y.begin());
     f.update();
 
-    Size N = LENGTH(x);
+    Size N = x.size();
     Size i;
     Real tolerance = 1.0e-12;
 
@@ -1297,9 +1295,10 @@ void InterpolationTest::testSabrInterpolation(){
 
     Real calibrationTolerance = 5.0e-8;
     // initialize optimization methods
-    std::vector<ext::shared_ptr<OptimizationMethod> > methods_;
-    methods_.push_back( ext::shared_ptr<OptimizationMethod>(new Simplex(0.01)));
-    methods_.push_back( ext::shared_ptr<OptimizationMethod>(new LevenbergMarquardt(1e-8, 1e-8, 1e-8)));
+    std::vector<ext::shared_ptr<OptimizationMethod> > methods_ = {
+        ext::shared_ptr<OptimizationMethod>(new Simplex(0.01)),
+        ext::shared_ptr<OptimizationMethod>(new LevenbergMarquardt(1e-8, 1e-8, 1e-8))
+    };
     // Initialize end criteria
     ext::shared_ptr<EndCriteria> endCriteria(new
                   EndCriteria(100000, 100, 1e-8, 1e-8, 1e-8));
@@ -1409,14 +1408,8 @@ void InterpolationTest::testKernelInterpolation() {
     yd3[0]=10.3000; yd3[1]=9.6375; yd3[2]=9.2000;
     yd3[3]=9.1125; yd3[4]=9.4000;
 
-    std::vector<std::vector<Real> > yd;
-    yd.push_back(yd1);
-    yd.push_back(yd2);
-    yd.push_back(yd3);
-
-    std::vector<Real> lambdaVec(5);
-    lambdaVec[0]=0.05; lambdaVec[1]=0.50; lambdaVec[2]=0.75;
-    lambdaVec[3]=1.65; lambdaVec[4]=2.55;
+    std::vector<std::vector<Real> > yd = {yd1, yd2, yd3};
+    std::vector<Real> lambdaVec = {0.05, 0.50, 0.75, 1.65, 2.55};
 
     Real tolerance = 2.0e-5;
 
@@ -1476,10 +1469,7 @@ void InterpolationTest::testKernelInterpolation() {
     ytd3[0]= 10.17473; ytd3[1]= 9.557842; ytd3[2]= 9.09339;
     ytd3[3]= 9.149687; ytd3[4]= 9.779971;
 
-    std::vector<std::vector<Real> > ytd;
-    ytd.push_back(ytd1);
-    ytd.push_back(ytd2);
-    ytd.push_back(ytd3);
+    std::vector<std::vector<Real> > ytd = {ytd1, ytd2, ytd3};
 
     GaussianKernel myKernel(0,2.05);
 
@@ -1735,14 +1725,14 @@ void InterpolationTest::testUnknownRichardsonExtrapolation() {
 
     const Real stepSize = 0.01;
 
-    const std::pair<Real, Real> testCases[] = {
+    const std::vector<std::pair<Real, Real>> testCases = {
             std::make_pair(1.0, 1.0), std::make_pair(1.0, -1.0),
             std::make_pair(2.0, 0.25), std::make_pair(2.0, -1.0),
             std::make_pair(3.0, 2.0), std::make_pair(3.0, -0.5),
             std::make_pair(4.0, 1.0), std::make_pair(4.0, 0.5)
     };
 
-    for (Size i=0; i < LENGTH(testCases); ++i) {
+    for (Size i=0; i < testCases.size(); ++i) {
         const std::pair<Real, Real> testCase = testCases[i];
 
         const RichardsonExtrapolation extrap(
@@ -1916,9 +1906,10 @@ void InterpolationTest::testNoArbSabrInterpolation(){
 
     Real calibrationTolerance = 5.0e-6;
     // initialize optimization methods
-    std::vector<ext::shared_ptr<OptimizationMethod> > methods_;
-    methods_.push_back( ext::shared_ptr<OptimizationMethod>(new Simplex(0.01)));
-    methods_.push_back( ext::shared_ptr<OptimizationMethod>(new LevenbergMarquardt(1e-8, 1e-8, 1e-8)));
+    std::vector<ext::shared_ptr<OptimizationMethod> > methods_ = {
+        ext::shared_ptr<OptimizationMethod>(new Simplex(0.01)),
+        ext::shared_ptr<OptimizationMethod>(new LevenbergMarquardt(1e-8, 1e-8, 1e-8))
+    };
     // Initialize end criteria
     ext::shared_ptr<EndCriteria> endCriteria(new
                   EndCriteria(100000, 100, 1e-8, 1e-8, 1e-8));
@@ -1926,7 +1917,7 @@ void InterpolationTest::testNoArbSabrInterpolation(){
     for (Size j=1; j<methods_.size(); ++j) { // skip simplex (gets caught in some cases)
         for (bool i : vegaWeighted) {
             for (bool k_a : isAlphaFixed) {
-                for (Size k_b=0; k_b<1/*LENGTH(isBetaFixed)*/; ++k_b) { // keep beta fixed (all 4 params free is a problem for this kind of test)
+                for (Size k_b=0; k_b<1; ++k_b) { // keep beta fixed (all 4 params free is a problem for this kind of test)
                     for (bool k_n : isNuFixed) {
                         for (bool k_r : isRhoFixed) {
                             NoArbSabrInterpolation noarbSabrInterpolation(
@@ -2166,12 +2157,12 @@ void InterpolationTest::testLeFlochKennedySabrExample() {
     const Real nu    = 1.0;
     const Real rho   = 0.25;
     const Real beta  = 0.25;
-    const Real strikes[]= {1.0, 1.5, 0.5};
+    const std::vector<Real> strikes= {1.0, 1.5, 0.5};
     const Time t = 2.0;
 
-    const Real expected[] = {0.408702473958, 0.428489933046, 0.585701651161};
+    const std::vector<Real> expected = {0.408702473958, 0.428489933046, 0.585701651161};
 
-    for (Size i=0; i < LENGTH(strikes); ++i) {
+    for (Size i=0; i < strikes.size(); ++i) {
         const Real strike = strikes[i];
         const Real vol =
             sabrFlochKennedyVolatility(strike, f0, t, alpha, beta, nu, rho);
@@ -2198,11 +2189,11 @@ void InterpolationTest::testLagrangeInterpolation() {
 
     BOOST_TEST_MESSAGE("Testing Lagrange interpolation...");
 
-    const Real x[] = {-1.0 , -0.5, -0.25, 0.1, 0.4, 0.75, 0.96};
-    Array y(LENGTH(x));
-    std::transform(x, x+LENGTH(x), y.begin(), &lagrangeTestFct);
+    const std::vector<Real> x = {-1.0 , -0.5, -0.25, 0.1, 0.4, 0.75, 0.96};
+    Array y(x.size());
+    std::transform(x.begin(), x.end(), y.begin(), &lagrangeTestFct);
 
-    LagrangeInterpolation interpl(&x[0], x+LENGTH(x), y.begin());
+    LagrangeInterpolation interpl(x.begin(), x.end(), y.begin());
 
     // reference results are taken from R package pracma
     const Real references[] = {

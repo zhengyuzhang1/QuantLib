@@ -580,13 +580,13 @@ void SquareRootCLVModelTest::testForwardSkew() {
         maturityIndices.push_back(grid.closestIndex(maturityTime)-1);
     }
 
-    const Real strikes[] = {
+    const std::vector<Real> strikes = {
         0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2,
         1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0
     };
 
     const Size nScenarios = 20000;
-    Array refVols(resetIndices.size()*LENGTH(strikes));
+    Array refVols(resetIndices.size()*strikes.size());
 
     // finite difference calibration of Heston SLV model
 
@@ -622,7 +622,7 @@ void SquareRootCLVModelTest::testForwardSkew() {
 
     std::vector<std::vector<GeneralStatistics> > slvStats(
         calibrationDates.size()-2,
-            std::vector<GeneralStatistics>(LENGTH(strikes)));
+        std::vector<GeneralStatistics>(strikes.size()));
 
     typedef SobolBrownianBridgeRsg rsg_type;
     typedef MultiPathGenerator<rsg_type>::sample_type sample_type;
@@ -640,7 +640,7 @@ void SquareRootCLVModelTest::testForwardSkew() {
             const Real S_t1 = path.value[0][resetIndices[i]];
             const Real S_T1 = path.value[0][maturityIndices[i]];
 
-            for (Size j=0; j < LENGTH(strikes); ++j) {
+            for (Size j=0; j < strikes.size(); ++j) {
                 const Real strike = strikes[j];
                     slvStats[i][j].add((strike < 1.0)
                         ? S_t1 * std::max(0.0, strike - S_T1/S_t1)
@@ -658,7 +658,7 @@ void SquareRootCLVModelTest::testForwardSkew() {
         const ext::shared_ptr<Exercise> exercise(
             ext::make_shared<EuropeanExercise>(maturityDate));
 
-        for (Size j=0; j < LENGTH(strikes); ++j) {
+        for (Size j=0; j < strikes.size(); ++j) {
             const Real strike = strikes[j];
             const Real npv = slvStats[i][j].mean()*df;
 
@@ -674,13 +674,13 @@ void SquareRootCLVModelTest::testForwardSkew() {
                 detail::ImpliedVolatilityHelper::calculate(
                     *fwdOption, *fwdEngine, *vol, npv, 1e-8, 200, 1e-4, 2.0);
 
-            const Size idx = j + i*LENGTH(strikes);
+            const Size idx = j + i*strikes.size();
             refVols[idx] = implVol;
         }
     }
 
     SquareRootCLVCalibrationFunction costFunction(
-        Array(strikes, strikes+LENGTH(strikes)),
+        Array(strikes.begin(), strikes.end()),
         resetDates,
         maturityDates,
         bsProcess,

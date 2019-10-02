@@ -38,39 +38,39 @@ using namespace boost::unit_test_framework;
 
 namespace {
 
-    Real data[] =    { 3.0, 4.0, 5.0, 2.0, 3.0, 4.0, 5.0, 6.0, 4.0, 7.0 };
-    Real weights[] = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 };
+    std::vector<Real> data =    { 3.0, 4.0, 5.0, 2.0, 3.0, 4.0, 5.0, 6.0, 4.0, 7.0 };
+    std::vector<Real> weights = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 };
 
     template <class S>
     void check(const std::string& name) {
 
         S s;
-        for (Size i=0; i<LENGTH(data); i++)
+        for (Size i=0; i<data.size(); i++)
             s.add(data[i],weights[i]);
 
         Real calculated, expected;
         Real tolerance;
 
-        if (s.samples() != LENGTH(data))
+        if (s.samples() != data.size())
             BOOST_FAIL(name << ": wrong number of samples\n"
                        << "    calculated: " << s.samples() << "\n"
-                       << "    expected:   " << LENGTH(data));
+                       << "    expected:   " << data.size());
 
-        expected = std::accumulate(weights,weights+LENGTH(weights),Real(0.0));
+        expected = std::accumulate(weights.begin(), weights.end(),Real(0.0));
         calculated = s.weightSum();
         if (calculated != expected)
             BOOST_FAIL(name << ": wrong sum of weights\n"
                        << "    calculated: " << calculated << "\n"
                        << "    expected:   " << expected);
 
-        expected = *std::min_element(data,data+LENGTH(data));
+        expected = *std::min_element(data.begin(), data.end());
         calculated = s.min();
         if (calculated != expected)
             BOOST_FAIL(name << ": wrong minimum value\n"
                        << "    calculated: " << calculated << "\n"
                        << "    expected:   " << expected);
 
-        expected = *std::max_element(data,data+LENGTH(data));
+        expected = *std::max_element(data.begin(), data.end());
         calculated = s.max();
         if (calculated != expected)
             BOOST_FAIL(name << ": wrong maximum value\n"
@@ -134,7 +134,7 @@ namespace {
 
         GenericSequenceStatistics<S> ss(dimension);
         Size i;
-        for (i = 0; i<LENGTH(data); i++) {
+        for (i = 0; i<data.size(); i++) {
             std::vector<Real> temp(dimension, data[i]);
             ss.add(temp, weights[i]);
         }
@@ -142,20 +142,20 @@ namespace {
         std::vector<Real> calculated;
         Real expected, tolerance;
 
-        if (ss.samples() != LENGTH(data))
+        if (ss.samples() != data.size())
             BOOST_FAIL("SequenceStatistics<" << name << ">: "
                        << "wrong number of samples\n"
                        << "    calculated: " << ss.samples() << "\n"
-                       << "    expected:   " << LENGTH(data));
+                       << "    expected:   " << data.size());
 
-        expected = std::accumulate(weights,weights+LENGTH(weights),Real(0.0));
+        expected = std::accumulate(weights.begin(), weights.end(),Real(0.0));
         if (ss.weightSum() != expected)
             BOOST_FAIL("SequenceStatistics<" << name << ">: "
                        << "wrong sum of weights\n"
                        << "    calculated: " << ss.weightSum() << "\n"
                        << "    expected:   " << expected);
 
-        expected = *std::min_element(data,data+LENGTH(data));
+        expected = *std::min_element(data.begin(), data.end());
         calculated = ss.min();
         for (i=0; i<dimension; i++) {
             if (calculated[i] != expected)
@@ -166,7 +166,7 @@ namespace {
                            << "    expected:   " << expected);
         }
 
-        expected = *std::max_element(data,data+LENGTH(data));
+        expected = *std::max_element(data.begin(), data.end());
         calculated = ss.max();
         for (i=0; i<dimension; i++) {
             if (calculated[i] != expected)

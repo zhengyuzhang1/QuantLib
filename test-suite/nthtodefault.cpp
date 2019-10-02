@@ -53,7 +53,7 @@ namespace {
        for all names is constant at 0.01, maturity 5 years, equal
        notional amounts.
     */
-    hwDatum hwData[] = {
+    std::vector<hwDatum> hwData = {
         { 1, { 603, 440, 293 } },
         { 2, {  98, 139, 137 } },
         { 3, {  12,  53,  79 } },
@@ -67,7 +67,7 @@ namespace {
     };
 
 
-    Real hwCorrelation[] = { 0.0, 0.3, 0.6 };
+    std::vector<Real> hwCorrelation = { 0.0, 0.3, 0.6 };
 
 
     struct hwDatumDist {
@@ -79,7 +79,7 @@ namespace {
     // corr = 0.3
     // NM/NZ
     // rank inf/inf 5/inf inf/5 5/5
-    hwDatumDist hwDataDist[] = {
+    std::vector<hwDatumDist> hwDataDist = {
         { 1, { 440, 419, 474, 455 } },
         { 2, { 139, 127, 127, 116 } },
         { 3, {  53,  51,  44,  44 } },
@@ -111,8 +111,7 @@ void NthToDefaultTest::testGauss() {
 
     Period timeUnit = 1*Weeks; // required to reach accuracy
 
-    Size names = 10;
-    QL_REQUIRE (LENGTH(hwData) == names, "hwData length does not match");
+    Size names = hwData.size();
 
     Real rate = 0.05;
     DayCounter dc = Actual365Fixed();
@@ -132,11 +131,12 @@ void NthToDefaultTest::testGauss() {
 
     Settings::instance().evaluationDate() = asofDate;
 
-    vector<Date> gridDates;
-    gridDates.push_back (asofDate);
-    gridDates.push_back (TARGET().advance (asofDate, Period (1, Years)));
-    gridDates.push_back (TARGET().advance (asofDate, Period (5, Years)));
-    gridDates.push_back (TARGET().advance (asofDate, Period (7, Years)));
+    vector<Date> gridDates = {
+        asofDate,
+        TARGET().advance (asofDate, Period (1, Years)),
+        TARGET().advance (asofDate, Period (5, Years)),
+        TARGET().advance (asofDate, Period (7, Years))
+    };
 
     ext::shared_ptr<YieldTermStructure> yieldPtr (
                                    new FlatForward (asofDate, rate, dc, cmp));
@@ -178,8 +178,8 @@ void NthToDefaultTest::testGauss() {
     //        2863311530));
 
 
-    vector<Handle<DefaultProbabilityTermStructure> > singleProbability;
-    singleProbability.push_back (probabilities[0]);
+    vector<Handle<DefaultProbabilityTermStructure> >
+        singleProbability = {probabilities[0]};
 
     // Set up pool and basket
     std::vector<std::string> namesIds;
@@ -222,15 +222,10 @@ void NthToDefaultTest::testGauss() {
         ntd.back().setPricingEngine(engine);
     }
 
-    QL_REQUIRE (LENGTH(hwCorrelation) == 3,
-                "correlation length does not match");
-
-    for (Size j = 0; j < LENGTH(hwCorrelation); j++) {
+    for (Size j = 0; j < hwCorrelation.size(); j++) {
         simpleQuote->setValue (hwCorrelation[j]);
         for (Size i = 0; i < ntd.size(); i++) {
             QL_REQUIRE (ntd[i].rank() == hwData[i].rank, "rank does not match");
-            QL_REQUIRE (LENGTH(hwCorrelation) == LENGTH(hwData[i].spread),
-                        "vector length does not match");
             diff = 1e4 * ntd[i].fairPremium() - hwData[i].spread[j];
             maxDiff = max (maxDiff, fabs (diff));
             BOOST_CHECK_MESSAGE (fabs(diff/hwData[i].spread[j]) < relTolerance
@@ -258,9 +253,7 @@ void NthToDefaultTest::testGaussStudent() {
 
     Period timeUnit = 1*Weeks; // required to reach accuracy
 
-    Size names = 10;
-    QL_REQUIRE (LENGTH(hwDataDist) == names,
-                "hwDataDist length does not match");
+    Size names = hwDataDist.size();
 
     Real rate = 0.05;
     DayCounter dc = Actual365Fixed();
@@ -279,11 +272,12 @@ void NthToDefaultTest::testGaussStudent() {
 
     Settings::instance().evaluationDate() = asofDate;
 
-    vector<Date> gridDates;
-    gridDates.push_back (asofDate);
-    gridDates.push_back (TARGET().advance (asofDate, Period (1, Years)));
-    gridDates.push_back (TARGET().advance (asofDate, Period (5, Years)));
-    gridDates.push_back (TARGET().advance (asofDate, Period (7, Years)));
+    vector<Date> gridDates {
+        asofDate,
+        TARGET().advance (asofDate, Period (1, Years)),
+        TARGET().advance (asofDate, Period (5, Years)),
+        TARGET().advance (asofDate, Period (7, Years))
+    };
 
     ext::shared_ptr<YieldTermStructure> yieldPtr (new FlatForward (asofDate, 
         rate, dc, cmp));
@@ -349,9 +343,6 @@ void NthToDefaultTest::testGaussStudent() {
             schedule, 0.0, 0.02, Actual360(), 100.*names, true);
         ntd.back().setPricingEngine(engine);
     }
-
-    QL_REQUIRE (LENGTH(hwCorrelation) == 3,
-                "correlation length does not match");
 
     Real maxDiff = 0;
 

@@ -70,12 +70,11 @@ namespace {
 
         const Handle<Quote> spot(ext::make_shared<SimpleQuote>(2772.7));
 
-        const Time maturityTimes[] = {
-                  0.025, 0.101, 0.197, 0.274, 0.523, 0.772,
-                  1.769, 2.267, 2.784, 3.781, 4.778, 5.774
-            };
+        std::vector<Time> maturityTimes = {
+            0.025, 0.101, 0.197, 0.274, 0.523, 0.772, 1.769, 2.267, 2.784, 3.781, 4.778, 5.774
+        };
 
-        const Real raw[][13] = {
+        std::vector<std::vector<Real>> data = {
             { 0.5131, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.3366, 0.3291, 0.0000, 0.0000 },
             { 0.5864, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.3178, 0.3129, 0.3008, 0.0000 },
             { 0.6597, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.3019, 0.2976, 0.2975, 0.0000 },
@@ -113,26 +112,19 @@ namespace {
         const Handle<YieldTermStructure> rTS(flatRate(today, 0.0, dc));
         const Handle<YieldTermStructure> qTS(flatRate(today, 0.0, dc));
 
-        const Size nStrikes = LENGTH(raw);
-        const Size nMaturities = LENGTH(maturityTimes);
-
-        QL_REQUIRE(nMaturities == LENGTH(raw[1])-1, "check raw data");
+        QL_REQUIRE(maturityTimes.size() == data[1].size()-1, "check raw data");
 
         AndreasenHugeVolatilityInterpl::CalibrationSet calibrationSet;
 
-        calibrationSet.reserve(std::count_if(
-            &raw[0][0], &raw[nStrikes-1][nMaturities]+1,
-            not_zero<Real>()) - nStrikes);
+        for (const std::vector<Real>& row : data) {
+            const Real strike = spot->value()*row[0];
 
-        for (Size i=0; i < LENGTH(raw); ++i) {
-            const Real strike = spot->value()*raw[i][0];
-
-            for (Size j=1; j < LENGTH(raw[i]); ++j)
-                if (raw[i][j] > QL_EPSILON) {
+            for (Size j=1; j < row.size(); ++j)
+                if (row[j] > QL_EPSILON) {
                     const Date maturity
                         = today + Period(Size(365*maturityTimes[j-1]), Days);
 
-                    const Volatility impliedVol = raw[i][j];
+                    const Volatility impliedVol = row[j];
 
                     calibrationSet.push_back(std::make_pair(
                         ext::make_shared<VanillaOption>(
@@ -146,9 +138,7 @@ namespace {
                 }
         }
 
-        const CalibrationData data = { spot, rTS, qTS, calibrationSet};
-
-        return data;
+        return CalibrationData { spot, rTS, qTS, calibrationSet };
     }
 
     void testAndreasenHugeVolatilityInterpolation(
@@ -328,12 +318,12 @@ namespace {
 
         Handle<Quote> spot(ext::make_shared<SimpleQuote>(100));
 
-        const Real strikes[] = { 100, 100, 100, 150 };
-        const Size maturities[] = { 1, 3, 6, 6 };
-        const Volatility vols[] = { 0.25, 0.35, 0.05, 0.35 };
+        const std::vector<Real> strikes = { 100, 100, 100, 150 };
+        const std::vector<Size> maturities = { 1, 3, 6, 6 };
+        const std::vector<Volatility> vols = { 0.25, 0.35, 0.05, 0.35 };
         AndreasenHugeVolatilityInterpl::CalibrationSet calibrationSet;
 
-        for (Size i=0; i < LENGTH(strikes); ++i) {
+        for (Size i=0; i < strikes.size(); ++i) {
             const Real strike = strikes[i];
             const Date maturityDate = today + Period(maturities[i], Months);
             const Volatility vol = vols[i];
@@ -346,7 +336,7 @@ namespace {
                 ext::make_shared<SimpleQuote>(vol)));
         }
 
-        const CalibrationData data = { spot, rTS, qTS, calibrationSet};
+        const CalibrationData data = { spot, rTS, qTS, calibrationSet };
 
         return data;
     }
@@ -1011,17 +1001,16 @@ void AndreasenHugeVolatilityInterplTest::testFlatVolCalibration() {
     const ext::shared_ptr<Quote> vol = ext::make_shared<SimpleQuote>(0.18);
 
     AndreasenHugeVolatilityInterpl::CalibrationSet calibrationSet;
-    for (Size i=0; i < LENGTH(expiries); ++i) {
+    for (auto expiry : expiries) {
 
-        const Date expiry = expiries[i];
         const ext::shared_ptr<Exercise> exercise =
             ext::make_shared<EuropeanExercise>(expiry);
 
         const Time t = rTS->timeFromReference(expiry);
         const Real fwd = spot->value() / rTS->discount(t) * qTS->discount(t);
 
-        for (Size j=0; j < LENGTH(moneyness); ++j) {
-            const Real strike = fwd * moneyness[j];
+        for (auto m : moneyness) {
+            const Real strike = fwd * m;
             const Real mn = std::log(fwd/strike)/std::sqrt(t);
 
             if (std::fabs(mn) < 3.72*vol->value()) {

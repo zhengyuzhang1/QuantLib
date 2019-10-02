@@ -1142,7 +1142,7 @@ void QuantoOptionTest::testPDEOptionValues()  {
     const DayCounter dc = Actual360();
     const Date today = Date(21, April, 2019);
 
-    QuantoOptionData values[] = {
+    std::vector<QuantoOptionData> values = {
         //    type,    strike,  spot,   div, domestic rate,  t,   vol, foreign rate, fx vol, correlation, result,     tol
         { Option::Call, 105.0, 100.0, 0.04,     0.08,      0.5,  0.2,     0.05,      0.10,     0.3,  Null<Real>(), Null<Real>() },
         { Option::Call, 100.0, 100.0, 0.16,     0.08,      0.25, 0.15,    0.05,      0.20,    -0.3,  Null<Real>(), Null<Real>() },
@@ -1151,7 +1151,7 @@ void QuantoOptionTest::testPDEOptionValues()  {
         { Option::Call, 0.0,   100.0, 0.04,     0.08,      0.3,  0.3,     0.05,      0.10,     0.75, Null<Real>(), Null<Real>() },
     };
 
-    for (Size i=0; i < LENGTH(values); ++i) {
+    for (Size i=0; i < values.size(); ++i) {
 
         std::map<std::string,Real> calculated, expected, tolerance;
         tolerance["npv"]   = 2e-4;

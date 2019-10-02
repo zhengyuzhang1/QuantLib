@@ -47,19 +47,19 @@ using namespace boost::unit_test_framework;
 
 namespace {
 
-    Real hwAttachment[] = { 0.00, 0.03, 0.06, 0.10 };
-    Real hwDetachment[] = { 0.03, 0.06, 0.10, 1.00 };
+    std::vector<Real> hwAttachment = { 0.00, 0.03, 0.06, 0.10 };
+    std::vector<Real> hwDetachment = { 0.03, 0.06, 0.10, 1.00 };
 
     struct hwDatum {
         Real correlation;
         Integer nm;
         Integer nz;
-        Real trancheSpread[4];
+        std::vector<Real> trancheSpread;
     };
 
     // HW Table 7
     // corr, Nm, Nz, 0-3, 3-6, 6-10, 10-100
-    hwDatum hwData7[] = {
+    std::vector<hwDatum> hwData7 = {
         { 0.1, -1, -1, { 2279, 450,  89,  1 } },
         { 0.3, -1, -1, { 1487, 472, 203,  7 } },
         // Opening the T, T&G tests too. The convolution is analytical
@@ -164,7 +164,7 @@ void CdoTest::testHW(unsigned dataSet) {
 
     ext::shared_ptr<SimpleQuote> correlation (new SimpleQuote(0.0));
     Handle<Quote> hCorrelation (correlation);
-    QL_REQUIRE (LENGTH(hwAttachment) == LENGTH(hwDetachment),
+    QL_REQUIRE (hwAttachment.size() == hwDetachment.size(),
                 "data length does not match");
 
     ext::shared_ptr<PricingEngine> midPCDOEngine( new MidPointCDOEngine(
@@ -174,7 +174,7 @@ void CdoTest::testHW(unsigned dataSet) {
 
     const Size i = dataSet;
     correlation->setValue (hwData7[i].correlation);
-    QL_REQUIRE (LENGTH(hwAttachment) == LENGTH(hwData7[i].trancheSpread),
+    QL_REQUIRE (hwAttachment.size() == hwData7[i].trancheSpread.size(),
                 "data length does not match");
     std::vector<ext::shared_ptr<DefaultLossModel> > basketModels;
     std::vector<std::string> modelNames;
@@ -337,7 +337,7 @@ void CdoTest::testHW(unsigned dataSet) {
         return;
     }
 
-    for (Size j = 0; j < LENGTH(hwAttachment); j ++) {
+    for (Size j = 0; j < hwAttachment.size(); j ++) {
         ext::shared_ptr<Basket> basketPtr (
             new Basket(asofDate, names, nominals, pool,
                 hwAttachment[j], hwDetachment[j]));

@@ -162,7 +162,7 @@ void MCLongstaffSchwartzEngineTest::testAmericanOption() {
     expectedExProb[1][1] = 0.67569; // (price: 5.764)
     expectedExProb[1][2] = 0.65562; // (price: 7.138)
 
-    LsmBasisSystem::PolynomType polynomTypes[]
+    std::vector<LsmBasisSystem::PolynomType> polynomTypes
         = { LsmBasisSystem::Monomial, LsmBasisSystem::Laguerre,
             LsmBasisSystem::Hermite, LsmBasisSystem::Hyperbolic,
             LsmBasisSystem::Chebyshev2nd };
@@ -194,8 +194,7 @@ void MCLongstaffSchwartzEngineTest::testAmericanOption() {
                   .withAbsoluteTolerance(0.02)
                   .withSeed(42)
                   .withPolynomOrder(3)
-                  .withBasisSystem(
-                       polynomTypes[0*(i*3+j)%LENGTH(polynomTypes)]);
+                  .withBasisSystem(polynomTypes[0*(i*3+j)%polynomTypes.size()]);
 
             americanOption.setPricingEngine(mcengine);
             // FLOATING_POINT_EXCEPTION

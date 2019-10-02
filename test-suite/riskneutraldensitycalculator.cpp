@@ -417,18 +417,16 @@ void RiskNeutralDensityCalculatorTest::testLocalVolatilityRND() {
             spot, rTS, qTS, localVolSurface, dumasTimeGrid, 401, 0.1, 1e-8));
 
     const Real strikes[] = { 25, 50, 95, 100, 105, 150, 200, 400 };
-    const Date maturityDates[] = {
+    const std::vector<Date> maturities = {
         todaysDate + Period(1, Weeks),   todaysDate + Period(1, Months),
         todaysDate + Period(3, Months),  todaysDate + Period(6, Months),
         todaysDate + Period(12, Months), todaysDate + Period(18, Months),
         todaysDate + Period(2, Years),   todaysDate + Period(3, Years) };
-    const std::vector<Date> maturities(
-        maturityDates, maturityDates + LENGTH(maturityDates));
 
 
-    for (auto maturitie : maturities) {
+    for (auto maturity : maturities) {
         const Time expiry
-            = rTS->dayCounter().yearFraction(todaysDate, maturitie);
+            = rTS->dayCounter().yearFraction(todaysDate, maturity);
 
         const ext::shared_ptr<PricingEngine> engine(
             new FdBlackScholesVanillaEngine(
@@ -436,7 +434,7 @@ void RiskNeutralDensityCalculatorTest::testLocalVolatilityRND() {
                 201, 0, FdmSchemeDesc::Douglas(), true, b1));
 
         const ext::shared_ptr<Exercise> exercise(
-            new EuropeanExercise(maturitie));
+            new EuropeanExercise(maturity));
 
         for (double strike : strikes) {
             const ext::shared_ptr<StrikedTypePayoff> payoff(
@@ -731,16 +729,16 @@ void RiskNeutralDensityCalculatorTest::testMassAtZeroCEVProcessRND() {
     const Real f0 = 100.0;
     const Time t = 2.75;
 
-    const std::pair<Real, Real> params[] = {
-      std::make_pair(0.1, 1.6),
-      std::make_pair(0.01, 2.0),
-      std::make_pair(10.0, 0.35),
-      std::make_pair(50.0, 0.1)
+    const std::vector<std::pair<Real, Real>> params = {
+         {0.1, 1.6},
+         {0.01, 2.0},
+         {10.0, 0.35},
+         {50.0, 0.1}
     };
 
     const Real tol = 1e-4;
 
-    for (Size i=0; i < LENGTH(params); ++i) {
+    for (Size i=0; i < params.size(); ++i) {
         const Real alpha = params[i].first;
         const Real beta = params[i].second;
 
@@ -772,10 +770,10 @@ void RiskNeutralDensityCalculatorTest::testCEVCDF() {
     const Time t = 0.75;
 
     const Real alpha = 0.1;
-    const Real betas[] = { 0.45, 1.25 };
+    const std::vector<Real> betas = { 0.45, 1.25 };
 
     const Real tol = 1e-6;
-    for (Size i = 1; i < LENGTH(betas); ++i) {
+    for (Size i = 1; i < betas.size(); ++i) {
         const Real beta = betas[i];
         const ext::shared_ptr<CEVRNDCalculator> calculator =
             ext::make_shared<CEVRNDCalculator>(f0, alpha, beta);

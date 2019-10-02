@@ -48,11 +48,10 @@ void LinearLeastSquaresRegressionTest::testRegression() {
     const Size nr=100000;
     PseudoRandom::rng_type rng(PseudoRandom::urng_type(1234u));
 
-    std::vector<ext::function<Real(Real)> > v;
-    v.emplace_back(constant<Real, Real>(1.0));
-    v.emplace_back(identity<Real>());
-    v.emplace_back(square<Real>());
-    v.emplace_back(static_cast<Real(*)(Real)>(std::sin));
+    std::vector<ext::function<Real(Real)> > v = {constant<Real, Real>(1.0),
+                                                 identity<Real>(),
+                                                 square<Real>(),
+                                                 static_cast<Real (*)(Real)>(std::sin)};
 
     std::vector<ext::function<Real(Real)> > w(v);
     w.emplace_back(square<Real>());
@@ -205,9 +204,8 @@ void LinearLeastSquaresRegressionTest::test1dLinearRegression() {
     y[0]=7.8; y[1]=5.5; y[2]=8.0; y[3]=9.0;
     y[4]=6.5; y[5]=4.0; y[6]=6.3; y[7]=8.4; y[8]=10.2;
 
-    std::vector<ext::function<Real(Real)> > v;
-    v.emplace_back(constant<Real, Real>(1.0));
-    v.emplace_back(identity<Real>());
+    std::vector<ext::function<Real(Real)> > v = {constant<Real, Real>(1.0),
+                                                 identity<Real>()};
 
     LinearRegression m(x, y);
 

@@ -73,7 +73,7 @@ namespace {
 
     template <class T, class U, class I>
     std::vector<ext::shared_ptr<BootstrapHelper<T> > > makeHelpers(
-            Datum iiData[], Size N,
+            const std::vector<Datum> iiData,
             const ext::shared_ptr<I> &ii, const Period &observationLag,
             const Calendar &calendar,
             const BusinessDayConvention &bdc,
@@ -81,10 +81,10 @@ namespace {
             const Handle<YieldTermStructure>& yTS) {
 
         std::vector<ext::shared_ptr<BootstrapHelper<T> > > instruments;
-        for (Size i=0; i<N; i++) {
-            Date maturity = iiData[i].date;
+        for (Datum datum : iiData) {
+            Date maturity = datum.date;
             Handle<Quote> quote(ext::shared_ptr<Quote>(
-                new SimpleQuote(iiData[i].rate/100.0)));
+                new SimpleQuote(datum.rate/100.0)));
             ext::shared_ptr<BootstrapHelper<T> > anInstrument(new U(
                 quote, observationLag, maturity,
                 calendar, bdc, dc, ii, yTS));
@@ -266,7 +266,7 @@ void InflationTest::testZeroIndex() {
     .withCalendar(UnitedKingdom())
     .withConvention(ModifiedFollowing);
 
-    Real fixData[] = { 189.9, 189.9, 189.6, 190.5, 191.6, 192.0,
+    std::vector<Real> fixData = { 189.9, 189.9, 189.6, 190.5, 191.6, 192.0,
         192.2, 192.2, 192.6, 193.1, 193.3, 193.6,
         194.1, 193.4, 194.2, 195.0, 196.5, 197.7,
         198.5, 198.5, 199.2, 200.1, 200.4, 201.1,
@@ -275,7 +275,7 @@ void InflationTest::testZeroIndex() {
 
     bool interp = false;
     ext::shared_ptr<UKRPI> iir(new UKRPI(interp));
-    for (Size i=0; i<LENGTH(fixData); i++) {
+    for (Size i=0; i<fixData.size(); i++) {
         iir->addFixing(rpiSchedule[i], fixData[i]);
     }
 
@@ -324,7 +324,7 @@ void InflationTest::testZeroTermStructure() {
     .withCalendar(UnitedKingdom())
     .withConvention(ModifiedFollowing);
 
-    Real fixData[] = { 189.9, 189.9, 189.6, 190.5, 191.6, 192.0,
+    std::vector<Real> fixData = { 189.9, 189.9, 189.6, 190.5, 191.6, 192.0,
         192.2, 192.2, 192.6, 193.1, 193.3, 193.6,
         194.1, 193.4, 194.2, 195.0, 196.5, 197.7,
         198.5, 198.5, 199.2, 200.1, 200.4, 201.1,
@@ -334,7 +334,7 @@ void InflationTest::testZeroTermStructure() {
     RelinkableHandle<ZeroInflationTermStructure> hz;
     bool interp = false;
     ext::shared_ptr<UKRPI> iiUKRPI(new UKRPI(interp, hz));
-    for (Size i=0; i<LENGTH(fixData); i++) {
+    for (Size i=0; i<fixData.size(); i++) {
         iiUKRPI->addFixing(rpiSchedule[i], fixData[i]);
     }
 
@@ -342,7 +342,7 @@ void InflationTest::testZeroTermStructure() {
     ext::shared_ptr<YieldTermStructure> nominalTS = nominalTermStructure();
 
     // now build the zero inflation curve
-    Datum zcData[] = {
+    std::vector<Datum> zcData = {
         { Date(13, August, 2008), 2.93 },
         { Date(13, August, 2009), 2.95 },
         { Date(13, August, 2010), 2.965 },
@@ -364,7 +364,7 @@ void InflationTest::testZeroTermStructure() {
     Frequency frequency = Monthly;
     std::vector<ext::shared_ptr<BootstrapHelper<ZeroInflationTermStructure> > > helpers =
     makeHelpers<ZeroInflationTermStructure,ZeroCouponInflationSwapHelper,
-                ZeroInflationIndex>(zcData, LENGTH(zcData), ii,
+                ZeroInflationIndex>(zcData, ii,
                                     observationLag,
                                     calendar, bdc, dc,
                                     Handle<YieldTermStructure>(nominalTS));
@@ -381,7 +381,7 @@ void InflationTest::testZeroTermStructure() {
     // and that the helpers give the correct impled rates
     const Real eps = 0.00000001;
     bool forceLinearInterpolation = false;
-    for (Size i=0; i<LENGTH(zcData); i++) {
+    for (Size i=0; i<zcData.size(); i++) {
         BOOST_REQUIRE_MESSAGE(std::fabs(zcData[i].rate/100.0
             - pZITS->zeroRate(zcData[i].date, observationLag, forceLinearInterpolation)) < eps,
             "ZITS zeroRate != instrument "
@@ -487,7 +487,7 @@ void InflationTest::testZeroTermStructure() {
 
     bool interpYES = true;
     ext::shared_ptr<UKRPI> iiUKRPIyes(new UKRPI(interpYES, hz));
-    for (Size i=0; i<LENGTH(fixData);i++) {
+    for (Size i=0; i<fixData.size();i++) {
         iiUKRPIyes->addFixing(rpiSchedule[i], fixData[i]);
     }
 
@@ -499,7 +499,7 @@ void InflationTest::testZeroTermStructure() {
     Period observationLagyes = Period(3,Months);
     std::vector<ext::shared_ptr<BootstrapHelper<ZeroInflationTermStructure> > > helpersyes =
     makeHelpers<ZeroInflationTermStructure,ZeroCouponInflationSwapHelper,
-    ZeroInflationIndex>(zcData, LENGTH(zcData), iiyes,
+    ZeroInflationIndex>(zcData, iiyes,
                         observationLagyes,
                         calendar, bdc, dc,
                         Handle<YieldTermStructure>(nominalTS));
@@ -514,7 +514,7 @@ void InflationTest::testZeroTermStructure() {
     // first check that the zero rates on the curve match the data
     // and that the helpers give the correct impled rates
     forceLinearInterpolation = false;   // still
-    for (Size i=0; i<LENGTH(zcData); i++) {
+    for (Size i=0; i<zcData.size(); i++) {
         BOOST_CHECK_MESSAGE(std::fabs(zcData[i].rate/100.0
                     - pZITSyes->zeroRate(zcData[i].date, observationLagyes, forceLinearInterpolation)) < eps,
                     "ZITS INTERPOLATED zeroRate != instrument "
@@ -723,7 +723,8 @@ void InflationTest::testYYIndex() {
     .withCalendar(UnitedKingdom())
     .withConvention(ModifiedFollowing);
 
-    Real fixData[] = { 189.9, 189.9, 189.6, 190.5, 191.6, 192.0,
+    std::vector<Real> fixData = {
+        189.9, 189.9, 189.6, 190.5, 191.6, 192.0,
         192.2, 192.2, 192.6, 193.1, 193.3, 193.6,
         194.1, 193.4, 194.2, 195.0, 196.5, 197.7,
         198.5, 198.5, 199.2, 200.1, 200.4, 201.1,
@@ -733,7 +734,7 @@ void InflationTest::testYYIndex() {
     bool interp = false;
     ext::shared_ptr<YYUKRPIr> iir(new YYUKRPIr(interp));
     ext::shared_ptr<YYUKRPIr> iirYES(new YYUKRPIr(true));
-    for (Size i=0; i<LENGTH(fixData);i++) {
+    for (Size i=0; i<fixData.size();i++) {
         iir->addFixing(rpiSchedule[i], fixData[i]);
         iirYES->addFixing(rpiSchedule[i], fixData[i]);
     }
@@ -811,7 +812,8 @@ void InflationTest::testYYTermStructure() {
     .withTenor(1*Months)
     .withCalendar(UnitedKingdom())
     .withConvention(ModifiedFollowing);
-    Real fixData[] = { 189.9, 189.9, 189.6, 190.5, 191.6, 192.0,
+    std::vector<Real> fixData = {
+        189.9, 189.9, 189.6, 190.5, 191.6, 192.0,
         192.2, 192.2, 192.6, 193.1, 193.3, 193.6,
         194.1, 193.4, 194.2, 195.0, 196.5, 197.7,
         198.5, 198.5, 199.2, 200.1, 200.4, 201.1,
@@ -821,7 +823,7 @@ void InflationTest::testYYTermStructure() {
     RelinkableHandle<YoYInflationTermStructure> hy;
     bool interp = false;
     ext::shared_ptr<YYUKRPIr> iir(new YYUKRPIr(interp, hy));
-    for (Size i=0; i<LENGTH(fixData); i++) {
+    for (Size i=0; i<fixData.size(); i++) {
         iir->addFixing(rpiSchedule[i], fixData[i]);
     }
 
@@ -830,7 +832,7 @@ void InflationTest::testYYTermStructure() {
     ext::shared_ptr<YieldTermStructure> nominalTS = nominalTermStructure();
 
     // now build the YoY inflation curve
-    Datum yyData[] = {
+    std::vector<Datum> yyData = {
         { Date(13, August, 2008), 2.95 },
         { Date(13, August, 2009), 2.95 },
         { Date(13, August, 2010), 2.93 },
@@ -854,7 +856,7 @@ void InflationTest::testYYTermStructure() {
     // now build the helpers ...
     std::vector<ext::shared_ptr<BootstrapHelper<YoYInflationTermStructure> > > helpers =
     makeHelpers<YoYInflationTermStructure,YearOnYearInflationSwapHelper,
-    YoYInflationIndex>(yyData, LENGTH(yyData), iir,
+    YoYInflationIndex>(yyData, iir,
                        observationLag,
                        calendar, bdc, dc,
                        Handle<YieldTermStructure>(nominalTS));
@@ -878,7 +880,7 @@ void InflationTest::testYYTermStructure() {
     // make sure that the index has the latest yoy term structure
     hy.linkTo(pYYTS);
 
-    for (Size j = 1; j < LENGTH(yyData); j++) {
+    for (Size j = 1; j < yyData.size(); j++) {
 
         from = nominalTS->referenceDate();
         to = yyData[j].date;

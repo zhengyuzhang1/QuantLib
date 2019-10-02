@@ -158,14 +158,8 @@ void HestonModelTest::testBlackCalibration() {
     Handle<YieldTermStructure> riskFreeTS(flatRate(0.04, dayCounter));
     Handle<YieldTermStructure> dividendTS(flatRate(0.50, dayCounter));
 
-    std::vector<Period> optionMaturities;
-    optionMaturities.emplace_back(1, Months);
-    optionMaturities.emplace_back(2, Months);
-    optionMaturities.emplace_back(3, Months);
-    optionMaturities.emplace_back(6, Months);
-    optionMaturities.emplace_back(9, Months);
-    optionMaturities.emplace_back(1, Years);
-    optionMaturities.emplace_back(2, Years);
+    std::vector<Period> optionMaturities = {1 * Months, 2 * Months, 3 * Months, 6 * Months,
+                                            9 * Months, 1 * Years,  2 * Years};
 
     std::vector<ext::shared_ptr<BlackCalibrationHelper> > options;
     Handle<Quote> s0(ext::make_shared<SimpleQuote>(1.0));
@@ -889,13 +883,13 @@ void HestonModelTest::testDifferentIntegrals() {
     const HestonParameter highVolOfVol  = { 0.07, 1.0, 0.04, 5.0, -0.75 };
     const HestonParameter kappaEqSigRho = { 0.07, 0.4, 0.04, 0.5, 0.8 };
 
-    std::vector<HestonParameter> params;
-    params.push_back(equityfx);
-    params.push_back(highCorr);
-    params.push_back(lowVolOfVol);
-    params.push_back(highVolOfVol);
-    params.push_back(kappaEqSigRho);
-
+    std::vector<HestonParameter> params = {
+        equityfx,
+        highCorr,
+        lowVolOfVol,
+        highVolOfVol,
+        kappaEqSigRho
+    };
     const Real tol[] = { 1e-3, 1e-3, 0.2, 0.01, 1e-3 };
 
     for (std::vector<HestonParameter>::const_iterator iter = params.begin();
@@ -1017,9 +1011,7 @@ void HestonModelTest::testMultipleStrikesEngine() {
     ext::shared_ptr<HestonModel> model(
 		ext::make_shared<HestonModel>(process));
 
-    std::vector<Real> strikes;
-    strikes.push_back(1.0);  strikes.push_back(0.5);
-    strikes.push_back(0.75); strikes.push_back(1.5); strikes.push_back(2.0);
+    std::vector<Real> strikes = {1.0, 0.5, 0.75, 1.5, 2.0};
 
     ext::shared_ptr<FdHestonVanillaEngine> singleStrikeEngine(
 		ext::make_shared<FdHestonVanillaEngine>(model, 20, 400, 50));
@@ -1090,15 +1082,12 @@ void HestonModelTest::testAnalyticPiecewiseTimeDependent() {
     ext::shared_ptr<Exercise> exercise(
 		ext::make_shared<EuropeanExercise>(exerciseDate));
 
-    std::vector<Date> dates; 
-    dates.push_back(settlementDate); dates.emplace_back(01, January, 2007);
-    std::vector<Rate> irates;
-    irates.push_back(0.0); irates.push_back(0.2);
+    std::vector<Date> dates = {settlementDate, {1, January, 2007}};
+    std::vector<Rate> irates = {0.0, 0.2};
     Handle<YieldTermStructure> riskFreeTS(
 		ext::make_shared<ZeroCurve>(dates, irates, dayCounter));
 
-    std::vector<Rate> qrates;
-    qrates.push_back(0.0); qrates.push_back(0.3);
+    std::vector<Rate> qrates = {0.0, 0.3};
     Handle<YieldTermStructure> dividendTS(
 		ext::make_shared<ZeroCurve>(dates, qrates, dayCounter));
     
@@ -1172,9 +1161,7 @@ void HestonModelTest::testDAXCalibrationOfTimeDependentModel() {
     const std::vector<ext::shared_ptr<BlackCalibrationHelper> > options
                                                     = marketData.options;
 
-    std::vector<Time> modelTimes;
-    modelTimes.push_back(0.25);
-    modelTimes.push_back(10.0);
+    std::vector<Time> modelTimes = {0.25, 10.0};
     const TimeGrid modelGrid(modelTimes.begin(), modelTimes.end());
 
     const Real v0=0.1;
@@ -1281,9 +1268,9 @@ void HestonModelTest::testAlanLewisReferencePrices() {
             AnalyticHestonEngine::Integration::discreteTrapezoid(92),
             QL_EPSILON));
 
-    const Real strikes[] = { 80, 90, 100, 110, 120 };
-    const Option::Type types[] = { Option::Put, Option::Call };
-    const ext::shared_ptr<PricingEngine> engines[]
+    std::vector<Real> strikes = { 80, 90, 100, 110, 120 };
+    std::vector<Option::Type> types = { Option::Put, Option::Call };
+    std::vector<ext::shared_ptr<PricingEngine>> engines
         = { laguerreEngine, gaussLobattoEngine,
             cosEngine, andersenPiterbargEngine };
 
@@ -1303,13 +1290,13 @@ void HestonModelTest::testAlanLewisReferencePrices() {
     const Real tol = 1e-12; // 3e-15 works on linux/ia32,
                             // but keep some buffer for other platforms
 
-    for (Size i=0; i < LENGTH(strikes); ++i) {
+    for (Size i=0; i < strikes.size(); ++i) {
         const Real strike = strikes[i];
 
-        for (Size j=0; j < LENGTH(types); ++j) {
+        for (Size j=0; j < types.size(); ++j) {
             const Option::Type type = types[j];
 
-            for (Size k=0; k < LENGTH(engines); ++k) {
+            for (Size k=0; k < engines.size(); ++k) {
                 const ext::shared_ptr<PricingEngine> engine = engines[k];
 
                 const ext::shared_ptr<StrikedTypePayoff> payoff(
@@ -1484,9 +1471,9 @@ void HestonModelTest::testExpansionOnAlanLewisReference() {
         ext::make_shared<HestonExpansionEngine>(model,
                                                   HestonExpansionEngine::LPP3);
 
-    const Real strikes[] = { 80, 90, 100, 110, 120 };
-    const Option::Type types[] = { Option::Put, Option::Call };
-    const ext::shared_ptr<PricingEngine> engines[]
+    std::vector<Real> strikes = { 80, 90, 100, 110, 120 };
+    std::vector<Option::Type> types = { Option::Put, Option::Call };
+    std::vector<ext::shared_ptr<PricingEngine>> engines
         = { lpp2Engine, lpp3Engine };
 
     const Real expectedResults[][2] = {
@@ -1504,13 +1491,13 @@ void HestonModelTest::testExpansionOnAlanLewisReference() {
 
     const Real tol[2] = {1.003e-2, 3.645e-3};
 
-    for (Size i=0; i < LENGTH(strikes); ++i) {
+    for (Size i=0; i < strikes.size(); ++i) {
         const Real strike = strikes[i];
 
-        for (Size j=0; j < LENGTH(types); ++j) {
+        for (Size j=0; j < types.size(); ++j) {
             const Option::Type type = types[j];
 
-            for (Size k=0; k < LENGTH(engines); ++k) {
+            for (Size k=0; k < engines.size(); ++k) {
                 const ext::shared_ptr<PricingEngine> engine = engines[k];
 
                 const ext::shared_ptr<StrikedTypePayoff> payoff =
@@ -1548,9 +1535,9 @@ void HestonModelTest::testExpansionOnFordeReference() {
     const Real kappa   =  1.15;
     const Real theta   =  0.04;
 
-    const Real terms[] = {0.1, 1.0, 5.0, 10.0};
+    std::vector<Real> terms = {0.1, 1.0, 5.0, 10.0};
 
-    const Real strikes[] = { 60, 80, 90, 100, 110, 120, 140 };
+    std::vector<Real> strikes = { 60, 80, 90, 100, 110, 120, 140 };
 
     const Real referenceVols[][7] = {
        {0.27284673574924445, 0.22360758200372477, 0.21023988547031242, 0.1990674789471587, 0.19118230678920461, 0.18721342919371017, 0.1899869903378507},
@@ -1569,7 +1556,7 @@ void HestonModelTest::testExpansionOnFordeReference() {
         {7e-6, 4e-4, 9e-4, 4e-4},
         {4e-4, 3e-2, 0.28, 1.0}
     };
-    for (Size j=0; j < LENGTH(terms); ++j) {
+    for (Size j=0; j < terms.size(); ++j) {
         const Real term = terms[j];
         const ext::shared_ptr<HestonExpansion> lpp2 =
             ext::make_shared<LPP2HestonExpansion>(kappa, theta, sigma,
@@ -1580,10 +1567,10 @@ void HestonModelTest::testExpansionOnFordeReference() {
         const ext::shared_ptr<HestonExpansion> forde =
             ext::make_shared<FordeHestonExpansion>(kappa, theta, sigma,
                                                      v0, rho, term);
-        const ext::shared_ptr<HestonExpansion> expansions[] = { lpp2, lpp3, forde };
-        for (Size i=0; i < LENGTH(strikes); ++i) {
+        std::vector<ext::shared_ptr<HestonExpansion>> expansions = { lpp2, lpp3, forde };
+        for (Size i=0; i < strikes.size(); ++i) {
             const Real strike = strikes[i];
-            for (Size k=0; k < LENGTH(expansions); ++k) {
+            for (Size k=0; k < expansions.size(); ++k) {
                 const ext::shared_ptr<HestonExpansion> expansion = expansions[k];
 
                 const Real expected = referenceVols[j][i];
@@ -1992,20 +1979,20 @@ void HestonModelTest::testCosHestonEngine() {
     const ext::shared_ptr<PricingEngine> cosEngine(
         ext::make_shared<COSHestonEngine>(model, 25, 600));
 
-    const ext::shared_ptr<StrikedTypePayoff> payoffs[] = {
+    std::vector<ext::shared_ptr<StrikedTypePayoff>> payoffs = {
         ext::make_shared<PlainVanillaPayoff>(Option::Call, s0->value()+20),
         ext::make_shared<PlainVanillaPayoff>(Option::Call, s0->value()+150),
         ext::make_shared<PlainVanillaPayoff>(Option::Put, s0->value()-20),
         ext::make_shared<PlainVanillaPayoff>(Option::Put, s0->value()-90)
     };
 
-    const Real expected[] = {
+    std::vector<Real> expected = {
         9.364410588426075, 0.01036797658132471,
         5.319092971836708, 0.01032681906278383 };
 
     const Real tol = 1e-10;
 
-    for (Size i=0; i < LENGTH(payoffs); ++i) {
+    for (Size i=0; i < payoffs.size(); ++i) {
         VanillaOption option(payoffs[i], exercise);
 
         option.setPricingEngine(cosEngine);
@@ -2137,7 +2124,7 @@ void HestonModelTest::testAndersenPiterbargPricing() {
                 AnalyticHestonEngine::Integration::trapezoid(1e-8, 256),
                 1e-8));
 
-    const ext::shared_ptr<AnalyticHestonEngine> engines[] = {
+    std::vector<ext::shared_ptr<AnalyticHestonEngine>> engines = {
         andersenPiterbargLaguerreEngine,
         andersenPiterbargLobattoEngine,
         andersenPiterbargSimpsonEngine,
@@ -2145,7 +2132,7 @@ void HestonModelTest::testAndersenPiterbargPricing() {
         andersenPiterbargTrapezoidEngine2
     };
 
-    const std::string algos[] = {
+    std::vector<std::string> algos = {
           "Gauss-Laguerre", "Gauss-Lobatto",
           "Discrete Simpson", "Discrete Trapezoid", "Trapezoid"
     };
@@ -2179,7 +2166,7 @@ void HestonModelTest::testAndersenPiterbargPricing() {
                 option.setPricingEngine(analyticEngine);
                 const Real expected = option.NPV();
 
-                for (Size k=0; k < LENGTH(engines); ++k) {
+                for (Size k=0; k < engines.size(); ++k) {
                     option.setPricingEngine(engines[k]);
                     const Real calculated = option.NPV();
 
@@ -2242,14 +2229,14 @@ void HestonModelTest::testAndersenPiterbargControlVariateIntegrand() {
             AnalyticHestonEngine::AndersenPiterbarg,
             AnalyticHestonEngine::Integration::gaussLaguerre()));
 
-    const Real variances[] = {
+    std::vector<Real> variances = {
         v0*maturity,
         ((1-std::exp(-kappa*maturity))*(v0-theta)/(kappa*maturity) + theta)
             *maturity,
         cosEngine->c2(maturity)
     };
 
-    for (Size i=0; i < LENGTH(variances); ++i) {
+    for (Size i=0; i < variances.size(); ++i) {
         const Real sigmaBS = std::sqrt(variances[i]/maturity);
 
         for (Real u =0.001; u < 10; u*=1.05) {
@@ -2412,10 +2399,7 @@ void HestonModelTest::testPiecewiseTimeDependentComparison() {
 
     const Handle<Quote> s0(ext::make_shared<SimpleQuote>(100.0));
 
-    std::vector<Time> modelTimes;
-    modelTimes.push_back(0.25);
-    modelTimes.push_back(0.75);
-    modelTimes.push_back(10.0);
+    std::vector<Time> modelTimes = {0.25, 0.75, 10.0};
     const TimeGrid modelGrid(modelTimes.begin(), modelTimes.end());
 
     const Real v0 = 0.1;
@@ -2547,10 +2531,7 @@ void HestonModelTest::testPiecewiseTimeDependentChFAsymtotic() {
     const Time maturity = dc.yearFraction(settlementDate, maturityDate);
     const Handle<YieldTermStructure> rTS(flatRate(0.0, dc));
 
-    std::vector<Time> modelTimes;
-    modelTimes.push_back(0.01);
-    modelTimes.push_back(0.5);
-    modelTimes.push_back(2.0);
+    std::vector<Time> modelTimes = {0.01, 0.5, 2.0};
 
     const TimeGrid modelGrid(modelTimes.begin(), modelTimes.end());
 

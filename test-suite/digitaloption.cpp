@@ -554,7 +554,7 @@ void DigitalOptionTest::testCashAtHitOrNothingAmericanGreeks() {
     ext::shared_ptr<Exercise> amExercise(new AmericanExercise(today,
                                                                 exDate,
                                                                 false));
-    ext::shared_ptr<Exercise> exercises[] = { exercise, amExercise };
+    std::vector<ext::shared_ptr<Exercise>> exercises = { exercise, amExercise };
 
     ext::shared_ptr<BlackScholesMertonProcess> stochProcess(
                             new BlackScholesMertonProcess(Handle<Quote>(spot),
@@ -566,10 +566,10 @@ void DigitalOptionTest::testCashAtHitOrNothingAmericanGreeks() {
     ext::shared_ptr<PricingEngine> amEngine(
                              new AnalyticDigitalAmericanEngine(stochProcess));
 
-    ext::shared_ptr<PricingEngine> engines[] = { euroEngine, amEngine };
+    std::vector<ext::shared_ptr<PricingEngine>> engines = { euroEngine, amEngine };
 
     bool knockin=true;
-    for (Size j=0; j<LENGTH(engines); j++) {
+    for (Size j=0; j<engines.size(); j++) {
       for (auto & type : types) {
         for (double strike : strikes) {
           ext::shared_ptr<StrikedTypePayoff> payoff(

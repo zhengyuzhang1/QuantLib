@@ -333,9 +333,7 @@ void BasketOptionTest::testEuroTwoValues() {
               QL_FAIL("unknown basket type");
         }
         
-        std::vector<ext::shared_ptr<StochasticProcess1D> > procs;
-        procs.emplace_back(p1);
-        procs.emplace_back(p2);
+        std::vector<ext::shared_ptr<StochasticProcess1D>> procs = {p1, p2};
 
         Matrix correlationMatrix(2,2, value.rho);
         for (Integer j=0; j < 2; j++) {
@@ -543,10 +541,9 @@ void BasketOptionTest::testBarraquandThreeValues() {
                                       Handle<YieldTermStructure>(rTS),
                                       Handle<BlackVolTermStructure>(volTS3)));
 
-        std::vector<ext::shared_ptr<StochasticProcess1D> > procs;
-        procs.push_back(stochProcess1);
-        procs.push_back(stochProcess2);
-        procs.push_back(stochProcess3);
+        std::vector<ext::shared_ptr<StochasticProcess1D> > procs = {stochProcess1,
+                                                                    stochProcess2,
+                                                                    stochProcess3};
 
         Matrix correlation(3,3, value.rho);
         for (Integer j=0; j < 3; j++) {
@@ -689,10 +686,9 @@ void BasketOptionTest::testTavellaValues() {
                                   Handle<YieldTermStructure>(rTS),
                                   Handle<BlackVolTermStructure>(volTS3)));
 
-    std::vector<ext::shared_ptr<StochasticProcess1D> > procs;
-    procs.push_back(stochProcess1);
-    procs.push_back(stochProcess2);
-    procs.push_back(stochProcess3);
+    std::vector<ext::shared_ptr<StochasticProcess1D> > procs = {stochProcess1,
+                                                                stochProcess2,
+                                                                stochProcess3};
 
     Matrix correlation(3,3, 0.0);
     for (Integer j=0; j < 3; j++) {
@@ -735,7 +731,7 @@ void BasketOptionTest::testTavellaValues() {
 }
 
 namespace {
-    BasketOptionOneData oneDataValues[] = {
+    std::vector<BasketOptionOneData> oneDataValues = {
         //        type, strike,   spot,    q,    r,    t,  vol,   value, tol
         { Option::Put, 100.00,  80.00,   0.0, 0.06,   0.5, 0.4,  21.6059, 1e-2 },
         { Option::Put, 100.00,  85.00,   0.0, 0.06,   0.5, 0.4,  18.0374, 1e-2 },
@@ -806,8 +802,7 @@ void BasketOptionTest::testOneDAmericanValues(std::size_t from, std::size_t to) 
                                   Handle<YieldTermStructure>(rTS),
                                   Handle<BlackVolTermStructure>(volTS1)));
 
-    std::vector<ext::shared_ptr<StochasticProcess1D> > procs;
-    procs.push_back(stochProcess1);
+    std::vector<ext::shared_ptr<StochasticProcess1D> > procs = {stochProcess1};
 
     Matrix correlation(1, 1, 1.0);
 
@@ -894,8 +889,7 @@ void BasketOptionTest::testOddSamples() {
                                   Handle<YieldTermStructure>(rTS),
                                   Handle<BlackVolTermStructure>(volTS1)));
 
-    std::vector<ext::shared_ptr<StochasticProcess1D> > procs;
-    procs.push_back(stochProcess1);
+    std::vector<ext::shared_ptr<StochasticProcess1D> > procs = {stochProcess1};
 
     Matrix correlation(1, 1, 1.0);
 
@@ -1099,8 +1093,8 @@ test_suite* BasketOptionTest::suite(SpeedLevel speed) {
         #define BOOST_PP_LOCAL_MACRO(n)                                \
             suite->add(QUANTLIB_TEST_CASE(                             \
                 ext::bind(&BasketOptionTest::testOneDAmericanValues, \
-                    (n    *LENGTH(oneDataValues))/N_TEST_CASES,        \
-                    ((n+1)*LENGTH(oneDataValues))/N_TEST_CASES)));
+                    (n    *oneDataValues.size())/N_TEST_CASES,        \
+                    ((n+1)*oneDataValues.size())/N_TEST_CASES)));
 
         #define BOOST_PP_LOCAL_LIMITS (0, N_TEST_CASES-1)
         #include BOOST_PP_LOCAL_ITERATE()

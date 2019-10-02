@@ -815,11 +815,10 @@ void BarrierOptionTest::testLocalVolAndHestonComparison() {
 
     const Handle<Quote> s0(ext::make_shared<SimpleQuote>(4500.00));
     
-    Real tmp[] = { 100 ,500 ,2000,3400,3600,3800,4000,4200,4400,4500,
-                   4600,4800,5000,5200,5400,5600,7500,10000,20000,30000 };
-    const std::vector<Real> strikes(tmp, tmp+LENGTH(tmp));
+    const std::vector<Real> strikes = { 100 ,500 ,2000,3400,3600,3800,4000,4200,4400,4500,
+                                        4600,4800,5000,5200,5400,5600,7500,10000,20000,30000 };
     
-    Volatility v[] =
+    const std::vector<Volatility> v =
       { 1.015873, 1.015873, 1.015873, 0.89729, 0.796493, 0.730914, 0.631335, 0.568895,
         0.711309, 0.711309, 0.711309, 0.641309, 0.635593, 0.583653, 0.508045, 0.463182,
         0.516034, 0.500534, 0.500534, 0.500534, 0.448706, 0.416661, 0.375470, 0.353442,
@@ -1185,8 +1184,8 @@ void BarrierOptionTest::testDividendBarrierOption() {
     const Real strike = 105.0;
     const Real rebate = 5.0;
 
-    const Real barriers[] = { 80.0, 120.0 };
-    const Barrier::Type barrierTypes[] = { Barrier::DownOut, Barrier::UpOut };
+    const std::vector<Real> barriers = { 80.0, 120.0 };
+    const std::vector<Barrier::Type> barrierTypes = { Barrier::DownOut, Barrier::UpOut };
 
     const Rate r = 0.05;
     const Rate q = 0.0;
@@ -1252,7 +1251,7 @@ void BarrierOptionTest::testDividendBarrierOption() {
     };
 
     const Real relTol = 1e-4;
-    for (Size i=0; i < LENGTH(barriers); ++i) {
+    for (Size i=0; i < barriers.size(); ++i) {
         for (const auto & engine : engines) {
             const Real barrier = barriers[i];
             const Barrier::Type barrierType = barrierTypes[i];

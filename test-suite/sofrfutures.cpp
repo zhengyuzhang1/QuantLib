@@ -50,7 +50,7 @@ void SofrFuturesTest::testBootstrap() {
     Date today = Date(26, October, 2018);
     Settings::instance().evaluationDate() = today;
 
-    const SofrQuotes sofrQuotes[] = {
+    const std::vector<SofrQuotes> sofrQuotes = {
         {Monthly, Oct, 2018, 97.8175},
         {Monthly, Nov, 2018, 97.770},
         {Monthly, Dec, 2018, 97.685},
@@ -78,7 +78,7 @@ void SofrFuturesTest::testBootstrap() {
     index->addFixing(Date(25,October,2018), 0.0219);
 
     std::vector<ext::shared_ptr<RateHelper> > helpers;
-    for (Size i=0; i<LENGTH(sofrQuotes); i++){
+    for (Size i=0; i<sofrQuotes.size(); i++){
         helpers.push_back(ext::make_shared<SofrFutureRateHelper>(
                  sofrQuotes[i].price, sofrQuotes[i].month, sofrQuotes[i].year,
                  sofrQuotes[i].freq, index));

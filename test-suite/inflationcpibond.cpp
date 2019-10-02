@@ -52,7 +52,7 @@ namespace {
     typedef BootstrapHelper<ZeroInflationTermStructure> Helper;
 
     std::vector<ext::shared_ptr<Helper> > makeHelpers(
-        Datum iiData[], Size N,
+        const std::vector<Datum>& iiData,
         const ext::shared_ptr<ZeroInflationIndex>& ii,
         const Period& observationLag,
         const Calendar& calendar,
@@ -61,10 +61,10 @@ namespace {
         const Handle<YieldTermStructure>& yTS) {
 
         std::vector<ext::shared_ptr<Helper> > instruments;
-        for (Size i=0; i<N; i++) {
-            Date maturity = iiData[i].date;
+        for (Datum datum : iiData) {
+            Date maturity = datum.date;
             Handle<Quote> quote(ext::shared_ptr<Quote>(
-                                new SimpleQuote(iiData[i].rate/100.0)));
+                                new SimpleQuote(datum.rate/100.0)));
             ext::shared_ptr<Helper> h(
                       new ZeroCouponInflationSwapHelper(quote, observationLag,
                                                         maturity, calendar,
@@ -114,14 +114,14 @@ namespace {
             bool interp = false;
             ii = ext::make_shared<UKRPI>(interp, cpiTS);
 
-            Real fixData[] = {
+            std::vector<Real> fixData = {
                 206.1, 207.3, 208.0, 208.9, 209.7, 210.9,
                 209.8, 211.4, 212.1, 214.0, 215.1, 216.8,
                 216.5, 217.2, 218.4, 217.7, 216,
                 212.9, 210.1, 211.4, 211.3, 211.5,
                 212.8, 213.4, 213.4, 213.4, 214.4
             };
-            for (Size i=0; i<LENGTH(fixData); ++i) {
+            for (Size i=0; i<fixData.size(); ++i) {
                 ii->addFixing(rpiSchedule[i], fixData[i]);
             }
 
@@ -131,7 +131,7 @@ namespace {
             // now build the zero inflation curve
             observationLag = Period(2,Months);
 
-            Datum zciisData[] = {
+            std::vector<Datum> zciisData = {
                 { Date(25, November, 2010), 3.0495 },
                 { Date(25, November, 2011), 2.93 },
                 { Date(26, November, 2012), 2.9795 },
@@ -152,7 +152,7 @@ namespace {
             };
 
             std::vector<ext::shared_ptr<Helper> > helpers =
-                makeHelpers(zciisData, LENGTH(zciisData), ii,
+                makeHelpers(zciisData, ii,
                             observationLag, calendar, convention, dayCounter, yTS);
 
             Rate baseZeroRate = zciisData[0].rate/100.0;

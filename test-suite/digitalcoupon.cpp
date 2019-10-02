@@ -84,10 +84,10 @@ void DigitalCouponTest::testAssetOrNothing() {
 
     CommonVars vars;
 
-    Volatility vols[] = { 0.05, 0.15, 0.30 };
-    Rate strikes[] = { 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07 };
-    Real gearings[] = { 1.0, 2.8 };
-    Rate spreads[] = { 0.0, 0.005 };
+    std::vector<Volatility> vols = { 0.05, 0.15, 0.30 };
+    std::vector<Rate> strikes = { 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07 };
+    std::vector<Real> gearings = { 1.0, 2.8 };
+    std::vector<Rate> spreads = { 0.0, 0.005 };
 
     Real gap = 1e-7; /* low, in order to compare digital option value
                         with black formula result */
@@ -105,7 +105,7 @@ void DigitalCouponTest::testAssetOrNothing() {
                 Date endDate = vars.calendar.advance(vars.settlement,(k+2)*Years);
                 Rate nullstrike = Null<Rate>();
                 Date paymentDate = endDate;
-                for (Size h=0; h<LENGTH(gearings); h++) {
+                for (Size h=0; h<gearings.size(); h++) {
 
                     Real gearing = gearings[h];
                     Rate spread = spreads[h];

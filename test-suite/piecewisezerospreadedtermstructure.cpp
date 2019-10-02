@@ -90,9 +90,8 @@ void PiecewiseZeroSpreadedTermStructureTest::testFlatInterpolationLeft() {
     spreads.emplace_back(spread1);
     spreads.emplace_back(spread2);
 
-    std::vector<Date> spreadDates;
-    spreadDates.push_back(vars.calendar.advance(vars.today, 8,  Months));
-    spreadDates.push_back(vars.calendar.advance(vars.today, 15, Months));
+    std::vector<Date> spreadDates = {vars.calendar.advance(vars.today, 8, Months),
+                                     vars.calendar.advance(vars.today, 15, Months)};
 
     Date interpolationDate = vars.calendar.advance(vars.today, 6, Months);
 
@@ -129,9 +128,8 @@ void PiecewiseZeroSpreadedTermStructureTest::testFlatInterpolationRight() {
     spreads.emplace_back(spread1);
     spreads.emplace_back(spread2);
 
-    std::vector<Date> spreadDates;
-    spreadDates.push_back(vars.calendar.advance(vars.today, 8,  Months));
-    spreadDates.push_back(vars.calendar.advance(vars.today, 15, Months));
+    std::vector<Date> spreadDates = {vars.calendar.advance(vars.today, 8, Months),
+                                     vars.calendar.advance(vars.today, 15, Months)};
 
     Date interpolationDate = vars.calendar.advance(vars.today, 20, Months);
 
@@ -173,11 +171,10 @@ void PiecewiseZeroSpreadedTermStructureTest::testLinearInterpolationMultipleSpre
     spreads.emplace_back(spread3);
     spreads.emplace_back(spread4);
 
-    std::vector<Date> spreadDates;
-    spreadDates.push_back(vars.calendar.advance(vars.today, 90,  Days));
-    spreadDates.push_back(vars.calendar.advance(vars.today, 150, Days));
-    spreadDates.push_back(vars.calendar.advance(vars.today, 30, Months));
-    spreadDates.push_back(vars.calendar.advance(vars.today, 40, Months));
+    std::vector<Date> spreadDates = {vars.calendar.advance(vars.today, 90, Days),
+                                     vars.calendar.advance(vars.today, 150, Days),
+                                     vars.calendar.advance(vars.today, 30, Months),
+                                     vars.calendar.advance(vars.today, 40, Months)};
 
     Date interpolationDate = vars.calendar.advance(vars.today, 120, Days);
 
@@ -214,9 +211,8 @@ void PiecewiseZeroSpreadedTermStructureTest::testLinearInterpolation() {
     spreads.emplace_back(spread1);
     spreads.emplace_back(spread2);
 
-    std::vector<Date> spreadDates;
-    spreadDates.push_back(vars.calendar.advance(vars.today, 100,  Days));
-    spreadDates.push_back(vars.calendar.advance(vars.today, 150, Days));
+    std::vector<Date> spreadDates = {vars.calendar.advance(vars.today, 100, Days),
+                                     vars.calendar.advance(vars.today, 150, Days)};
 
     Date interpolationDate = vars.calendar.advance(vars.today, 120, Days);
 
@@ -258,9 +254,8 @@ void PiecewiseZeroSpreadedTermStructureTest::testForwardFlatInterpolation() {
     spreads.emplace_back(spread1);
     spreads.emplace_back(spread2);
 
-    std::vector<Date> spreadDates;
-    spreadDates.push_back(vars.calendar.advance(vars.today, 75,  Days));
-    spreadDates.push_back(vars.calendar.advance(vars.today, 260, Days));
+    std::vector<Date> spreadDates = {vars.calendar.advance(vars.today, 75, Days),
+                                     vars.calendar.advance(vars.today, 260, Days)};
 
     Date interpolationDate = vars.calendar.advance(vars.today, 100, Days);
 
@@ -299,10 +294,9 @@ void PiecewiseZeroSpreadedTermStructureTest::testBackwardFlatInterpolation() {
     spreads.emplace_back(spread2);
     spreads.emplace_back(spread3);
 
-    std::vector<Date> spreadDates;
-    spreadDates.push_back(vars.calendar.advance(vars.today, 100,  Days));
-    spreadDates.push_back(vars.calendar.advance(vars.today, 200, Days));
-    spreadDates.push_back(vars.calendar.advance(vars.today, 300, Days));
+    std::vector<Date> spreadDates = {vars.calendar.advance(vars.today, 100, Days),
+                                     vars.calendar.advance(vars.today, 200, Days),
+                                     vars.calendar.advance(vars.today, 300, Days)};
 
     Date interpolationDate = vars.calendar.advance(vars.today, 110, Days);
 
@@ -339,9 +333,8 @@ void PiecewiseZeroSpreadedTermStructureTest::testDefaultInterpolation() {
     spreads.emplace_back(spread1);
     spreads.emplace_back(spread2);
 
-    std::vector<Date> spreadDates;
-    spreadDates.push_back(vars.calendar.advance(vars.today, 75,  Days));
-    spreadDates.push_back(vars.calendar.advance(vars.today, 160, Days));
+    std::vector<Date> spreadDates = {vars.calendar.advance(vars.today, 75,  Days),
+                                     vars.calendar.advance(vars.today, 160, Days)};
 
     Date interpolationDate = vars.calendar.advance(vars.today, 100, Days);
 
@@ -380,10 +373,9 @@ void PiecewiseZeroSpreadedTermStructureTest::testSetInterpolationFactory() {
     spreads.emplace_back(spread2);
     spreads.emplace_back(spread3);
 
-    std::vector<Date> spreadDates;
-    spreadDates.push_back(vars.calendar.advance(vars.today, 8,  Months));
-    spreadDates.push_back(vars.calendar.advance(vars.today, 15, Months));
-    spreadDates.push_back(vars.calendar.advance(vars.today, 25, Months));
+    std::vector<Date> spreadDates = {vars.calendar.advance(vars.today, 8,  Months),
+                                     vars.calendar.advance(vars.today, 15, Months),
+                                     vars.calendar.advance(vars.today, 25, Months)};
 
     Date interpolationDate = vars.calendar.advance(vars.today, 11, Months);
 
@@ -428,9 +420,8 @@ void PiecewiseZeroSpreadedTermStructureTest::testMaxDate() {
     spreads.emplace_back(spread1);
     spreads.emplace_back(spread2);
 
-    std::vector<Date> spreadDates;
-    spreadDates.push_back(vars.calendar.advance(vars.today, 8,  Months));
-    spreadDates.push_back(vars.calendar.advance(vars.today, 15, Months));
+    std::vector<Date> spreadDates = {vars.calendar.advance(vars.today, 8,  Months),
+                                     vars.calendar.advance(vars.today, 15, Months)};
 
     ext::shared_ptr<ZeroYieldStructure> spreadedTermStructure =
         ext::make_shared<PiecewiseZeroSpreadedTermStructure>(
@@ -462,9 +453,8 @@ void PiecewiseZeroSpreadedTermStructureTest::testQuoteChanging() {
     spreads.emplace_back(spread1);
     spreads.emplace_back(spread2);
 
-    std::vector<Date> spreadDates;
-    spreadDates.push_back(vars.calendar.advance(vars.today, 100,  Days));
-    spreadDates.push_back(vars.calendar.advance(vars.today, 150, Days));
+    std::vector<Date> spreadDates = {vars.calendar.advance(vars.today, 100,  Days),
+                                     vars.calendar.advance(vars.today, 150, Days)};
 
     Date interpolationDate = vars.calendar.advance(vars.today, 120, Days);
 

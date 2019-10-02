@@ -39,15 +39,15 @@ void RiskStatisticsTest::testResults() {
     IncrementalGaussianStatistics igs;
     RiskStatistics s;
 
-    Real averages[] = { -100.0, -1.0, 0.0, 1.0, 100.0 };
-    Real sigmas[] = { 0.1, 1.0, 100.0 };
+    std::vector<Real> averages = { -100.0, -1.0, 0.0, 1.0, 100.0 };
+    std::vector<Real> sigmas = { 0.1, 1.0, 100.0 };
     Size i, j, k, N;
     N = Size(std::pow(2.0,16))-1;
     Real dataMin, dataMax;
     std::vector<Real> data(N), weights(N);
 
-    for (i=0; i<LENGTH(averages); i++) {
-        for (j=0; j<LENGTH(sigmas); j++) {
+    for (i=0; i<averages.size(); i++) {
+        for (j=0; j<sigmas.size(); j++) {
 
             NormalDistribution normal(averages[i],sigmas[j]);
             CumulativeNormalDistribution cumulative(averages[i],sigmas[j]);

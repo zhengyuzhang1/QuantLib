@@ -306,7 +306,7 @@ void ShortRateModelTest::testSwaps() {
 
     Date settlement = calendar.advance(today,2,Days);
 
-    Date dates[] = {
+    std::vector<Date> dates = {
         settlement,
         calendar.advance(settlement,1,Weeks),
         calendar.advance(settlement,1,Months),
@@ -320,7 +320,7 @@ void ShortRateModelTest::testSwaps() {
         calendar.advance(settlement,10,Years),
         calendar.advance(settlement,15,Years)
     };
-    DiscountFactor discounts[] = {
+    std::vector<DiscountFactor> discounts = {
         1.0,
         0.999258,
         0.996704,
@@ -337,17 +337,13 @@ void ShortRateModelTest::testSwaps() {
 
     Handle<YieldTermStructure> termStructure(
        ext::shared_ptr<YieldTermStructure>(
-           new DiscountCurve(
-               std::vector<Date>(dates,dates+LENGTH(dates)),
-               std::vector<DiscountFactor>(discounts,
-                                           discounts+LENGTH(discounts)),
-               Actual365Fixed())));
+           new DiscountCurve(dates, discounts, Actual365Fixed())));
 
     ext::shared_ptr<HullWhite> model(new HullWhite(termStructure));
 
-    Integer start[] = { -3, 0, 3 };
-    Integer length[] = { 2, 5, 10 };
-    Rate rates[] = { 0.02, 0.04, 0.06 };
+    std::vector<Integer> start = { -3, 0, 3 };
+    std::vector<Integer> length = { 2, 5, 10 };
+    std::vector<Rate> rates = { 0.02, 0.04, 0.06 };
     ext::shared_ptr<IborIndex> euribor(new Euribor6M(termStructure));
 
     ext::shared_ptr<PricingEngine> engine(
@@ -359,7 +355,7 @@ void ShortRateModelTest::testSwaps() {
     else
         tolerance = 1.0e-8;
 
-    for (Size i=0; i<LENGTH(start); i++) {
+    for (Size i=0; i<start.size(); i++) {
 
         Date startDate = calendar.advance(settlement,start[i],Months);
         if (startDate < today) {
@@ -370,7 +366,7 @@ void ShortRateModelTest::testSwaps() {
                                                 pastFixings);
         }
 
-        for (Size j=0; j<LENGTH(length); j++) {
+        for (Size j=0; j<length.size(); j++) {
 
             Date maturity = calendar.advance(startDate,length[i],Years);
             Schedule fixedSchedule(startDate, maturity, Period(Annual),

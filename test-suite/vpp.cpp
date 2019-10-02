@@ -143,9 +143,7 @@ void VPPTest::testGemanRoncoroniProcess() {
         new ExtendedOrnsteinUhlenbeckProcess(speed, vol, x0G, f,
                            ExtendedOrnsteinUhlenbeckProcess::Trapezodial));
 
-    std::vector<ext::shared_ptr<StochasticProcess1D> > processes;
-    processes.emplace_back(grProcess);
-    processes.push_back(eouProcess);
+    std::vector<ext::shared_ptr<StochasticProcess1D> > processes = {grProcess, eouProcess};
 
     Matrix correlation(2, 2, 1.0);
     correlation[0][1] = correlation[1][0] = 0.25;
@@ -349,7 +347,8 @@ void VPPTest::testKlugeExtOUSpreadOption() {
 namespace {
     // for a "real" gas and power forward curve
     // please see. e.g. http://www.kyos.com/?content=64
-    const Real fuelPrices[] = {20.74,21.65,20.78,21.58,21.43,20.82,22.02,21.52,
+    const std::vector<Real> fuelPrices = {
+                              20.74,21.65,20.78,21.58,21.43,20.82,22.02,21.52,
                               21.02,21.46,21.75,20.69,22.16,20.38,20.82,20.68,
                               20.57,21.92,22.04,20.45,20.75,21.92,20.53,20.67,
                               20.88,21.02,20.82,21.67,21.82,22.12,20.45,20.74,
@@ -371,7 +370,8 @@ namespace {
                               20.70,21.84,21.82,21.68,21.24,22.36,20.83,20.64,
                               21.03,20.57,22.34,20.96,21.54,21.26,21.43,22.39};
 
-    const Real powerPrices[]={40.40,36.71,31.87,25.81,31.61,35.00,46.22,60.68,
+    const std::vector<Real> powerPrices={
+                              40.40,36.71,31.87,25.81,31.61,35.00,46.22,60.68,
                               42.45,38.01,33.84,29.79,31.84,38.53,49.23,59.92,
                               43.85,37.47,34.89,29.99,30.85,29.19,29.25,38.67,
                               36.90,25.93,22.12,20.19,17.19,19.29,13.51,18.14,
@@ -420,21 +420,19 @@ void VPPTest::testVPPIntrinsicValue() {
     // based on the gnu linear programming toolkit. For details please see:
     // http://spanderen.de/
     //        2011/06/23/vpp-pricing-ii-mixed-integer-linear-programming/
-    const Real efficiency[] = { 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.9 };
-    const Real expected[] = { 0.0, 2056.04, 11145.577778, 26452.04,
-                              44512.461818, 62000.626667, 137591.911111};
+    const std::vector<Real> efficiency = { 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.9 };
+    const std::vector<Real> expected = { 0.0, 2056.04, 11145.577778, 26452.04,
+                                         44512.461818, 62000.626667, 137591.911111};
 
-    for (Size i=0; i < LENGTH(efficiency); ++i) {
+    for (Size i=0; i < efficiency.size(); ++i) {
         const Real heatRate = 1.0/efficiency[i];
 
         VanillaVPPOption option(heatRate, pMin, pMax, tMinUp, tMinDown,
                                 startUpFuel, startUpFixCost, exercise);
 
         option.setPricingEngine(ext::shared_ptr<PricingEngine>(
-            new DynProgVPPIntrinsicValueEngine(
-                std::vector<Real>(fuelPrices,fuelPrices+LENGTH(fuelPrices)),
-                std::vector<Real>(powerPrices,powerPrices+LENGTH(powerPrices)),
-                fuelCostAddon, flatRate(0.0, dc))));
+            new DynProgVPPIntrinsicValueEngine(fuelPrices, powerPrices,
+                                               fuelCostAddon, flatRate(0.0, dc))));
 
         const Real calculated = option.NPV();
 
@@ -598,7 +596,7 @@ void VPPTest::testVPPPricing() {
     const ext::shared_ptr<YieldTermStructure> rTS
         = flatRate(today, irRate, dc);
 
-    const Size nHours = LENGTH(powerPrices);
+    const Size nHours = powerPrices.size();
 
     typedef FdSimpleKlugeExtOUVPPEngine::Shape Shape;
     ext::shared_ptr<Shape> fuelShape(new Shape(nHours));
@@ -622,10 +620,8 @@ void VPPTest::testVPPPricing() {
 
     // Test: intrinsic value
     vppOption.setPricingEngine(ext::shared_ptr<PricingEngine>(
-        new DynProgVPPIntrinsicValueEngine(
-            std::vector<Real>(fuelPrices, fuelPrices+nHours),
-            std::vector<Real>(powerPrices, powerPrices+nHours),
-            fuelCostAddon, flatRate(0.0, dc))));
+        new DynProgVPPIntrinsicValueEngine(fuelPrices, powerPrices,
+                                           fuelCostAddon, flatRate(0.0, dc))));
 
     const Real intrinsic = vppOption.NPV();
     const Real expectedIntrinsic = 2056.04;

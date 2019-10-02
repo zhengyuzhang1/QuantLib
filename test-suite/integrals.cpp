@@ -182,17 +182,17 @@ void IntegralTest::testFolinIntegration() {
 
     // Examples taken from
     // http://www.tat.physik.uni-tuebingen.de/~kokkotas/Teaching/Num_Methods_files/Comp_Phys5.pdf
-    const Size nr[] = { 4, 8, 16, 128, 256, 1024, 2048 };
-    const Real expected[] = { 4.55229440e-5,4.72338540e-5, 4.72338540e-5,
-                              4.78308678e-5,4.78404787e-5, 4.78381120e-5,
-                              4.78381084e-5};
+    const std::vector<Size> nr = { 4, 8, 16, 128, 256, 1024, 2048 };
+    const std::vector<Real> expected = { 4.55229440e-5,4.72338540e-5, 4.72338540e-5,
+                                         4.78308678e-5,4.78404787e-5, 4.78381120e-5,
+                                         4.78381084e-5};
 
     const Real t = 100;
     const Real o = M_PI_2/t;
 
     const Real tol = 1e-12;
 
-    for (Size i=0; i < LENGTH(nr); ++i) {
+    for (Size i=0; i < nr.size(); ++i) {
         const Size n = nr[i];
         const Real calculatedCosine
             = FilonIntegral(FilonIntegral::Cosine, t, n)(cosineF(),0,2*M_PI);

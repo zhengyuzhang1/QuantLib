@@ -41,12 +41,12 @@ using namespace boost::unit_test_framework;
 
 namespace {
 
-    Period exercises[] = { 1*Years, 2*Years, 3*Years,
-                           5*Years, 7*Years, 10*Years };
-    Period lengths[] = { 1*Years, 2*Years, 3*Years,
-                         5*Years, 7*Years, 10*Years,
-                         15*Years, 20*Years };
-    VanillaSwap::Type type[] = { VanillaSwap::Receiver, VanillaSwap::Payer };
+    std::vector<Period> exercises = { 1*Years, 2*Years, 3*Years,
+                                      5*Years, 7*Years, 10*Years };
+    std::vector<Period> lengths = { 1*Years, 2*Years, 3*Years,
+                                    5*Years, 7*Years, 10*Years,
+                                    15*Years, 20*Years };
+    std::vector<VanillaSwap::Type> type = { VanillaSwap::Receiver, VanillaSwap::Payer };
 
     struct CommonVars {
         // global data
@@ -434,7 +434,7 @@ void SwaptionTest::testVega() {
                                            vars.settlementDays*Days);
         for (auto length : lengths) {
             for (double strike : strikes) {
-                for (Size h=0; h<LENGTH(type); h++) {
+                for (Size h=0; h<type.size(); h++) {
                     ext::shared_ptr<VanillaSwap> swap =
                         MakeVanillaSwap(length, vars.index, strike)
                                 .withEffectiveDate(startDate)
@@ -839,11 +839,11 @@ void SwaptionTest::testImpliedVolatility() {
     Size maxEvaluations = 100;
     Real tolerance = 1.0e-08;
 
-    Settlement::Type types[] = { Settlement::Physical, Settlement::Cash };
-    Settlement::Method methods[] = { Settlement::PhysicalOTC, Settlement::ParYieldCurve };
+    std::vector<Settlement::Type> types = { Settlement::Physical, Settlement::Cash };
+    std::vector<Settlement::Method> methods = { Settlement::PhysicalOTC, Settlement::ParYieldCurve };
     // test data
-    Rate strikes[] = { 0.02, 0.03, 0.04, 0.05, 0.06, 0.07 };
-    Volatility vols[] = { 0.01, 0.05, 0.10, 0.20, 0.30, 0.70, 0.90 };
+    std::vector<Rate> strikes = { 0.02, 0.03, 0.04, 0.05, 0.06, 0.07 };
+    std::vector<Volatility> vols = { 0.01, 0.05, 0.10, 0.20, 0.30, 0.70, 0.90 };
 
     for (auto exercise : exercises) {
         for (auto length : lengths) {
@@ -860,7 +860,7 @@ void SwaptionTest::testImpliedVolatility() {
                                 .withFixedLegDayCount(vars.fixedDayCount)
                                 .withFloatingLegSpread(0.0)
                                 .withType(k);
-                    for (Size h=0; h<LENGTH(types); h++) {
+                    for (Size h=0; h<types.size(); h++) {
                         for (double vol : vols) {
                             ext::shared_ptr<Swaption> swaption =
                                 vars.makeSwaption(

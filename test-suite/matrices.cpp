@@ -369,11 +369,11 @@ void MatricesTest::testDeterminant() {
     setup();
     Real tol = 1e-10;
 
-    Matrix testMatrices[] = {M1, M2, M5, M6, I};
+    std::vector<Matrix> testMatrices = {M1, M2, M5, M6, I};
     // expected results calculated with octave
     Real expected[] = { 0.044, -0.012, 5.0, 5.7621e-11, 1.0};
 
-    for (Size j=0; j<LENGTH(testMatrices); ++j) {
+    for (Size j=0; j<testMatrices.size(); ++j) {
         const Real calculated = determinant(testMatrices[j]);
         if (std::fabs(expected[j] - calculated) > tol)
             BOOST_FAIL("determinant calculation failed "

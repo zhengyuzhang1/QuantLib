@@ -71,7 +71,7 @@ void BlackDeltaCalculatorTest::testDeltaValues(){
 
     BOOST_TEST_MESSAGE("Testing delta calculator values...");
 
-    DeltaData values[] = {
+    std::vector<DeltaData> values = {
         // Values taken from parallel implementation in R
         {Option::Call, DeltaVolQuote::Spot,     1.421, 0.997306, 0.992266,  0.1180654,  1.608080, 0.15},
         {Option::Call, DeltaVolQuote::PaSpot,   1.421, 0.997306, 0.992266,  0.1180654,  1.600545, 0.15},
@@ -103,7 +103,7 @@ void BlackDeltaCalculatorTest::testDeltaValues(){
     Real error;
     Real tolerance;
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (Size i=0; i<values.size(); i++) {
 
         currOt      =values[i].ot;
         currDt      =values[i].dt;
@@ -519,7 +519,7 @@ void BlackDeltaCalculatorTest::testAtmCalcs(){
 
     SavedSettings backup;
 
-    DeltaData values[] = {
+    std::vector<DeltaData> values = {
         {Option::Call, DeltaVolQuote::Spot,     1.421, 0.997306, 0.992266,          0.1180654,  1.608080, 0.15},
         {Option::Call, DeltaVolQuote::PaSpot,   1.421, 0.997306, 0.992266,      0.1180654,  1.600545, 0.15},
         {Option::Call, DeltaVolQuote::Fwd,      1.421, 0.997306, 0.992266,      0.1180654,  1.609029, 0.15},
@@ -554,7 +554,7 @@ void BlackDeltaCalculatorTest::testAtmCalcs(){
     Real currPutDelta;
     Real currFwd;
 
-    for (Size i=0; i<LENGTH(values); i++) {
+    for (Size i=0; i<values.size(); i++) {
 
         currDt      =values[i].dt;
         currSpot    =values[i].spot;

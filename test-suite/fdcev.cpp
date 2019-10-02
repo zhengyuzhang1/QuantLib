@@ -59,8 +59,7 @@ void FdCevTest::testLocalMartingale() {
     const Real alpha = 1.75;
     const Real betas[] = {-2.4, 0.23, 0.9, 1.1, 1.5};
 
-    for (Size i=0; i < LENGTH(betas); ++i) {
-        const Real beta = betas[i];
+    for (Real beta : betas) {
         const CEVRNDCalculator rndCalculator(f0, alpha, beta);
 
         const Real eps = 1e-10;
@@ -146,8 +145,7 @@ void FdCevTest::testFdmCevOp() {
     const ext::shared_ptr<Exercise> exercise =
         ext::make_shared<EuropeanExercise>(maturityDate);
 
-    for (Size i=0; i < LENGTH(optionTypes); ++i) {
-        const Option::Type optionType = optionTypes[i];
+    for (Option::Type optionType : optionTypes) {
 
         const ext::shared_ptr<PlainVanillaPayoff> payoff =
             ext::make_shared<PlainVanillaPayoff>(optionType, strike);
@@ -159,9 +157,7 @@ void FdCevTest::testFdmCevOp() {
         const Real alpha = 0.75;
 
         const Real betas[] = { -2.0, -0.5, 0.45, 0.6, 0.9, 1.45 };
-        for (Size j=0; j < LENGTH(betas); ++j) {
-
-            const Real beta = betas[j];
+        for (Real beta : betas) {
 
             VanillaOption option(payoff, exercise);
             option.setPricingEngine(ext::make_shared<AnalyticCEVEngine>(

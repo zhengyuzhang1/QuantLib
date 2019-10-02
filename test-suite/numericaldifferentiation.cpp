@@ -175,8 +175,8 @@ void NumericalDifferentiationTest::testIrregularSchemeFirstOrder() {
     const Real gamma =  h1/(h2*(h1+h2));
     const Real beta = -alpha - gamma;
 
-    const Real tmp[] = { -h1, 0.0, h2};
-    Array offsets(tmp, tmp + LENGTH(tmp));
+    const std::vector<Real> tmp = { -h1, 0.0, h2 };
+    Array offsets(tmp.begin(), tmp.end());
 
     checkTwoArraysAreTheSame(
         NumericalDifferentiation(f, 1, offsets).weights(),
@@ -195,8 +195,8 @@ void NumericalDifferentiationTest::testIrregularSchemeSecondOrder() {
     const Real gamma = 2/(h2*(h1+h2));
     const Real beta = -alpha - gamma;
 
-    const Real tmp[] = { -h1, 0.0, h2};
-    Array offsets(tmp, tmp + LENGTH(tmp));
+    const std::vector<Real> tmp = { -h1, 0.0, h2 };
+    Array offsets(tmp.begin(), tmp.end());
 
     checkTwoArraysAreTheSame(
         NumericalDifferentiation(f, 2, offsets).weights(),
@@ -254,8 +254,8 @@ void NumericalDifferentiationTest::testDerivativesOfSineFunction() {
         singleValueTest("forward 4th", calculatedForward, expected, 1e-4);
     }
 
-    const Real tmp[] = {-0.01, -0.02, 0.03, 0.014, 0.041};
-    const Array offsets(tmp, tmp + LENGTH(tmp));
+    const std::vector<Real> tmp = {-0.01, -0.02, 0.03, 0.014, 0.041};
+    const Array offsets(tmp.begin(), tmp.end());
     NumericalDifferentiation df3_irregular(f, 3, offsets);
 
     checkTwoArraysAreTheSame(df3_irregular.offsets(), offsets);

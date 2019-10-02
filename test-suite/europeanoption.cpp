@@ -1300,9 +1300,8 @@ void EuropeanOptionTest::testLocalVolatility() {
 
     const ext::shared_ptr<Quote> s0(new SimpleQuote(4500.00));
     
-    Real tmp[] = { 100 ,500 ,2000,3400,3600,3800,4000,4200,4400,4500,
-                   4600,4800,5000,5200,5400,5600,7500,10000,20000,30000 };
-    const std::vector<Real> strikes(tmp, tmp+LENGTH(tmp));
+    const std::vector<Real> strikes = { 100 ,500 ,2000,3400,3600,3800,4000,4200,4400,4500,
+                                        4600,4800,5000,5200,5400,5600,7500,10000,20000,30000 };
     
     Volatility v[] =
       { 1.015873, 1.015873, 1.015873, 0.89729, 0.796493, 0.730914, 0.631335, 0.568895,
@@ -1341,7 +1340,7 @@ void EuropeanOptionTest::testLocalVolatility() {
     const ext::shared_ptr<GeneralizedBlackScholesProcess> process =
                                               makeProcess(s0, qTS, rTS,volTS);
     
-    const std::pair<FdmSchemeDesc, std::string> schemeDescs[]= {
+    const std::vector<std::pair<FdmSchemeDesc, std::string>> schemeDescs = {
         std::make_pair(FdmSchemeDesc::Douglas(), "Douglas"),
         std::make_pair(FdmSchemeDesc::CrankNicolson(), "Crank-Nicolson"),
         std::make_pair(FdmSchemeDesc::ModifiedCraigSneyd(), "Mod. Craig-Sneyd")
@@ -1397,7 +1396,7 @@ void EuropeanOptionTest::testLocalVolatility() {
             
             // check local vol pricing
             // delta/gamma are not the same by definition (model implied greeks)
-            for (Size i=0; i < LENGTH(schemeDescs); ++i) {
+            for (Size i=0; i < schemeDescs.size(); ++i) {
                 option.setPricingEngine(
                     ext::make_shared<FdBlackScholesVanillaEngine>(
                         process, 25, 100, 0, schemeDescs[i].first, true, 0.35));
@@ -1527,8 +1526,7 @@ void EuropeanOptionTest::testPDESchemes() {
         ext::make_shared<FdBlackScholesVanillaEngine>(
             process, 15, 100, 0, FdmSchemeDesc::TrBDF2());
 
-
-    const std::pair<ext::shared_ptr<PricingEngine>, std::string> engines[]= {
+    const std::vector<std::pair<ext::shared_ptr<PricingEngine>, std::string>> engines= {
         std::make_pair(douglas, "Douglas"),
         std::make_pair(crankNicolson, "Crank-Nicolson"),
         std::make_pair(implicitEuler, "Implicit-Euler"),
@@ -1540,7 +1538,7 @@ void EuropeanOptionTest::testPDESchemes() {
         std::make_pair(trBDF2, "TR-BDF2")
     };
 
-    const Size nEngines = LENGTH(engines);
+    const Size nEngines = engines.size();
 
     const ext::shared_ptr<PlainVanillaPayoff> payoff(
         ext::make_shared<PlainVanillaPayoff>(Option::Put, spot->value()));
@@ -1600,13 +1598,13 @@ void EuropeanOptionTest::testPDESchemes() {
     }
 
     // make sure that Douglas and Crank-Nicolson are giving the same result
-    const Size idxDouglas = std::distance(engines,
-        std::find(engines, engines + LENGTH(engines),
+    const Size idxDouglas = std::distance(engines.begin(),
+        std::find(engines.begin(), engines.end(),
             std::make_pair(douglas, std::string("Douglas"))));
     const Real douglasNPV = dividendPrices[idxDouglas];
 
-    const Size idxCrankNicolson = std::distance(engines,
-        std::find(engines, engines + LENGTH(engines),
+    const Size idxCrankNicolson = std::distance(engines.begin(),
+        std::find(engines.begin(), engines.end(),
             std::make_pair(crankNicolson, std::string("Crank-Nicolson"))));
     const Real crankNicolsonNPV = dividendPrices[idxCrankNicolson];
 

@@ -71,7 +71,7 @@ namespace {
         Real price;
     };
 
-    Datum depositData[] = {
+    std::vector<Datum> depositData = {
         { 1, Weeks,  4.559 },
         { 1, Months, 4.581 },
         { 2, Months, 4.573 },
@@ -80,7 +80,7 @@ namespace {
         { 9, Months, 4.490 }
     };
 
-    Datum fraData[] = {
+    std::vector<Datum> fraData = {
         { 1, Months, 4.581 },
         { 2, Months, 4.573 },
         { 3, Months, 4.557 },
@@ -88,19 +88,19 @@ namespace {
         { 9, Months, 4.490 }
     };
 
-    Datum immFutData[] = {
+    std::vector<Datum> immFutData = {
         { 1, Months, 4.581 },
         { 2, Months, 4.573 },
         { 3, Months, 4.557 }
     };
 
-    Datum asxFutData[] = {
+    std::vector<Datum> asxFutData = {
         { 1, Months, 4.581 },
         { 2, Months, 4.573 },
         { 3, Months, 4.557 }
     };
 
-    Datum swapData[] = {
+    std::vector<Datum> swapData = {
         {  1, Years, 4.54 },
         {  2, Years, 4.63 },
         {  3, Years, 4.75 },
@@ -118,7 +118,7 @@ namespace {
         { 30, Years, 5.96 }
     };
 
-    BondDatum bondData[] = {
+    std::vector<BondDatum> bondData = {
         {  6, Months, 5, Semiannual, 4.75, 101.320 },
         {  1, Years,  3, Semiannual, 2.75, 100.590 },
         {  2, Years,  5, Semiannual, 5.00, 105.650 },
@@ -126,7 +126,7 @@ namespace {
         { 10, Years, 11, Semiannual, 3.75, 104.070 }
     };
 
-    Datum bmaData[] = {
+    std::vector<Datum> bmaData = {
         {  1, Years, 67.56 },
         {  2, Years, 68.00 },
         {  3, Years, 68.25 },
@@ -188,13 +188,13 @@ namespace {
             bmaConvention = Following;
             bmaDayCounter = ActualActual();
 
-            deposits = LENGTH(depositData);
-            fras = LENGTH(fraData);
-            immFuts = LENGTH(immFutData);
-            asxFuts = LENGTH(asxFutData);
-            swaps = LENGTH(swapData);
-            bonds = LENGTH(bondData);
-            bmas = LENGTH(bmaData);
+            deposits = depositData.size();
+            fras = fraData.size();
+            immFuts = immFutData.size();
+            asxFuts = asxFutData.size();
+            swaps = swapData.size();
+            bonds = bondData.size();
+            bmas = bmaData.size();
 
             // market elements
             rates =

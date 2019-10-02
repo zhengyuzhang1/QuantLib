@@ -57,9 +57,6 @@
 using namespace QuantLib;
 using namespace boost::unit_test_framework;
 
-#define BEGIN(x) (x+0)
-#define END(x) (x+LENGTH(x))
-
 namespace {
 
     Date todaysDate, startDate, endDate;
@@ -474,16 +471,16 @@ void MarketModelCmsTest::testMultiStepCmSwapsAndSwaptions() {
 
     EvolutionDescription evolution = product.evolution();
 
-    MarketModelType marketModels[] = {// CalibratedMM,
+    std::vector<MarketModelType> marketModels = {// CalibratedMM,
                                     ExponentialCorrelationFlatVolatility,
                                     ExponentialCorrelationAbcdVolatility };
 
     for (auto & j : marketModels) {
 
-        Size testedFactors[] = { /*4, 8,*/ todaysForwards.size()};
+        std::vector<Size> testedFactors = { /*4, 8,*/ todaysForwards.size()};
         for (unsigned long factors : testedFactors) {
             // Composite's ProductSuggested is the Terminal one
-            MeasureType measures[] = { // ProductSuggested,
+            std::vector<MeasureType> measures = { // ProductSuggested,
                                        Terminal,
                                       // MoneyMarketPlus,
                                        MoneyMarket};
@@ -493,11 +490,11 @@ void MarketModelCmsTest::testMultiStepCmSwapsAndSwaptions() {
                 ext::shared_ptr<MarketModel> marketModel =
                     makeMarketModel(evolution, factors, j);
 
-                EvolverType evolvers[] = { Pc/*, Ipc*/ };
+                std::vector<EvolverType> evolvers = { Pc/*, Ipc*/ };
 
                 ext::shared_ptr<MarketModelEvolver> evolver;
                 Size stop = isInTerminalMeasure(evolution, numeraires) ? 0 : 1;
-                for (Size i=0; i<LENGTH(evolvers)-stop; i++) {
+                for (Size i=0; i<evolvers.size()-stop; i++) {
                     for (Size n=0; n<1; n++) {
                         //MTBrownianGeneratorFactory generatorFactory(seed_);
                         SobolBrownianGeneratorFactory generatorFactory(

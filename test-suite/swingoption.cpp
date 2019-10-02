@@ -75,22 +75,22 @@ void SwingOptionTest::testExtendedOrnsteinUhlenbeckProcess() {
     const Volatility vol = 0.70;
     const Real level = 1.43;
 
-    ExtendedOrnsteinUhlenbeckProcess::Discretization discr[] = {
+    std::vector<ExtendedOrnsteinUhlenbeckProcess::Discretization> discr = {
         ExtendedOrnsteinUhlenbeckProcess::MidPoint,
         ExtendedOrnsteinUhlenbeckProcess::Trapezodial,
         ExtendedOrnsteinUhlenbeckProcess::GaussLobatto};
 
-    ext::function<Real (Real)> f[] 
+    std::vector<ext::function<Real (Real)>> f
         = { constant<Real, Real>(level),
             add<Real>(1.0),
             static_cast<Real(*)(Real)>(std::sin) }; 
 
-    for (Size n=0; n < LENGTH(f); ++n) {
+    for (Size n=0; n < f.size(); ++n) {
         ExtendedOrnsteinUhlenbeckProcess refProcess(
             speed, vol, 0.0, f[n], 
             ExtendedOrnsteinUhlenbeckProcess::GaussLobatto, 1e-6);
 
-        for (Size i=0; i < LENGTH(discr)-1; ++i) {
+        for (Size i=0; i < discr.size()-1; ++i) {
             ExtendedOrnsteinUhlenbeckProcess eouProcess(
                                       speed, vol, 0.0, f[n], discr[i]);
 

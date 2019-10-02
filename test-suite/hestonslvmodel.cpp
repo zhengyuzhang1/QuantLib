@@ -825,7 +825,7 @@ namespace {
                 .get(eT, testCase.greensAlgorithm);
 
         const ext::shared_ptr<FdmLinearOpLayout> layout = mesher->layout();
-        const Real strikes[] = { 50, 80, 90, 100, 110, 120, 150, 200 };
+        std::vector<Real> strikes = { 50, 80, 90, 100, 110, 120, 150, 200 };
 
         Time t=eT;
         for (std::vector<Period>::const_iterator iter = maturities.begin();
@@ -896,7 +896,7 @@ namespace {
                 }
             }
 
-            avg/=LENGTH(strikes);
+            avg /= strikes.size();
 
             if (avg > testCase.avgEps) {
                 BOOST_FAIL("failed to reproduce Heston SLV prices"
@@ -1020,10 +1020,10 @@ namespace {
             dates.push_back(date);
         }
 
-        Real tmp[] = { 2.222222222, 11.11111111, 44.44444444, 75.55555556, 80, 84.44444444, 88.88888889, 93.33333333, 97.77777778, 100,
-                       102.2222222, 106.6666667, 111.1111111, 115.5555556, 120, 124.4444444, 166.6666667, 222.2222222, 444.4444444, 666.6666667
-             };
-        const std::vector<Real> surfaceStrikes(tmp, tmp+LENGTH(tmp));
+        const std::vector<Real> surfaceStrikes = {
+            2.222222222, 11.11111111, 44.44444444, 75.55555556, 80, 84.44444444, 88.88888889, 93.33333333, 97.77777778, 100,
+            102.2222222, 106.6666667, 111.1111111, 115.5555556, 120, 124.4444444, 166.6666667, 222.2222222, 444.4444444, 666.6666667
+        };
 
         Volatility v[] =
           { 1.015873, 1.015873, 0.915873, 0.89729, 0.796493, 0.730914, 0.631335, 0.568895,
@@ -1113,10 +1113,9 @@ void HestonSLVModelTest::testHestonFokkerPlanckFwdEquationLogLVLeverage() {
     const Real lowerBound = rnd.stationary_invcdf(0.01);
 
     const Real beta = 10.0;
-    std::vector<boost::tuple<Real, Real, bool> > critPoints;
-    critPoints.emplace_back(lowerBound, beta, true);
-    critPoints.emplace_back(v0, beta/100, true);
-    critPoints.emplace_back(upperBound, beta, true);
+    std::vector<boost::tuple<Real, Real, bool> > critPoints = {{lowerBound, beta, true},
+                                                               {v0, beta/100, true},
+                                                               {upperBound, beta, true}};
     const ext::shared_ptr<Fdm1dMesher> varianceMesher(
 		ext::make_shared<Concentrating1dMesher>(lowerBound, upperBound, vGrid, critPoints));
 
@@ -1164,24 +1163,22 @@ void HestonSLVModelTest::testHestonFokkerPlanckFwdEquationLogLVLeverage() {
     const Time dt = (maturity-eT)/tGrid;
 
 
-    Real denseStrikes[] =
+    const std::vector<Real> denseStrikes =
         { 2.222222222, 11.11111111, 20, 25, 30, 35, 40,
           44.44444444, 50, 55, 60, 65, 70, 75.55555556,
           80, 84.44444444, 88.88888889, 93.33333333, 97.77777778, 100,
           102.2222222, 106.6666667, 111.1111111, 115.5555556, 120,
           124.4444444, 166.6666667, 222.2222222, 444.4444444, 666.6666667 };
 
-    const std::vector<Real> ds(denseStrikes, denseStrikes+LENGTH(denseStrikes));
-
-    Matrix surface(ds.size(), smoothSurface.get<1>().size());
+    Matrix surface(denseStrikes.size(), smoothSurface.get<1>().size());
     std::vector<Time> times(surface.columns());
 
     const std::vector<Date> dates = smoothSurface.get<1>();
     ext::shared_ptr<Matrix> m = createLocalVolMatrixFromProcess(
-        lvProcess, ds, dates, times);
+        lvProcess, denseStrikes, dates, times);
 
     const ext::shared_ptr<FixedLocalVolSurface> leverage(
-		ext::make_shared<FixedLocalVolSurface>(todaysDate, dates, ds, m, dc));
+		ext::make_shared<FixedLocalVolSurface>(todaysDate, dates, denseStrikes, m, dc));
 
     const ext::shared_ptr<PricingEngine> lvEngine(
 		ext::make_shared<AnalyticEuropeanEngine>(lvProcess));
@@ -1525,7 +1522,7 @@ void HestonSLVModelTest::testFDMCalibration() {
         };
 
 
-    const HestonSLVTestCase testCases[] = {
+    std::vector<HestonSLVTestCase> testCases = {
         { {0.035, 0.01, 1.0, 0.06, -0.75, 0.1, 0.09}, plainParams},
         { {0.035, 0.01, 1.0, 0.06, -0.75, std::sqrt(0.2), 0.09}, logParams },
         { {0.035, 0.01, 1.0, 0.09, -0.75, std::sqrt(0.2), 0.06}, logParams },
@@ -1533,7 +1530,7 @@ void HestonSLVModelTest::testFDMCalibration() {
     };
 
 
-    for (Size i=0; i < LENGTH(testCases); ++i) {
+    for (Size i=0; i < testCases.size(); ++i) {
         BOOST_TEST_MESSAGE("Testing stochastic local volatility calibration case " << i << " ...");
         lsvCalibrationTest(testCases[i]);
     }
@@ -1826,15 +1823,15 @@ void HestonSLVModelTest::testBarrierPricingMixedModels() {
           FdmSchemeDesc::ModifiedCraigSneyd()
         };
 
-    const Real eta[] = { 0.1, 0.2, 0.3, 0.4,
-                         0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
+    std::vector<Real> eta = { 0.1, 0.2, 0.3, 0.4,
+                              0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
 
     const Real slvDeltaExpected[] = {
         -0.429475, -0.419749, -0.410055, -0.400339,
         -0.390616, -0.380888, -0.371156, -0.361425,
         -0.351699, -0.341995 };
 
-    for (Size i=0; i < LENGTH(eta); ++i) {
+    for (Size i=0; i < eta.size(); ++i) {
         const Handle<HestonModel> modHestonModel(
             ext::make_shared<HestonModel>(
                 ext::make_shared<HestonProcess>(
@@ -2154,9 +2151,7 @@ void HestonSLVModelTest::testForwardSkewSLV() {
     const Date resetDate = todaysDate + Period(12, Months);
     const Time resetTime = dc.yearFraction(todaysDate, resetDate);
     const Time maturityTime = dc.yearFraction(todaysDate, maturityDate);
-    std::vector<Time> mandatoryTimes;
-    mandatoryTimes.push_back(resetTime);
-    mandatoryTimes.push_back(maturityTime);
+    std::vector<Time> mandatoryTimes = {resetTime, maturityTime};
 
     const Size tSteps = 100;
     const TimeGrid grid(mandatoryTimes.begin(), mandatoryTimes.end(), tSteps);
@@ -2167,20 +2162,18 @@ void HestonSLVModelTest::testForwardSkewSLV() {
 
     const Size factors = mcSlvProcess->factors();
 
-    std::vector<ext::shared_ptr<MultiPathGenerator<rsg_type> > > pathGen;
-    pathGen.push_back(
+    std::vector<ext::shared_ptr<MultiPathGenerator<rsg_type> > > pathGen = {
         ext::make_shared<MultiPathGenerator<rsg_type> >(
-            mcSlvProcess, grid, rsg_type(factors, tSteps), false));
-    pathGen.push_back(
+            mcSlvProcess, grid, rsg_type(factors, tSteps), false),
         ext::make_shared<MultiPathGenerator<rsg_type> >(
-            fdmSlvProcess, grid, rsg_type(factors, tSteps), false));
-
-    const Real strikes[] = {
+            fdmSlvProcess, grid, rsg_type(factors, tSteps), false)
+    };
+    std::vector<Real> strikes = {
         0.5, 0.7, 0.8, 0.9, 1.0, 1.1, 1.25, 1.5, 1.75, 2.0
     };
 
     std::vector<std::vector<GeneralStatistics> >
-        stats(2, std::vector<GeneralStatistics>(LENGTH(strikes)));
+        stats(2, std::vector<GeneralStatistics>(strikes.size()));
 
     for (Size i=0; i < 5*nSim; ++i) {
         for (Size k= 0; k < 2; ++k) {
@@ -2193,7 +2186,7 @@ void HestonSLVModelTest::testForwardSkewSLV() {
             const Real S_t2 = antiPath.value[0][resetIndex-1];
             const Real S_T2 = antiPath.value[0][tSteps-1];
 
-            for (Size j=0; j < LENGTH(strikes); ++j) {
+            for (Size j=0; j < strikes.size(); ++j) {
                 const Real strike = strikes[j];
                 if (strike < 1.0)
                     stats[k][j].add(0.5*(
@@ -2228,7 +2221,7 @@ void HestonSLVModelTest::testForwardSkewSLV() {
 
     const DiscountFactor df = rTS->discount(grid.back());
 
-    for (Size j=0; j < LENGTH(strikes); ++j) {
+    for (Size j=0; j < strikes.size(); ++j) {
         for (Size k= 0; k < 2; ++k) {
             const Real strike = strikes[j];
             const Real npv = stats[k][j].mean() * df;

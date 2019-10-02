@@ -434,7 +434,7 @@ void OvernightIndexedSwapTest::testBootstrapRegression() {
 
     SavedSettings backup;
 
-    Datum data[] = {
+    std::vector<Datum> data = {
         { 0,  1, Days,   0.0066   },
         { 2,  1, Weeks,  0.006445 },
         { 2,  2, Weeks,  0.006455 },
@@ -474,7 +474,7 @@ void OvernightIndexedSwapTest::testBootstrapRegression() {
                                             index->endOfMonth(),
                                             index->dayCounter()));
 
-    for (Size i=1; i<LENGTH(data); ++i) {
+    for (Size i=1; i<data.size(); ++i) {
         helpers.push_back(
             ext::shared_ptr<RateHelper>(
                 new OISRateHelper(data[i].settlementDays,

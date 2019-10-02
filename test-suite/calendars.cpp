@@ -1344,20 +1344,20 @@ void CalendarTest::testBrazil() {
 
     std::vector<Date> expectedHol;
 
-    //expectedHol.push_back(Date(1,January,2005)); // Saturday
+    //expectedHol.emplace_back(1,January,2005); // Saturday
     expectedHol.emplace_back(7,February,2005);
     expectedHol.emplace_back(8,February,2005);
     expectedHol.emplace_back(25,March,2005);
     expectedHol.emplace_back(21,April,2005);
-    //expectedHol.push_back(Date(1,May,2005)); // Sunday
+    //expectedHol.emplace_back(1,May,2005); // Sunday
     expectedHol.emplace_back(26,May,2005);
     expectedHol.emplace_back(7,September,2005);
     expectedHol.emplace_back(12,October,2005);
     expectedHol.emplace_back(2,November,2005);
     expectedHol.emplace_back(15,November,2005);
-    //expectedHol.push_back(Date(25,December,2005)); // Sunday
+    //expectedHol.emplace_back(25,December,2005); // Sunday
 
-    //expectedHol.push_back(Date(1,January,2006)); // Sunday
+    //expectedHol.emplace_back(1,January,2006); // Sunday
     expectedHol.emplace_back(27,February,2006);
     expectedHol.emplace_back(28,February,2006);
     expectedHol.emplace_back(14,April,2006);
@@ -1396,38 +1396,38 @@ void CalendarTest::testSouthKoreanSettlement() {
     expectedHol.emplace_back(1,March,2004);
     expectedHol.emplace_back(5,April,2004);
     expectedHol.emplace_back(15,April,2004); // election day
-//    expectedHol.push_back(Date(1,May,2004)); // Saturday
+//    expectedHol.emplace_back(1,May,2004); // Saturday
     expectedHol.emplace_back(5,May,2004);
     expectedHol.emplace_back(26,May,2004);
-//    expectedHol.push_back(Date(6,June,2004)); // Sunday
-//    expectedHol.push_back(Date(17,July,2004)); // Saturday
-//    expectedHol.push_back(Date(15,August,2004)); // Sunday
+//    expectedHol.emplace_back(6,June,2004); // Sunday
+//    expectedHol.emplace_back(17,July,2004); // Saturday
+//    expectedHol.emplace_back(15,August,2004); // Sunday
     expectedHol.emplace_back(27,September,2004);
     expectedHol.emplace_back(28,September,2004);
     expectedHol.emplace_back(29,September,2004);
-//    expectedHol.push_back(Date(3,October,2004)); // Sunday
-//    expectedHol.push_back(Date(25,December,2004)); // Saturday
+//    expectedHol.emplace_back(3,October,2004); // Sunday
+//    expectedHol.emplace_back(25,December,2004); // Saturday
 
-//    expectedHol.push_back(Date(1,January,2005)); // Saturday
+//    expectedHol.emplace_back(1,January,2005); // Saturday
     expectedHol.emplace_back(8,February,2005);
     expectedHol.emplace_back(9,February,2005);
     expectedHol.emplace_back(10,February,2005);
     expectedHol.emplace_back(1,March,2005);
     expectedHol.emplace_back(5,April,2005);
     expectedHol.emplace_back(5,May,2005);
-//    expectedHol.push_back(Date(15,May,2005)); // Sunday
+//    expectedHol.emplace_back(15,May,2005); // Sunday
     expectedHol.emplace_back(6,June,2005);
-//    expectedHol.push_back(Date(17,July,2005)); // Sunday
+//    expectedHol.emplace_back(17,July,2005); // Sunday
     expectedHol.emplace_back(15,August,2005);
-//    expectedHol.push_back(Date(17,September,2005)); // Saturday
-//    expectedHol.push_back(Date(18,September,2005)); // Sunday
+//    expectedHol.emplace_back(17,September,2005); // Saturday
+//    expectedHol.emplace_back(18,September,2005); // Sunday
     expectedHol.emplace_back(19,September,2005);
     expectedHol.emplace_back(3,October,2005);
-//    expectedHol.push_back(Date(25,December,2005)); // Sunday
+//    expectedHol.emplace_back(25,December,2005); // Sunday
 
-//    expectedHol.push_back(Date(1,January,2006)); // Sunday
-//    expectedHol.push_back(Date(28,January,2006)); // Saturday
-//    expectedHol.push_back(Date(29,January,2006)); // Sunday
+//    expectedHol.emplace_back(1,January,2006); // Sunday
+//    expectedHol.emplace_back(28,January,2006); // Saturday
+//    expectedHol.emplace_back(29,January,2006); // Sunday
     expectedHol.emplace_back(30,January,2006);
     expectedHol.emplace_back(1,March,2006);
     expectedHol.emplace_back(1,May,2006);
@@ -1439,16 +1439,16 @@ void CalendarTest::testSouthKoreanSettlement() {
     expectedHol.emplace_back(3,October,2006);
     expectedHol.emplace_back(5,October,2006);
     expectedHol.emplace_back(6,October,2006);
-//    expectedHol.push_back(Date(7,October,2006)); // Saturday
+//    expectedHol.emplace_back(7,October,2006); // Saturday
     expectedHol.emplace_back(25,December,2006);
 
     expectedHol.emplace_back(1,January,2007);
-//    expectedHol.push_back(Date(17,February,2007)); // Saturday
-//    expectedHol.push_back(Date(18,February,2007)); // Sunday
+//    expectedHol.emplace_back(17,February,2007); // Saturday
+//    expectedHol.emplace_back(18,February,2007); // Sunday
     expectedHol.emplace_back(19,February,2007);
     expectedHol.emplace_back(1,March,2007);
     expectedHol.emplace_back(1,May,2007);
-//    expectedHol.push_back(Date(5,May,2007)); // Saturday
+//    expectedHol.emplace_back(5,May,2007); // Saturday
     expectedHol.emplace_back(24,May,2007);
     expectedHol.emplace_back(6,June,2007);
     expectedHol.emplace_back(17,July,2007);
@@ -1485,40 +1485,40 @@ void CalendarTest::testKoreaStockExchange() {
     expectedHol.emplace_back(1,March,2004);
     expectedHol.emplace_back(5,April,2004);
     expectedHol.emplace_back(15,April,2004); //election day
-//    expectedHol.push_back(Date(1,May,2004)); // Saturday
+//    expectedHol.emplace_back(1,May,2004); // Saturday
     expectedHol.emplace_back(5,May,2004);
     expectedHol.emplace_back(26,May,2004);
-//    expectedHol.push_back(Date(6,June,2004)); // Sunday
-//    expectedHol.push_back(Date(17,July,2004)); // Saturday
-//    expectedHol.push_back(Date(15,August,2004)); // Sunday
+//    expectedHol.emplace_back(6,June,2004); // Sunday
+//    expectedHol.emplace_back(17,July,2004); // Saturday
+//    expectedHol.emplace_back(15,August,2004); // Sunday
     expectedHol.emplace_back(27,September,2004);
     expectedHol.emplace_back(28,September,2004);
     expectedHol.emplace_back(29,September,2004);
-//    expectedHol.push_back(Date(3,October,2004)); // Sunday
-//    expectedHol.push_back(Date(25,December,2004)); // Saturday
+//    expectedHol.emplace_back(3,October,2004); // Sunday
+//    expectedHol.emplace_back(25,December,2004); // Saturday
     expectedHol.emplace_back(31,December,2004);
 
-//    expectedHol.push_back(Date(1,January,2005)); // Saturday
+//    expectedHol.emplace_back(1,January,2005); // Saturday
     expectedHol.emplace_back(8,February,2005);
     expectedHol.emplace_back(9,February,2005);
     expectedHol.emplace_back(10,February,2005);
     expectedHol.emplace_back(1,March,2005);
     expectedHol.emplace_back(5,April,2005);
     expectedHol.emplace_back(5,May,2005);
-//    expectedHol.push_back(Date(15,May,2005)); // Sunday
+//    expectedHol.emplace_back(15,May,2005); // Sunday
     expectedHol.emplace_back(6,June,2005);
-//    expectedHol.push_back(Date(17,July,2005)); // Sunday
+//    expectedHol.emplace_back(17,July,2005); // Sunday
     expectedHol.emplace_back(15,August,2005);
-//    expectedHol.push_back(Date(17,September,2005)); // Saturday
-//    expectedHol.push_back(Date(18,September,2005)); // Sunday
+//    expectedHol.emplace_back(17,September,2005); // Saturday
+//    expectedHol.emplace_back(18,September,2005); // Sunday
     expectedHol.emplace_back(19,September,2005);
     expectedHol.emplace_back(3,October,2005);
-//    expectedHol.push_back(Date(25,December,2005)); // Sunday
+//    expectedHol.emplace_back(25,December,2005); // Sunday
     expectedHol.emplace_back(30,December,2005);
 
-//    expectedHol.push_back(Date(1,January,2006)); // Sunday
-//    expectedHol.push_back(Date(28,January,2006)); // Saturday
-//    expectedHol.push_back(Date(29,January,2006)); // Sunday
+//    expectedHol.emplace_back(1,January,2006); // Sunday
+//    expectedHol.emplace_back(28,January,2006); // Saturday
+//    expectedHol.emplace_back(29,January,2006); // Sunday
     expectedHol.emplace_back(30,January,2006);
     expectedHol.emplace_back(1,March,2006);
     expectedHol.emplace_back(1,May,2006);
@@ -1530,17 +1530,17 @@ void CalendarTest::testKoreaStockExchange() {
     expectedHol.emplace_back(3,October,2006);
     expectedHol.emplace_back(5,October,2006);
     expectedHol.emplace_back(6,October,2006);
-//    expectedHol.push_back(Date(7,October,2006)); // Saturday
+//    expectedHol.emplace_back(7,October,2006); // Saturday
     expectedHol.emplace_back(25,December,2006);
     expectedHol.emplace_back(29,December,2006);
 
     expectedHol.emplace_back(1,January,2007);
-//    expectedHol.push_back(Date(17,February,2007)); // Saturday
-//    expectedHol.push_back(Date(18,February,2007)); // Sunday
+//    expectedHol.emplace_back(17,February,2007); // Saturday
+//    expectedHol.emplace_back(18,February,2007); // Sunday
     expectedHol.emplace_back(19,February,2007);
     expectedHol.emplace_back(1,March,2007);
     expectedHol.emplace_back(1,May,2007);
-//    expectedHol.push_back(Date(5,May,2007)); // Saturday
+//    expectedHol.emplace_back(5,May,2007); // Saturday
     expectedHol.emplace_back(24,May,2007);
     expectedHol.emplace_back(6,June,2007);
     expectedHol.emplace_back(17,July,2007);

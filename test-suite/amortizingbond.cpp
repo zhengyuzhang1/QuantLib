@@ -33,11 +33,11 @@ void AmortizingBondTest::testAmortizingFixedRateBond() {
 	* Following data is generated from Excel using function pmt with Nper = 360, PV = 100.0 
 	*/
 
-	Real rates[] = {0.0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10, 0.11, 0.12};
-	Real amounts[] = {0.277777778, 0.321639520, 0.369619473, 0.421604034,
-		              0.477415295, 0.536821623, 0.599550525, 
-		              0.665302495, 0.733764574, 0.804622617,
-		              0.877571570, 0.952323396, 1.028612597};
+    std::vector<Rate> rates = {0.0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10, 0.11, 0.12};
+    std::vector<Real> amounts = {0.277777778, 0.321639520, 0.369619473, 0.421604034,
+                                 0.477415295, 0.536821623, 0.599550525,
+                                 0.665302495, 0.733764574, 0.804622617,
+                                 0.877571570, 0.952323396, 1.028612597};
 
 	Frequency freq = Monthly;
 
@@ -45,7 +45,7 @@ void AmortizingBondTest::testAmortizingFixedRateBond() {
 
 	const Real tolerance = 1.0e-6;
 
-	for(Size i=0; i<LENGTH(rates); ++i) {
+	for (Size i=0; i<rates.size(); ++i) {
 
 		AmortizingFixedRateBond
 			myBond(0, NullCalendar(), 100.0, refDate, Period(30, Years), freq, rates[i], ActualActual(ActualActual::ISMA));
