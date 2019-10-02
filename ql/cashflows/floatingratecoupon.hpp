@@ -54,8 +54,9 @@ namespace QuantLib {
                            Spread spread = 0.0,
                            const Date& refPeriodStart = Date(),
                            const Date& refPeriodEnd = Date(),
-                           DayCounter  dayCounter = DayCounter(),
-                           bool isInArrears = false);
+                           DayCounter dayCounter = DayCounter(),
+                           bool isInArrears = false,
+                           const Date& exCouponDate = Date());
 
         //! \name CashFlow interface
         //@{

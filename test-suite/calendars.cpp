@@ -237,6 +237,7 @@ void CalendarTest::testUSGovernmentBondMarket() {
     expectedHol.emplace_back(16,February,2004);
     expectedHol.emplace_back(9,April,2004);
     expectedHol.emplace_back(31,May,2004);
+    expectedHol.emplace_back(11,June,2004); // Reagan's funeral
     expectedHol.emplace_back(5,July,2004);
     expectedHol.emplace_back(6,September,2004);
     expectedHol.emplace_back(11,October,2004);
