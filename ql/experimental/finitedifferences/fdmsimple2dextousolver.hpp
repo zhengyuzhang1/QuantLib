@@ -57,7 +57,7 @@ namespace QuantLib {
       protected:
         void performCalculations() const override {
             ext::shared_ptr<FdmLinearOpComposite>op(
-                new FdmExtendedOrnsteinUhlenbackOp(
+                new FdmExtendedOrnsteinUhlenbeckOp(
                                 solverDesc_.mesher, process_.currentLink(),
                                 rTS_, solverDesc_.bcSet));
 
