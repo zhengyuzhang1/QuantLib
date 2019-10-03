@@ -31,6 +31,7 @@
 #include <ql/pricingengines/vanilla/fddividendeuropeanengine.hpp>
 #include <ql/pricingengines/vanilla/fddividendamericanengine.hpp>
 #include <ql/pricingengines/vanilla/fddividendshoutengine.hpp>
+#include <ql/pricingengines/vanilla/fdblackscholesvanillaengine.hpp>
 #include <ql/pricingengines/vanilla/analyticdividendeuropeanengine.hpp>
 #include <ql/pricingengines/vanilla/analyticeuropeanengine.hpp>
 #include <ql/termstructures/yield/flatforward.hpp>
@@ -613,9 +614,9 @@ void DividendOptionTest::testFdEuropeanValues() {
                                                           qTS, rTS, volTS));
 
           ext::shared_ptr<PricingEngine> engine(
-              new FDDividendEuropeanEngine<CrankNicolson>(stochProcess,
-                                                          timeSteps,
-                                                          gridPoints));
+              new FDDividendEuropeanEngineMerton73<CrankNicolson>(stochProcess,
+                                                                  timeSteps,
+                                                                  gridPoints));
 
           ext::shared_ptr<PricingEngine> ref_engine(
                             new AnalyticDividendEuropeanEngine(stochProcess));
@@ -795,7 +796,8 @@ void DividendOptionTest::testFdEuropeanGreeks() {
     for (int length : lengths) {
         Date exDate = today + length*Years;
         ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
-        testFdGreeks<FDDividendEuropeanEngine<CrankNicolson> >(today,exercise);
+        testFdGreeks<FDDividendEuropeanEngineMerton73<CrankNicolson> >(today,exercise);
+        testFdGreeks<FdBlackScholesVanillaEngine>(today,exercise);
     }
 }
 
@@ -813,7 +815,8 @@ void DividendOptionTest::testFdAmericanGreeks() {
         Date exDate = today + length*Years;
         ext::shared_ptr<Exercise> exercise(
                                           new AmericanExercise(today,exDate));
-        testFdGreeks<FDDividendAmericanEngine<CrankNicolson> >(today,exercise);
+        testFdGreeks<FDDividendAmericanEngineMerton73<CrankNicolson> >(today,exercise);
+        testFdGreeks<FdBlackScholesVanillaEngine>(today,exercise);
     }
 }
 
@@ -889,7 +892,7 @@ void DividendOptionTest::testFdEuropeanDegenerate() {
 
     ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
-    testFdDegenerate<FDDividendEuropeanEngine<CrankNicolson> >(today,exercise);
+    testFdDegenerate<FDDividendEuropeanEngineMerton73<CrankNicolson> >(today,exercise);
 }
 
 void DividendOptionTest::testFdAmericanDegenerate() {
@@ -905,7 +908,7 @@ void DividendOptionTest::testFdAmericanDegenerate() {
 
     ext::shared_ptr<Exercise> exercise(new AmericanExercise(today,exDate));
 
-    testFdDegenerate<FDDividendAmericanEngine<CrankNicolson> >(today,exercise);
+    testFdDegenerate<FDDividendAmericanEngineMerton73<CrankNicolson> >(today,exercise);
 }
 
 

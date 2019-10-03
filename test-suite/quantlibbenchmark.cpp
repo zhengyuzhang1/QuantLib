@@ -301,8 +301,6 @@ test_suite* init_unit_test_suite(int, char*[]) {
         &EuropeanOptionTest::testImpliedVol, 131.51);
     bm.emplace_back("EuropeanOption::FdEngines",
         &EuropeanOptionTest::testFdEngines, 148.43);
-    bm.emplace_back("EuropeanOption::PriceCurve",
-        &EuropeanOptionTest::testPriceCurve, 414.76);
     bm.emplace_back("FdHestonTest::testFdmHestonAmerican",
         &FdHestonTest::testFdmHestonAmerican, 234.21);
     bm.emplace_back("HestonModel::DAXCalibration",
