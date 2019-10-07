@@ -76,8 +76,6 @@ namespace QuantLib {
             return observationsSchedule_;
         }
 
-        Real priceWithoutOptionality(
-                       const Handle<YieldTermStructure>& discountCurve) const;
         //! \name Visitability
         //@{
         void accept(AcyclicVisitor&) override;
