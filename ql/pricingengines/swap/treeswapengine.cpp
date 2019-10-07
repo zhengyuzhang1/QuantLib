@@ -24,22 +24,18 @@
 
 namespace QuantLib {
 
-    TreeVanillaSwapEngine::TreeVanillaSwapEngine(
-                               const ext::shared_ptr<ShortRateModel>& model,
-                              Size timeSteps,
-                              Handle<YieldTermStructure>  termStructure)
-    : LatticeShortRateModelEngine<VanillaSwap::arguments,
-                                  VanillaSwap::results>(model, timeSteps),
+    TreeVanillaSwapEngine::TreeVanillaSwapEngine(const ext::shared_ptr<ShortRateModel>& model,
+                                                 Size timeSteps,
+                                                 Handle<YieldTermStructure> termStructure)
+    : LatticeShortRateModelEngine<VanillaSwap::arguments, VanillaSwap::results>(model, timeSteps),
       termStructure_(std::move(termStructure)) {
         registerWith(termStructure_);
     }
 
-    TreeVanillaSwapEngine::TreeVanillaSwapEngine(
-                               const ext::shared_ptr<ShortRateModel>& model,
-                              const TimeGrid& timeGrid,
-                              Handle<YieldTermStructure>  termStructure)
-    : LatticeShortRateModelEngine<VanillaSwap::arguments,
-                                  VanillaSwap::results>(model, timeGrid),
+    TreeVanillaSwapEngine::TreeVanillaSwapEngine(const ext::shared_ptr<ShortRateModel>& model,
+                                                 const TimeGrid& timeGrid,
+                                                 Handle<YieldTermStructure> termStructure)
+    : LatticeShortRateModelEngine<VanillaSwap::arguments, VanillaSwap::results>(model, timeGrid),
       termStructure_(std::move(termStructure)) {
         registerWith(termStructure_);
     }
@@ -72,11 +68,11 @@ namespace QuantLib {
             lattice = model_->tree(timeGrid);
         }
 
-        swap.initialize(lattice, times.back());
+        Time maxTime = *std::max_element(times.begin(), times.end());
+        swap.initialize(lattice, maxTime);
         swap.rollback(0.0);
 
         results_.value = swap.presentValue();
     }
 
 }
-
