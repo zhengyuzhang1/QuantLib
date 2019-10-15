@@ -1680,11 +1680,11 @@ void CalendarTest::testChinaSSE() {
     expectedHol.emplace_back(3, May, 2019);
     expectedHol.emplace_back(7, June, 2019);
     expectedHol.emplace_back(13, September, 2019);
-    expectedHol.emplace_back(30, September, 2019);
     expectedHol.emplace_back(1, October, 2019);
     expectedHol.emplace_back(2, October, 2019);
     expectedHol.emplace_back(3, October, 2019);
     expectedHol.emplace_back(4, October, 2019);
+    expectedHol.emplace_back(7, October, 2019);
 
     Calendar c = China(China::SSE);
     std::vector<Date> hol = Calendar::holidayList(c, Date(1, January, 2014),
