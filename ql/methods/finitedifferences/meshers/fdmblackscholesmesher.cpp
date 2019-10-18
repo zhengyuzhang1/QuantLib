@@ -41,19 +41,22 @@ namespace QuantLib {
         Real eps, Real scaleFactor,
         const std::pair<Real, Real>& cPoint,
         const DividendSchedule& dividendSchedule,
-        const ext::shared_ptr<FdmQuantoHelper>& fdmQuantoHelper)
+        const ext::shared_ptr<FdmQuantoHelper>& fdmQuantoHelper,
+        Real spotAdjustment)
     : Fdm1dMesher(size) {
 
         const Real S = process->x0();
         QL_REQUIRE(S > 0.0, "negative or null underlying given");
 
         std::vector<std::pair<Time, Real> > intermediateSteps;
-        for (Size i=0; i < dividendSchedule.size()
-            && process->time(dividendSchedule[i]->date()) <= maturity; ++i)
-            intermediateSteps.emplace_back(
-                    process->time(dividendSchedule[i]->date()),
-                    dividendSchedule[i]->amount()
-                );
+        for (Size i=0; i < dividendSchedule.size(); ++i) {
+            const Time t = process->time(dividendSchedule[i]->date());
+            if (t <= maturity && t >= 0.0)
+                intermediateSteps.emplace_back(
+                        process->time(dividendSchedule[i]->date()),
+                        dividendSchedule[i]->amount()
+                    );
+        }
 
         const Size intermediateTimeSteps = std::max<Size>(2, Size(24.0*maturity));
         for (Size i=0; i < intermediateTimeSteps; ++i)
@@ -78,7 +81,8 @@ namespace QuantLib {
             : process->dividendYield();
 
         Time lastDivTime = 0.0;
-        Real fwd = S, mi = S, ma = S;
+        Real fwd = S - spotAdjustment;
+        Real mi = fwd, ma = fwd;
 
         for (auto & intermediateStep : intermediateSteps) {
             const Time divTime = intermediateStep.first;
