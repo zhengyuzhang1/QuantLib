@@ -38,8 +38,11 @@ namespace QuantLib {
                     Frequency paymentFrequency,
                     Calendar  paymentCalendar,
                     const Period& forwardStart, 
-                    const Spread overnightSpread)
+                    const Spread overnightSpread,
+                    Pillar::Choice pillar,
+                    Date customPillarDate)
     : RelativeDateRateHelper(fixedRate),
+      pillarChoice_(pillar),
       settlementDays_(settlementDays), tenor_(tenor),
       overnightIndex_(std::move(overnightIndex)), discountHandle_(std::move(discount)),
       telescopicValueDates_(telescopicValueDates),
@@ -49,6 +52,8 @@ namespace QuantLib {
       forwardStart_(forwardStart), overnightSpread_(overnightSpread) {
         registerWith(overnightIndex_);
         registerWith(discountHandle_);
+
+        pillarDate_ = customPillarDate;
         initializeDates();
     }
 
@@ -74,8 +79,34 @@ namespace QuantLib {
             .withOvernightLegSpread(overnightSpread_);
 
         earliestDate_ = swap_->startDate();
+        maturityDate_ = swap_->maturityDate();
+
         Date lastPaymentDate = std::max(swap_->overnightLeg().back()->date(),
                                         swap_->fixedLeg().back()->date());
+        latestRelevantDate_ = std::max(maturityDate_, lastPaymentDate);
+
+        switch (pillarChoice_) {
+          case Pillar::MaturityDate:
+            pillarDate_ = maturityDate_;
+            break;
+          case Pillar::LastRelevantDate:
+            pillarDate_ = latestRelevantDate_;
+            break;
+          case Pillar::CustomDate:
+            // pillarDate_ already assigned at construction time
+            QL_REQUIRE(pillarDate_ >= earliestDate_,
+                       "pillar date (" << pillarDate_ << ") must be later "
+                       "than or equal to the instrument's earliest date (" <<
+                       earliestDate_ << ")");
+            QL_REQUIRE(pillarDate_ <= latestRelevantDate_,
+                       "pillar date (" << pillarDate_ << ") must be before "
+                       "or equal to the instrument's latest relevant date (" <<
+                       latestRelevantDate_ << ")");
+            break;
+          default:
+            QL_FAIL("unknown Pillar::Choice(" << Integer(pillarChoice_) << ")");
+        }
+
         latestDate_ = std::max(swap_->maturityDate(), lastPaymentDate);
     }
 
