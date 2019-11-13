@@ -81,7 +81,7 @@ namespace QuantLib {
             : process->dividendYield();
 
         Time lastDivTime = 0.0;
-        Real fwd = S - spotAdjustment;
+        Real fwd = S + spotAdjustment;
         Real mi = fwd, ma = fwd;
 
         for (auto & intermediateStep : intermediateSteps) {

@@ -1,7 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2004, 2005 StatPro Italia srl
+ Copyright (C) 2019 StatPro Italia srl
 
  This file is part of QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -17,30 +17,17 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-#ifndef quantlib_test_dividend_option_hpp
-#define quantlib_test_dividend_option_hpp
+#ifndef quantlib_test_fitted_bond_discount_curve_hpp
+#define quantlib_test_fitted_bond_discount_curve_hpp
 
 #include <boost/test/unit_test.hpp>
 
 /* remember to document new and/or updated tests in the Doxygen
    comment block of the corresponding class */
 
-class DividendOptionTest {
+class FittedBondDiscountCurveTest {
   public:
-    static void testEuropeanValues();
-    static void testEuropeanKnownValue();
-    static void testEuropeanStartLimit();
-    static void testEuropeanEndLimit();
-    static void testEuropeanGreeks();
-    static void testFdEuropeanValues();
-    static void testFdEuropeanGreeks();
-    static void testFdAmericanGreeks();
-    static void testFdEuropeanDegenerate();
-    static void testFdAmericanDegenerate();
-    static void testFdEuropeanWithDividendToday();
-    static void testFdAmericanWithDividendToday();
-    static void testEscrowedDividendModel();
-
+    static void testEvaluation();
     static boost::unit_test_framework::test_suite* suite();
 };
 

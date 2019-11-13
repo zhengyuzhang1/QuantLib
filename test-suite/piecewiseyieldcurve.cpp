@@ -260,6 +260,13 @@ namespace {
                                    fixedLegDayCounter, euribor6m));
             }
 
+
+#ifdef QL_USE_INDEXED_COUPON
+            bool useIndexedFra = false;
+#else
+            bool useIndexedFra = true;
+#endif
+
             ext::shared_ptr<IborIndex> euribor3m(new Euribor3M());
             for (Size i=0; i<fras; i++) {
                 Handle<Quote> r(fraRates[i]);
@@ -269,7 +276,10 @@ namespace {
                                   euribor3m->fixingCalendar(),
                                   euribor3m->businessDayConvention(),
                                   euribor3m->endOfMonth(),
-                                  euribor3m->dayCounter()));
+                                  euribor3m->dayCounter(),
+                                  Pillar::LastRelevantDate,
+                                  Date(),
+                                  useIndexedFra));
             }
             Date immDate = Date();
             for (Size i = 0; i<immFuts; i++) {
@@ -422,6 +432,12 @@ namespace {
                                      interpolator));
         curveHandle.linkTo(vars.termStructure);
 
+#ifdef QL_USE_INDEXED_COUPON
+        bool useIndexedFra = false;
+#else
+        bool useIndexedFra = true;
+#endif
+
         ext::shared_ptr<IborIndex> euribor3m(new Euribor3M(curveHandle));
         for (Size i=0; i<vars.fras; i++) {
             Date start =
@@ -430,13 +446,15 @@ namespace {
                                       fraData[i].units,
                                       euribor3m->businessDayConvention(),
                                       euribor3m->endOfMonth());
-            Date end = vars.calendar.advance(start, 3, Months,
+            BOOST_REQUIRE(fraData[i].units == Months);
+            Date end = vars.calendar.advance(vars.settlement, 3 + fraData[i].n, Months,
                                              euribor3m->businessDayConvention(),
                                              euribor3m->endOfMonth());
 
             ForwardRateAgreement fra(start, end, Position::Long,
                                      fraData[i].rate/100, 100.0,
-                                     euribor3m, curveHandle);
+                                     euribor3m, curveHandle,
+                                     useIndexedFra);
             Rate expectedRate = fraData[i].rate/100,
                  estimatedRate = fra.forwardRate();
             if (std::fabs(expectedRate-estimatedRate) > tolerance) {

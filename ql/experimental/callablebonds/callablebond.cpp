@@ -468,8 +468,7 @@ namespace QuantLib {
                 arguments->callabilityPrices.push_back(
                                        i->price().amount());
 
-                if (i->price().type()==
-                    Callability::Price::Clean) {
+                if (i->price().type() == Bond::Price::Clean) {
                     /* calling accrued() forces accrued interest to be zero
                        if future option date is also coupon date, so that dirty
                        price = clean price. Use here because callability is
