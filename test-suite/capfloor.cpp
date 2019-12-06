@@ -695,7 +695,7 @@ void CapFloorTest::testCachedValueFromOptionLets() {
 
 void CapFloorTest::testOptionLetsDelta() {
 
-    BOOST_TEST_MESSAGE("Testing Black caplet / floorlet  delta coefficients against finite difference values...");
+    BOOST_TEST_MESSAGE("Testing Black caplet/floorlet delta coefficients against finite difference values...");
 
     CommonVars vars;
 
@@ -816,7 +816,7 @@ void CapFloorTest::testOptionLetsDelta() {
 
 void CapFloorTest::testBachelierOptionLetsDelta() {
 
-    BOOST_TEST_MESSAGE("Testing Bachelier caplet / floorlet  delta coefficients against finite difference values...");
+    BOOST_TEST_MESSAGE("Testing Bachelier caplet/floorlet delta coefficients against finite difference values...");
 
     CommonVars vars;
 
