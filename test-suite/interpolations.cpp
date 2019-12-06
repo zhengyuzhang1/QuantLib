@@ -1880,8 +1880,7 @@ void InterpolationTest::testNoArbSabrInterpolation(){
     Real initialRho = 0.01;
     // calculate SABR vols and compare with input vols
     NoArbSabrSmileSection noarbSabr(expiry, forward,
-                                    boost::assign::list_of(initialAlpha)(
-                                        initialBeta)(initialNu)(initialRho));
+                                    {initialAlpha, initialBeta, initialNu, initialRho});
     for (Size i = 0; i < strikes.size(); i++) {
         Real calculatedVol = noarbSabr.volatility(strikes[i]);
         if (std::fabs(volatilities[i]-calculatedVol) > tolerance)
