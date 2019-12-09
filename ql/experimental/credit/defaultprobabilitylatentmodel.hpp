@@ -234,7 +234,7 @@ namespace QuantLib {
         */
         Probability probAtLeastNEvents(Size n, const Date& date) const {
             return integratedExpectedValue(
-                [&](const std::vector<Real>& v1) {
+                [&](const std::vector<Real>& v1) -> Real{
                     return conditionalProbAtLeastNEvents(n, date, v1);
                 });
         }
