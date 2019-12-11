@@ -23,15 +23,11 @@
 #include <ql/math/matrix.hpp>
 #include <ql/math/factorial.hpp>
 #include <ql/methods/finitedifferences/operators/numericaldifferentiation.hpp>
-
-#include <boost/assign/list_of.hpp>
-
 #include <cmath>
 #include <algorithm>
 
 using namespace QuantLib;
 using namespace boost::unit_test_framework;
-using boost::assign::list_of;
 
 namespace {
     bool isTheSame(Real a, Real b) {
@@ -41,12 +37,6 @@ namespace {
             return std::fabs(a) < eps;
         else
             return std::fabs((a - b)/b) < eps;
-    }
-
-
-    Disposable<Array> listToArray(const std::list<Real>& in) {
-        Array retVal(in.begin(), in.end());
-        return retVal;
     }
 
     void checkTwoArraysAreTheSame(const Array& calculated,
@@ -87,25 +77,23 @@ void NumericalDifferentiationTest::testTabulatedCentralScheme() {
     // see http://en.wikipedia.org/wiki/Finite_difference_coefficient
     checkTwoArraysAreTheSame(
         NumericalDifferentiation(f, 1, 1.0, 3, central).weights(),
-        listToArray(list_of(-0.5)(0.0)(0.5)));
+        {-0.5, 0.0, 0.5});
 
     checkTwoArraysAreTheSame(
         NumericalDifferentiation(f, 1, 0.5, 3, central).weights(),
-        listToArray(list_of(-1.0)(0.0)(1.0)));
+        {-1.0, 0.0, 1.0});
 
     checkTwoArraysAreTheSame(
         NumericalDifferentiation(f, 1, 0.25, 7, central).weights(),
-        listToArray(list_of(-4/60.0)(12/20.0)(-12/4.0)
-                            (0.0)(12/4.0)(-12/20.0)(4/60.0)));
+        {-4/60.0, 12/20.0, -12/4.0, 0.0, 12/4.0, -12/20.0, 4/60.0});
 
     checkTwoArraysAreTheSame(
         NumericalDifferentiation(f, 4, std::pow(0.5, 0.25), 9, central).weights(),
-        listToArray(list_of(14/240.0)(-4/5.0)(338/60.0)(-244/15.0)(182/8.0)
-                           (-244/15.0)(338/60.0)(-4/5.0)(14/240.0)));
+        {14/240.0, -4/5.0, 338/60.0, -244/15.0, 182/8.0, -244/15.0, 338/60.0, -4/5.0, 14/240.0});
 
     checkTwoArraysAreTheSame(
         NumericalDifferentiation(f, 1, 0.5, 7, central).offsets(),
-        listToArray(list_of(-1.5)(-1.0)(-0.5)(0.0)(0.5)(1.0)(1.5)));
+        {-1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5});
 }
 
 void NumericalDifferentiationTest::testTabulatedBackwardScheme() {
@@ -119,19 +107,19 @@ void NumericalDifferentiationTest::testTabulatedBackwardScheme() {
     // see http://en.wikipedia.org/wiki/Finite_difference_coefficient
     checkTwoArraysAreTheSame(
         NumericalDifferentiation(f, 1, 1.0, 2, backward).weights(),
-        listToArray(list_of(1.0)(-1.0)));
+        {1.0, -1.0});
 
     checkTwoArraysAreTheSame(
         NumericalDifferentiation(f, 2, 2.0, 4, backward).weights(),
-        listToArray(list_of(2/4.0)(-5/4.0)(4/4.0)(-1.0/4.0)));
+        {2/4.0, -5/4.0, 4/4.0, -1.0/4.0});
 
     checkTwoArraysAreTheSame(
         NumericalDifferentiation(f, 4, 1.0, 6, backward).weights(),
-        listToArray(list_of(3)(-14)(26)(-24)(11)(-2)));
+        {3.0, -14.0, 26.0, -24.0, 11.0, -2.0});
 
     checkTwoArraysAreTheSame(
         NumericalDifferentiation(f, 2, 0.5, 4, backward).offsets(),
-        listToArray(list_of(0.0)(-0.5)(-1.0)(-1.5)));
+        {0.0, -0.5, -1.0, -1.5});
 }
 
 
@@ -146,20 +134,19 @@ void NumericalDifferentiationTest::testTabulatedForwardScheme() {
     // see http://en.wikipedia.org/wiki/Finite_difference_coefficient
     checkTwoArraysAreTheSame(
         NumericalDifferentiation(f, 1, 1.0, 2, forward).weights(),
-        listToArray(list_of(-1.0)(1.0)));
+        {-1.0, 1.0});
 
     checkTwoArraysAreTheSame(
         NumericalDifferentiation(f, 1, 0.5, 3, forward).weights(),
-        listToArray(list_of(-6/2.0)(4.0)(-2/2.0)));
+        {-6/2.0, 4.0, -2/2.0});
 
     checkTwoArraysAreTheSame(
         NumericalDifferentiation(f, 1, 0.5, 7, forward).weights(),
-        listToArray(list_of(-98/20.0)(12.0)(-30/2.0)(40/3.0)
-                           (-30/4.0)(12/5.0)(-2/6.0)));
+        {-98/20.0, 12.0, -30/2.0, 40/3.0, -30/4.0, 12/5.0, -2/6.0});
 
     checkTwoArraysAreTheSame(
         NumericalDifferentiation(f, 2, 0.5, 4, forward).offsets(),
-        listToArray(list_of(0.0)(0.5)(1.0)(1.5)));
+        {0.0, 0.5, 1.0, 1.5});
 }
 
 
@@ -180,7 +167,7 @@ void NumericalDifferentiationTest::testIrregularSchemeFirstOrder() {
 
     checkTwoArraysAreTheSame(
         NumericalDifferentiation(f, 1, offsets).weights(),
-        list_of(alpha)(beta)(gamma));
+        {alpha, beta, gamma});
 }
 
 void NumericalDifferentiationTest::testIrregularSchemeSecondOrder() {
@@ -200,7 +187,7 @@ void NumericalDifferentiationTest::testIrregularSchemeSecondOrder() {
 
     checkTwoArraysAreTheSame(
         NumericalDifferentiation(f, 2, offsets).weights(),
-        listToArray(list_of(alpha)(beta)(gamma)));
+        {alpha, beta, gamma});
 }
 
 
