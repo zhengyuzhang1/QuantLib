@@ -33,13 +33,6 @@
 #include <sstream>
 #include <string>
 
-#if defined(BOOST_MSVC) && BOOST_MSVC < 1900
-    /* VC++ 2013 still didn't define it */
-    #define QL_NOEXCEPT
-#else
-    #define QL_NOEXCEPT noexcept
-#endif
-
 namespace QuantLib {
 
     //! Base error class
@@ -55,9 +48,9 @@ namespace QuantLib {
         /*! the automatically generated destructor would
             not have the throw specifier.
         */
-        ~Error() QL_NOEXCEPT override = default;
+        ~Error() noexcept override = default;
         //! returns the error message.
-        const char* what() const QL_NOEXCEPT override;
+        const char* what() const noexcept override;
       private:
         ext::shared_ptr<std::string> message_;
     };
