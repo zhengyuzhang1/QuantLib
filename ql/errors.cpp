@@ -97,7 +97,7 @@ namespace QuantLib {
                                       format(file, line, function, message));
     }
 
-    const char* Error::what() const noexcept {
+    const char* Error::what() const QL_NOEXCEPT {
         return message_->c_str();
     }
 
