@@ -2,6 +2,7 @@ cmake_minimum_required()
 
 project(QuantLib)
 
+set(CMAKE_CXX_STANDARD 17)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/quantlib.cmake)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ${UNIX})

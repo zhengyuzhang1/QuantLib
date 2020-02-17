@@ -111,3 +111,6 @@ test-suite/.unit_test_profile.txt
 cmake-build-debug
 nbproject
 .cproject
+
+# ccls cache
+.ccls-cache/*
