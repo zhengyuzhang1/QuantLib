@@ -367,7 +367,7 @@ namespace QuantLib {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     // Computes irregular swaption price according to P.J. Hunt, J.E. Kennedy:             //
-    // "Implied interest rate pricing models", Finance Stochast. 2, 275–293 (1998)      //
+    // "Implied interest rate pricing models", Finance Stochast. 2, 275Â–293 (1998)      //
     /////////////////////////////////////////////////////////////////////////////////////////
 
     Real  HaganIrregularSwaptionEngine::HKPrice(Basket& basket,ext::shared_ptr<Exercise>& exercise) const {

@@ -25,9 +25,6 @@
 #define quantlib_clone_hpp
 
 #include <ql/errors.hpp>
-#if !defined(QL_USE_STD_UNIQUE_PTR)
-#include <boost/scoped_ptr.hpp>
-#endif
 #include <algorithm>
 #include <memory>
 
@@ -43,11 +40,7 @@ namespace QuantLib {
     class Clone {
       public:
         Clone();
-        #if defined(QL_USE_STD_UNIQUE_PTR)
         Clone(std::unique_ptr<T>&&);
-        #else
-        Clone(std::auto_ptr<T>);
-        #endif
         Clone(const T&);
         Clone(const Clone<T>&);
         Clone<T>& operator=(const T&);
@@ -57,11 +50,7 @@ namespace QuantLib {
         bool empty() const;
         void swap(Clone<T>& t);
       private:
-        #if defined(QL_USE_STD_UNIQUE_PTR)
         std::unique_ptr<T> ptr_;
-        #else
-        boost::scoped_ptr<T> ptr_;
-        #endif
     };
 
     /*! \relates Clone */
@@ -74,15 +63,9 @@ namespace QuantLib {
     template <class T>
     inline Clone<T>::Clone() = default;
 
-    #if defined(QL_USE_STD_UNIQUE_PTR)
     template <class T>
     inline Clone<T>::Clone(std::unique_ptr<T>&& p)
     : ptr_(std::move(p)) {}
-    #else
-    template <class T>
-    inline Clone<T>::Clone(std::auto_ptr<T> p)
-    : ptr_(p) {}
-    #endif
 
     template <class T>
     inline Clone<T>::Clone(const T& t)

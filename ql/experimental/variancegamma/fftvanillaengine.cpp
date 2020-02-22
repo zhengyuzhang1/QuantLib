@@ -20,7 +20,6 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 #include <ql/experimental/variancegamma/fftvanillaengine.hpp>
 #include <ql/exercise.hpp>
 #include <ql/termstructures/volatility/equityfx/blackconstantvol.hpp>
-#include <ql/auto_ptr.hpp>
 #include <complex>
 
 namespace QuantLib {

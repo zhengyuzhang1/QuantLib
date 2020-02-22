@@ -45,11 +45,7 @@ namespace QuantLib {
                      const CurveState& currentState,
                      std::vector<Size>& numberCashFlowsThisStep,
                      std::vector<std::vector<CashFlow> >& cashFlowsGenerated) override;
-        #if defined(QL_USE_STD_UNIQUE_PTR)
         std::unique_ptr<MarketModelMultiProduct> clone() const override;
-        #else
-        std::auto_ptr<MarketModelMultiProduct> clone() const override;
-        #endif
         //@}
       private:
         std::vector<Real> accruals_;

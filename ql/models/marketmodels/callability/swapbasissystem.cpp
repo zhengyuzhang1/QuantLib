@@ -20,7 +20,6 @@
 #include <ql/models/marketmodels/callability/swapbasissystem.hpp>
 #include <ql/models/marketmodels/curvestate.hpp>
 #include <ql/models/marketmodels/utilities.hpp>
-#include <ql/auto_ptr.hpp>
 
 namespace QuantLib {
 

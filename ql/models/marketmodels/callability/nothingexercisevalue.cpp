@@ -20,7 +20,6 @@
 #include <ql/models/marketmodels/callability/nothingexercisevalue.hpp>
 #include <ql/models/marketmodels/utilities.hpp>
 #include <ql/errors.hpp>
-#include <ql/auto_ptr.hpp>
 #include <utility>
 
 namespace QuantLib {

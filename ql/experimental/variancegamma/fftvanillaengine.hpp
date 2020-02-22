@@ -39,11 +39,7 @@ namespace QuantLib {
     public:
         FFTVanillaEngine(
             const ext::shared_ptr<GeneralizedBlackScholesProcess>&process, Real logStrikeSpacing = 0.001);
-        #if defined(QL_USE_STD_UNIQUE_PTR)
         std::unique_ptr<FFTEngine> clone() const override;
-        #else
-        std::auto_ptr<FFTEngine> clone() const override;
-        #endif
     protected:
         void precalculateExpiry(Date d) override;
         std::complex<Real> complexFourierTransform(std::complex<Real> u) const override;

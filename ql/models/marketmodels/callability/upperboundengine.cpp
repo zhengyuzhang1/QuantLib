@@ -28,7 +28,6 @@
 #include <ql/models/marketmodels/discounter.hpp>
 #include <ql/models/marketmodels/evolver.hpp>
 #include <ql/models/marketmodels/callability/exercisevalue.hpp>
-#include <ql/auto_ptr.hpp>
 #include <algorithm>
 #include <utility>
 

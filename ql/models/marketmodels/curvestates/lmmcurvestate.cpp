@@ -22,7 +22,6 @@
 */
 
 #include <ql/models/marketmodels/curvestates/lmmcurvestate.hpp>
-#include <ql/auto_ptr.hpp>
 
 namespace QuantLib {
 

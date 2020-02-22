@@ -21,7 +21,6 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 #include <ql/models/marketmodels/curvestate.hpp>
 #include <ql/models/marketmodels/utilities.hpp>
 #include <ql/models/marketmodels/evolutiondescription.hpp>
-#include <ql/auto_ptr.hpp>
 
 namespace QuantLib 
 {

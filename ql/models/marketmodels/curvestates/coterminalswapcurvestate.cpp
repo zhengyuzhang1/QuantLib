@@ -20,7 +20,6 @@
 */
 
 #include <ql/models/marketmodels/curvestates/coterminalswapcurvestate.hpp>
-#include <ql/auto_ptr.hpp>
 
 namespace QuantLib {
 

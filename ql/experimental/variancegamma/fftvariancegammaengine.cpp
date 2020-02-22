@@ -19,7 +19,6 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 
 #include <ql/experimental/variancegamma/fftvariancegammaengine.hpp>
 #include <ql/exercise.hpp>
-#include <ql/auto_ptr.hpp>
 #include <complex>
 
 namespace QuantLib {

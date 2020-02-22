@@ -48,11 +48,7 @@ namespace QuantLib
                      const CurveState& currentState,
                      std::vector<Size>& numberCashFlowsThisStep,
                      std::vector<std::vector<CashFlow> >& cashFlowsGenerated) override;
-        #if defined(QL_USE_STD_UNIQUE_PTR)
         std::unique_ptr<MarketModelMultiProduct> clone() const override;
-        #else
-        std::auto_ptr<MarketModelMultiProduct> clone() const override;
-        #endif
         std::vector<Size> suggestedNumeraires() const override;
         const EvolutionDescription& evolution() const override;
 

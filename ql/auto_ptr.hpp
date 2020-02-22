@@ -17,7 +17,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-/*! \file auto_ptr.hpp
     \brief Facilities to switch from auto_ptr to unique_ptr
 */
 
@@ -26,11 +25,7 @@
 
 #include <ql/qldefines.hpp>
 
-#if defined(QL_USE_STD_UNIQUE_PTR)
 #define QL_UNIQUE_OR_AUTO_PTR std::unique_ptr
-#else
-#define QL_UNIQUE_OR_AUTO_PTR std::auto_ptr
-#endif
 
 
 #endif

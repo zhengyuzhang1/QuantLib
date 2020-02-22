@@ -54,11 +54,7 @@ namespace QuantLib {
         ExponentialSplinesFitting(bool constrainAtZero,
                                   const Array& weights,
                                   const Array& l2);
-        #if defined(QL_USE_STD_UNIQUE_PTR)
         std::unique_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
-        #else
-        std::auto_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
-        #endif
       private:
         Size size() const override;
         DiscountFactor discountFunction(const Array& x, Time t) const override;
@@ -83,11 +79,7 @@ namespace QuantLib {
                                           = ext::shared_ptr<OptimizationMethod>(),
                             const Array& l2 = Array());
         NelsonSiegelFitting(const Array& weights, const Array& l2);
-        #if defined(QL_USE_STD_UNIQUE_PTR)
         std::unique_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
-        #else
-        std::auto_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
-        #endif
       private:
         Size size() const override;
         DiscountFactor discountFunction(const Array& x, Time t) const override;
@@ -114,11 +106,7 @@ namespace QuantLib {
                                = ext::shared_ptr<OptimizationMethod>(),
                         const Array& l2 = Array());
         SvenssonFitting(const Array& weights, const Array& l2);
-        #if defined(QL_USE_STD_UNIQUE_PTR)
         std::unique_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
-        #else
-        std::auto_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
-        #endif
       private:
         Size size() const override;
         DiscountFactor discountFunction(const Array& x, Time t) const override;
@@ -159,11 +147,7 @@ namespace QuantLib {
                              const Array& l2);
         //! cubic B-spline basis functions
         Real basisFunction(Integer i, Time t) const;
-        #if defined(QL_USE_STD_UNIQUE_PTR)
         std::unique_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
-        #else
-        std::auto_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
-        #endif
       private:
         Size size() const override;
         DiscountFactor discountFunction(const Array& x, Time t) const override;
@@ -197,11 +181,7 @@ namespace QuantLib {
                                 bool constrainAtZero,
                                 const Array& weights,
                                 const Array& l2);
-        #if defined(QL_USE_STD_UNIQUE_PTR)
         std::unique_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
-        #else
-        std::auto_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
-        #endif
       private:
         Size size() const override;
         DiscountFactor discountFunction(const Array& x, Time t) const override;
@@ -217,11 +197,7 @@ namespace QuantLib {
       public:
          SpreadFittingMethod(ext::shared_ptr<FittingMethod> method,
                         Handle<YieldTermStructure> discountCurve);
-        #if defined(QL_USE_STD_UNIQUE_PTR)
         std::unique_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
-        #else
-        std::auto_ptr<FittedBondDiscountCurve::FittingMethod> clone() const override;
-        #endif
     protected:
         void init() override;
       private:

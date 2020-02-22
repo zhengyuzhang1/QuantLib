@@ -20,7 +20,6 @@
 #include <ql/models/marketmodels/callability/parametricexerciseadapter.hpp>
 #include <ql/models/marketmodels/callability/marketmodelparametricexercise.hpp>
 #include <ql/models/marketmodels/evolutiondescription.hpp>
-#include <ql/auto_ptr.hpp>
 #include <utility>
 
 namespace QuantLib {

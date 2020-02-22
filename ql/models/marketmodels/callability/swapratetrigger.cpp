@@ -19,7 +19,6 @@
 
 #include <ql/models/marketmodels/callability/swapratetrigger.hpp>
 #include <ql/models/marketmodels/utilities.hpp>
-#include <ql/auto_ptr.hpp>
 #include <utility>
 
 namespace QuantLib {

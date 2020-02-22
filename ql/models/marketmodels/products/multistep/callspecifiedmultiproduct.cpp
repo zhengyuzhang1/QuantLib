@@ -20,7 +20,6 @@
 #include <ql/models/marketmodels/products/multistep/callspecifiedmultiproduct.hpp>
 #include <ql/models/marketmodels/products/multistep/cashrebate.hpp>
 #include <ql/models/marketmodels/utilities.hpp>
-#include <ql/auto_ptr.hpp>
 
 namespace QuantLib {
 

@@ -67,11 +67,7 @@ class MarketModelPathwiseCoterminalSwaptionsDeflated : public MarketModelPathwis
             std::vector<std::vector<MarketModelPathwiseMultiProduct::CashFlow> >& cashFlowsGenerated) override ;
 
         //! returns a newly-allocated copy of itself
-        #if defined(QL_USE_STD_UNIQUE_PTR)
         std::unique_ptr<MarketModelPathwiseMultiProduct> clone() const override;
-        #else
-        std::auto_ptr<MarketModelPathwiseMultiProduct> clone() const override;
-        #endif
 
     private:
         std::vector<Real> rateTimes_;
@@ -118,11 +114,7 @@ class MarketModelPathwiseCoterminalSwaptionsNumericalDeflated : public MarketMod
             std::vector<std::vector<MarketModelPathwiseMultiProduct::CashFlow> >& cashFlowsGenerated) override ;
 
         //! returns a newly-allocated copy of itself
-        #if defined(QL_USE_STD_UNIQUE_PTR)
         std::unique_ptr<MarketModelPathwiseMultiProduct> clone() const override;
-        #else
-        std::auto_ptr<MarketModelPathwiseMultiProduct> clone() const override;
-        #endif
 
     private:
         std::vector<Real> rateTimes_;

@@ -20,7 +20,6 @@
 #include <ql/models/marketmodels/products/multistep/multistepratchet.hpp>
 #include <ql/models/marketmodels/curvestate.hpp>
 #include <ql/models/marketmodels/utilities.hpp>
-#include <ql/auto_ptr.hpp>
 #include <cmath>
 #include <utility>
 

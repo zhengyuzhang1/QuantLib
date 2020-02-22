@@ -21,7 +21,6 @@
 
 #include <ql/termstructures/yield/nonlinearfittingmethods.hpp>
 #include <ql/math/bernsteinpolynomial.hpp>
-#include <ql/auto_ptr.hpp>
 #include <utility>
 
 namespace QuantLib {

@@ -18,7 +18,6 @@
 */
 
 #include <ql/models/marketmodels/products/multistep/exerciseadapter.hpp>
-#include <ql/auto_ptr.hpp>
 
 namespace QuantLib {
 

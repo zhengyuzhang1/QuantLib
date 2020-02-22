@@ -18,7 +18,6 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
 #include <ql/models/marketmodels/products/multiproductcomposite.hpp>
-#include <ql/auto_ptr.hpp>
 
 namespace QuantLib {
 

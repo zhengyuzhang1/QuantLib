@@ -19,7 +19,6 @@
 
 #include <ql/models/marketmodels/products/multistep/cashrebate.hpp>
 #include <ql/models/marketmodels/utilities.hpp>
-#include <ql/auto_ptr.hpp>
 #include <utility>
 
 namespace QuantLib {
