@@ -33,13 +33,13 @@ namespace QuantLib {
     class KirkSpreadOptionEngine : public SpreadOption::engine {
       public:
         KirkSpreadOptionEngine(
-            ext::shared_ptr<BlackProcess>  process1,
-            ext::shared_ptr<BlackProcess>  process2,
+            std::shared_ptr<BlackProcess>  process1,
+            std::shared_ptr<BlackProcess>  process2,
             Handle<Quote>  correlation);
         void calculate() const override;
       private:
-        ext::shared_ptr<BlackProcess> process1_;
-        ext::shared_ptr<BlackProcess> process2_;
+        std::shared_ptr<BlackProcess> process1_;
+        std::shared_ptr<BlackProcess> process2_;
         Handle<Quote> rho_;
     };
 

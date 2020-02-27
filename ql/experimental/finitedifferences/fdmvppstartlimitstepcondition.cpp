@@ -35,8 +35,8 @@ namespace QuantLib {
         const FdmVPPStepConditionParams& params,
         Size nStarts,
         const FdmVPPStepConditionMesher& mesh,
-        const ext::shared_ptr<FdmInnerValueCalculator>& gasPrice,
-        const ext::shared_ptr<FdmInnerValueCalculator>& sparkSpreadPrice)
+        const std::shared_ptr<FdmInnerValueCalculator>& gasPrice,
+        const std::shared_ptr<FdmInnerValueCalculator>& sparkSpreadPrice)
     : FdmVPPStepCondition(params,
                           nStates(params.tMinUp, params.tMinDown, nStarts),
                           mesh, gasPrice, sparkSpreadPrice),

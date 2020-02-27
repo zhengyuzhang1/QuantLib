@@ -26,7 +26,7 @@
 
 #include <ql/time/date.hpp>
 #include <ql/errors.hpp>
-#include <ql/shared_ptr.hpp>
+#include <memory>
 #include <utility>
 #include <vector>
 #include <algorithm>
@@ -62,19 +62,19 @@ namespace QuantLib {
 
     class NotionalRisk {
     public:
-        explicit NotionalRisk(ext::shared_ptr<EventPaymentOffset> paymentOffset)
+        explicit NotionalRisk(std::shared_ptr<EventPaymentOffset> paymentOffset)
         : paymentOffset_(std::move(paymentOffset)) {}
         virtual ~NotionalRisk() = default;
 
         virtual void updatePath(const std::vector<std::pair<Date, Real> >  &events, NotionalPath &path) const = 0;
 
       protected:
-        ext::shared_ptr<EventPaymentOffset> paymentOffset_;       
+        std::shared_ptr<EventPaymentOffset> paymentOffset_;       
     };
 
     class DigitalNotionalRisk : public NotionalRisk {
       public:
-        DigitalNotionalRisk(ext::shared_ptr<EventPaymentOffset> paymentOffset,
+        DigitalNotionalRisk(std::shared_ptr<EventPaymentOffset> paymentOffset,
                            Real threshold)
         : NotionalRisk(paymentOffset) , threshold_(threshold)
         {}
@@ -89,7 +89,7 @@ namespace QuantLib {
     class ProportionalNotionalRisk : public NotionalRisk
     {
     public:
-        ProportionalNotionalRisk(ext::shared_ptr<EventPaymentOffset> paymentOffset,
+        ProportionalNotionalRisk(std::shared_ptr<EventPaymentOffset> paymentOffset,
                            Real attachement, Real exhaustion)
                            : NotionalRisk(paymentOffset) , attachement_(attachement), exhaustion_(exhaustion)
         {

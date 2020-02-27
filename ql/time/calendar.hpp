@@ -29,7 +29,7 @@
 #include <ql/errors.hpp>
 #include <ql/time/date.hpp>
 #include <ql/time/businessdayconvention.hpp>
-#include <ql/shared_ptr.hpp>
+#include <memory>
 #include <set>
 #include <vector>
 #include <string>
@@ -67,7 +67,7 @@ namespace QuantLib {
             virtual bool isWeekend(Weekday) const = 0;
             std::set<Date> addedHolidays, removedHolidays;
         };
-        ext::shared_ptr<Impl> impl_;
+        std::shared_ptr<Impl> impl_;
       public:
         /*! The default constructor returns a calendar with a null
             implementation, which is therefore unusable except as a

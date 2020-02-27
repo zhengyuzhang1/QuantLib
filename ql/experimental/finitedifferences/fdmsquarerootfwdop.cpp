@@ -38,7 +38,7 @@
 namespace QuantLib {
 
     FdmSquareRootFwdOp::FdmSquareRootFwdOp(
-        const ext::shared_ptr<FdmMesher>& mesher,
+        const std::shared_ptr<FdmMesher>& mesher,
         Real kappa, Real theta, Real sigma,
         Size direction, TransformationType transform)
     : direction_(direction),
@@ -83,7 +83,7 @@ namespace QuantLib {
     }
 
     void FdmSquareRootFwdOp::setLowerBC(
-        const ext::shared_ptr<FdmMesher>& mesher) {
+        const std::shared_ptr<FdmMesher>& mesher) {
         const Size n = 1;
         Real alpha, beta, gamma;
 
@@ -105,7 +105,7 @@ namespace QuantLib {
     }
 
     void FdmSquareRootFwdOp::setUpperBC(
-        const ext::shared_ptr<FdmMesher>& mesher) {
+        const std::shared_ptr<FdmMesher>& mesher) {
         const Size n = v_.size();
         Real alpha, beta, gamma;
 

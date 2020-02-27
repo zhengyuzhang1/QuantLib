@@ -25,7 +25,7 @@
 namespace QuantLib {
 
     AnalyticDoubleBarrierEngine::AnalyticDoubleBarrierEngine(
-            ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
+            std::shared_ptr<GeneralizedBlackScholesProcess>  process,
             int series)
     : process_(std::move(process)), series_(series) {
         registerWith(process_);
@@ -36,8 +36,8 @@ namespace QuantLib {
         QL_REQUIRE(arguments_.exercise->type() == Exercise::European,
                    "this engine handles only european options");
 
-        ext::shared_ptr<PlainVanillaPayoff> payoff =
-            ext::dynamic_pointer_cast<PlainVanillaPayoff>(arguments_.payoff);
+        std::shared_ptr<PlainVanillaPayoff> payoff =
+            std::dynamic_pointer_cast<PlainVanillaPayoff>(arguments_.payoff);
         QL_REQUIRE(payoff, "non-plain payoff given");
 
         Real strike = payoff->strike();
@@ -103,8 +103,8 @@ namespace QuantLib {
     }
 
     Real AnalyticDoubleBarrierEngine::strike() const {
-        ext::shared_ptr<PlainVanillaPayoff> payoff =
-            ext::dynamic_pointer_cast<PlainVanillaPayoff>(arguments_.payoff);
+        std::shared_ptr<PlainVanillaPayoff> payoff =
+            std::dynamic_pointer_cast<PlainVanillaPayoff>(arguments_.payoff);
         QL_REQUIRE(payoff, "non-plain payoff given");
         return payoff->strike();
     }
@@ -157,8 +157,8 @@ namespace QuantLib {
 
     Real AnalyticDoubleBarrierEngine::vanillaEquivalent() const {
         // Call KI equates to vanilla - callKO
-        ext::shared_ptr<StrikedTypePayoff> payoff =
-            ext::dynamic_pointer_cast<StrikedTypePayoff>(arguments_.payoff);
+        std::shared_ptr<StrikedTypePayoff> payoff =
+            std::dynamic_pointer_cast<StrikedTypePayoff>(arguments_.payoff);
         Real forwardPrice = underlying() * dividendDiscount() / riskFreeDiscount();
         BlackCalculator black(payoff, forwardPrice, stdDeviation(), riskFreeDiscount());
         Real vanilla = black.value();

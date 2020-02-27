@@ -23,8 +23,8 @@
 namespace QuantLib {
 
     OvernightIndexFuture::OvernightIndexFuture(
-        const ext::shared_ptr<OvernightIndex>& overnightIndex,
-        const ext::shared_ptr<Payoff>& payoff,
+        const std::shared_ptr<OvernightIndex>& overnightIndex,
+        const std::shared_ptr<Payoff>& payoff,
         const Date& valueDate,
         const Date& maturityDate,
         const Handle<YieldTermStructure>& discountCurve,

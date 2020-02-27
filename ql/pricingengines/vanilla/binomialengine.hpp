@@ -55,7 +55,7 @@ namespace QuantLib {
     class BinomialVanillaEngine : public VanillaOption::engine {
       public:
         BinomialVanillaEngine(
-             ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
+             std::shared_ptr<GeneralizedBlackScholesProcess>  process,
              Size timeSteps)
         : process_(std::move(process)), timeSteps_(timeSteps) {
             QL_REQUIRE(timeSteps >= 2,
@@ -65,7 +65,7 @@ namespace QuantLib {
         }
         void calculate() const override;
       private:
-        ext::shared_ptr<GeneralizedBlackScholesProcess> process_;
+        std::shared_ptr<GeneralizedBlackScholesProcess> process_;
         Size timeSteps_;
     };
 
@@ -93,32 +93,32 @@ namespace QuantLib {
 
         // binomial trees with constant coefficient
         Handle<YieldTermStructure> flatRiskFree(
-            ext::shared_ptr<YieldTermStructure>(
+            std::shared_ptr<YieldTermStructure>(
                 new FlatForward(referenceDate, r, rfdc)));
         Handle<YieldTermStructure> flatDividends(
-            ext::shared_ptr<YieldTermStructure>(
+            std::shared_ptr<YieldTermStructure>(
                 new FlatForward(referenceDate, q, divdc)));
         Handle<BlackVolTermStructure> flatVol(
-            ext::shared_ptr<BlackVolTermStructure>(
+            std::shared_ptr<BlackVolTermStructure>(
                 new BlackConstantVol(referenceDate, volcal, v, voldc)));
 
-        ext::shared_ptr<PlainVanillaPayoff> payoff =
-            ext::dynamic_pointer_cast<PlainVanillaPayoff>(arguments_.payoff);
+        std::shared_ptr<PlainVanillaPayoff> payoff =
+            std::dynamic_pointer_cast<PlainVanillaPayoff>(arguments_.payoff);
         QL_REQUIRE(payoff, "non-plain payoff given");
 
         Time maturity = rfdc.yearFraction(referenceDate, maturityDate);
 
-        ext::shared_ptr<StochasticProcess1D> bs(
+        std::shared_ptr<StochasticProcess1D> bs(
                          new GeneralizedBlackScholesProcess(
                                       process_->stateVariable(),
                                       flatDividends, flatRiskFree, flatVol));
 
         TimeGrid grid(maturity, timeSteps_);
 
-        ext::shared_ptr<T> tree(new T(bs, maturity, timeSteps_,
+        std::shared_ptr<T> tree(new T(bs, maturity, timeSteps_,
                                         payoff->strike()));
 
-        ext::shared_ptr<BlackScholesLattice<T> > lattice(
+        std::shared_ptr<BlackScholesLattice<T> > lattice(
             new BlackScholesLattice<T>(tree, r, maturity, timeSteps_));
 
         DiscretizedVanillaOption option(arguments_, *process_, grid);

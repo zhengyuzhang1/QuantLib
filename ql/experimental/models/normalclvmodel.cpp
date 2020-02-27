@@ -38,8 +38,8 @@
 namespace QuantLib {
 
     NormalCLVModel::NormalCLVModel(
-        const ext::shared_ptr<GeneralizedBlackScholesProcess>& bsProcess,
-        ext::shared_ptr<OrnsteinUhlenbeckProcess>  ouProcess,
+        const std::shared_ptr<GeneralizedBlackScholesProcess>& bsProcess,
+        std::shared_ptr<OrnsteinUhlenbeckProcess>  ouProcess,
         const std::vector<Date>& maturityDates,
         Size lagrangeOrder, Real pMax, Real pMin)
     : x_(M_SQRT2*GaussHermiteIntegration(lagrangeOrder).x()),
@@ -51,7 +51,7 @@ namespace QuantLib {
       bsProcess_    (bsProcess),
       ouProcess_    (std::move(ouProcess)),
       maturityDates_(maturityDates),
-      rndCalculator_(ext::make_shared<GBSMRNDCalculator>(bsProcess)),
+      rndCalculator_(std::make_shared<GBSMRNDCalculator>(bsProcess)),
       maturityTimes_(maturityDates.size()) {
 
         registerWith(bsProcess_);
@@ -96,7 +96,7 @@ namespace QuantLib {
     }
 
 
-    ext::function<Real(Time, Real)> NormalCLVModel::g() const {
+    std::function<Real(Time, Real)> NormalCLVModel::g() const {
         calculate();
         return g_;
     }
@@ -106,7 +106,7 @@ namespace QuantLib {
     : y_(model.x_.size()),
       sigma_(model.sigma_),
       ouProcess_(model.ouProcess_),
-      data_(ext::make_shared<InterpolationData>(model)) {
+      data_(std::make_shared<InterpolationData>(model)) {
 
         for (Size i=0; i < data_->s_.columns(); ++i) {
             const Array y = model.collocationPointsY(model.maturityDates_[i]);
@@ -136,6 +136,6 @@ namespace QuantLib {
     }
 
     void NormalCLVModel::performCalculations() const {
-        g_ = ext::function<Real(Time, Real)>(MappingFunction(*this));
+        g_ = std::function<Real(Time, Real)>(MappingFunction(*this));
     }
 }

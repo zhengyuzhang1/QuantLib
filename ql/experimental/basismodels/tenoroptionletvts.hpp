@@ -41,8 +41,8 @@ namespace QuantLib {
       protected:
         class TenorOptionletSmileSection : public SmileSection {
           protected:
-            ext::shared_ptr<CorrelationStructure> correlation_;
-            std::vector<ext::shared_ptr<SmileSection> > baseSmileSection_;
+            std::shared_ptr<CorrelationStructure> correlation_;
+            std::vector<std::shared_ptr<SmileSection> > baseSmileSection_;
             std::vector<Time> startTimeBase_; // for correlation parametrisation
             std::vector<Real> fraRateBase_;
             Real fraRateTarg_;
@@ -65,9 +65,9 @@ namespace QuantLib {
         };
 
         Handle<OptionletVolatilityStructure> baseVTS_;
-        ext::shared_ptr<IborIndex> baseIndex_;
-        ext::shared_ptr<IborIndex> targIndex_;
-        ext::shared_ptr<CorrelationStructure> correlation_;
+        std::shared_ptr<IborIndex> baseIndex_;
+        std::shared_ptr<IborIndex> targIndex_;
+        std::shared_ptr<CorrelationStructure> correlation_;
 
       public:
         // functor interface for parametric correlation
@@ -81,12 +81,12 @@ namespace QuantLib {
         // very basic choice for correlation structure
         class TwoParameterCorrelation : public CorrelationStructure {
           protected:
-            ext::shared_ptr<Interpolation> rhoInf_;
-            ext::shared_ptr<Interpolation> beta_;
+            std::shared_ptr<Interpolation> rhoInf_;
+            std::shared_ptr<Interpolation> beta_;
 
           public:
-            TwoParameterCorrelation(const ext::shared_ptr<Interpolation>& rhoInf,
-                                    const ext::shared_ptr<Interpolation>& beta) {
+            TwoParameterCorrelation(const std::shared_ptr<Interpolation>& rhoInf,
+                                    const std::shared_ptr<Interpolation>& beta) {
                 rhoInf_ = rhoInf;
                 beta_ = beta;
             }
@@ -100,9 +100,9 @@ namespace QuantLib {
 
         // constructor
         TenorOptionletVTS(const Handle<OptionletVolatilityStructure>& baseVTS,
-                          const ext::shared_ptr<IborIndex>& baseIndex,
-                          const ext::shared_ptr<IborIndex>& targIndex,
-                          const ext::shared_ptr<CorrelationStructure>& correlation);
+                          const std::shared_ptr<IborIndex>& baseIndex,
+                          const std::shared_ptr<IborIndex>& targIndex,
+                          const std::shared_ptr<CorrelationStructure>& correlation);
 
         // Termstructure interface
 
@@ -112,8 +112,8 @@ namespace QuantLib {
         // VolatilityTermstructure interface
 
         //! implements the actual smile calculation in derived classes
-        virtual ext::shared_ptr<SmileSection> smileSectionImpl(Time optionTime) const {
-            return ext::shared_ptr<SmileSection>(new TenorOptionletSmileSection(*this, optionTime));
+        virtual std::shared_ptr<SmileSection> smileSectionImpl(Time optionTime) const {
+            return std::shared_ptr<SmileSection>(new TenorOptionletSmileSection(*this, optionTime));
         }
         //! implements the actual volatility calculation in derived classes
         virtual Volatility volatilityImpl(Time optionTime, Rate strike) const {

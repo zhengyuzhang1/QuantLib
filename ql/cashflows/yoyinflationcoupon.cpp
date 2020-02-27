@@ -32,7 +32,7 @@ namespace QuantLib {
                    const Date& startDate,
                    const Date& endDate,
                    Natural fixingDays,
-                   const ext::shared_ptr<YoYInflationIndex>& yoyIndex,
+                   const std::shared_ptr<YoYInflationIndex>& yoyIndex,
                    const Period& observationLag,
                    const DayCounter& dayCounter,
                    Real gearing,
@@ -56,16 +56,16 @@ namespace QuantLib {
 
 
     bool YoYInflationCoupon::checkPricerImpl(
-            const ext::shared_ptr<InflationCouponPricer>&pricer) const {
+            const std::shared_ptr<InflationCouponPricer>&pricer) const {
         return static_cast<bool>(
-               ext::dynamic_pointer_cast<YoYInflationCouponPricer>(pricer));
+               std::dynamic_pointer_cast<YoYInflationCouponPricer>(pricer));
     }
 
 
 
     yoyInflationLeg::
     yoyInflationLeg(Schedule  schedule, Calendar  paymentCalendar,
-                    ext::shared_ptr<YoYInflationIndex>  index,
+                    std::shared_ptr<YoYInflationIndex>  index,
                     const Period& observationLag)
     : schedule_(std::move(schedule)), index_(std::move(index)),
       observationLag_(observationLag),
@@ -183,7 +183,7 @@ namespace QuantLib {
                 refEnd = schedule_.calendar().adjust(start + schedule_.tenor(), bdc);
             }
             if (detail::get(gearings_, i, 1.0) == 0.0) { // fixed coupon
-                leg.push_back(ext::shared_ptr<CashFlow>(new
+                leg.push_back(std::shared_ptr<CashFlow>(new
                             FixedRateCoupon(paymentDate,
                             detail::get(notionals_, i, 1.0),
                             detail::effectiveFixedRate(spreads_,caps_,
@@ -192,7 +192,7 @@ namespace QuantLib {
                                     start, end, refStart, refEnd)));
             } else { // yoy inflation coupon
                 if (detail::noOption(caps_, floors_, i)) { // just swaplet
-                    ext::shared_ptr<YoYInflationCoupon> coup(new
+                    std::shared_ptr<YoYInflationCoupon> coup(new
                             YoYInflationCoupon(
                             paymentDate,
                             detail::get(notionals_, i, 1.0),
@@ -207,15 +207,15 @@ namespace QuantLib {
 
                     // in this case you can set a pricer
                     // straight away because it only provides computation - not data
-                    ext::shared_ptr<YoYInflationCouponPricer> pricer(
+                    std::shared_ptr<YoYInflationCouponPricer> pricer(
                                             new YoYInflationCouponPricer);
                     coup->setPricer(pricer);
-                    leg.push_back(ext::dynamic_pointer_cast<CashFlow>(coup));
+                    leg.push_back(std::dynamic_pointer_cast<CashFlow>(coup));
 
 
 
                 } else {    // cap/floorlet
-                    leg.push_back(ext::shared_ptr<CashFlow>(new
+                    leg.push_back(std::shared_ptr<CashFlow>(new
                             CappedFlooredYoYInflationCoupon(
                             paymentDate,
                             detail::get(notionals_, i, 1.0),

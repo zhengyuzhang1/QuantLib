@@ -24,7 +24,7 @@
 namespace QuantLib {
 
     DigitalCmsSpreadCoupon::DigitalCmsSpreadCoupon(
-                      const ext::shared_ptr<CmsSpreadCoupon>& underlying,
+                      const std::shared_ptr<CmsSpreadCoupon>& underlying,
                       Rate callStrike,
                       Position::Type callPosition,
                       bool isCallATMIncluded,
@@ -33,7 +33,7 @@ namespace QuantLib {
                       Position::Type putPosition,
                       bool isPutATMIncluded,
                       Rate putDigitalPayoff,
-                      const ext::shared_ptr<DigitalReplication>& replication,
+                      const std::shared_ptr<DigitalReplication>& replication,
                       bool nakedOption)
     : DigitalCoupon(underlying, callStrike, callPosition, isCallATMIncluded,
                     callDigitalPayoff, putStrike, putPosition,
@@ -52,7 +52,7 @@ namespace QuantLib {
 
 
     DigitalCmsSpreadLeg::DigitalCmsSpreadLeg(Schedule  schedule,
-                                 ext::shared_ptr<SwapSpreadIndex>  index)
+                                 std::shared_ptr<SwapSpreadIndex>  index)
     : schedule_(std::move(schedule)), index_(std::move(index)),
       paymentAdjustment_(Following), inArrears_(false),
       longCallOption_(Position::Long), callATM_(false),
@@ -184,7 +184,7 @@ namespace QuantLib {
     }
 
     DigitalCmsSpreadLeg& DigitalCmsSpreadLeg::withReplication(
-                   const ext::shared_ptr<DigitalReplication>& replication) {
+                   const std::shared_ptr<DigitalReplication>& replication) {
         replication_ = replication;
         return *this;
     }

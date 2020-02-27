@@ -52,7 +52,7 @@ namespace QuantLib {
         Date getPaymentDate(const Date& date) const;
       protected:
         struct Data;
-        ext::shared_ptr<Data> data_;
+        std::shared_ptr<Data> data_;
 
         struct Data {
             std::string name;
@@ -64,7 +64,7 @@ namespace QuantLib {
                  Calendar  calendar);
         };
 
-        static std::map<std::string, ext::shared_ptr<Data> > paymentTerms_;
+        static std::map<std::string, std::shared_ptr<Data> > paymentTerms_;
     };
 
     /*! \relates PaymentTerm */

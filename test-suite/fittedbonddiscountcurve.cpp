@@ -32,12 +32,12 @@ void FittedBondDiscountCurveTest::testEvaluation() {
     BOOST_TEST_MESSAGE("Testing that fitted bond curves work as evaluators...");
 
     Date today = Settings::instance().evaluationDate();
-    ext::shared_ptr<Bond> bond = ext::make_shared<ZeroCouponBond>(3, TARGET(), 100.0,
+    std::shared_ptr<Bond> bond = std::make_shared<ZeroCouponBond>(3, TARGET(), 100.0,
                                                                   today + Period(10, Years));
-    Handle<Quote> q(ext::make_shared<SimpleQuote>(100.0));
+    Handle<Quote> q(std::make_shared<SimpleQuote>(100.0));
 
-    std::vector<ext::shared_ptr<BondHelper> > helpers(1);
-    helpers[0] = ext::make_shared<BondHelper>(q, bond);
+    std::vector<std::shared_ptr<BondHelper> > helpers(1);
+    helpers[0] = std::make_shared<BondHelper>(q, bond);
 
     ExponentialSplinesFitting fittingMethod;
 

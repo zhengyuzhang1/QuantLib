@@ -42,8 +42,8 @@ namespace QuantLib {
             }
             Rate swapletRate() const override {
 
-                ext::shared_ptr<OvernightIndex> index =
-                    ext::dynamic_pointer_cast<OvernightIndex>(coupon_->index());
+                std::shared_ptr<OvernightIndex> index =
+                    std::dynamic_pointer_cast<OvernightIndex>(coupon_->index());
 
                 const vector<Date>& fixingDates = coupon_->fixingDates();
                 const vector<Time>& dt = coupon_->dt();
@@ -118,7 +118,7 @@ namespace QuantLib {
                     Real nominal,
                     const Date& startDate,
                     const Date& endDate,
-                    const ext::shared_ptr<OvernightIndex>& overnightIndex,
+                    const std::shared_ptr<OvernightIndex>& overnightIndex,
                     Real gearing,
                     Spread spread,
                     const Date& refPeriodStart,
@@ -193,7 +193,7 @@ namespace QuantLib {
         for (Size i=0; i<n_; ++i)
             dt_[i] = dc.yearFraction(valueDates_[i], valueDates_[i+1]);
 
-        setPricer(ext::shared_ptr<FloatingRateCouponPricer>(new
+        setPricer(std::shared_ptr<FloatingRateCouponPricer>(new
                                             OvernightIndexedCouponPricer));
     }
 
@@ -215,7 +215,7 @@ namespace QuantLib {
     }
 
     OvernightLeg::OvernightLeg(const Schedule& schedule,
-                               ext::shared_ptr<OvernightIndex>  i)
+                               std::shared_ptr<OvernightIndex>  i)
     : schedule_(schedule), overnightIndex_(std::move(i)), paymentCalendar_(schedule.calendar()),
       paymentAdjustment_(Following), paymentLag_(0), telescopicValueDates_(false) {}
 
@@ -300,7 +300,7 @@ namespace QuantLib {
                 refEnd = calendar.adjust(start + schedule_.tenor(),
                                          paymentAdjustment_);
 
-            cashflows.push_back(ext::shared_ptr<CashFlow>(new
+            cashflows.push_back(std::shared_ptr<CashFlow>(new
                 OvernightIndexedCoupon(paymentDate,
                                        detail::get(notionals_, i,
                                                    notionals_.back()),

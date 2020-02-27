@@ -259,27 +259,27 @@ void DoubleBarrierOptionTest::testEuropeanHaugValues() {
     DayCounter dc = Actual360();
     Date today = Date::todaysDate();
 
-    ext::shared_ptr<SimpleQuote> spot(new SimpleQuote(0.0));
-    ext::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.0));
-    ext::shared_ptr<YieldTermStructure> qTS = flatRate(today, qRate, dc);
-    ext::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
-    ext::shared_ptr<YieldTermStructure> rTS = flatRate(today, rRate, dc);
-    ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
-    ext::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
+    std::shared_ptr<SimpleQuote> spot(new SimpleQuote(0.0));
+    std::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.0));
+    std::shared_ptr<YieldTermStructure> qTS = flatRate(today, qRate, dc);
+    std::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
+    std::shared_ptr<YieldTermStructure> rTS = flatRate(today, rRate, dc);
+    std::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
+    std::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
 
     for (auto & value : values) {
         Date exDate = today + Integer(value.t*360+0.5);
-        ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
+        std::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
         spot ->setValue(value.s);
         qRate->setValue(value.q); 
         rRate->setValue(value.r);
         vol  ->setValue(value.v);
 
-        ext::shared_ptr<StrikedTypePayoff> payoff(new
+        std::shared_ptr<StrikedTypePayoff> payoff(new
             PlainVanillaPayoff(value.type, value.strike));
 
-        ext::shared_ptr<BlackScholesMertonProcess> stochProcess(new
+        std::shared_ptr<BlackScholesMertonProcess> stochProcess(new
             BlackScholesMertonProcess(Handle<Quote>(spot),
                                       Handle<YieldTermStructure>(qTS),
                                       Handle<YieldTermStructure>(rTS),
@@ -294,7 +294,7 @@ void DoubleBarrierOptionTest::testEuropeanHaugValues() {
                 exercise);
 
         // Ikeda/Kunitomo engine
-        ext::shared_ptr<PricingEngine> engine(
+        std::shared_ptr<PricingEngine> engine(
                                      new AnalyticDoubleBarrierEngine(stochProcess));
         opt.setPricingEngine(engine);
 
@@ -309,7 +309,7 @@ void DoubleBarrierOptionTest::testEuropeanHaugValues() {
         }
 
         // Wulin Suo/Yong Wang engine
-        engine = ext::shared_ptr<PricingEngine>(
+        engine = std::shared_ptr<PricingEngine>(
                                      new WulinYongDoubleBarrierEngine(stochProcess));
         opt.setPricingEngine(engine);
 
@@ -323,7 +323,7 @@ void DoubleBarrierOptionTest::testEuropeanHaugValues() {
                            expected, calculated, error, value.tol);
         }
 
-        engine = ext::shared_ptr<PricingEngine>(
+        engine = std::shared_ptr<PricingEngine>(
               new BinomialDoubleBarrierEngine<CoxRossRubinstein,
                               DiscretizedDoubleBarrierOption>(stochProcess, 
                                                                  300));
@@ -340,7 +340,7 @@ void DoubleBarrierOptionTest::testEuropeanHaugValues() {
                            tol);
         }
 
-        engine = ext::shared_ptr<PricingEngine>(
+        engine = std::shared_ptr<PricingEngine>(
               new BinomialDoubleBarrierEngine<CoxRossRubinstein,
                            DiscretizedDermanKaniDoubleBarrierOption>(
                                                 stochProcess, 300));
@@ -358,9 +358,9 @@ void DoubleBarrierOptionTest::testEuropeanHaugValues() {
         }
 
         if (value.barrierType == DoubleBarrier::KnockOut) {
-            engine = ext::make_shared<FdHestonDoubleBarrierEngine>(
-                ext::make_shared<HestonModel>(
-                    ext::make_shared<HestonProcess>(
+            engine = std::make_shared<FdHestonDoubleBarrierEngine>(
+                std::make_shared<HestonModel>(
+                    std::make_shared<HestonProcess>(
                         Handle<YieldTermStructure>(rTS),
                         Handle<YieldTermStructure>(qTS),
                         Handle<Quote>(spot),
@@ -424,14 +424,14 @@ void DoubleBarrierOptionTest::testVannaVolgaDoubleBarrierValues() {
     Date today(05, Mar, 2013);
     Settings::instance().evaluationDate() = today;
 
-    ext::shared_ptr<SimpleQuote> spot = ext::make_shared<SimpleQuote>(0.0);
-    ext::shared_ptr<SimpleQuote> qRate = ext::make_shared<SimpleQuote>(0.0);
-    ext::shared_ptr<YieldTermStructure> qTS = flatRate(today, qRate, dc);
-    ext::shared_ptr<SimpleQuote> rRate = ext::make_shared<SimpleQuote>(0.0);
-    ext::shared_ptr<YieldTermStructure> rTS = flatRate(today, rRate, dc);
-    ext::shared_ptr<SimpleQuote> vol25Put = ext::make_shared<SimpleQuote>(0.0);
-    ext::shared_ptr<SimpleQuote> volAtm = ext::make_shared<SimpleQuote>(0.0);
-    ext::shared_ptr<SimpleQuote> vol25Call = ext::make_shared<SimpleQuote>(0.0);
+    std::shared_ptr<SimpleQuote> spot = std::make_shared<SimpleQuote>(0.0);
+    std::shared_ptr<SimpleQuote> qRate = std::make_shared<SimpleQuote>(0.0);
+    std::shared_ptr<YieldTermStructure> qTS = flatRate(today, qRate, dc);
+    std::shared_ptr<SimpleQuote> rRate = std::make_shared<SimpleQuote>(0.0);
+    std::shared_ptr<YieldTermStructure> rTS = flatRate(today, rRate, dc);
+    std::shared_ptr<SimpleQuote> vol25Put = std::make_shared<SimpleQuote>(0.0);
+    std::shared_ptr<SimpleQuote> volAtm = std::make_shared<SimpleQuote>(0.0);
+    std::shared_ptr<SimpleQuote> vol25Call = std::make_shared<SimpleQuote>(0.0);
 
     for (auto & value : values) {
 
@@ -446,16 +446,16 @@ void DoubleBarrierOptionTest::testVannaVolgaDoubleBarrierValues() {
             volAtm->setValue(value.volAtm);
             vol25Call->setValue(value.vol25Call);
 
-            ext::shared_ptr<StrikedTypePayoff> payoff =
-                ext::make_shared<PlainVanillaPayoff>(value.type,
+            std::shared_ptr<StrikedTypePayoff> payoff =
+                std::make_shared<PlainVanillaPayoff>(value.type,
                                                        value.strike);
 
             Date exDate = today + Integer(value.t*365+0.5);
-            ext::shared_ptr<Exercise> exercise =
-                ext::make_shared<EuropeanExercise>(exDate);
+            std::shared_ptr<Exercise> exercise =
+                std::make_shared<EuropeanExercise>(exDate);
 
             Handle<DeltaVolQuote> volAtmQuote = Handle<DeltaVolQuote>(
-                        ext::make_shared<DeltaVolQuote>(
+                        std::make_shared<DeltaVolQuote>(
                             Handle<Quote>(volAtm),
                             DeltaVolQuote::Fwd,
                             value.t,
@@ -463,14 +463,14 @@ void DoubleBarrierOptionTest::testVannaVolgaDoubleBarrierValues() {
 
                                 //always delta neutral atm
             Handle<DeltaVolQuote> vol25PutQuote(Handle<DeltaVolQuote>(
-                            ext::make_shared<DeltaVolQuote>(
+                            std::make_shared<DeltaVolQuote>(
                                 -0.25,
                                 Handle<Quote>(vol25Put),
                                 value.t,
                                 DeltaVolQuote::Fwd)));
 
             Handle<DeltaVolQuote> vol25CallQuote(Handle<DeltaVolQuote>(
-                            ext::make_shared<DeltaVolQuote>(
+                            std::make_shared<DeltaVolQuote>(
                                 0.25,
                                 Handle<Quote>(vol25Call),
                                 value.t,
@@ -487,8 +487,8 @@ void DoubleBarrierOptionTest::testVannaVolgaDoubleBarrierValues() {
                 blackFormula(value.type, value.strike,
                              spot->value()*qTS->discount(value.t)/rTS->discount(value.t),
                              value.v * sqrt(value.t), rTS->discount(value.t));
-            ext::shared_ptr<PricingEngine> vannaVolgaEngine =
-                ext::make_shared<VannaVolgaDoubleBarrierEngine<WulinYongDoubleBarrierEngine> >(
+            std::shared_ptr<PricingEngine> vannaVolgaEngine =
+                std::make_shared<VannaVolgaDoubleBarrierEngine<WulinYongDoubleBarrierEngine> >(
                                 volAtmQuote,
                                 vol25PutQuote,
                                 vol25CallQuote,
@@ -519,7 +519,7 @@ void DoubleBarrierOptionTest::testVannaVolgaDoubleBarrierValues() {
             }
 
             vannaVolgaEngine =
-                ext::make_shared<VannaVolgaDoubleBarrierEngine<AnalyticDoubleBarrierEngine> >(
+                std::make_shared<VannaVolgaDoubleBarrierEngine<AnalyticDoubleBarrierEngine> >(
                                 volAtmQuote,
                                 vol25PutQuote,
                                 vol25CallQuote,

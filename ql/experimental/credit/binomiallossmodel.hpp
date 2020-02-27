@@ -25,7 +25,7 @@
 #include <ql/experimental/credit/defaultlossmodel.hpp>
 #include <ql/experimental/credit/constantlosslatentmodel.hpp>
 #include <ql/math/functional.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 #include <algorithm>
 #include <numeric>
 #include <utility>
@@ -64,7 +64,7 @@ namespace QuantLib {
     public:
         typedef typename LLM::copulaType copulaType;
         explicit BinomialLossModel(
-            ext::shared_ptr<LLM>  copula)
+            std::shared_ptr<LLM>  copula)
         : copula_(std::move(copula)) { }
     private:
         void resetModel() override {
@@ -136,7 +136,7 @@ namespace QuantLib {
                 const std::vector<Real>& uncondDefProbInv, 
                             const std::vector<Real>&  mktFactor) const;
     protected:
-        const ext::shared_ptr<LLM> copula_;
+        const std::shared_ptr<LLM> copula_;
 
         // cached arguments:
         // remaining basket magnitudes:

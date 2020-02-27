@@ -30,7 +30,7 @@
 namespace QuantLib {
 
     JointStochasticProcess::JointStochasticProcess(
-        std::vector<ext::shared_ptr<StochasticProcess> >  l,
+        std::vector<std::shared_ptr<StochasticProcess> >  l,
         Size factors)
     : l_      (std::move(l)),
       size_   (0),
@@ -296,7 +296,7 @@ namespace QuantLib {
         return this->postEvolve(t0, x0, dt, dv, retVal);
     }
 
-    const std::vector<ext::shared_ptr<StochasticProcess> > &
+    const std::vector<std::shared_ptr<StochasticProcess> > &
                           JointStochasticProcess::constituents() const {
         return l_;
     }

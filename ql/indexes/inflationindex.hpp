@@ -158,7 +158,7 @@ namespace QuantLib {
         //! \name Other methods
         //@{
         Handle<ZeroInflationTermStructure> zeroInflationTermStructure() const;
-        ext::shared_ptr<ZeroInflationIndex> clone(
+        std::shared_ptr<ZeroInflationIndex> clone(
                            const Handle<ZeroInflationTermStructure>& h) const;
         //@}
       private:
@@ -198,7 +198,7 @@ namespace QuantLib {
         bool ratio() const;
         Handle<YoYInflationTermStructure> yoyInflationTermStructure() const;
 
-        ext::shared_ptr<YoYInflationIndex> clone(
+        std::shared_ptr<YoYInflationIndex> clone(
                             const Handle<YoYInflationTermStructure>& h) const;
         //@}
       private:

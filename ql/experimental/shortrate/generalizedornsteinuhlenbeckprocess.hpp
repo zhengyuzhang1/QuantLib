@@ -26,7 +26,7 @@
 #define quantlib_generalized_ornstein_uhlenbeck_process_hpp
 
 #include <ql/stochasticprocess.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 
 namespace QuantLib {
 
@@ -43,8 +43,8 @@ namespace QuantLib {
     class GeneralizedOrnsteinUhlenbeckProcess : public StochasticProcess1D {
       public:
         GeneralizedOrnsteinUhlenbeckProcess(
-              ext::function<Real (Time)> speed,
-              ext::function<Real (Time)> vol,
+              std::function<Real (Time)> speed,
+              std::function<Real (Time)> vol,
               Real x0 = 0.0,
               Real level = 0.0);
         //! \name StochasticProcess1D interface
@@ -65,8 +65,8 @@ namespace QuantLib {
 
       private:
         Real x0_, level_;
-        ext::function<Real (Time)> speed_;
-        ext::function<Real (Time)> volatility_;
+        std::function<Real (Time)> speed_;
+        std::function<Real (Time)> volatility_;
     };
 
 }

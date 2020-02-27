@@ -32,7 +32,7 @@ namespace QuantLib {
     class AtmSmileSection : public SmileSection {
 
       public:
-        AtmSmileSection(const ext::shared_ptr<SmileSection> source,
+        AtmSmileSection(const std::shared_ptr<SmileSection> source,
                         const Real atm = Null<Real>());
 
         Real minStrike() const override { return source_->minStrike(); }
@@ -56,7 +56,7 @@ namespace QuantLib {
         }
 
       private:
-        ext::shared_ptr<SmileSection> source_;
+        std::shared_ptr<SmileSection> source_;
         Real f_;
     };
 }

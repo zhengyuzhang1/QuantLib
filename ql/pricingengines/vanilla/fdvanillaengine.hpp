@@ -47,7 +47,7 @@ namespace QuantLib {
     class FDVanillaEngine {
       public:
         FDVanillaEngine(
-             ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
+             std::shared_ptr<GeneralizedBlackScholesProcess>  process,
              Size timeSteps, Size gridPoints,
              bool timeDependent = false)
         : process_(std::move(process)), timeSteps_(timeSteps), gridPoints_(gridPoints),
@@ -66,15 +66,15 @@ namespace QuantLib {
         virtual void initializeOperator() const;
         virtual Time getResidualTime() const;
         // data
-        ext::shared_ptr<GeneralizedBlackScholesProcess> process_;
+        std::shared_ptr<GeneralizedBlackScholesProcess> process_;
         Size timeSteps_, gridPoints_;
         bool timeDependent_;
         mutable Date exerciseDate_;
-        mutable ext::shared_ptr<Payoff> payoff_;
+        mutable std::shared_ptr<Payoff> payoff_;
         mutable TridiagonalOperator finiteDifferenceOperator_;
         mutable SampledCurve intrinsicValues_;
         typedef BoundaryCondition<TridiagonalOperator> bc_type;
-        mutable std::vector<ext::shared_ptr<bc_type> > BCs_;
+        mutable std::vector<std::shared_ptr<bc_type> > BCs_;
         // temporaries
         mutable Real sMin_, center_, sMax_;
       protected:
@@ -89,7 +89,7 @@ namespace QuantLib {
     class FDEngineAdapter : public base, public engine {
       public:
         FDEngineAdapter(
-             const ext::shared_ptr<GeneralizedBlackScholesProcess>& process,
+             const std::shared_ptr<GeneralizedBlackScholesProcess>& process,
              Size timeSteps=100, Size gridPoints=100,
              bool timeDependent = false)
         : base(process, timeSteps, gridPoints,timeDependent) {

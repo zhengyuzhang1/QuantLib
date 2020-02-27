@@ -43,8 +43,8 @@ namespace QuantLib {
         class arguments;
         class engine;
         FloatFloatSwaption(
-            ext::shared_ptr<FloatFloatSwap> swap,
-            const ext::shared_ptr<Exercise> &exercise,
+            std::shared_ptr<FloatFloatSwap> swap,
+            const std::shared_ptr<Exercise> &exercise,
             Settlement::Type delivery = Settlement::Physical,
             Settlement::Method settlementMethod = Settlement::PhysicalOTC);
         //! \name Instrument interface
@@ -59,20 +59,20 @@ namespace QuantLib {
             return settlementMethod_;
         }
         VanillaSwap::Type type() const { return swap_->type(); }
-        const ext::shared_ptr<FloatFloatSwap> &underlyingSwap() const {
+        const std::shared_ptr<FloatFloatSwap> &underlyingSwap() const {
             return swap_;
         }
         //@}
-        Disposable<std::vector<ext::shared_ptr<BlackCalibrationHelper> > >
+        Disposable<std::vector<std::shared_ptr<BlackCalibrationHelper> > >
         calibrationBasket(
-            ext::shared_ptr<SwapIndex> standardSwapBase,
-            ext::shared_ptr<SwaptionVolatilityStructure> swaptionVolatility,
+            std::shared_ptr<SwapIndex> standardSwapBase,
+            std::shared_ptr<SwaptionVolatilityStructure> swaptionVolatility,
             const BasketGeneratingEngine::CalibrationBasketType basketType =
                 BasketGeneratingEngine::MaturityStrikeByDeltaGamma) const;
 
       private:
         // arguments
-        ext::shared_ptr<FloatFloatSwap> swap_;
+        std::shared_ptr<FloatFloatSwap> swap_;
         Settlement::Type settlementType_;
         Settlement::Method settlementMethod_;
     };
@@ -82,7 +82,7 @@ namespace QuantLib {
                                           public Option::arguments {
       public:
         arguments() = default;
-        ext::shared_ptr<FloatFloatSwap> swap;
+        std::shared_ptr<FloatFloatSwap> swap;
         Settlement::Type settlementType;
         Settlement::Method settlementMethod;
         void validate() const override;

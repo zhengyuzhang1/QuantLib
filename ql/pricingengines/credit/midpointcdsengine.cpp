@@ -31,7 +31,7 @@ namespace QuantLib {
                    Handle<DefaultProbabilityTermStructure>  probability,
                    Real recoveryRate,
                    Handle<YieldTermStructure>  discountCurve,
-                   boost::optional<bool> includeSettlementDateFlows)
+                   std::optional<bool> includeSettlementDateFlows)
     : probability_(std::move(probability)), recoveryRate_(recoveryRate),
       discountCurve_(std::move(discountCurve)),
       includeSettlementDateFlows_(includeSettlementDateFlows) {
@@ -94,8 +94,8 @@ namespace QuantLib {
                                                includeSettlementDateFlows_))
                 continue;
 
-            ext::shared_ptr<FixedRateCoupon> coupon =
-                ext::dynamic_pointer_cast<FixedRateCoupon>(arguments_.leg[i]);
+            std::shared_ptr<FixedRateCoupon> coupon =
+                std::dynamic_pointer_cast<FixedRateCoupon>(arguments_.leg[i]);
 
             // In order to avoid a few switches, we calculate the NPV
             // of both legs as a positive quantity. We'll give them

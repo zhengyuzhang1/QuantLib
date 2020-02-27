@@ -24,10 +24,10 @@
 namespace QuantLib {
 
     FloatFloatSwaption::FloatFloatSwaption(
-        ext::shared_ptr<FloatFloatSwap> swap,
-        const ext::shared_ptr<Exercise> &exercise, Settlement::Type delivery,
+        std::shared_ptr<FloatFloatSwap> swap,
+        const std::shared_ptr<Exercise> &exercise, Settlement::Type delivery,
         Settlement::Method settlementMethod)
-    : Option(ext::shared_ptr<Payoff>(), exercise), swap_(std::move(swap)),
+    : Option(std::shared_ptr<Payoff>(), exercise), swap_(std::move(swap)),
       settlementType_(delivery), settlementMethod_(settlementMethod) {
         registerWith(swap_);
         registerWithObservables(swap_);
@@ -61,14 +61,14 @@ namespace QuantLib {
                                                   settlementMethod);
     }
 
-    Disposable<std::vector<ext::shared_ptr<BlackCalibrationHelper> > >
+    Disposable<std::vector<std::shared_ptr<BlackCalibrationHelper> > >
     FloatFloatSwaption::calibrationBasket(
-        ext::shared_ptr<SwapIndex> standardSwapBase,
-        ext::shared_ptr<SwaptionVolatilityStructure> swaptionVolatility,
+        std::shared_ptr<SwapIndex> standardSwapBase,
+        std::shared_ptr<SwaptionVolatilityStructure> swaptionVolatility,
         const BasketGeneratingEngine::CalibrationBasketType basketType) const {
 
-        ext::shared_ptr<BasketGeneratingEngine> engine =
-            ext::dynamic_pointer_cast<BasketGeneratingEngine>(engine_);
+        std::shared_ptr<BasketGeneratingEngine> engine =
+            std::dynamic_pointer_cast<BasketGeneratingEngine>(engine_);
         QL_REQUIRE(engine, "engine is not a basket generating engine");
         engine_->reset();
         setupArguments(engine_->getArguments());

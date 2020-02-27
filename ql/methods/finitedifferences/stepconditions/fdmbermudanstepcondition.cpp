@@ -28,8 +28,8 @@ namespace QuantLib {
             const std::vector<Date>& exerciseDates,
             const Date& referenceDate,
             const DayCounter& dayCounter,
-            ext::shared_ptr<FdmMesher>  mesher,
-            ext::shared_ptr<FdmInnerValueCalculator>  calculator)
+            std::shared_ptr<FdmMesher>  mesher,
+            std::shared_ptr<FdmInnerValueCalculator>  calculator)
     : mesher_    (std::move(mesher)),
       calculator_(std::move(calculator)) {
     
@@ -48,7 +48,7 @@ namespace QuantLib {
         if (std::find(exerciseTimes_.begin(), exerciseTimes_.end(), t) 
               != exerciseTimes_.end()) {
             
-            ext::shared_ptr<FdmLinearOpLayout> layout = mesher_->layout();
+            std::shared_ptr<FdmLinearOpLayout> layout = mesher_->layout();
             const FdmLinearOpIterator endIter = layout->end();
 
             const Size dims = layout->dim().size();

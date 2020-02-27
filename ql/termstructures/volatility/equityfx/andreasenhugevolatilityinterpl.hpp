@@ -33,7 +33,7 @@
 #include <ql/math/interpolations/linearinterpolation.hpp>
 #include <ql/termstructures/volatility/equityfx/localvoltermstructure.hpp>
 
-#include <boost/tuple/tuple.hpp>
+#include <tuple>
 #include <utility>
 
 namespace QuantLib {
@@ -59,7 +59,7 @@ namespace QuantLib {
             Call = Option::Call, Put = Option::Put, CallPut};
 
         typedef std::vector<std::pair<
-            ext::shared_ptr<VanillaOption>, ext::shared_ptr<Quote> > >
+            std::shared_ptr<VanillaOption>, std::shared_ptr<Quote> > >
           CalibrationSet;
 
         AndreasenHugeVolatilityInterpl(
@@ -72,8 +72,8 @@ namespace QuantLib {
             Size nGridPoints = 500,
             Real minStrike = Null<Real>(),
             Real maxStrike = Null<Real>(),
-            ext::shared_ptr<OptimizationMethod>  optimizationMethod =
-                ext::shared_ptr<OptimizationMethod>(new LevenbergMarquardt),
+            std::shared_ptr<OptimizationMethod>  optimizationMethod =
+                std::shared_ptr<OptimizationMethod>(new LevenbergMarquardt),
             const EndCriteria& endCriteria =
                 EndCriteria(500, 100, 1e-12, 1e-10, 1e-10));
 
@@ -85,7 +85,7 @@ namespace QuantLib {
         const Handle<YieldTermStructure>& riskFreeRate() const;
 
         // returns min, max and average error in volatility units
-        boost::tuple<Real, Real, Real> calibrationError() const;
+        std::tuple<Real, Real, Real> calibrationError() const;
 
         // returns the option price of the calibration type. In case
         // of CallPut it return the call option price
@@ -98,17 +98,17 @@ namespace QuantLib {
 
       private:
         typedef std::map<Time,
-            boost::tuple<
+            std::tuple<
                 Real,
-                ext::shared_ptr<Array>,
-                ext::shared_ptr<Interpolation> > > TimeValueCacheType;
+                std::shared_ptr<Array>,
+                std::shared_ptr<Interpolation> > > TimeValueCacheType;
 
         struct SingleStepCalibrationResult {
             Array putNPVs, callNPVs, sigmas;
-            ext::shared_ptr<AndreasenHugeCostFunction> costFunction;
+            std::shared_ptr<AndreasenHugeCostFunction> costFunction;
         };
 
-        ext::shared_ptr<AndreasenHugeCostFunction> buildCostFunction(
+        std::shared_ptr<AndreasenHugeCostFunction> buildCostFunction(
             Size iExpiry, Option::Type optionType,
             const Array& previousNPVs) const;
 
@@ -133,7 +133,7 @@ namespace QuantLib {
         const Size nGridPoints_;
         const Real minStrike_, maxStrike_;
 
-        const ext::shared_ptr<OptimizationMethod> optimizationMethod_;
+        const std::shared_ptr<OptimizationMethod> optimizationMethod_;
         const EndCriteria endCriteria_;
 
         std::vector<Real> strikes_;
@@ -143,7 +143,7 @@ namespace QuantLib {
         std::vector<std::vector<Size> > calibrationMatrix_;
         mutable Real avgError_, minError_, maxError_;
 
-        mutable ext::shared_ptr<FdmMesherComposite> mesher_;
+        mutable std::shared_ptr<FdmMesherComposite> mesher_;
         mutable Array gridPoints_, gridInFwd_;
 
         mutable std::vector<SingleStepCalibrationResult> calibrationResults_;

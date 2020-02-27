@@ -30,7 +30,7 @@
 #include <ql/types.hpp>
 #include <ql/errors.hpp>
 #include <ql/utilities/disposable.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 #include <vector>
 #include <cmath>
 
@@ -39,10 +39,10 @@ namespace QuantLib {
     template <class T = Real>
     class AdaptiveRungeKutta {
       public:
-        typedef ext::function<
+        typedef std::function<
           Disposable<std::vector<T> >(const Real,
                                       const std::vector<T>&)> OdeFct;
-        typedef ext::function<T(const Real, const T)> OdeFct1d;
+        typedef std::function<T(const Real, const T)> OdeFct1d;
 
         /*! The class is constructed with the following inputs:
             - eps       prescribed error for the solution

@@ -134,7 +134,7 @@ namespace QuantLib {
         rateCurve_ =
             !nominalTermStructure_.empty() ?
             nominalTermStructure_ :
-            ext::dynamic_pointer_cast<YoYInflationIndex>(coupon.index())
+            std::dynamic_pointer_cast<YoYInflationIndex>(coupon.index())
             ->yoyInflationTermStructure()
             ->nominalTermStructure();
 

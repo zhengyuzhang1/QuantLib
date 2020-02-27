@@ -31,8 +31,8 @@
 namespace QuantLib {
 
     MakeCms::MakeCms(const Period& swapTenor,
-                     const ext::shared_ptr<SwapIndex>& swapIndex,
-                     const ext::shared_ptr<IborIndex>& iborIndex,
+                     const std::shared_ptr<SwapIndex>& swapIndex,
+                     const std::shared_ptr<IborIndex>& iborIndex,
                      Spread iborSpread,
                      const Period& forwardStart)
     : swapTenor_(swapTenor), swapIndex_(swapIndex),
@@ -63,7 +63,7 @@ namespace QuantLib {
 
 
     MakeCms::MakeCms(const Period& swapTenor,
-                     const ext::shared_ptr<SwapIndex>& swapIndex,
+                     const std::shared_ptr<SwapIndex>& swapIndex,
                      Spread iborSpread,
                      const Period& forwardStart)
     : swapTenor_(swapTenor), swapIndex_(swapIndex),
@@ -92,11 +92,11 @@ namespace QuantLib {
 
 
     MakeCms::operator Swap() const {
-        ext::shared_ptr<Swap> swap = *this;
+        std::shared_ptr<Swap> swap = *this;
         return *swap;
     }
 
-    MakeCms::operator ext::shared_ptr<Swap>() const {
+    MakeCms::operator std::shared_ptr<Swap>() const {
 
         Date startDate;
         if (effectiveDate_ != Date())
@@ -174,11 +174,11 @@ namespace QuantLib {
             .withFixingDays(iborIndex_->fixingDays())
             .withSpreads(usedSpread);
 
-        ext::shared_ptr<Swap> swap;
+        std::shared_ptr<Swap> swap;
         if (payCms_)
-            swap = ext::make_shared<Swap>(cmsLeg, floatLeg);
+            swap = std::make_shared<Swap>(cmsLeg, floatLeg);
         else
-            swap = ext::make_shared<Swap>(floatLeg, cmsLeg);
+            swap = std::make_shared<Swap>(floatLeg, cmsLeg);
         swap->setPricingEngine(engine_);
         return swap;
     }
@@ -201,12 +201,12 @@ namespace QuantLib {
 
     MakeCms& MakeCms::withDiscountingTermStructure(
                 const Handle<YieldTermStructure>& discountingTermStructure) {
-        engine_ = ext::make_shared<DiscountingSwapEngine>(discountingTermStructure);
+        engine_ = std::make_shared<DiscountingSwapEngine>(discountingTermStructure);
         return *this;
     }
 
     MakeCms& MakeCms::withCmsCouponPricer(
-                    const ext::shared_ptr<CmsCouponPricer>& couponPricer) {
+                    const std::shared_ptr<CmsCouponPricer>& couponPricer) {
         couponPricer_ = couponPricer;
         return *this;
     }

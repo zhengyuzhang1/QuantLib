@@ -36,7 +36,7 @@ namespace QuantLib {
         OISRateHelper(Natural settlementDays,
                       const Period& tenor, // swap maturity
                       const Handle<Quote>& fixedRate,
-                      ext::shared_ptr<OvernightIndex>  overnightIndex,
+                      std::shared_ptr<OvernightIndex>  overnightIndex,
                       // exogenous discounting curve
                       Handle<YieldTermStructure>  discountingCurve
                                                = Handle<YieldTermStructure>(),
@@ -56,7 +56,7 @@ namespace QuantLib {
         //@}
         //! \name inspectors
         //@{
-        ext::shared_ptr<OvernightIndexedSwap> swap() const { return swap_; }
+        std::shared_ptr<OvernightIndexedSwap> swap() const { return swap_; }
         //@}
         //! \name Visitability
         //@{
@@ -68,9 +68,9 @@ namespace QuantLib {
 
         Natural settlementDays_;
         Period tenor_;
-        ext::shared_ptr<OvernightIndex> overnightIndex_;
+        std::shared_ptr<OvernightIndex> overnightIndex_;
 
-        ext::shared_ptr<OvernightIndexedSwap> swap_;
+        std::shared_ptr<OvernightIndexedSwap> swap_;
         RelinkableHandle<YieldTermStructure> termStructureHandle_;
 
         Handle<YieldTermStructure> discountHandle_;
@@ -92,7 +92,7 @@ namespace QuantLib {
                     const Date& startDate,
                     const Date& endDate,
                     const Handle<Quote>& fixedRate,
-                    const ext::shared_ptr<OvernightIndex>& overnightIndex,
+                    const std::shared_ptr<OvernightIndex>& overnightIndex,
                       // exogenous discounting curve
                     Handle<YieldTermStructure>  discountingCurve
                                               = Handle<YieldTermStructure>(),
@@ -107,7 +107,7 @@ namespace QuantLib {
         void accept(AcyclicVisitor&) override;
         //@}
     protected:
-        ext::shared_ptr<OvernightIndexedSwap> swap_;
+        std::shared_ptr<OvernightIndexedSwap> swap_;
         RelinkableHandle<YieldTermStructure> termStructureHandle_;
 
         Handle<YieldTermStructure> discountHandle_;

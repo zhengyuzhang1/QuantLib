@@ -36,14 +36,14 @@ namespace QuantLib {
         DiscountingBondEngine(
               Handle<YieldTermStructure>  discountCurve =
                                                 Handle<YieldTermStructure>(),
-              boost::optional<bool> includeSettlementDateFlows = boost::none);
+              std::optional<bool> includeSettlementDateFlows = std::nullopt);
         void calculate() const override;
         Handle<YieldTermStructure> discountCurve() const {
             return discountCurve_;
         }
       private:
         Handle<YieldTermStructure> discountCurve_;
-        boost::optional<bool> includeSettlementDateFlows_;
+        std::optional<bool> includeSettlementDateFlows_;
     };
 
 }

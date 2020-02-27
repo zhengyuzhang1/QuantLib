@@ -25,7 +25,7 @@
 namespace QuantLib {
 
     LfmSwaptionEngine::LfmSwaptionEngine(
-                            const ext::shared_ptr<LiborForwardModel>& model,
+                            const std::shared_ptr<LiborForwardModel>& model,
                             Handle<YieldTermStructure>  discountCurve)
     : GenericModelEngine<LiborForwardModel,
                          Swaption::arguments,
@@ -43,7 +43,7 @@ namespace QuantLib {
         static const Spread basisPoint = 1.0e-4;
 
         VanillaSwap swap = *arguments_.swap;
-        swap.setPricingEngine(ext::shared_ptr<PricingEngine>(
+        swap.setPricingEngine(std::shared_ptr<PricingEngine>(
                            new DiscountingSwapEngine(discountCurve_, false)));
 
         Spread correction = swap.spread() *
@@ -51,7 +51,7 @@ namespace QuantLib {
         Rate fixedRate = swap.fixedRate() - correction;
         Rate fairRate = swap.fairRate() - correction;
 
-        ext::shared_ptr<SwaptionVolatilityMatrix> volatility =
+        std::shared_ptr<SwaptionVolatilityMatrix> volatility =
             model_->getSwaptionVolatilityMatrix();
 
         Date referenceDate = volatility->referenceDate();

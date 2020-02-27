@@ -24,7 +24,7 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 #include <ql/experimental/math/multidimintegrator.hpp>
 #include <ql/experimental/math/multidimquadrature.hpp>
 #include <ql/math/integrals/trapezoidintegral.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 
 
 #include <iostream>
@@ -33,13 +33,6 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 using namespace QuantLib;
 using namespace std;
 
-#if defined(QL_ENABLE_SESSIONS)
-namespace QuantLib {
-
-    Integer sessionId() { return 0; }
-
-}
-#endif
 
 // Correct value is: (e^{-.25} \sqrt{\pi})^{dimension}
 struct integrand {
@@ -66,7 +59,7 @@ int main() {
     Real exactSol = std::pow(std::exp(-.25) * 
         std::sqrt(M_PI), static_cast<Real>(dimension));
 
-    ext::function<Real(const std::vector<Real>& arg)> f = integrand();
+    std::function<Real(const std::vector<Real>& arg)> f = integrand();
 
     #ifndef QL_PATCH_SOLARIS
     GaussianQuadMultidimIntegrator intg(dimension, 15);
@@ -74,9 +67,9 @@ int main() {
     Real valueQuad = intg(f);
     #endif
 
-    std::vector<ext::shared_ptr<Integrator> > integrals;
+    std::vector<std::shared_ptr<Integrator> > integrals;
     for(Size i=0; i<dimension; i++)
-        integrals.emplace_back(ext::make_shared<TrapezoidIntegral<Default> >(1.e-4, 20));
+        integrals.emplace_back(std::make_shared<TrapezoidIntegral<Default> >(1.e-4, 20));
     std::vector<Real> a_limits(integrals.size(), -4.);
     std::vector<Real> b_limits(integrals.size(), 4.);
     MultidimIntegral testIntg(integrals);

@@ -60,7 +60,7 @@ namespace QuantLib {
             : curveItem_(new ArrayWrapper(a)) {};
         class CurveWrapper;
 
-        ext::shared_ptr<CurveWrapper> curveItem_;
+        std::shared_ptr<CurveWrapper> curveItem_;
         Real getValue(const array_type &a, Size index) const {
             return curveItem_->getValue(a, index);
         }
@@ -90,7 +90,7 @@ namespace QuantLib {
 
         class PayoffWrapper : public CurveWrapper {
           private:
-            ext::shared_ptr<const Payoff> payoff_;
+            std::shared_ptr<const Payoff> payoff_;
           public:
             PayoffWrapper (const Payoff * p)
                 : payoff_(p) {};

@@ -42,10 +42,10 @@ namespace QuantLib {
         class ShortRateTree;
 
         //! Returns the short-rate dynamics
-        virtual ext::shared_ptr<ShortRateDynamics> dynamics() const = 0;
+        virtual std::shared_ptr<ShortRateDynamics> dynamics() const = 0;
 
         //! Returns a two-dimensional trinomial tree
-        ext::shared_ptr<Lattice> tree(const TimeGrid& grid) const override;
+        std::shared_ptr<Lattice> tree(const TimeGrid& grid) const override;
 
     };
 
@@ -73,8 +73,8 @@ namespace QuantLib {
     class TwoFactorModel::ShortRateDynamics {
       public:
         ShortRateDynamics(
-                       ext::shared_ptr<StochasticProcess1D>  xProcess,
-                       ext::shared_ptr<StochasticProcess1D>  yProcess,
+                       std::shared_ptr<StochasticProcess1D>  xProcess,
+                       std::shared_ptr<StochasticProcess1D>  yProcess,
                        Real correlation)
         : xProcess_(std::move(xProcess)), yProcess_(std::move(yProcess)),
           correlation_(correlation) {}
@@ -83,12 +83,12 @@ namespace QuantLib {
         virtual Rate shortRate(Time t, Real x, Real y) const = 0;
 
         //! Risk-neutral dynamics of the first state variable x
-        const ext::shared_ptr<StochasticProcess1D>& xProcess() const {
+        const std::shared_ptr<StochasticProcess1D>& xProcess() const {
             return xProcess_;
         }
 
         //! Risk-neutral dynamics of the second state variable y
-        const ext::shared_ptr<StochasticProcess1D>& yProcess() const {
+        const std::shared_ptr<StochasticProcess1D>& yProcess() const {
             return yProcess_;
         }
 
@@ -98,10 +98,10 @@ namespace QuantLib {
         }
 
         //! Joint process of the two variables
-        ext::shared_ptr<StochasticProcess> process() const;
+        std::shared_ptr<StochasticProcess> process() const;
 
       private:
-        ext::shared_ptr<StochasticProcess1D> xProcess_, yProcess_;
+        std::shared_ptr<StochasticProcess1D> xProcess_, yProcess_;
         Real correlation_;
     };
 
@@ -110,9 +110,9 @@ namespace QuantLib {
         : public TreeLattice2D<TwoFactorModel::ShortRateTree,TrinomialTree> {
       public:
         //! Plain tree build-up from short-rate dynamics
-        ShortRateTree(const ext::shared_ptr<TrinomialTree>& tree1,
-                      const ext::shared_ptr<TrinomialTree>& tree2,
-                      const ext::shared_ptr<ShortRateDynamics>& dynamics);
+        ShortRateTree(const std::shared_ptr<TrinomialTree>& tree1,
+                      const std::shared_ptr<TrinomialTree>& tree2,
+                      const std::shared_ptr<ShortRateDynamics>& dynamics);
 
         DiscountFactor discount(Size i, Size index) const {
             Size modulo = tree1_->size(i);
@@ -126,7 +126,7 @@ namespace QuantLib {
             return std::exp(-r*timeGrid().dt(i));
         }
       private:
-        ext::shared_ptr<ShortRateDynamics> dynamics_;
+        std::shared_ptr<ShortRateDynamics> dynamics_;
     };
 
 }

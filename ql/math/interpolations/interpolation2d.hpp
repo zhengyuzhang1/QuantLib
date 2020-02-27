@@ -63,7 +63,7 @@ namespace QuantLib {
             virtual bool isInRange(Real x, Real y) const = 0;
             virtual Real value(Real x, Real y) const = 0;
         };
-        ext::shared_ptr<Impl> impl_;
+        std::shared_ptr<Impl> impl_;
       public:
         typedef Real first_argument_type;
         typedef Real second_argument_type;

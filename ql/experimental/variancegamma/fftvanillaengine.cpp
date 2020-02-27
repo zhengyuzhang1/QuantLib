@@ -25,23 +25,23 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 namespace QuantLib {
 
     FFTVanillaEngine::FFTVanillaEngine(
-        const ext::shared_ptr<GeneralizedBlackScholesProcess>& process, Real logStrikeSpacing)
+        const std::shared_ptr<GeneralizedBlackScholesProcess>& process, Real logStrikeSpacing)
         : FFTEngine(process, logStrikeSpacing)
     {
     }
 
-    QL_UNIQUE_OR_AUTO_PTR<FFTEngine> FFTVanillaEngine::clone() const
+    std::unique_ptr<FFTEngine> FFTVanillaEngine::clone() const
     {
-        ext::shared_ptr<GeneralizedBlackScholesProcess> process =
-            ext::dynamic_pointer_cast<GeneralizedBlackScholesProcess>(process_);
-        return QL_UNIQUE_OR_AUTO_PTR<FFTEngine>(
+        std::shared_ptr<GeneralizedBlackScholesProcess> process =
+            std::dynamic_pointer_cast<GeneralizedBlackScholesProcess>(process_);
+        return std::unique_ptr<FFTEngine>(
                                       new FFTVanillaEngine(process, lambda_));
     }
 
     void FFTVanillaEngine::precalculateExpiry(Date d)
     {
-        ext::shared_ptr<GeneralizedBlackScholesProcess> process =
-            ext::dynamic_pointer_cast<GeneralizedBlackScholesProcess>(process_);
+        std::shared_ptr<GeneralizedBlackScholesProcess> process =
+            std::dynamic_pointer_cast<GeneralizedBlackScholesProcess>(process_);
 
         dividendDiscount_ =
             process->dividendYield()->discount(d);
@@ -51,7 +51,7 @@ namespace QuantLib {
         DayCounter rfdc  = process->riskFreeRate()->dayCounter();
         t_ = rfdc.yearFraction(process->riskFreeRate()->referenceDate(), d);
 
-        ext::shared_ptr<BlackConstantVol> constVol = ext::dynamic_pointer_cast<BlackConstantVol>
+        std::shared_ptr<BlackConstantVol> constVol = std::dynamic_pointer_cast<BlackConstantVol>
             (*(process->blackVolatility()));
         QL_REQUIRE(constVol, "Constant volatility required");
         Real vol = constVol->blackVol(0.0, 0.0);
@@ -72,15 +72,15 @@ namespace QuantLib {
 
     Real FFTVanillaEngine::discountFactor(Date d) const
     {
-        ext::shared_ptr<GeneralizedBlackScholesProcess> process =
-            ext::dynamic_pointer_cast<GeneralizedBlackScholesProcess>(process_);
+        std::shared_ptr<GeneralizedBlackScholesProcess> process =
+            std::dynamic_pointer_cast<GeneralizedBlackScholesProcess>(process_);
         return process->riskFreeRate()->discount(d);
     }
 
     Real FFTVanillaEngine::dividendYield(Date d) const
     {
-        ext::shared_ptr<GeneralizedBlackScholesProcess> process =
-            ext::dynamic_pointer_cast<GeneralizedBlackScholesProcess>(process_);
+        std::shared_ptr<GeneralizedBlackScholesProcess> process =
+            std::dynamic_pointer_cast<GeneralizedBlackScholesProcess>(process_);
         return process->dividendYield()->discount(d);
     }
 

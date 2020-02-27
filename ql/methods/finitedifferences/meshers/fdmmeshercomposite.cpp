@@ -33,80 +33,80 @@
 namespace QuantLib {
 
     namespace {
-        typedef ext::shared_ptr<Fdm1dMesher> T;
+        typedef std::shared_ptr<Fdm1dMesher> T;
 
         std::vector<T> build_vector(const T& m1) {
             return std::vector<T>(1, m1);
         }
 
         std::vector<T> build_vector(const T& m1, const T& m2) {
-            const std::vector<ext::shared_ptr<Fdm1dMesher> > retVal
+            const std::vector<std::shared_ptr<Fdm1dMesher> > retVal
                 = boost::assign::list_of(m1)(m2);
             return retVal;
         }
 
         std::vector<T> build_vector(const T& m1, const T& m2, const T& m3) {
-            const std::vector<ext::shared_ptr<Fdm1dMesher> > retVal
+            const std::vector<std::shared_ptr<Fdm1dMesher> > retVal
                 = boost::assign::list_of(m1)(m2)(m3);
             return retVal;
         }
 
         std::vector<T> build_vector(const T& m1, const T& m2,
                                     const T& m3, const T& m4) {
-            const std::vector<ext::shared_ptr<Fdm1dMesher> > retVal
+            const std::vector<std::shared_ptr<Fdm1dMesher> > retVal
                 = boost::assign::list_of(m1)(m2)(m3)(m4);
             return retVal;
         }
 
-        ext::shared_ptr<FdmLinearOpLayout> getLayoutFromMeshers(
-            const std::vector<ext::shared_ptr<Fdm1dMesher> > & meshers) {
+        std::shared_ptr<FdmLinearOpLayout> getLayoutFromMeshers(
+            const std::vector<std::shared_ptr<Fdm1dMesher> > & meshers) {
                 std::vector<Size> dim(meshers.size());
                 for (Size i=0; i < dim.size(); ++i) {
                     dim[i] = meshers[i]->size();
                 }
-            return ext::make_shared<FdmLinearOpLayout>(
+            return std::make_shared<FdmLinearOpLayout>(
                 dim);
         }
     }
 
     FdmMesherComposite::FdmMesherComposite(
-        const ext::shared_ptr<Fdm1dMesher>& mesher)
+        const std::shared_ptr<Fdm1dMesher>& mesher)
     : FdmMesher(getLayoutFromMeshers(build_vector(mesher))),
       mesher_(build_vector(mesher)) {
     }
 
 
     FdmMesherComposite::FdmMesherComposite(
-        const ext::shared_ptr<Fdm1dMesher>& m1,
-        const ext::shared_ptr<Fdm1dMesher>& m2)
+        const std::shared_ptr<Fdm1dMesher>& m1,
+        const std::shared_ptr<Fdm1dMesher>& m2)
     : FdmMesher(getLayoutFromMeshers(build_vector(m1, m2))),
       mesher_(build_vector(m1, m2)) {
     }
 
     FdmMesherComposite::FdmMesherComposite(
-        const ext::shared_ptr<Fdm1dMesher>& m1,
-        const ext::shared_ptr<Fdm1dMesher>& m2,
-        const ext::shared_ptr<Fdm1dMesher>& m3)
+        const std::shared_ptr<Fdm1dMesher>& m1,
+        const std::shared_ptr<Fdm1dMesher>& m2,
+        const std::shared_ptr<Fdm1dMesher>& m3)
     : FdmMesher(getLayoutFromMeshers(build_vector(m1, m2, m3))),
       mesher_(build_vector(m1, m2, m3)) {
     }
 
     FdmMesherComposite::FdmMesherComposite(
-        const ext::shared_ptr<Fdm1dMesher>& m1,
-        const ext::shared_ptr<Fdm1dMesher>& m2,
-        const ext::shared_ptr<Fdm1dMesher>& m3,
-        const ext::shared_ptr<Fdm1dMesher>& m4)
+        const std::shared_ptr<Fdm1dMesher>& m1,
+        const std::shared_ptr<Fdm1dMesher>& m2,
+        const std::shared_ptr<Fdm1dMesher>& m3,
+        const std::shared_ptr<Fdm1dMesher>& m4)
     : FdmMesher(getLayoutFromMeshers(build_vector(m1, m2, m3, m4))),
       mesher_(build_vector(m1, m2, m3, m4)) {
     }
     FdmMesherComposite::FdmMesherComposite(
-        const std::vector<ext::shared_ptr<Fdm1dMesher> > & mesher)
+        const std::vector<std::shared_ptr<Fdm1dMesher> > & mesher)
     : FdmMesher(getLayoutFromMeshers(mesher)), mesher_(mesher) {
     }
 
     FdmMesherComposite::FdmMesherComposite(
-        const ext::shared_ptr<FdmLinearOpLayout>& layout,
-        const std::vector<ext::shared_ptr<Fdm1dMesher> > & mesher)
+        const std::shared_ptr<FdmLinearOpLayout>& layout,
+        const std::vector<std::shared_ptr<Fdm1dMesher> > & mesher)
     : FdmMesher(layout), mesher_(mesher) {
         for (Size i=0; i < mesher.size(); ++i) {
             QL_REQUIRE(mesher[i]->size() == layout->dim()[i],
@@ -142,7 +142,7 @@ namespace QuantLib {
         return retVal;
     }
 
-    const std::vector<ext::shared_ptr<Fdm1dMesher> >&
+    const std::vector<std::shared_ptr<Fdm1dMesher> >&
         FdmMesherComposite::getFdm1dMeshers() const {
         return  mesher_;
     }

@@ -33,9 +33,9 @@
 namespace QuantLib {
 
     FdmExtendedOrnsteinUhlenbeckOp::FdmExtendedOrnsteinUhlenbeckOp(
-            const ext::shared_ptr<FdmMesher>& mesher,
-            ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess>  process,
-            ext::shared_ptr<YieldTermStructure>  rTS,
+            const std::shared_ptr<FdmMesher>& mesher,
+            std::shared_ptr<ExtendedOrnsteinUhlenbeckProcess>  process,
+            std::shared_ptr<YieldTermStructure>  rTS,
             FdmBoundaryConditionSet  bcSet,
             Size direction)
     : mesher_   (mesher),
@@ -58,7 +58,7 @@ namespace QuantLib {
     void FdmExtendedOrnsteinUhlenbeckOp::setTime(Time t1, Time t2) {
         const Rate r = rTS_->forwardRate(t1, t2, Continuous).rate();
 
-        const ext::shared_ptr<FdmLinearOpLayout> layout=mesher_->layout();
+        const std::shared_ptr<FdmLinearOpLayout> layout=mesher_->layout();
         const FdmLinearOpIterator endIter = layout->end();
 
         Array drift(layout->size());

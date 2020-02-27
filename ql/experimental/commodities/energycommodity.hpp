@@ -88,7 +88,7 @@ namespace QuantLib {
 
         EnergyCommodity(
                     CommodityType  commodityType,
-                    const ext::shared_ptr<SecondaryCosts>& secondaryCosts);
+                    const std::shared_ptr<SecondaryCosts>& secondaryCosts);
 
         virtual Quantity quantity() const = 0;
         const CommodityType& commodityType() const;

@@ -24,7 +24,7 @@
 #include <ql/exercise.hpp>
 #include <ql/errors.hpp>
 #include <ql/types.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 #include <cmath>
 #include <algorithm>
 #include <utility>
@@ -69,11 +69,11 @@ namespace QuantLib {
 
     Real BarrierUPD(Real kprice, Real stock, Real hbarr,
                       Real taumin, Real taumax, int iord, int igm,
-                      ext::function<Real(Real, Real)> integr,
-                      ext::function<Real(Real, Real)> integalpha,
-                      ext::function<Real(Real, Real)> integs,
-                      ext::function<Real(Real)> alpha,
-                      ext::function<Real(Real)> sigmaq)
+                      std::function<Real(Real, Real)> integr,
+                      std::function<Real(Real, Real)> integalpha,
+                      std::function<Real(Real, Real)> integs,
+                      std::function<Real(Real)> alpha,
+                      std::function<Real(Real)> sigmaq)
     {
         Real v0=0.0, v1=0.0, v1p=0.0, v2p=0.0, v2pp=0.0, gm=0.0;
         int i=0,j=0;
@@ -1440,9 +1440,9 @@ namespace QuantLib {
     }
 
         struct integr_adapter {
-            ext::shared_ptr<YieldTermStructure> r;
+            std::shared_ptr<YieldTermStructure> r;
             explicit integr_adapter(
-                    ext::shared_ptr<GeneralizedBlackScholesProcess> process)
+                    std::shared_ptr<GeneralizedBlackScholesProcess> process)
             : r(*(process->riskFreeRate())) {}
             Real operator()(Real t1,Real t2) const {
                 return r->forwardRate(t1,t2,Continuous) * (t2-t1);
@@ -1450,10 +1450,10 @@ namespace QuantLib {
         };
 
         struct integalpha_adapter {
-            ext::shared_ptr<YieldTermStructure> r;
-            ext::shared_ptr<YieldTermStructure> q;
+            std::shared_ptr<YieldTermStructure> r;
+            std::shared_ptr<YieldTermStructure> q;
             explicit integalpha_adapter(
-                    ext::shared_ptr<GeneralizedBlackScholesProcess> process)
+                    std::shared_ptr<GeneralizedBlackScholesProcess> process)
             : r(*(process->riskFreeRate())),
               q(*(process->dividendYield())) {}
             Real operator()(Real t1,Real t2) const {
@@ -1464,10 +1464,10 @@ namespace QuantLib {
         };
 
         struct alpha_adapter {
-            ext::shared_ptr<YieldTermStructure> r;
-            ext::shared_ptr<YieldTermStructure> q;
+            std::shared_ptr<YieldTermStructure> r;
+            std::shared_ptr<YieldTermStructure> q;
             explicit alpha_adapter(
-                    ext::shared_ptr<GeneralizedBlackScholesProcess> process)
+                    std::shared_ptr<GeneralizedBlackScholesProcess> process)
             : r(*(process->riskFreeRate())),
               q(*(process->dividendYield())) {}
             Real operator()(Real t) const {
@@ -1477,10 +1477,10 @@ namespace QuantLib {
         };
 
         struct sigmaq_adapter {
-            ext::shared_ptr<BlackVolTermStructure> v;
+            std::shared_ptr<BlackVolTermStructure> v;
             Real s;
             explicit sigmaq_adapter(
-                    ext::shared_ptr<GeneralizedBlackScholesProcess> process)
+                    std::shared_ptr<GeneralizedBlackScholesProcess> process)
             : v(*(process->blackVolatility())),
               s(process->x0()) {}
             Real operator()(Real t) const {
@@ -1490,10 +1490,10 @@ namespace QuantLib {
         };
 
         struct integs_adapter {
-            ext::shared_ptr<BlackVolTermStructure> v;
+            std::shared_ptr<BlackVolTermStructure> v;
             Real s;
             explicit integs_adapter(
-                    ext::shared_ptr<GeneralizedBlackScholesProcess> process)
+                    std::shared_ptr<GeneralizedBlackScholesProcess> process)
             : v(*(process->blackVolatility())),
               s(process->x0()) {}
             Real operator()(Real t1,Real t2) const {
@@ -1505,7 +1505,7 @@ namespace QuantLib {
 
 
     PerturbativeBarrierOptionEngine::PerturbativeBarrierOptionEngine(
-             ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
+             std::shared_ptr<GeneralizedBlackScholesProcess>  process,
              Natural order,
              bool zeroGamma)
     : process_(std::move(process)), order_(order), zeroGamma_(zeroGamma) {
@@ -1520,8 +1520,8 @@ namespace QuantLib {
         QL_REQUIRE(arguments_.rebate == 0.0,
                    "this engine does not manage non-null rebates");
 
-        ext::shared_ptr<PlainVanillaPayoff> payoff =
-            ext::dynamic_pointer_cast<PlainVanillaPayoff>(arguments_.payoff);
+        std::shared_ptr<PlainVanillaPayoff> payoff =
+            std::dynamic_pointer_cast<PlainVanillaPayoff>(arguments_.payoff);
         QL_REQUIRE(payoff && payoff->optionType() == Option::Put,
                    "this engine only manages put options");
 

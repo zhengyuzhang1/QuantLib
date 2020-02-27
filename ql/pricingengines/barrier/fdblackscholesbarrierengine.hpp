@@ -45,7 +45,7 @@ namespace QuantLib {
       public:
         // Constructor
           FdBlackScholesBarrierEngine(
-                ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
+                std::shared_ptr<GeneralizedBlackScholesProcess>  process,
                 Size tGrid = 100, Size xGrid = 100, Size dampingSteps = 0,
                 const FdmSchemeDesc& schemeDesc = FdmSchemeDesc::Douglas(),
                 bool localVol = false, 
@@ -54,7 +54,7 @@ namespace QuantLib {
         void calculate() const override;
 
       private:
-        const ext::shared_ptr<GeneralizedBlackScholesProcess> process_;
+        const std::shared_ptr<GeneralizedBlackScholesProcess> process_;
         const Size tGrid_, xGrid_, dampingSteps_;
         const FdmSchemeDesc schemeDesc_;
         const bool localVol_;

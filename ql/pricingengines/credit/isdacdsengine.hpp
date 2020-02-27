@@ -98,7 +98,7 @@ namespace QuantLib {
             const Handle<DefaultProbabilityTermStructure> &probability,
             Real recoveryRate,
             const Handle<YieldTermStructure> &discountCurve,
-            boost::optional<bool> includeSettlementDateFlows = boost::none,
+            std::optional<bool> includeSettlementDateFlows = std::nullopt,
             const NumericalFix numericalFix = Taylor,
             const AccrualBias accrualBias = HalfDayBias,
             const ForwardsInCouponPeriod forwardsInCouponPeriod = Piecewise);
@@ -116,7 +116,7 @@ namespace QuantLib {
         Handle<DefaultProbabilityTermStructure> probability_;
         const Real recoveryRate_;
         Handle<YieldTermStructure> discountCurve_;
-        const boost::optional<bool> includeSettlementDateFlows_;
+        const std::optional<bool> includeSettlementDateFlows_;
         const NumericalFix numericalFix_;
         const AccrualBias accrualBias_;
         const ForwardsInCouponPeriod forwardsInCouponPeriod_;

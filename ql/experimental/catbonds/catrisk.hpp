@@ -26,7 +26,7 @@
 
 #include <ql/time/date.hpp>
 #include <ql/errors.hpp>
-#include <ql/shared_ptr.hpp>
+#include <memory>
 #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
@@ -56,16 +56,16 @@ namespace QuantLib {
     class CatRisk {
       public:
         virtual ~CatRisk() = default;
-        virtual ext::shared_ptr<CatSimulation> newSimulation(const Date& start, const Date& end) const = 0;
+        virtual std::shared_ptr<CatSimulation> newSimulation(const Date& start, const Date& end) const = 0;
     };
 
     class EventSetSimulation : public CatSimulation {
       public:
-        EventSetSimulation(ext::shared_ptr<std::vector<std::pair<Date, Real> > > events, Date eventsStart, Date eventsEnd, Date start, Date end);
+        EventSetSimulation(std::shared_ptr<std::vector<std::pair<Date, Real> > > events, Date eventsStart, Date eventsEnd, Date start, Date end);
         bool nextPath(std::vector<std::pair<Date, Real> > &path) override;
       
       private:
-        ext::shared_ptr<std::vector<std::pair<Date, Real> > > events_;
+        std::shared_ptr<std::vector<std::pair<Date, Real> > > events_;
         Date eventsStart_;
         Date eventsEnd_;
 
@@ -77,13 +77,13 @@ namespace QuantLib {
 
     class EventSet : public CatRisk {        
       public:
-        EventSet(ext::shared_ptr<std::vector<std::pair<Date, Real> > > events, 
+        EventSet(std::shared_ptr<std::vector<std::pair<Date, Real> > > events, 
                  Date eventsStart, 
                  Date eventsEnd);
 
-        ext::shared_ptr<CatSimulation> newSimulation(const Date& start, const Date& end) const override;
+        std::shared_ptr<CatSimulation> newSimulation(const Date& start, const Date& end) const override;
       private:
-        ext::shared_ptr<std::vector<std::pair<Date, Real> > > events_; 
+        std::shared_ptr<std::vector<std::pair<Date, Real> > > events_; 
         Date eventsStart_;
         Date eventsEnd_;
     };
@@ -119,7 +119,7 @@ namespace QuantLib {
                  Real mean, 
                  Real stdDev);
 
-        ext::shared_ptr<CatSimulation> newSimulation(const Date& start, const Date& end) const override;
+        std::shared_ptr<CatSimulation> newSimulation(const Date& start, const Date& end) const override;
 
       private:
         Real maxLoss_;

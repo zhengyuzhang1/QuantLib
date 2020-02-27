@@ -93,7 +93,7 @@ namespace QuantLib {
         //! Black or Bachelier price given a volatility
         virtual Real blackPrice(Volatility volatility) const = 0;
 
-        void setPricingEngine(const ext::shared_ptr<PricingEngine>& engine) {
+        void setPricingEngine(const std::shared_ptr<PricingEngine>& engine) {
             engine_ = engine;
         }
 
@@ -101,7 +101,7 @@ namespace QuantLib {
         mutable Real marketValue_;
         Handle<Quote> volatility_;
         Handle<YieldTermStructure> termStructure_;
-        ext::shared_ptr<PricingEngine> engine_;
+        std::shared_ptr<PricingEngine> engine_;
         const VolatilityType volatilityType_;
         const Real shift_;
 

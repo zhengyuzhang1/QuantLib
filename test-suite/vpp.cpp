@@ -58,7 +58,7 @@ using namespace QuantLib;
 using namespace boost::unit_test_framework;
 
 namespace {
-    ext::shared_ptr<ExtOUWithJumpsProcess> createKlugeProcess() {
+    std::shared_ptr<ExtOUWithJumpsProcess> createKlugeProcess() {
         Array x0(2);
         x0[0] = 3.0; x0[1] = 0.0;
 
@@ -68,10 +68,10 @@ namespace {
         const Real speed = 1.0;
         const Real volatility = 2.0;
 
-        ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> ouProcess(
+        std::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> ouProcess(
             new ExtendedOrnsteinUhlenbeckProcess(speed, volatility, x0[0],
                                                  constant<Real, Real>(x0[0])));
-        return ext::make_shared<ExtOUWithJumpsProcess>(
+        return std::make_shared<ExtOUWithJumpsProcess>(
             ouProcess, x0[1], beta,
                                       jumpIntensity, eta);
     }
@@ -105,7 +105,7 @@ void VPPTest::testGemanRoncoroniProcess() {
     Settings::instance().evaluationDate() = today;
     const DayCounter dc = ActualActual();
 
-    ext::shared_ptr<YieldTermStructure> rTS = flatRate(today, 0.03, dc);
+    std::shared_ptr<YieldTermStructure> rTS = flatRate(today, 0.03, dc);
 
     const Real x0     = 3.3;
     const Real beta   = 0.05;
@@ -125,7 +125,7 @@ void VPPTest::testGemanRoncoroniProcess() {
     const Real theta3 = 0.10;
     const Real psi    = 1.9;
 
-    ext::shared_ptr<GemanRoncoroniProcess> grProcess(
+    std::shared_ptr<GemanRoncoroniProcess> grProcess(
                 new GemanRoncoroniProcess(x0, alpha, beta, gamma, delta,
                                           eps, zeta, d, k, tau, sig2, a, b,
                                           theta1, theta2, theta3, psi));
@@ -137,18 +137,18 @@ void VPPTest::testGemanRoncoroniProcess() {
     const Real alphaG    = 1.0;
     const Real x0G       = 1.1;
 
-    ext::function<Real (Real)> f = linear(alphaG, betaG);
+    std::function<Real (Real)> f = linear(alphaG, betaG);
 
-    ext::shared_ptr<StochasticProcess1D> eouProcess(
+    std::shared_ptr<StochasticProcess1D> eouProcess(
         new ExtendedOrnsteinUhlenbeckProcess(speed, vol, x0G, f,
                            ExtendedOrnsteinUhlenbeckProcess::Trapezodial));
 
-    std::vector<ext::shared_ptr<StochasticProcess1D> > processes = {grProcess, eouProcess};
+    std::vector<std::shared_ptr<StochasticProcess1D> > processes = {grProcess, eouProcess};
 
     Matrix correlation(2, 2, 1.0);
     correlation[0][1] = correlation[1][0] = 0.25;
 
-    ext::shared_ptr<StochasticProcess> pArray(
+    std::shared_ptr<StochasticProcess> pArray(
                            new StochasticProcessArray(processes, correlation));
 
     const Time T = 10.0;
@@ -226,7 +226,7 @@ void VPPTest::testSimpleExtOUStorageEngine() {
     while (exerciseDates.back() < maturityDate) {
         exerciseDates.push_back(exerciseDates.back()+Period(1, Days));
     }
-    ext::shared_ptr<BermudanExercise> bermudanExercise(
+    std::shared_ptr<BermudanExercise> bermudanExercise(
                                         new BermudanExercise(exerciseDates));
 
     const Real x0 = 3.0;
@@ -234,14 +234,14 @@ void VPPTest::testSimpleExtOUStorageEngine() {
     const Real volatility = 0.5;
     const Rate irRate = 0.1;
 
-    ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> ouProcess(
+    std::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> ouProcess(
         new ExtendedOrnsteinUhlenbeckProcess(speed, volatility, x0,
                                              constant<Real, Real>(x0)));
 
-    ext::shared_ptr<YieldTermStructure> rTS(
+    std::shared_ptr<YieldTermStructure> rTS(
                                 flatRate(settlementDate, irRate, dayCounter));
 
-    ext::shared_ptr<PricingEngine> storageEngine(
+    std::shared_ptr<PricingEngine> storageEngine(
                new FdSimpleExtOUStorageEngine(ouProcess, rTS, 1, 25));
 
     VanillaStorageOption storageOption(bermudanExercise, 50, 0, 1);
@@ -282,32 +282,32 @@ void VPPTest::testKlugeExtOUSpreadOption() {
     const Real heatRate    = 2.0;
     const Real rho         = 0.5;
 
-    ext::shared_ptr<ExtOUWithJumpsProcess>
+    std::shared_ptr<ExtOUWithJumpsProcess>
                                            klugeProcess = createKlugeProcess();
-    ext::function<Real (Real)> f = linear(alphaG, betaG);
+    std::function<Real (Real)> f = linear(alphaG, betaG);
 
-    ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> extOUProcess(
+    std::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> extOUProcess(
         new ExtendedOrnsteinUhlenbeckProcess(speed, vol, x0G, f,
                            ExtendedOrnsteinUhlenbeckProcess::Trapezodial));
 
-    ext::shared_ptr<YieldTermStructure> rTS(
+    std::shared_ptr<YieldTermStructure> rTS(
                                 flatRate(settlementDate, irRate, dayCounter));
 
-    ext::shared_ptr<KlugeExtOUProcess> klugeOUProcess(
+    std::shared_ptr<KlugeExtOUProcess> klugeOUProcess(
                     new KlugeExtOUProcess(rho, klugeProcess, extOUProcess));
 
 
-    ext::shared_ptr<Payoff> payoff(new PlainVanillaPayoff(Option::Call, 0.0));
+    std::shared_ptr<Payoff> payoff(new PlainVanillaPayoff(Option::Call, 0.0));
 
     Array spreadFactors(2);
     spreadFactors[0] = 1.0; spreadFactors[1] = -heatRate;
-    ext::shared_ptr<BasketPayoff> basketPayoff(
+    std::shared_ptr<BasketPayoff> basketPayoff(
                                new AverageBasketPayoff(payoff, spreadFactors));
 
-    ext::shared_ptr<Exercise> exercise(new EuropeanExercise(maturityDate));
+    std::shared_ptr<Exercise> exercise(new EuropeanExercise(maturityDate));
 
     BasketOption option(basketPayoff, exercise);
-    option.setPricingEngine(ext::shared_ptr<PricingEngine>(
+    option.setPricingEngine(std::shared_ptr<PricingEngine>(
         new FdKlugeExtOUSpreadEngine(klugeOUProcess, rTS,
                                      5, 200, 50, 20)));
 
@@ -413,7 +413,7 @@ void VPPTest::testVPPIntrinsicValue() {
     const Real startUpFixCost = 100;
     const Real fuelCostAddon    = 3.0;
 
-    const ext::shared_ptr<SwingExercise> exercise(
+    const std::shared_ptr<SwingExercise> exercise(
                                 new SwingExercise(today, today+6, 3600u));
 
     // Expected values are calculated using mixed integer programming
@@ -430,7 +430,7 @@ void VPPTest::testVPPIntrinsicValue() {
         VanillaVPPOption option(heatRate, pMin, pMax, tMinUp, tMinDown,
                                 startUpFuel, startUpFixCost, exercise);
 
-        option.setPricingEngine(ext::shared_ptr<PricingEngine>(
+        option.setPricingEngine(std::shared_ptr<PricingEngine>(
             new DynProgVPPIntrinsicValueEngine(fuelPrices, powerPrices,
                                                fuelCostAddon, flatRate(0.0, dc))));
 
@@ -453,7 +453,7 @@ namespace {
 
         PathFuelPrice(
             const MultiPathGenerator<PseudoRandom>::sample_type::value_type& path,
-            const ext::shared_ptr<Shape>& shape)
+            const std::shared_ptr<Shape>& shape)
         : path_(path),
           shape_(shape) {}
         Real innerValue(const FdmLinearOpIterator&, Time t) override {
@@ -471,7 +471,7 @@ namespace {
         }
       private:
         const MultiPathGenerator<PseudoRandom>::sample_type::value_type& path_;
-        const ext::shared_ptr<Shape> shape_;
+        const std::shared_ptr<Shape> shape_;
     };
 
     class PathSparkSpreadPrice : public FdmInnerValueCalculator {
@@ -481,8 +481,8 @@ namespace {
         PathSparkSpreadPrice(
             Real heatRate,
             const MultiPathGenerator<PseudoRandom>::sample_type::value_type& path,
-            const ext::shared_ptr<Shape>& fuelShape,
-            const ext::shared_ptr<Shape>& powerShape)
+            const std::shared_ptr<Shape>& fuelShape,
+            const std::shared_ptr<Shape>& powerShape)
         : heatRate_(heatRate),
           path_(path),
           fuelShape_(fuelShape),
@@ -509,14 +509,14 @@ namespace {
       private:
         const Real heatRate_;
         const MultiPathGenerator<PseudoRandom>::sample_type::value_type& path_;
-        const ext::shared_ptr<Shape> fuelShape_;
-        const ext::shared_ptr<Shape> powerShape_;
+        const std::shared_ptr<Shape> fuelShape_;
+        const std::shared_ptr<Shape> powerShape_;
     };
 }
 
 
 namespace {
-    ext::shared_ptr<KlugeExtOUProcess> createKlugeExtOUProcess() {
+    std::shared_ptr<KlugeExtOUProcess> createKlugeExtOUProcess() {
         // model definition
         const Real beta         = 200;
         const Real eta          = 1.0/0.2;
@@ -530,18 +530,18 @@ namespace {
         Array x0(2);
         x0[0] = 0.0; x0[1] = 0.0;
 
-        const ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> ouProcess(
+        const std::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> ouProcess(
             new ExtendedOrnsteinUhlenbeckProcess(alpha, volatility_x, x0[0],
                                                  constant<Real, Real>(x0[0])));
-        const ext::shared_ptr<ExtOUWithJumpsProcess> lnPowerProcess(
+        const std::shared_ptr<ExtOUWithJumpsProcess> lnPowerProcess(
             new ExtOUWithJumpsProcess(ouProcess, x0[1], beta, lambda, eta));
 
         const Real u=0.0;
-        const ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> lnGasProcess(
+        const std::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> lnGasProcess(
             new ExtendedOrnsteinUhlenbeckProcess(kappa, volatility_u, u,
                                                  constant<Real, Real>(u)));
 
-        const ext::shared_ptr<KlugeExtOUProcess> klugeOUProcess(
+        const std::shared_ptr<KlugeExtOUProcess> klugeOUProcess(
             new KlugeExtOUProcess(rho, lnPowerProcess, lnGasProcess));
 
         return klugeOUProcess;
@@ -567,19 +567,19 @@ void VPPTest::testVPPPricing() {
     const Real startUpFuel    = 20;
     const Real startUpFixCost = 100;
 
-    const ext::shared_ptr<SwingExercise> exercise(
+    const std::shared_ptr<SwingExercise> exercise(
                                 new SwingExercise(today, today+6, 3600u));
 
     VanillaVPPOption vppOption(heatRate, pMin, pMax, tMinUp, tMinDown,
                                startUpFuel, startUpFixCost, exercise);
 
-    const ext::shared_ptr<KlugeExtOUProcess> klugeOUProcess
+    const std::shared_ptr<KlugeExtOUProcess> klugeOUProcess
         = createKlugeExtOUProcess();
-    const ext::shared_ptr<ExtOUWithJumpsProcess> lnPowerProcess
+    const std::shared_ptr<ExtOUWithJumpsProcess> lnPowerProcess
         = klugeOUProcess->getKlugeProcess();
-    const ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> ouProcess
+    const std::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> ouProcess
         = lnPowerProcess->getExtendedOrnsteinUhlenbeckProcess();
-    const ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> lnGasProcess
+    const std::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> lnGasProcess
         = klugeOUProcess->getExtOUProcess();
 
     const Real beta         = lnPowerProcess->beta();
@@ -593,14 +593,14 @@ void VPPTest::testVPPPricing() {
     const Rate irRate       = 0.00;
     const Real fuelCostAddon  = 3.0;
 
-    const ext::shared_ptr<YieldTermStructure> rTS
+    const std::shared_ptr<YieldTermStructure> rTS
         = flatRate(today, irRate, dc);
 
     const Size nHours = powerPrices.size();
 
     typedef FdSimpleKlugeExtOUVPPEngine::Shape Shape;
-    ext::shared_ptr<Shape> fuelShape(new Shape(nHours));
-    ext::shared_ptr<Shape> powerShape(new Shape(nHours));
+    std::shared_ptr<Shape> fuelShape(new Shape(nHours));
+    std::shared_ptr<Shape> powerShape(new Shape(nHours));
 
     for (Size i=0; i < nHours; ++i) {
         const Time t = (i+1)/(365*24.);
@@ -619,7 +619,7 @@ void VPPTest::testVPPPricing() {
     }
 
     // Test: intrinsic value
-    vppOption.setPricingEngine(ext::shared_ptr<PricingEngine>(
+    vppOption.setPricingEngine(std::shared_ptr<PricingEngine>(
         new DynProgVPPIntrinsicValueEngine(fuelPrices, powerPrices,
                                            fuelCostAddon, flatRate(0.0, dc))));
 
@@ -632,7 +632,7 @@ void VPPTest::testVPPPricing() {
     }
 
     // Test: finite difference price
-    const ext::shared_ptr<PricingEngine> engine(
+    const std::shared_ptr<PricingEngine> engine(
         new FdSimpleKlugeExtOUVPPEngine(klugeOUProcess, rTS,
                                         fuelShape, powerShape, fuelCostAddon,
                                         1, 25, 11, 10));
@@ -653,7 +653,7 @@ void VPPTest::testVPPPricing() {
 
     const FdmVPPStepConditionFactory stepConditionFactory(args);
 
-    const ext::shared_ptr<FdmMesher> oneDimMesher(new FdmMesherComposite(
+    const std::shared_ptr<FdmMesher> oneDimMesher(new FdmMesherComposite(
         stepConditionFactory.stateMesher()));
     const Size nStates = oneDimMesher->layout()->dim()[0];
 
@@ -673,12 +673,12 @@ void VPPTest::testVPPPricing() {
 
     for (Size i=0; i < nTrails; ++i) {
         const sample_type& path = generator.next();
-        const ext::shared_ptr<FdmVPPStepCondition> stepCondition(
+        const std::shared_ptr<FdmVPPStepCondition> stepCondition(
             stepConditionFactory.build(
                 vppMesh, fuelCostAddon,
-                ext::shared_ptr<FdmInnerValueCalculator>(
+                std::shared_ptr<FdmInnerValueCalculator>(
                     new PathFuelPrice(path.value, fuelShape)),
-                ext::shared_ptr<FdmInnerValueCalculator>(
+                std::shared_ptr<FdmInnerValueCalculator>(
                     new PathSparkSpreadPrice(heatRate, path.value,
                                              fuelShape, powerShape))));
 
@@ -705,8 +705,8 @@ void VPPTest::testVPPPricing() {
     // implementation is not strictly correct but saves some coding
     const Size nCalibrationTrails = 1000u;
     std::vector<sample_type> calibrationPaths;
-    std::vector<ext::shared_ptr<FdmVPPStepCondition> > stepConditions;
-    std::vector<ext::shared_ptr<FdmInnerValueCalculator> > sparkSpreads;
+    std::vector<std::shared_ptr<FdmVPPStepCondition> > stepConditions;
+    std::vector<std::shared_ptr<FdmInnerValueCalculator> > sparkSpreads;
 
     sparkSpreads.reserve(nCalibrationTrails);
     stepConditions.reserve(nCalibrationTrails);
@@ -715,12 +715,12 @@ void VPPTest::testVPPPricing() {
     for (Size i=0; i < nCalibrationTrails; ++i) {
         calibrationPaths.push_back(generator.next());
 
-        sparkSpreads.push_back(ext::shared_ptr<FdmInnerValueCalculator>(
+        sparkSpreads.push_back(std::shared_ptr<FdmInnerValueCalculator>(
             new PathSparkSpreadPrice(heatRate, calibrationPaths.back().value,
                                      fuelShape, powerShape)));
         stepConditions.push_back(stepConditionFactory.build(
             vppMesh, fuelCostAddon,
-            ext::shared_ptr<FdmInnerValueCalculator>(
+            std::shared_ptr<FdmInnerValueCalculator>(
                 new PathFuelPrice(calibrationPaths.back().value, fuelShape)),
             sparkSpreads.back()));
     }
@@ -737,7 +737,7 @@ void VPPTest::testVPPPricing() {
 
     // regression functions
     const Size dim = 1u;
-    std::vector<ext::function<Real(Array)> > v(
+    std::vector<std::function<Real(Array)> > v(
         LsmBasisSystem::multiPathBasisSystem(dim,5u, LsmBasisSystem::Monomial));
 
     for (Size i=exercise->dates().size(); i > 0u; --i) {
@@ -777,10 +777,10 @@ void VPPTest::testVPPPricing() {
         const sample_type& path = (i % 2) ? generator.antithetic()
                                           : generator.next();
 
-        const ext::shared_ptr<FdmInnerValueCalculator> fuelPrices(
+        const std::shared_ptr<FdmInnerValueCalculator> fuelPrices(
             new PathFuelPrice(path.value, fuelShape));
 
-        const ext::shared_ptr<FdmInnerValueCalculator> sparkSpreads(
+        const std::shared_ptr<FdmInnerValueCalculator> sparkSpreads(
             new PathSparkSpreadPrice(heatRate, path.value,
                                      fuelShape, powerShape));
 
@@ -875,7 +875,7 @@ void VPPTest::testKlugeExtOUMatrixDecomposition() {
     const Date today = Date(18, December, 2011);
     Settings::instance().evaluationDate() = today;
 
-    const ext::shared_ptr<KlugeExtOUProcess> klugeOUProcess
+    const std::shared_ptr<KlugeExtOUProcess> klugeOUProcess
         = createKlugeExtOUProcess();
 
     const Size xGrid = 50;
@@ -883,26 +883,26 @@ void VPPTest::testKlugeExtOUMatrixDecomposition() {
     const Size uGrid = 20;
     const Time maturity = 1;
 
-    const ext::shared_ptr<ExtOUWithJumpsProcess> klugeProcess
+    const std::shared_ptr<ExtOUWithJumpsProcess> klugeProcess
         = klugeOUProcess->getKlugeProcess();
-    const ext::shared_ptr<StochasticProcess1D> ouProcess
+    const std::shared_ptr<StochasticProcess1D> ouProcess
         = klugeProcess->getExtendedOrnsteinUhlenbeckProcess();
 
-    const ext::shared_ptr<FdmMesher> mesher(
+    const std::shared_ptr<FdmMesher> mesher(
         new FdmMesherComposite(
-            ext::shared_ptr<Fdm1dMesher>(
+            std::shared_ptr<Fdm1dMesher>(
                 new FdmSimpleProcess1dMesher(xGrid, ouProcess, maturity)),
-            ext::shared_ptr<Fdm1dMesher>(
+            std::shared_ptr<Fdm1dMesher>(
                 new ExponentialJump1dMesher(yGrid,
                                             klugeProcess->beta(),
                                             klugeProcess->jumpIntensity(),
                                             klugeProcess->eta())),
-            ext::shared_ptr<Fdm1dMesher>(
+            std::shared_ptr<Fdm1dMesher>(
                 new FdmSimpleProcess1dMesher(uGrid,
                                              klugeOUProcess->getExtOUProcess(),
                                              maturity))));
 
-    const ext::shared_ptr<FdmLinearOpComposite> op(
+    const std::shared_ptr<FdmLinearOpComposite> op(
         new FdmKlugeExtOUOp(mesher, klugeOUProcess,
                             flatRate(today, 0.0, ActualActual()),
                             FdmBoundaryConditionSet(), 16));

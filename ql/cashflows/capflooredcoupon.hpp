@@ -57,7 +57,7 @@ namespace QuantLib {
     class CappedFlooredCoupon : public FloatingRateCoupon {
       public:
         CappedFlooredCoupon(
-                  const ext::shared_ptr<FloatingRateCoupon>& underlying,
+                  const std::shared_ptr<FloatingRateCoupon>& underlying,
                   Rate cap = Null<Rate>(),
                   Rate floor = Null<Rate>());
         //! \name Coupon interface
@@ -86,13 +86,13 @@ namespace QuantLib {
         bool isFloored() const {return isFloored_;}
 
         void setPricer(
-                   const ext::shared_ptr<FloatingRateCouponPricer>& pricer) override;
+                   const std::shared_ptr<FloatingRateCouponPricer>& pricer) override;
 
-        const ext::shared_ptr<FloatingRateCoupon> underlying() { return underlying_; }
+        const std::shared_ptr<FloatingRateCoupon> underlying() { return underlying_; }
 
     protected:
         // data
-        ext::shared_ptr<FloatingRateCoupon> underlying_;
+        std::shared_ptr<FloatingRateCoupon> underlying_;
         bool isCapped_, isFloored_;
         Rate cap_, floor_;
     };
@@ -105,7 +105,7 @@ namespace QuantLib {
                   const Date& startDate,
                   const Date& endDate,
                   Natural fixingDays,
-                  const ext::shared_ptr<IborIndex>& index,
+                  const std::shared_ptr<IborIndex>& index,
                   Real gearing = 1.0,
                   Spread spread = 0.0,
                   Rate cap = Null<Rate>(),
@@ -115,7 +115,7 @@ namespace QuantLib {
                   const DayCounter& dayCounter = DayCounter(),
                   bool isInArrears = false,
                   const Date& exCouponDate = Date())
-        : CappedFlooredCoupon(ext::shared_ptr<FloatingRateCoupon>(new
+        : CappedFlooredCoupon(std::shared_ptr<FloatingRateCoupon>(new
             IborCoupon(paymentDate, nominal, startDate, endDate, fixingDays,
                        index, gearing, spread, refPeriodStart, refPeriodEnd,
                        dayCounter, isInArrears, exCouponDate)), cap, floor) {}
@@ -138,7 +138,7 @@ namespace QuantLib {
                   const Date& startDate,
                   const Date& endDate,
                   Natural fixingDays,
-                  const ext::shared_ptr<SwapIndex>& index,
+                  const std::shared_ptr<SwapIndex>& index,
                   Real gearing = 1.0,
                   Spread spread= 0.0,
                   const Rate cap = Null<Rate>(),
@@ -148,7 +148,7 @@ namespace QuantLib {
                   const DayCounter& dayCounter = DayCounter(),
                   bool isInArrears = false,
                   const Date& exCouponDate = Date())
-        : CappedFlooredCoupon(ext::shared_ptr<FloatingRateCoupon>(new
+        : CappedFlooredCoupon(std::shared_ptr<FloatingRateCoupon>(new
             CmsCoupon(paymentDate, nominal, startDate, endDate, fixingDays,
                       index, gearing, spread, refPeriodStart, refPeriodEnd,
                       dayCounter, isInArrears, exCouponDate)), cap, floor) {}

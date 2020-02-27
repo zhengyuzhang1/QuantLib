@@ -25,7 +25,7 @@
 #define quantlib_gmres_hpp
 
 #include <ql/math/array.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 
 #include <list>
 
@@ -53,7 +53,7 @@ namespace QuantLib {
 
     class GMRES  {
       public:
-        typedef ext::function<Disposable<Array>(const Array&)> MatrixMult;
+        typedef std::function<Disposable<Array>(const Array&)> MatrixMult;
 
         GMRES(MatrixMult  A, Size maxIter, Real relTol,
                  MatrixMult  preConditioner = MatrixMult());

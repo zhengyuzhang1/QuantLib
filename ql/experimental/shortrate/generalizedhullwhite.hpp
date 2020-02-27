@@ -51,13 +51,13 @@ namespace QuantLib {
         InterpolationParameter(Size count,
             const Constraint& constraint = NoConstraint())
         : Parameter(count,
-            ext::shared_ptr<Parameter::Impl>(
+            std::shared_ptr<Parameter::Impl>(
                 new InterpolationParameter::Impl()),
                 constraint)
         { }
         void reset(const Interpolation &interp) {
-            ext::shared_ptr<InterpolationParameter::Impl> impl =
-                ext::dynamic_pointer_cast<InterpolationParameter::Impl>(impl_);
+            std::shared_ptr<InterpolationParameter::Impl> impl =
+                std::dynamic_pointer_cast<InterpolationParameter::Impl>(impl_);
             if (impl) impl->reset(interp);
         }
     };
@@ -81,10 +81,10 @@ namespace QuantLib {
             const std::vector<Date>& volstructure,
             const std::vector<Real>& speed,
             const std::vector<Real>& vol,
-            const ext::function<Real(Real)>& f =
-                                            ext::function<Real(Real)>(),
-            const ext::function<Real(Real)>& fInverse =
-                                            ext::function<Real(Real)>());
+            const std::function<Real(Real)>& f =
+                                            std::function<Real(Real)>(),
+            const std::function<Real(Real)>& fInverse =
+                                            std::function<Real(Real)>());
 
         template <class SpeedInterpolationTraits,class VolInterpolationTraits>
         GeneralizedHullWhite(
@@ -95,10 +95,10 @@ namespace QuantLib {
             const std::vector<Real>& vol,
             const SpeedInterpolationTraits &speedtraits,
             const VolInterpolationTraits &voltraits,
-            const ext::function<Real(Real)>& f =
-                                            ext::function<Real(Real)>(),
-            const ext::function<Real(Real)>& fInverse =
-                                            ext::function<Real(Real)>()) :
+            const std::function<Real(Real)>& f =
+                                            std::function<Real(Real)>(),
+            const std::function<Real(Real)>& fInverse =
+                                            std::function<Real(Real)>()) :
             OneFactorAffineModel(2), TermStructureConsistentModel(yieldtermStructure),
             speedstructure_(speedstructure), volstructure_(volstructure),
             a_(arguments_[0]), sigma_(arguments_[1]),
@@ -108,12 +108,12 @@ namespace QuantLib {
                 speed,vol,speedtraits,voltraits,f,fInverse);
         }
 
-        ext::shared_ptr<ShortRateDynamics> dynamics() const override {
+        std::shared_ptr<ShortRateDynamics> dynamics() const override {
             QL_FAIL("no defined process for generalized Hull-White model, "
                     "use HWdynamics()");
         }
 
-        ext::shared_ptr<Lattice> tree(const TimeGrid& grid)const override;
+        std::shared_ptr<Lattice> tree(const TimeGrid& grid)const override;
 
         //Analytical calibration of HW
 
@@ -122,7 +122,7 @@ namespace QuantLib {
                   Real a = 0.1, Real sigma = 0.01);
 
 
-        ext::shared_ptr<ShortRateDynamics> HWdynamics() const;
+        std::shared_ptr<ShortRateDynamics> HWdynamics() const;
 
         //! Only valid under Hull-White model
         Real discountBondOption(Option::Type type,
@@ -155,15 +155,15 @@ namespace QuantLib {
         Interpolation speed_;
         Interpolation vol_;
 
-        ext::function<Real (Time)> speed() const;
-        ext::function<Real (Time)> vol() const;
+        std::function<Real (Time)> speed() const;
+        std::function<Real (Time)> vol() const;
 
         Parameter& a_;
         Parameter& sigma_;
         Parameter phi_;
 
-        ext::function<Real(Real)> f_;
-        ext::function<Real(Real)> fInverse_;
+        std::function<Real(Real)> f_;
+        std::function<Real(Real)> fInverse_;
 
         static Real identity(Real x) {
             return x;
@@ -177,8 +177,8 @@ namespace QuantLib {
             const std::vector<Real>& vol,
             const SpeedInterpolationTraits &speedtraits,
             const VolInterpolationTraits &voltraits,
-            const ext::function<Real(Real)>& f,
-            const ext::function<Real(Real)>& fInverse)
+            const std::function<Real(Real)>& f,
+            const std::function<Real(Real)>& fInverse)
         {
             QL_REQUIRE(speedstructure.size()==speed.size(),
                 "mean reversion inputs inconsistent");
@@ -239,11 +239,11 @@ namespace QuantLib {
         : public GeneralizedHullWhite::ShortRateDynamics {
       public:
         Dynamics(Parameter  fitting,
-                 const ext::function<Real (Time)>& alpha,
-                 const ext::function<Real (Time)>& sigma,
-                 ext::function<Real(Real)> f,
-                 ext::function<Real(Real)> fInverse)
-        : ShortRateDynamics(ext::shared_ptr<StochasticProcess1D>(
+                 const std::function<Real (Time)>& alpha,
+                 const std::function<Real (Time)>& sigma,
+                 std::function<Real(Real)> f,
+                 std::function<Real(Real)> fInverse)
+        : ShortRateDynamics(std::shared_ptr<StochasticProcess1D>(
                       new GeneralizedOrnsteinUhlenbeckProcess(alpha, sigma))),
           fitting_(std::move(fitting)),
           _f_(std::move(f)), _fInverse_(std::move(fInverse)) {}
@@ -253,7 +253,7 @@ namespace QuantLib {
                  Real a,
                  Real sigma)
         : GeneralizedHullWhite::ShortRateDynamics(
-              ext::shared_ptr<StochasticProcess1D>(
+              std::shared_ptr<StochasticProcess1D>(
                       new OrnsteinUhlenbeckProcess(a, sigma))),
           fitting_(std::move(fitting)) {
 
@@ -271,8 +271,8 @@ namespace QuantLib {
 
       private:
         Parameter fitting_;
-        ext::function<Real(Real)> _f_;
-        ext::function<Real(Real)> _fInverse_;
+        std::function<Real(Real)> _f_;
+        std::function<Real(Real)> _fInverse_;
         struct identity {
             Real operator()(Real x) const {return x;};
         };
@@ -309,14 +309,14 @@ namespace QuantLib {
       public:
         FittingParameter(const Handle<YieldTermStructure>& termStructure,
                          Real a, Real sigma)
-        : TermStructureFittingParameter(ext::shared_ptr<Parameter::Impl>(
+        : TermStructureFittingParameter(std::shared_ptr<Parameter::Impl>(
                       new FittingParameter::Impl(termStructure, a, sigma))) {}
     };
 
     // Analytic fitting dynamics
-    inline ext::shared_ptr<OneFactorModel::ShortRateDynamics>
+    inline std::shared_ptr<OneFactorModel::ShortRateDynamics>
     GeneralizedHullWhite::HWdynamics() const {
-        return ext::shared_ptr<ShortRateDynamics>(
+        return std::shared_ptr<ShortRateDynamics>(
           new Dynamics(phi_, a(), sigma()));
     }
 
@@ -333,7 +333,7 @@ namespace QuantLib {
         template <class I1, class I2>
         LinearFlatInterpolation(const I1& xBegin, const I1& xEnd,
                             const I2& yBegin) {
-            impl_ = ext::shared_ptr<Interpolation::Impl>(new
+            impl_ = std::shared_ptr<Interpolation::Impl>(new
                 detail::LinearFlatInterpolationImpl<I1,I2>(xBegin, xEnd,
                                                        yBegin));
             impl_->update();

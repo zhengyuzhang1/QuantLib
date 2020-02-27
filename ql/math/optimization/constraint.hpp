@@ -50,7 +50,7 @@ namespace QuantLib {
                              -std::numeric_limits < Array::value_type > ::max());
             }
         };
-        ext::shared_ptr<Impl> impl_;
+        std::shared_ptr<Impl> impl_;
       public:
         bool empty() const { return !impl_; }
         bool test(const Array& p) const { return impl_->test(p); }
@@ -73,8 +73,8 @@ namespace QuantLib {
         Real update(Array& p,
                     const Array& direction,
                     Real beta);
-        Constraint(ext::shared_ptr<Impl>  impl =
-                                                   ext::shared_ptr<Impl>());
+        Constraint(std::shared_ptr<Impl>  impl =
+                                                   std::shared_ptr<Impl>());
     };
 
     //! No constraint
@@ -88,7 +88,7 @@ namespace QuantLib {
         };
       public:
         NoConstraint()
-        : Constraint(ext::shared_ptr<Constraint::Impl>(
+        : Constraint(std::shared_ptr<Constraint::Impl>(
                                                    new NoConstraint::Impl)) {}
     };
 
@@ -114,7 +114,7 @@ namespace QuantLib {
         };
       public:
         PositiveConstraint()
-        : Constraint(ext::shared_ptr<Constraint::Impl>(
+        : Constraint(std::shared_ptr<Constraint::Impl>(
                                              new PositiveConstraint::Impl)) {}
     };
 
@@ -143,7 +143,7 @@ namespace QuantLib {
         };
       public:
         BoundaryConstraint(Real low, Real high)
-        : Constraint(ext::shared_ptr<Constraint::Impl>(
+        : Constraint(std::shared_ptr<Constraint::Impl>(
                                   new BoundaryConstraint::Impl(low, high))) {}
     };
 
@@ -181,7 +181,7 @@ namespace QuantLib {
         };
       public:
         CompositeConstraint(const Constraint& c1, const Constraint& c2)
-        : Constraint(ext::shared_ptr<Constraint::Impl>(
+        : Constraint(std::shared_ptr<Constraint::Impl>(
                                      new CompositeConstraint::Impl(c1,c2))) {}
     };
 
@@ -215,7 +215,7 @@ namespace QuantLib {
         };
       public:
         NonhomogeneousBoundaryConstraint(Array low, Array high)
-        : Constraint(ext::shared_ptr <Constraint::Impl>(
+        : Constraint(std::shared_ptr <Constraint::Impl>(
                      new NonhomogeneousBoundaryConstraint::Impl(low, high))) {
         }
     };

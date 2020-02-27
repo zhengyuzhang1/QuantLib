@@ -99,7 +99,7 @@ namespace QuantLib {
                               const Date&,
                               const Date&) const override;
         };
-        static ext::shared_ptr<DayCounter::Impl> implementation(
+        static std::shared_ptr<DayCounter::Impl> implementation(
                                                                Convention c, 
                                                                const Schedule& schedule);
       public:

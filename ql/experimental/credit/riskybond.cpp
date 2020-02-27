@@ -59,7 +59,7 @@ namespace QuantLib {
         NPV_ = 0;
         Date today = Settings::instance().evaluationDate();
         Date npvDate = calendar_.advance(today, settlementDays_, Days);
-        std::vector<ext::shared_ptr<CashFlow> > cf = cashflows();
+        std::vector<std::shared_ptr<CashFlow> > cf = cashflows();
         Date d1 = effectiveDate();
         for (auto & i : cf) {
             Date d2 = i->date();
@@ -84,7 +84,7 @@ namespace QuantLib {
         Date today = Settings::instance().evaluationDate();
         Date npvDate = calendar_.advance(today, settlementDays_, Days);
         Real npv = 0;
-        std::vector<ext::shared_ptr<CashFlow> > cf = cashflows();
+        std::vector<std::shared_ptr<CashFlow> > cf = cashflows();
         for (auto & i : cf) {
             Date d2 = i->date();
             if (d2 > npvDate)
@@ -97,7 +97,7 @@ namespace QuantLib {
         Date today = Settings::instance().evaluationDate();
         Date npvDate = calendar_.advance(today, settlementDays_, Days);
         Real flow = 0;
-        std::vector<ext::shared_ptr<CashFlow> > cf = cashflows();
+        std::vector<std::shared_ptr<CashFlow> > cf = cashflows();
         for (auto & i : cf) {
             if (i->date() > npvDate)
                 flow += i->amount();
@@ -105,9 +105,9 @@ namespace QuantLib {
         return flow;
     }
 
-    std::vector<ext::shared_ptr<CashFlow> > RiskyBond::expectedCashflows() {
-        std::vector<ext::shared_ptr<CashFlow> > expected;
-        std::vector<ext::shared_ptr<CashFlow> > cf = cashflows();
+    std::vector<std::shared_ptr<CashFlow> > RiskyBond::expectedCashflows() {
+        std::vector<std::shared_ptr<CashFlow> > expected;
+        std::vector<std::shared_ptr<CashFlow> > cf = cashflows();
         Date today = Settings::instance().evaluationDate();
         Date npvDate = calendar_.advance(today, settlementDays_, Days);
         Date d1 = effectiveDate();
@@ -122,11 +122,11 @@ namespace QuantLib {
                 Real recovery = notional(defaultDate) * recoveryRate_
                     * (defaultTS_->survivalProbability(d1)
                        -defaultTS_->survivalProbability(d2));
-                ext::shared_ptr<CashFlow>
+                std::shared_ptr<CashFlow>
                     flow1(new SimpleCashFlow(coupon, d2));
                 expected.push_back(flow1);
 
-                ext::shared_ptr<CashFlow>
+                std::shared_ptr<CashFlow>
                     flow2(new SimpleCashFlow(recovery, defaultDate));
                 expected.push_back(flow2);
             }
@@ -162,10 +162,10 @@ namespace QuantLib {
             Real currentNotional = (i < notionals_.size() ?
                              notionals_[i] :
                              notionals_.back());
-            ext::shared_ptr<CashFlow> interest (new
+            std::shared_ptr<CashFlow> interest (new
                    FixedRateCoupon(dates[i], previousNotional,
                                    rate_, dayCounter_, dates[i-1], dates[i]));
-            ext::shared_ptr<CashFlow> amortization(new
+            std::shared_ptr<CashFlow> amortization(new
                  AmortizingPayment(previousNotional - currentNotional, dates[i]));
             previousNotional = currentNotional;
 
@@ -177,19 +177,19 @@ namespace QuantLib {
             }
         }
 
-        ext::shared_ptr<CashFlow> redemption(new
+        std::shared_ptr<CashFlow> redemption(new
                  Redemption(previousNotional, schedule_.dates().back()));
         leg_.push_back(redemption);
         redemptionLeg_.push_back(redemption);
     }
 
-    std::vector<ext::shared_ptr<CashFlow> > RiskyFixedBond::cashflows() const{
+    std::vector<std::shared_ptr<CashFlow> > RiskyFixedBond::cashflows() const{
         return leg_;
     }
-    std::vector<ext::shared_ptr<CashFlow> > RiskyFixedBond::interestFlows() const{
+    std::vector<std::shared_ptr<CashFlow> > RiskyFixedBond::interestFlows() const{
         return interestLeg_;
     }
-    std::vector<ext::shared_ptr<CashFlow> > RiskyFixedBond::notionalFlows() const{
+    std::vector<std::shared_ptr<CashFlow> > RiskyFixedBond::notionalFlows() const{
         return redemptionLeg_;
     }
 
@@ -221,7 +221,7 @@ namespace QuantLib {
                             Real recoveryRate,
                             Handle<DefaultProbabilityTermStructure> defaultTS,
                             const Schedule& schedule,
-                            ext::shared_ptr<IborIndex> index,
+                            std::shared_ptr<IborIndex> index,
                             Integer fixingDays,
                             Real spread,
                             std::vector<Real> notionals,
@@ -242,10 +242,10 @@ namespace QuantLib {
             Real currentNotional = (i < notionals_.size() ?
                              notionals_[i] :
                              notionals_.back());
-            ext::shared_ptr<CashFlow> interest (new
+            std::shared_ptr<CashFlow> interest (new
                    IborCoupon(dates[i], previousNotional, dates[i-1], dates[i],
                               fixingDays_, index_, 1.0, spread_));
-            ext::shared_ptr<CashFlow> amortization(new
+            std::shared_ptr<CashFlow> amortization(new
                  AmortizingPayment(previousNotional - currentNotional, dates[i]));
             previousNotional = currentNotional;
 
@@ -257,28 +257,28 @@ namespace QuantLib {
             }
         }
 
-        ext::shared_ptr<CashFlow> redemption(new
+        std::shared_ptr<CashFlow> redemption(new
                  Redemption(previousNotional, schedule_.dates().back()));
         leg_.push_back(redemption);
         redemptionLeg_.push_back(redemption);
 
-        ext::shared_ptr<IborCouponPricer>
+        std::shared_ptr<IborCouponPricer>
             fictitiousPricer(new
                 BlackIborCouponPricer(Handle<OptionletVolatilityStructure>()));
         setCouponPricer(leg_,fictitiousPricer);
     }
 
-    std::vector<ext::shared_ptr<CashFlow> > RiskyFloatingBond::cashflows()
+    std::vector<std::shared_ptr<CashFlow> > RiskyFloatingBond::cashflows()
         const {
         return leg_;
     }
 
-    std::vector<ext::shared_ptr<CashFlow> > RiskyFloatingBond::interestFlows()
+    std::vector<std::shared_ptr<CashFlow> > RiskyFloatingBond::interestFlows()
     const {
         return interestLeg_;
     }
 
-    std::vector<ext::shared_ptr<CashFlow> > RiskyFloatingBond::notionalFlows()
+    std::vector<std::shared_ptr<CashFlow> > RiskyFloatingBond::notionalFlows()
     const {
         return redemptionLeg_;
     }

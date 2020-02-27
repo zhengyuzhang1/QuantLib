@@ -55,7 +55,7 @@ namespace QuantLib {
         Handle<Quote> meanReversion,
         Handle<YieldTermStructure> couponDiscountCurve,
         const Settings &settings,
-        ext::shared_ptr<Integrator> integrator)
+        std::shared_ptr<Integrator> integrator)
         : CmsCouponPricer(swaptionVol), meanReversion_(std::move(meanReversion)),
           couponDiscountCurve_(std::move(couponDiscountCurve)), settings_(settings),
           volDayCounter_(swaptionVol->dayCounter()), integrator_(std::move(integrator)) {
@@ -65,7 +65,7 @@ namespace QuantLib {
 
         if (integrator_ == nullptr)
             integrator_ =
-                ext::make_shared<GaussKronrodNonAdaptive>(1E-10, 5000, 1E-10);
+                std::make_shared<GaussKronrodNonAdaptive>(1E-10, 5000, 1E-10);
     }
 
     Real LinearTsrPricer::GsrG(const Date &d) const {
@@ -142,7 +142,7 @@ namespace QuantLib {
             swapRateValue_ = swap_->fairRate();
             annuity_ = 1.0E4 * std::fabs(swap_->fixedLegBPS());
 
-            ext::shared_ptr<SmileSection> sectionTmp =
+            std::shared_ptr<SmileSection> sectionTmp =
                 swaptionVolatility()->smileSection(fixingDate_, swapTenor_);
 
             adjustedLowerBound_ = settings_.lowerRateBound_;
@@ -162,7 +162,7 @@ namespace QuantLib {
             // have one, no need to exit with an exception ...
 
             if (sectionTmp->atmLevel() == Null<Real>())
-                smileSection_ = ext::make_shared<AtmSmileSection>(
+                smileSection_ = std::make_shared<AtmSmileSection>(
                     sectionTmp, swapRateValue_);
             else
                 smileSection_ = sectionTmp;
@@ -171,8 +171,8 @@ namespace QuantLib {
 
             Real gx = 0.0, gy = 0.0;
             for (const auto & i : swap_->fixedLeg()) {
-                ext::shared_ptr<Coupon> c =
-                    ext::dynamic_pointer_cast<Coupon>(i);
+                std::shared_ptr<Coupon> c =
+                    std::dynamic_pointer_cast<Coupon>(i);
                 Real yf = c->accrualPeriod();
                 Date d = c->date();
                 Real pv = yf * discountCurve_->discount(d);

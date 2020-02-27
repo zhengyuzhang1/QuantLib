@@ -164,7 +164,7 @@ namespace QuantLib {
                            Real leftConditionValue,
                            CubicInterpolation::BoundaryCondition rightCond,
                            Real rightConditionValue) {
-            impl_ = ext::shared_ptr<Interpolation::Impl>(new
+            impl_ = std::shared_ptr<Interpolation::Impl>(new
                 detail::CubicInterpolationImpl<I1,I2>(xBegin, xEnd, yBegin,
                                                       da,
                                                       monotonic,
@@ -174,7 +174,7 @@ namespace QuantLib {
                                                       rightConditionValue));
             impl_->update();
             coeffs_ =
-                ext::dynamic_pointer_cast<detail::CoefficientHolder>(impl_);
+                std::dynamic_pointer_cast<detail::CoefficientHolder>(impl_);
         }
         const std::vector<Real>& primitiveConstants() const {
             return coeffs_->primitiveConst_;
@@ -186,7 +186,7 @@ namespace QuantLib {
             return coeffs_->monotonicityAdjustments_;
         }
       private:
-        ext::shared_ptr<detail::CoefficientHolder> coeffs_;
+        std::shared_ptr<detail::CoefficientHolder> coeffs_;
     };
 
 

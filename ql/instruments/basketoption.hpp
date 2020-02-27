@@ -35,9 +35,9 @@ namespace QuantLib {
 
     class BasketPayoff : public Payoff {
       private:
-        ext::shared_ptr<Payoff> basePayoff_;
+        std::shared_ptr<Payoff> basePayoff_;
       public:
-        explicit BasketPayoff(ext::shared_ptr<Payoff> p)
+        explicit BasketPayoff(std::shared_ptr<Payoff> p)
         : basePayoff_(std::move(p)) {}
         ~BasketPayoff() override = default;
         std::string name() const override { return basePayoff_->name(); }
@@ -47,14 +47,14 @@ namespace QuantLib {
             return (*basePayoff_)(accumulate(a));
         }
         virtual Real accumulate(const Array &a) const = 0;
-        const ext::shared_ptr<Payoff> basePayoff() {
+        const std::shared_ptr<Payoff> basePayoff() {
             return basePayoff_;
         }
     };
 
     class MinBasketPayoff : public BasketPayoff {
       public:
-        explicit MinBasketPayoff(const ext::shared_ptr<Payoff> &p)
+        explicit MinBasketPayoff(const std::shared_ptr<Payoff> &p)
         : BasketPayoff(p) {}
         Real accumulate (const Array &a) const override {
             return *std::min_element(a.begin(), a.end());
@@ -63,7 +63,7 @@ namespace QuantLib {
 
     class MaxBasketPayoff : public BasketPayoff {
       public:
-        explicit MaxBasketPayoff(const ext::shared_ptr<Payoff> &p)
+        explicit MaxBasketPayoff(const std::shared_ptr<Payoff> &p)
         : BasketPayoff(p) {}
         Real accumulate (const Array &a) const override {
             return *std::max_element(a.begin(), a.end());
@@ -72,10 +72,10 @@ namespace QuantLib {
 
     class AverageBasketPayoff : public BasketPayoff {
       public:
-        AverageBasketPayoff(const ext::shared_ptr<Payoff> &p,
+        AverageBasketPayoff(const std::shared_ptr<Payoff> &p,
                             const Array &a)
         : BasketPayoff(p), weights_(a) {}
-        AverageBasketPayoff(const ext::shared_ptr<Payoff> &p,
+        AverageBasketPayoff(const std::shared_ptr<Payoff> &p,
                             Size n)
         : BasketPayoff(p), weights_(n, 1.0/static_cast<Real>(n)) {}
         Real accumulate (const Array &a) const override {
@@ -90,7 +90,7 @@ namespace QuantLib {
 
     class SpreadBasketPayoff : public BasketPayoff {
       public:
-        explicit SpreadBasketPayoff(const ext::shared_ptr<Payoff> &p)
+        explicit SpreadBasketPayoff(const std::shared_ptr<Payoff> &p)
         : BasketPayoff(p) {}
         Real accumulate (const Array &a) const override {
             QL_REQUIRE(a.size() == 2, 
@@ -104,8 +104,8 @@ namespace QuantLib {
     class BasketOption : public MultiAssetOption {
       public:
         class engine;
-        BasketOption(const ext::shared_ptr<BasketPayoff>&,
-                     const ext::shared_ptr<Exercise>&);
+        BasketOption(const std::shared_ptr<BasketPayoff>&,
+                     const std::shared_ptr<Exercise>&);
     };
 
     //! %Basket-option %engine base class

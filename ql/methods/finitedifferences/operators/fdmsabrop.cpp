@@ -31,8 +31,8 @@
 
 namespace QuantLib {
     FdmSabrOp::FdmSabrOp(
-        const ext::shared_ptr<FdmMesher>& mesher,
-        const ext::shared_ptr<YieldTermStructure>& rTS,
+        const std::shared_ptr<FdmMesher>& mesher,
+        const std::shared_ptr<YieldTermStructure>& rTS,
         Real f0, Real alpha, Real beta, Real nu, Real rho)
     : rTS_  (rTS),
       dffMap_(SecondDerivativeOp(0, mesher).

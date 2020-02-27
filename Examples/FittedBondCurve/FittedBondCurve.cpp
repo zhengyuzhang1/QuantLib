@@ -47,11 +47,6 @@
 using namespace std;
 using namespace QuantLib;
 
-#if defined(QL_ENABLE_SESSIONS)
-namespace QuantLib {
-    Integer sessionId() { return 0; }
-}
-#endif
 
 // par-rate approximation
 Rate parRate(const YieldTermStructure& yts,
@@ -70,7 +65,7 @@ Rate parRate(const YieldTermStructure& yts,
 }
 
 void printOutput(const std::string& tag,
-                 const ext::shared_ptr<FittedBondDiscountCurve>& curve) {
+                 const std::shared_ptr<FittedBondDiscountCurve>& curve) {
     cout << tag << endl;
     cout << "reference date : "
          << curve->referenceDate()
@@ -93,9 +88,9 @@ int main(int, char* []) {
             i=100.0;
         }
 
-        std::vector< ext::shared_ptr<SimpleQuote> > quote;
+        std::vector< std::shared_ptr<SimpleQuote> > quote;
         for (double i : cleanPrice) {
-            ext::shared_ptr<SimpleQuote> cp(new SimpleQuote(i));
+            std::shared_ptr<SimpleQuote> cp(new SimpleQuote(i));
             quote.push_back(cp);
         }
 
@@ -133,8 +128,8 @@ int main(int, char* []) {
         cout << "Bonds' settlement date: " << bondSettlementDate << endl;
         cout << "Calculating fit for 15 bonds....." << endl << endl;
 
-        std::vector<ext::shared_ptr<BondHelper> > instrumentsA;
-        std::vector<ext::shared_ptr<RateHelper> > instrumentsB;
+        std::vector<std::shared_ptr<BondHelper> > instrumentsA;
+        std::vector<std::shared_ptr<RateHelper> > instrumentsB;
 
         for (Size j=0; j<LENGTH(lengths); j++) {
 
@@ -144,7 +139,7 @@ int main(int, char* []) {
                               calendar, accrualConvention, accrualConvention,
                               DateGeneration::Backward, false);
 
-            ext::shared_ptr<BondHelper> helperA(
+            std::shared_ptr<BondHelper> helperA(
                      new FixedRateBondHelper(quoteHandle[j],
                                              bondSettlementDays,
                                              100.0,
@@ -154,7 +149,7 @@ int main(int, char* []) {
                                              convention,
                                              redemption));
 
-            ext::shared_ptr<RateHelper> helperB(
+            std::shared_ptr<RateHelper> helperB(
                      new FixedRateBondHelper(quoteHandle[j],
                                              bondSettlementDays,
                                              100.0,
@@ -172,7 +167,7 @@ int main(int, char* []) {
         Real tolerance = 1.0e-10;
         Size max = 5000;
 
-        ext::shared_ptr<YieldTermStructure> ts0 (
+        std::shared_ptr<YieldTermStructure> ts0 (
               new PiecewiseYieldCurve<Discount,LogLinear>(curveSettlementDays,
                                                           calendar,
                                                           instrumentsB,
@@ -180,7 +175,7 @@ int main(int, char* []) {
 
         ExponentialSplinesFitting exponentialSplines(constrainAtZero);
 
-        ext::shared_ptr<FittedBondDiscountCurve> ts1 (
+        std::shared_ptr<FittedBondDiscountCurve> ts1 (
                   new FittedBondDiscountCurve(curveSettlementDays,
                                               calendar,
                                               instrumentsA,
@@ -194,7 +189,7 @@ int main(int, char* []) {
 
         SimplePolynomialFitting simplePolynomial(3, constrainAtZero);
 
-        ext::shared_ptr<FittedBondDiscountCurve> ts2 (
+        std::shared_ptr<FittedBondDiscountCurve> ts2 (
                     new FittedBondDiscountCurve(curveSettlementDays,
                                                 calendar,
                                                 instrumentsA,
@@ -208,7 +203,7 @@ int main(int, char* []) {
 
         NelsonSiegelFitting nelsonSiegel;
 
-        ext::shared_ptr<FittedBondDiscountCurve> ts3 (
+        std::shared_ptr<FittedBondDiscountCurve> ts3 (
                         new FittedBondDiscountCurve(curveSettlementDays,
                                                     calendar,
                                                     instrumentsA,
@@ -233,7 +228,7 @@ int main(int, char* []) {
 
         CubicBSplinesFitting cubicBSplines(knotVector, constrainAtZero);
 
-        ext::shared_ptr<FittedBondDiscountCurve> ts4 (
+        std::shared_ptr<FittedBondDiscountCurve> ts4 (
                        new FittedBondDiscountCurve(curveSettlementDays,
                                                    calendar,
                                                    instrumentsA,
@@ -246,7 +241,7 @@ int main(int, char* []) {
 
         SvenssonFitting svensson;
 
-        ext::shared_ptr<FittedBondDiscountCurve> ts5 (
+        std::shared_ptr<FittedBondDiscountCurve> ts5 (
                         new FittedBondDiscountCurve(curveSettlementDays,
                                                     calendar,
                                                     instrumentsA,
@@ -258,13 +253,13 @@ int main(int, char* []) {
         printOutput("(e) Svensson", ts5);
 
         Handle<YieldTermStructure> discountCurve(
-            ext::make_shared<FlatForward>(
+            std::make_shared<FlatForward>(
                                     curveSettlementDays, calendar, 0.01, dc));
         SpreadFittingMethod nelsonSiegelSpread(
-                                    ext::make_shared<NelsonSiegelFitting>(),
+                                    std::make_shared<NelsonSiegelFitting>(),
                                     discountCurve);
 
-        ext::shared_ptr<FittedBondDiscountCurve> ts6 (
+        std::shared_ptr<FittedBondDiscountCurve> ts6 (
                         new FittedBondDiscountCurve(curveSettlementDays,
                                                     calendar,
                                                     instrumentsA,
@@ -294,7 +289,7 @@ int main(int, char* []) {
 
         for (Size i=0; i<instrumentsA.size(); i++) {
 
-            std::vector<ext::shared_ptr<CashFlow> > cfs =
+            std::vector<std::shared_ptr<CashFlow> > cfs =
                 instrumentsA[i]->bond()->cashflows();
 
             Size cfSize = instrumentsA[i]->bond()->cashflows().size();
@@ -378,7 +373,7 @@ int main(int, char* []) {
 
         for (Size i=0; i<instrumentsA.size(); i++) {
 
-            std::vector<ext::shared_ptr<CashFlow> > cfs =
+            std::vector<std::shared_ptr<CashFlow> > cfs =
                 instrumentsA[i]->bond()->cashflows();
 
             Size cfSize = instrumentsA[i]->bond()->cashflows().size();
@@ -437,13 +432,13 @@ int main(int, char* []) {
         Settings::instance().evaluationDate() = today;
         bondSettlementDate = calendar.advance(today, bondSettlementDays*Days);
 
-        ext::shared_ptr<YieldTermStructure> ts00 (
+        std::shared_ptr<YieldTermStructure> ts00 (
               new PiecewiseYieldCurve<Discount,LogLinear>(curveSettlementDays,
                                                           calendar,
                                                           instrumentsB,
                                                           dc));
 
-        ext::shared_ptr<FittedBondDiscountCurve> ts11 (
+        std::shared_ptr<FittedBondDiscountCurve> ts11 (
                   new FittedBondDiscountCurve(curveSettlementDays,
                                               calendar,
                                               instrumentsA,
@@ -455,7 +450,7 @@ int main(int, char* []) {
         printOutput("(a) exponential splines", ts11);
 
 
-        ext::shared_ptr<FittedBondDiscountCurve> ts22 (
+        std::shared_ptr<FittedBondDiscountCurve> ts22 (
                     new FittedBondDiscountCurve(curveSettlementDays,
                                                 calendar,
                                                 instrumentsA,
@@ -467,7 +462,7 @@ int main(int, char* []) {
         printOutput("(b) simple polynomial", ts22);
 
 
-        ext::shared_ptr<FittedBondDiscountCurve> ts33 (
+        std::shared_ptr<FittedBondDiscountCurve> ts33 (
                         new FittedBondDiscountCurve(curveSettlementDays,
                                                     calendar,
                                                     instrumentsA,
@@ -479,7 +474,7 @@ int main(int, char* []) {
         printOutput("(c) Nelson-Siegel", ts33);
 
 
-        ext::shared_ptr<FittedBondDiscountCurve> ts44 (
+        std::shared_ptr<FittedBondDiscountCurve> ts44 (
                        new FittedBondDiscountCurve(curveSettlementDays,
                                                    calendar,
                                                    instrumentsA,
@@ -490,7 +485,7 @@ int main(int, char* []) {
 
         printOutput("(d) cubic B-splines", ts44);
 
-        ext::shared_ptr<FittedBondDiscountCurve> ts55 (
+        std::shared_ptr<FittedBondDiscountCurve> ts55 (
                        new FittedBondDiscountCurve(curveSettlementDays,
                                                    calendar,
                                                    instrumentsA,
@@ -501,7 +496,7 @@ int main(int, char* []) {
 
         printOutput("(e) Svensson", ts55);
 
-        ext::shared_ptr<FittedBondDiscountCurve> ts66 (
+        std::shared_ptr<FittedBondDiscountCurve> ts66 (
                         new FittedBondDiscountCurve(curveSettlementDays,
                                                     calendar,
                                                     instrumentsA,
@@ -524,7 +519,7 @@ int main(int, char* []) {
 
         for (Size i=0; i<instrumentsA.size(); i++) {
 
-            std::vector<ext::shared_ptr<CashFlow> > cfs =
+            std::vector<std::shared_ptr<CashFlow> > cfs =
                 instrumentsA[i]->bond()->cashflows();
 
             Size cfSize = instrumentsA[i]->bond()->cashflows().size();
@@ -606,7 +601,7 @@ int main(int, char* []) {
 
         for (Size i=0; i<instrumentsA.size(); i++) {
 
-            std::vector<ext::shared_ptr<CashFlow> > cfs =
+            std::vector<std::shared_ptr<CashFlow> > cfs =
                 instrumentsA[i]->bond()->cashflows();
 
             Size cfSize = instrumentsA[i]->bond()->cashflows().size();

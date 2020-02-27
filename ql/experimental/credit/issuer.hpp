@@ -33,8 +33,8 @@
 
 namespace QuantLib {
 
-    typedef std::set<ext::shared_ptr<DefaultEvent>,
-                earlier_than<ext::shared_ptr<DefaultEvent> > >
+    typedef std::set<std::shared_ptr<DefaultEvent>,
+                earlier_than<std::shared_ptr<DefaultEvent> > >
             DefaultEventSet;
 
     class Issuer {
@@ -57,7 +57,7 @@ namespace QuantLib {
                DefaultEventSet  events = DefaultEventSet());
 
         Issuer(const std::vector<std::vector<
-                 ext::shared_ptr<DefaultType> > >& eventTypes,
+                 std::shared_ptr<DefaultType> > >& eventTypes,
                const std::vector<Currency>& currencies,
                const std::vector<Seniority>& seniorities,
                const std::vector<Handle<DefaultProbabilityTermStructure> >&
@@ -76,7 +76,7 @@ namespace QuantLib {
         //! If a default event with the required seniority and
         //    restructuring type is found, it is returned for
         //    inspection; otherwise, the method returns an empty pointer.
-        ext::shared_ptr<DefaultEvent>
+        std::shared_ptr<DefaultEvent>
         defaultedBetween(const Date& start,
                          const Date& end,
                          const DefaultProbKey& key,
@@ -84,7 +84,7 @@ namespace QuantLib {
                          ) const;
 
         //@}
-        std::vector<ext::shared_ptr<DefaultEvent> >
+        std::vector<std::shared_ptr<DefaultEvent> >
         defaultsBetween(const Date& start,
                         const Date& end,
                         const DefaultProbKey& contractKey,

@@ -20,7 +20,7 @@
 /*! \file cevrndcalculator.cpp */
 
 #include <ql/errors.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 #include <ql/math/functional.hpp>
 #include <ql/math/solvers1d/brent.hpp>
 #include <ql/math/distributions/normaldistribution.hpp>
@@ -102,7 +102,7 @@ namespace QuantLib {
     }
 
     Real CEVRNDCalculator::invcdf(Real q, Time t) const {
-        using namespace ext::placeholders;
+        using namespace std::placeholders;
 
         if (delta_ < 2.0) {
             if (f0_ < QL_EPSILON || q < massAtZero(t))
@@ -110,8 +110,8 @@ namespace QuantLib {
 
             const Real x = InverseCumulativeNormal()(1-q);
 
-            const ext::function<Real(Real)> cdfApprox
-                = ext::bind(&CEVRNDCalculator::sankaranApprox,
+            const std::function<Real(Real)> cdfApprox
+                = std::bind(&CEVRNDCalculator::sankaranApprox,
                               this, _1, t, x);
 
             const Real y0 = X(f0_)/t;

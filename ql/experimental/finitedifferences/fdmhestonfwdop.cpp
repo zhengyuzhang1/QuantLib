@@ -39,10 +39,10 @@ using std::exp;
 namespace QuantLib {
 
     FdmHestonFwdOp::FdmHestonFwdOp(
-            const ext::shared_ptr<FdmMesher>& mesher,
-            const ext::shared_ptr<HestonProcess>& process,
+            const std::shared_ptr<FdmMesher>& mesher,
+            const std::shared_ptr<HestonProcess>& process,
             FdmSquareRootFwdOp::TransformationType type,
-            ext::shared_ptr<LocalVolTermStructure>  leverageFct)
+            std::shared_ptr<LocalVolTermStructure>  leverageFct)
     : type_(type),
       kappa_(process->kappa()),
       theta_(process->theta()),
@@ -52,16 +52,16 @@ namespace QuantLib {
       rTS_  (process->riskFreeRate().currentLink()),
       qTS_  (process->dividendYield().currentLink()),
       varianceValues_(0.5*mesher->locations(1)),
-      dxMap_ (ext::make_shared<FirstDerivativeOp>(0, mesher)),
-      dxxMap_(ext::make_shared<ModTripleBandLinearOp>(TripleBandLinearOp(
+      dxMap_ (std::make_shared<FirstDerivativeOp>(0, mesher)),
+      dxxMap_(std::make_shared<ModTripleBandLinearOp>(TripleBandLinearOp(
           type == FdmSquareRootFwdOp::Log ?
             SecondDerivativeOp(0, mesher).mult(0.5*Exp(mesher->locations(1)))
           : SecondDerivativeOp(0, mesher).mult(0.5*mesher->locations(1))
           ))),
-      boundary_(ext::make_shared<ModTripleBandLinearOp>(TripleBandLinearOp(SecondDerivativeOp(0, mesher).mult(Array(mesher->locations(0).size(), 0.0))))),
-      mapX_  (ext::make_shared<TripleBandLinearOp>(0, mesher)),
-      mapY_  (ext::make_shared<FdmSquareRootFwdOp>(mesher,kappa_,theta_,sigma_, 1, type)),
-      correlation_(ext::make_shared<NinePointLinearOp>(
+      boundary_(std::make_shared<ModTripleBandLinearOp>(TripleBandLinearOp(SecondDerivativeOp(0, mesher).mult(Array(mesher->locations(0).size(), 0.0))))),
+      mapX_  (std::make_shared<TripleBandLinearOp>(0, mesher)),
+      mapY_  (std::make_shared<FdmSquareRootFwdOp>(mesher,kappa_,theta_,sigma_, 1, type)),
+      correlation_(std::make_shared<NinePointLinearOp>(
           type == FdmSquareRootFwdOp::Log ?
               SecondOrderMixedDerivativeOp(0, 1, mesher)
               .mult(Array(mesher->layout()->size(), rho_*sigma_))
@@ -71,7 +71,7 @@ namespace QuantLib {
 	   leverageFct_(std::move(leverageFct)),
 	   mesher_(mesher)
     {
-        const ext::shared_ptr<FdmLinearOpLayout> layout = mesher->layout();
+        const std::shared_ptr<FdmLinearOpLayout> layout = mesher->layout();
         // zero flux boundary condition
         const Size n = layout->dim()[1];
         const Real lowerBoundaryFactor = mapY_->lowerBoundaryFactor(type);
@@ -208,7 +208,7 @@ namespace QuantLib {
 
     Disposable<Array> FdmHestonFwdOp::getLeverageFctSlice(Time t1, Time t2)
     const {
-        const ext::shared_ptr<FdmLinearOpLayout> layout=mesher_->layout();
+        const std::shared_ptr<FdmLinearOpLayout> layout=mesher_->layout();
         Array v(layout->size(), 1.0);
 
         if (!leverageFct_)

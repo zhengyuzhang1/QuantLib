@@ -34,7 +34,7 @@ namespace QuantLib {
                          const Period& fixedLegTenor,
                          BusinessDayConvention fixedLegConvention,
                          const DayCounter& fixedLegDayCounter,
-                         ext::shared_ptr<IborIndex>  iborIndex)
+                         std::shared_ptr<IborIndex>  iborIndex)
     : InterestRateIndex(familyName, tenor, settlementDays,
                         currency, fixingCalendar, fixedLegDayCounter),
       tenor_(tenor), iborIndex_(std::move(iborIndex)),
@@ -53,7 +53,7 @@ namespace QuantLib {
                          const Period& fixedLegTenor,
                          BusinessDayConvention fixedLegConvention,
                          const DayCounter& fixedLegDayCounter,
-                         ext::shared_ptr<IborIndex>  iborIndex,
+                         std::shared_ptr<IborIndex>  iborIndex,
                          Handle<YieldTermStructure>  discount)
     : InterestRateIndex(familyName, tenor, settlementDays,
                         currency, fixingCalendar, fixedLegDayCounter),
@@ -78,7 +78,7 @@ namespace QuantLib {
         return underlyingSwap(fixingDate)->fairRate();
     }
 
-    ext::shared_ptr<VanillaSwap>
+    std::shared_ptr<VanillaSwap>
     SwapIndex::underlyingSwap(const Date& fixingDate) const {
 
         QL_REQUIRE(fixingDate!=Date(), "null fixing date");
@@ -113,11 +113,11 @@ namespace QuantLib {
         return underlyingSwap(fixDate)->maturityDate();
     }
 
-    ext::shared_ptr<SwapIndex>
+    std::shared_ptr<SwapIndex>
     SwapIndex::clone(const Handle<YieldTermStructure>& forwarding) const {
 
         if (exogenousDiscount_)
-            return ext::shared_ptr<SwapIndex>(new
+            return std::shared_ptr<SwapIndex>(new
                 SwapIndex(familyName(),
                           tenor(),
                           fixingDays(),
@@ -129,7 +129,7 @@ namespace QuantLib {
                           iborIndex_->clone(forwarding),
                           discount_));
         else
-            return ext::shared_ptr<SwapIndex>(new
+            return std::shared_ptr<SwapIndex>(new
                 SwapIndex(familyName(),
                           tenor(),
                           fixingDays(),
@@ -141,10 +141,10 @@ namespace QuantLib {
                           iborIndex_->clone(forwarding)));
     }
 
-    ext::shared_ptr<SwapIndex>
+    std::shared_ptr<SwapIndex>
     SwapIndex::clone(const Handle<YieldTermStructure>& forwarding,
                      const Handle<YieldTermStructure>& discounting) const {
-        return ext::shared_ptr<SwapIndex>(new
+        return std::shared_ptr<SwapIndex>(new
              SwapIndex(familyName(),
                        tenor(),
                        fixingDays(),
@@ -157,11 +157,11 @@ namespace QuantLib {
                        discounting));
     }
 
-    ext::shared_ptr<SwapIndex>
+    std::shared_ptr<SwapIndex>
     SwapIndex::clone(const Period& tenor) const {
 
         if (exogenousDiscount_)
-            return ext::shared_ptr<SwapIndex>(new
+            return std::shared_ptr<SwapIndex>(new
                 SwapIndex(familyName(),
                           tenor,
                           fixingDays(),
@@ -173,7 +173,7 @@ namespace QuantLib {
                           iborIndex(),
                           discountingTermStructure()));
         else
-            return ext::shared_ptr<SwapIndex>(new
+            return std::shared_ptr<SwapIndex>(new
                 SwapIndex(familyName(),
                           tenor,
                           fixingDays(),
@@ -191,7 +191,7 @@ namespace QuantLib {
                             const Period& tenor,
                             Natural settlementDays,
                             Currency currency,
-                            const ext::shared_ptr<OvernightIndex>& overnightIndex,
+                            const std::shared_ptr<OvernightIndex>& overnightIndex,
                             bool telescopicValueDates)
     : SwapIndex(familyName, tenor, settlementDays,
                 currency, overnightIndex->fixingCalendar(),
@@ -200,7 +200,7 @@ namespace QuantLib {
       overnightIndex_(overnightIndex), telescopicValueDates_(telescopicValueDates) {}
 
 
-    ext::shared_ptr<OvernightIndexedSwap>
+    std::shared_ptr<OvernightIndexedSwap>
     OvernightIndexedSwapIndex::underlyingSwap(const Date& fixingDate) const {
 
         QL_REQUIRE(fixingDate!=Date(), "null fixing date");

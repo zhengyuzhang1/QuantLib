@@ -22,7 +22,7 @@
 namespace QuantLib {
 
     void CompositeInstrument::add(
-           const ext::shared_ptr<Instrument>& instrument, Real multiplier) {
+           const std::shared_ptr<Instrument>& instrument, Real multiplier) {
         components_.emplace_back(instrument,multiplier);
         registerWith(instrument);
         update();
@@ -38,7 +38,7 @@ namespace QuantLib {
     }
 
     void CompositeInstrument::subtract(
-           const ext::shared_ptr<Instrument>& instrument, Real multiplier) {
+           const std::shared_ptr<Instrument>& instrument, Real multiplier) {
         add(instrument, -multiplier);
     }
 

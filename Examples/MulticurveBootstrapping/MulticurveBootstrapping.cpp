@@ -54,13 +54,6 @@
 
 using namespace QuantLib;
 
-#if defined(QL_ENABLE_SESSIONS)
-namespace QuantLib {
-
-    Integer sessionId() { return 0; }
-
-}
-#endif
 
 
 int main(int, char* []) {
@@ -100,42 +93,42 @@ int main(int, char* []) {
         // or some kind of data feed.
 
         // deposits
-        ext::shared_ptr<Quote> dONRate(new SimpleQuote(0.0004));
-        ext::shared_ptr<Quote> dTNRate(new SimpleQuote(0.0004));
-        ext::shared_ptr<Quote> dSNRate(new SimpleQuote(0.0004));
+        std::shared_ptr<Quote> dONRate(new SimpleQuote(0.0004));
+        std::shared_ptr<Quote> dTNRate(new SimpleQuote(0.0004));
+        std::shared_ptr<Quote> dSNRate(new SimpleQuote(0.0004));
 
         // OIS
-        ext::shared_ptr<Quote> ois1WRate(new SimpleQuote(0.00070));
-        ext::shared_ptr<Quote> ois2WRate(new SimpleQuote(0.00069));
-        ext::shared_ptr<Quote> ois3WRate(new SimpleQuote(0.00078));
-        ext::shared_ptr<Quote> ois1MRate(new SimpleQuote(0.00074));
+        std::shared_ptr<Quote> ois1WRate(new SimpleQuote(0.00070));
+        std::shared_ptr<Quote> ois2WRate(new SimpleQuote(0.00069));
+        std::shared_ptr<Quote> ois3WRate(new SimpleQuote(0.00078));
+        std::shared_ptr<Quote> ois1MRate(new SimpleQuote(0.00074));
 
         // Dated OIS
-        ext::shared_ptr<Quote> oisDated1Rate(new SimpleQuote( 0.000460));
-        ext::shared_ptr<Quote> oisDated2Rate(new SimpleQuote( 0.000160));
-        ext::shared_ptr<Quote> oisDated3Rate(new SimpleQuote(-0.000070));
-        ext::shared_ptr<Quote> oisDated4Rate(new SimpleQuote(-0.000130));
-        ext::shared_ptr<Quote> oisDated5Rate(new SimpleQuote(-0.000140));
+        std::shared_ptr<Quote> oisDated1Rate(new SimpleQuote( 0.000460));
+        std::shared_ptr<Quote> oisDated2Rate(new SimpleQuote( 0.000160));
+        std::shared_ptr<Quote> oisDated3Rate(new SimpleQuote(-0.000070));
+        std::shared_ptr<Quote> oisDated4Rate(new SimpleQuote(-0.000130));
+        std::shared_ptr<Quote> oisDated5Rate(new SimpleQuote(-0.000140));
 
         // OIS
-        ext::shared_ptr<Quote> ois15MRate(new SimpleQuote(0.00002));
-        ext::shared_ptr<Quote> ois18MRate(new SimpleQuote(0.00008));
-        ext::shared_ptr<Quote> ois21MRate(new SimpleQuote(0.00021));
-        ext::shared_ptr<Quote> ois2YRate(new SimpleQuote(0.00036));
-        ext::shared_ptr<Quote> ois3YRate(new SimpleQuote(0.00127));
-        ext::shared_ptr<Quote> ois4YRate(new SimpleQuote(0.00274));
-        ext::shared_ptr<Quote> ois5YRate(new SimpleQuote(0.00456));
-        ext::shared_ptr<Quote> ois6YRate(new SimpleQuote(0.00647));
-        ext::shared_ptr<Quote> ois7YRate(new SimpleQuote(0.00827));
-        ext::shared_ptr<Quote> ois8YRate(new SimpleQuote(0.00996));
-        ext::shared_ptr<Quote> ois9YRate(new SimpleQuote(0.01147));
-        ext::shared_ptr<Quote> ois10YRate(new SimpleQuote(0.0128));
-        ext::shared_ptr<Quote> ois11YRate(new SimpleQuote(0.01404));
-        ext::shared_ptr<Quote> ois12YRate(new SimpleQuote(0.01516));
-        ext::shared_ptr<Quote> ois15YRate(new SimpleQuote(0.01764));
-        ext::shared_ptr<Quote> ois20YRate(new SimpleQuote(0.01939));
-        ext::shared_ptr<Quote> ois25YRate(new SimpleQuote(0.02003));
-        ext::shared_ptr<Quote> ois30YRate(new SimpleQuote(0.02038));
+        std::shared_ptr<Quote> ois15MRate(new SimpleQuote(0.00002));
+        std::shared_ptr<Quote> ois18MRate(new SimpleQuote(0.00008));
+        std::shared_ptr<Quote> ois21MRate(new SimpleQuote(0.00021));
+        std::shared_ptr<Quote> ois2YRate(new SimpleQuote(0.00036));
+        std::shared_ptr<Quote> ois3YRate(new SimpleQuote(0.00127));
+        std::shared_ptr<Quote> ois4YRate(new SimpleQuote(0.00274));
+        std::shared_ptr<Quote> ois5YRate(new SimpleQuote(0.00456));
+        std::shared_ptr<Quote> ois6YRate(new SimpleQuote(0.00647));
+        std::shared_ptr<Quote> ois7YRate(new SimpleQuote(0.00827));
+        std::shared_ptr<Quote> ois8YRate(new SimpleQuote(0.00996));
+        std::shared_ptr<Quote> ois9YRate(new SimpleQuote(0.01147));
+        std::shared_ptr<Quote> ois10YRate(new SimpleQuote(0.0128));
+        std::shared_ptr<Quote> ois11YRate(new SimpleQuote(0.01404));
+        std::shared_ptr<Quote> ois12YRate(new SimpleQuote(0.01516));
+        std::shared_ptr<Quote> ois15YRate(new SimpleQuote(0.01764));
+        std::shared_ptr<Quote> ois20YRate(new SimpleQuote(0.01939));
+        std::shared_ptr<Quote> ois25YRate(new SimpleQuote(0.02003));
+        std::shared_ptr<Quote> ois30YRate(new SimpleQuote(0.02038));
 
         /*********************
          ***  RATE HELPERS ***
@@ -149,17 +142,17 @@ int main(int, char* []) {
         // deposits
         DayCounter depositDayCounter = Actual360();
 
-        ext::shared_ptr<RateHelper> dON(new DepositRateHelper(
+        std::shared_ptr<RateHelper> dON(new DepositRateHelper(
             Handle<Quote>(dONRate),
             1 * Days, 0,
             calendar, Following,
             false, depositDayCounter));
-        ext::shared_ptr<RateHelper> dTN(new DepositRateHelper(
+        std::shared_ptr<RateHelper> dTN(new DepositRateHelper(
             Handle<Quote>(dTNRate),
             1 * Days, 1,
             calendar, Following,
             false, depositDayCounter));
-        ext::shared_ptr<RateHelper> dSN(new DepositRateHelper(
+        std::shared_ptr<RateHelper> dSN(new DepositRateHelper(
             Handle<Quote>(dSNRate),
             1 * Days, 2,
             calendar, Following,
@@ -167,93 +160,93 @@ int main(int, char* []) {
 
         // OIS
 
-        ext::shared_ptr<Eonia> eonia(new Eonia);
+        std::shared_ptr<Eonia> eonia(new Eonia);
 
-        ext::shared_ptr<RateHelper> ois1W(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois1W(new OISRateHelper(
             2, 1 * Weeks,
             Handle<Quote>(ois1WRate), eonia));
-        ext::shared_ptr<RateHelper> ois2W(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois2W(new OISRateHelper(
             2, 2 * Weeks,
             Handle<Quote>(ois2WRate), eonia));
-        ext::shared_ptr<RateHelper> ois3W(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois3W(new OISRateHelper(
             2, 3 * Weeks,
             Handle<Quote>(ois3WRate), eonia));
-        ext::shared_ptr<RateHelper> ois1M(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois1M(new OISRateHelper(
             2, 1 * Months,
             Handle<Quote>(ois1MRate), eonia));
 
 
         // Dated OIS
 
-        ext::shared_ptr<RateHelper> oisDated1(new DatedOISRateHelper(
+        std::shared_ptr<RateHelper> oisDated1(new DatedOISRateHelper(
             Date(16, January, 2013), Date(13, February, 2013),
             Handle<Quote>(oisDated1Rate), eonia));
-        ext::shared_ptr<RateHelper> oisDated2(new DatedOISRateHelper(
+        std::shared_ptr<RateHelper> oisDated2(new DatedOISRateHelper(
             Date(13, February, 2013), Date(13, March, 2013),
             Handle<Quote>(oisDated2Rate), eonia));
-        ext::shared_ptr<RateHelper> oisDated3(new DatedOISRateHelper(
+        std::shared_ptr<RateHelper> oisDated3(new DatedOISRateHelper(
             Date(13, March, 2013), Date(10, April, 2013),
             Handle<Quote>(oisDated3Rate), eonia));
-        ext::shared_ptr<RateHelper> oisDated4(new DatedOISRateHelper(
+        std::shared_ptr<RateHelper> oisDated4(new DatedOISRateHelper(
             Date(10, April, 2013), Date(8, May, 2013),
             Handle<Quote>(oisDated4Rate), eonia));
-        ext::shared_ptr<RateHelper> oisDated5(new DatedOISRateHelper(
+        std::shared_ptr<RateHelper> oisDated5(new DatedOISRateHelper(
             Date(8, May, 2013), Date(12, June, 2013),
             Handle<Quote>(oisDated5Rate), eonia));
 
         // OIS
-        ext::shared_ptr<RateHelper> ois15M(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois15M(new OISRateHelper(
             2, 15*Months,
             Handle<Quote>(ois15MRate), eonia));
-        ext::shared_ptr<RateHelper> ois18M(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois18M(new OISRateHelper(
             2, 18*Months,
             Handle<Quote>(ois18MRate), eonia));
-        ext::shared_ptr<RateHelper> ois21M(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois21M(new OISRateHelper(
             2, 21*Months,
             Handle<Quote>(ois21MRate), eonia));
-        ext::shared_ptr<RateHelper> ois2Y(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois2Y(new OISRateHelper(
             2, 2*Years,
             Handle<Quote>(ois2YRate), eonia));
-        ext::shared_ptr<RateHelper> ois3Y(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois3Y(new OISRateHelper(
             2, 3*Years,
             Handle<Quote>(ois3YRate), eonia));
-        ext::shared_ptr<RateHelper> ois4Y(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois4Y(new OISRateHelper(
             2, 4*Years,
             Handle<Quote>(ois4YRate), eonia));
-        ext::shared_ptr<RateHelper> ois5Y(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois5Y(new OISRateHelper(
             2, 5*Years,
             Handle<Quote>(ois5YRate), eonia));
-        ext::shared_ptr<RateHelper> ois6Y(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois6Y(new OISRateHelper(
             2, 6*Years,
             Handle<Quote>(ois6YRate), eonia));
-        ext::shared_ptr<RateHelper> ois7Y(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois7Y(new OISRateHelper(
             2, 7*Years,
             Handle<Quote>(ois7YRate), eonia));
-        ext::shared_ptr<RateHelper> ois8Y(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois8Y(new OISRateHelper(
             2, 8*Years,
             Handle<Quote>(ois8YRate), eonia));
-        ext::shared_ptr<RateHelper> ois9Y(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois9Y(new OISRateHelper(
             2, 9*Years,
             Handle<Quote>(ois9YRate), eonia));
-        ext::shared_ptr<RateHelper> ois10Y(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois10Y(new OISRateHelper(
             2, 10*Years,
             Handle<Quote>(ois10YRate), eonia));
-        ext::shared_ptr<RateHelper> ois11Y(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois11Y(new OISRateHelper(
             2, 11*Years,
             Handle<Quote>(ois11YRate), eonia));
-        ext::shared_ptr<RateHelper> ois12Y(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois12Y(new OISRateHelper(
             2, 12*Years,
             Handle<Quote>(ois12YRate), eonia));
-        ext::shared_ptr<RateHelper> ois15Y(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois15Y(new OISRateHelper(
             2, 15*Years,
             Handle<Quote>(ois15YRate), eonia));
-        ext::shared_ptr<RateHelper> ois20Y(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois20Y(new OISRateHelper(
             2, 20*Years,
             Handle<Quote>(ois20YRate), eonia));
-        ext::shared_ptr<RateHelper> ois25Y(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois25Y(new OISRateHelper(
             2, 25*Years,
             Handle<Quote>(ois25YRate), eonia));
-        ext::shared_ptr<RateHelper> ois30Y(new OISRateHelper(
+        std::shared_ptr<RateHelper> ois30Y(new OISRateHelper(
             2, 30*Years,
             Handle<Quote>(ois30YRate), eonia));
 
@@ -272,7 +265,7 @@ int main(int, char* []) {
         double tolerance = 1.0e-15;
 
         // Eonia curve
-        std::vector<ext::shared_ptr<RateHelper> > eoniaInstruments;
+        std::vector<std::shared_ptr<RateHelper> > eoniaInstruments;
         eoniaInstruments.push_back(dON);
         eoniaInstruments.push_back(dTN);
         eoniaInstruments.push_back(dSN);
@@ -305,7 +298,7 @@ int main(int, char* []) {
         eoniaInstruments.push_back(ois30Y);
 
 
-        ext::shared_ptr<YieldTermStructure> eoniaTermStructure(
+        std::shared_ptr<YieldTermStructure> eoniaTermStructure(
             new PiecewiseYieldCurve<Discount, Cubic>(
                 todaysDate, eoniaInstruments,
                 termStructureDayCounter,
@@ -326,109 +319,109 @@ int main(int, char* []) {
         /*********************
         **    EURIBOR 6M    **
         *********************/
-        ext::shared_ptr<IborIndex> euribor6M(new Euribor6M);
+        std::shared_ptr<IborIndex> euribor6M(new Euribor6M);
 
         // deposits
-        ext::shared_ptr<Quote> d6MRate(new SimpleQuote(0.00312));
+        std::shared_ptr<Quote> d6MRate(new SimpleQuote(0.00312));
 
         // FRAs
-        ext::shared_ptr<Quote> fra1Rate(new SimpleQuote(0.002930));
-        ext::shared_ptr<Quote> fra2Rate(new SimpleQuote(0.002720));
-        ext::shared_ptr<Quote> fra3Rate(new SimpleQuote(0.002600));
-        ext::shared_ptr<Quote> fra4Rate(new SimpleQuote(0.002560));
-        ext::shared_ptr<Quote> fra5Rate(new SimpleQuote(0.002520));
-        ext::shared_ptr<Quote> fra6Rate(new SimpleQuote(0.002480));
-        ext::shared_ptr<Quote> fra7Rate(new SimpleQuote(0.002540));
-        ext::shared_ptr<Quote> fra8Rate(new SimpleQuote(0.002610));
-        ext::shared_ptr<Quote> fra9Rate(new SimpleQuote(0.002670));
-        ext::shared_ptr<Quote> fra10Rate(new SimpleQuote(0.002790));
-        ext::shared_ptr<Quote> fra11Rate(new SimpleQuote(0.002910));
-        ext::shared_ptr<Quote> fra12Rate(new SimpleQuote(0.003030));
-        ext::shared_ptr<Quote> fra13Rate(new SimpleQuote(0.003180));
-        ext::shared_ptr<Quote> fra14Rate(new SimpleQuote(0.003350));
-        ext::shared_ptr<Quote> fra15Rate(new SimpleQuote(0.003520));
-        ext::shared_ptr<Quote> fra16Rate(new SimpleQuote(0.003710));
-        ext::shared_ptr<Quote> fra17Rate(new SimpleQuote(0.003890));
-        ext::shared_ptr<Quote> fra18Rate(new SimpleQuote(0.004090));
+        std::shared_ptr<Quote> fra1Rate(new SimpleQuote(0.002930));
+        std::shared_ptr<Quote> fra2Rate(new SimpleQuote(0.002720));
+        std::shared_ptr<Quote> fra3Rate(new SimpleQuote(0.002600));
+        std::shared_ptr<Quote> fra4Rate(new SimpleQuote(0.002560));
+        std::shared_ptr<Quote> fra5Rate(new SimpleQuote(0.002520));
+        std::shared_ptr<Quote> fra6Rate(new SimpleQuote(0.002480));
+        std::shared_ptr<Quote> fra7Rate(new SimpleQuote(0.002540));
+        std::shared_ptr<Quote> fra8Rate(new SimpleQuote(0.002610));
+        std::shared_ptr<Quote> fra9Rate(new SimpleQuote(0.002670));
+        std::shared_ptr<Quote> fra10Rate(new SimpleQuote(0.002790));
+        std::shared_ptr<Quote> fra11Rate(new SimpleQuote(0.002910));
+        std::shared_ptr<Quote> fra12Rate(new SimpleQuote(0.003030));
+        std::shared_ptr<Quote> fra13Rate(new SimpleQuote(0.003180));
+        std::shared_ptr<Quote> fra14Rate(new SimpleQuote(0.003350));
+        std::shared_ptr<Quote> fra15Rate(new SimpleQuote(0.003520));
+        std::shared_ptr<Quote> fra16Rate(new SimpleQuote(0.003710));
+        std::shared_ptr<Quote> fra17Rate(new SimpleQuote(0.003890));
+        std::shared_ptr<Quote> fra18Rate(new SimpleQuote(0.004090));
 
         //swaps
-        ext::shared_ptr<Quote> s3yRate(new SimpleQuote(0.004240));
-        ext::shared_ptr<Quote> s4yRate(new SimpleQuote(0.005760));
-        ext::shared_ptr<Quote> s5yRate(new SimpleQuote(0.007620));
-        ext::shared_ptr<Quote> s6yRate(new SimpleQuote(0.009540));
-        ext::shared_ptr<Quote> s7yRate(new SimpleQuote(0.011350));
-        ext::shared_ptr<Quote> s8yRate(new SimpleQuote(0.013030));
-        ext::shared_ptr<Quote> s9yRate(new SimpleQuote(0.014520));
-        ext::shared_ptr<Quote> s10yRate(new SimpleQuote(0.015840));
-        ext::shared_ptr<Quote> s12yRate(new SimpleQuote(0.018090));
-        ext::shared_ptr<Quote> s15yRate(new SimpleQuote(0.020370));
-        ext::shared_ptr<Quote> s20yRate(new SimpleQuote(0.021870));
-        ext::shared_ptr<Quote> s25yRate(new SimpleQuote(0.022340));
-        ext::shared_ptr<Quote> s30yRate(new SimpleQuote(0.022560));
-        ext::shared_ptr<Quote> s35yRate(new SimpleQuote(0.022950));
-        ext::shared_ptr<Quote> s40yRate(new SimpleQuote(0.023480));
-        ext::shared_ptr<Quote> s50yRate(new SimpleQuote(0.024210));
-        ext::shared_ptr<Quote> s60yRate(new SimpleQuote(0.024630));
+        std::shared_ptr<Quote> s3yRate(new SimpleQuote(0.004240));
+        std::shared_ptr<Quote> s4yRate(new SimpleQuote(0.005760));
+        std::shared_ptr<Quote> s5yRate(new SimpleQuote(0.007620));
+        std::shared_ptr<Quote> s6yRate(new SimpleQuote(0.009540));
+        std::shared_ptr<Quote> s7yRate(new SimpleQuote(0.011350));
+        std::shared_ptr<Quote> s8yRate(new SimpleQuote(0.013030));
+        std::shared_ptr<Quote> s9yRate(new SimpleQuote(0.014520));
+        std::shared_ptr<Quote> s10yRate(new SimpleQuote(0.015840));
+        std::shared_ptr<Quote> s12yRate(new SimpleQuote(0.018090));
+        std::shared_ptr<Quote> s15yRate(new SimpleQuote(0.020370));
+        std::shared_ptr<Quote> s20yRate(new SimpleQuote(0.021870));
+        std::shared_ptr<Quote> s25yRate(new SimpleQuote(0.022340));
+        std::shared_ptr<Quote> s30yRate(new SimpleQuote(0.022560));
+        std::shared_ptr<Quote> s35yRate(new SimpleQuote(0.022950));
+        std::shared_ptr<Quote> s40yRate(new SimpleQuote(0.023480));
+        std::shared_ptr<Quote> s50yRate(new SimpleQuote(0.024210));
+        std::shared_ptr<Quote> s60yRate(new SimpleQuote(0.024630));
 
 
-        ext::shared_ptr<RateHelper> d6M(new DepositRateHelper(
+        std::shared_ptr<RateHelper> d6M(new DepositRateHelper(
             Handle<Quote>(d6MRate),
             6 * Months, 3,
             calendar, Following,
             false, depositDayCounter));
 
-        ext::shared_ptr<RateHelper> fra1(new FraRateHelper(
+        std::shared_ptr<RateHelper> fra1(new FraRateHelper(
             Handle<Quote>(fra1Rate),
             1, euribor6M));
-        ext::shared_ptr<RateHelper> fra2(new FraRateHelper(
+        std::shared_ptr<RateHelper> fra2(new FraRateHelper(
             Handle<Quote>(fra2Rate),
             2, euribor6M));
-        ext::shared_ptr<RateHelper> fra3(new FraRateHelper(
+        std::shared_ptr<RateHelper> fra3(new FraRateHelper(
             Handle<Quote>(fra3Rate),
             3, euribor6M));
-        ext::shared_ptr<RateHelper> fra4(new FraRateHelper(
+        std::shared_ptr<RateHelper> fra4(new FraRateHelper(
             Handle<Quote>(fra4Rate),
             4, euribor6M));
-        ext::shared_ptr<RateHelper> fra5(new FraRateHelper(
+        std::shared_ptr<RateHelper> fra5(new FraRateHelper(
             Handle<Quote>(fra5Rate),
             5, euribor6M));
-        ext::shared_ptr<RateHelper> fra6(new FraRateHelper(
+        std::shared_ptr<RateHelper> fra6(new FraRateHelper(
             Handle<Quote>(fra6Rate),
             6, euribor6M));
-        ext::shared_ptr<RateHelper> fra7(new FraRateHelper(
+        std::shared_ptr<RateHelper> fra7(new FraRateHelper(
             Handle<Quote>(fra7Rate),
             7, euribor6M));
-        ext::shared_ptr<RateHelper> fra8(new FraRateHelper(
+        std::shared_ptr<RateHelper> fra8(new FraRateHelper(
             Handle<Quote>(fra8Rate),
             8, euribor6M));
-        ext::shared_ptr<RateHelper> fra9(new FraRateHelper(
+        std::shared_ptr<RateHelper> fra9(new FraRateHelper(
             Handle<Quote>(fra9Rate),
             9, euribor6M));
-        ext::shared_ptr<RateHelper> fra10(new FraRateHelper(
+        std::shared_ptr<RateHelper> fra10(new FraRateHelper(
             Handle<Quote>(fra10Rate),
             10, euribor6M));
-        ext::shared_ptr<RateHelper> fra11(new FraRateHelper(
+        std::shared_ptr<RateHelper> fra11(new FraRateHelper(
             Handle<Quote>(fra11Rate),
             11, euribor6M));
-        ext::shared_ptr<RateHelper> fra12(new FraRateHelper(
+        std::shared_ptr<RateHelper> fra12(new FraRateHelper(
             Handle<Quote>(fra12Rate),
             12, euribor6M));
-        ext::shared_ptr<RateHelper> fra13(new FraRateHelper(
+        std::shared_ptr<RateHelper> fra13(new FraRateHelper(
             Handle<Quote>(fra13Rate),
             13, euribor6M));
-        ext::shared_ptr<RateHelper> fra14(new FraRateHelper(
+        std::shared_ptr<RateHelper> fra14(new FraRateHelper(
             Handle<Quote>(fra14Rate),
             14, euribor6M));
-        ext::shared_ptr<RateHelper> fra15(new FraRateHelper(
+        std::shared_ptr<RateHelper> fra15(new FraRateHelper(
             Handle<Quote>(fra15Rate),
             15, euribor6M));
-        ext::shared_ptr<RateHelper> fra16(new FraRateHelper(
+        std::shared_ptr<RateHelper> fra16(new FraRateHelper(
             Handle<Quote>(fra16Rate),
             16, euribor6M));
-        ext::shared_ptr<RateHelper> fra17(new FraRateHelper(
+        std::shared_ptr<RateHelper> fra17(new FraRateHelper(
             Handle<Quote>(fra17Rate),
             17, euribor6M));
-        ext::shared_ptr<RateHelper> fra18(new FraRateHelper(
+        std::shared_ptr<RateHelper> fra18(new FraRateHelper(
             Handle<Quote>(fra18Rate),
             18, euribor6M));
 
@@ -439,121 +432,121 @@ int main(int, char* []) {
         BusinessDayConvention swFixedLegConvention = Unadjusted;
         DayCounter swFixedLegDayCounter = Thirty360(Thirty360::European);
 
-        ext::shared_ptr<IborIndex> swFloatingLegIndex(new Euribor6M);
+        std::shared_ptr<IborIndex> swFloatingLegIndex(new Euribor6M);
 
-        ext::shared_ptr<RateHelper> s3y(new SwapRateHelper(
+        std::shared_ptr<RateHelper> s3y(new SwapRateHelper(
             Handle<Quote>(s3yRate), 3 * Years,
             calendar, swFixedLegFrequency,
             swFixedLegConvention, swFixedLegDayCounter,
             swFloatingLegIndex,
             Handle<Quote>(), 0 * Days, discountingTermStructure));
 
-        ext::shared_ptr<RateHelper> s4y(new SwapRateHelper(
+        std::shared_ptr<RateHelper> s4y(new SwapRateHelper(
             Handle<Quote>(s4yRate), 4 * Years,
             calendar, swFixedLegFrequency,
             swFixedLegConvention, swFixedLegDayCounter,
             swFloatingLegIndex,
             Handle<Quote>(), 0 * Days, discountingTermStructure));
 
-        ext::shared_ptr<RateHelper> s5y(new SwapRateHelper(
+        std::shared_ptr<RateHelper> s5y(new SwapRateHelper(
             Handle<Quote>(s5yRate), 5 * Years,
             calendar, swFixedLegFrequency,
             swFixedLegConvention, swFixedLegDayCounter,
             swFloatingLegIndex,
             Handle<Quote>(), 0 * Days, discountingTermStructure));
 
-        ext::shared_ptr<RateHelper> s6y(new SwapRateHelper(
+        std::shared_ptr<RateHelper> s6y(new SwapRateHelper(
             Handle<Quote>(s6yRate), 6 * Years,
             calendar, swFixedLegFrequency,
             swFixedLegConvention, swFixedLegDayCounter,
             swFloatingLegIndex,
             Handle<Quote>(), 0 * Days, discountingTermStructure));
 
-        ext::shared_ptr<RateHelper> s7y(new SwapRateHelper(
+        std::shared_ptr<RateHelper> s7y(new SwapRateHelper(
             Handle<Quote>(s7yRate), 7 * Years,
             calendar, swFixedLegFrequency,
             swFixedLegConvention, swFixedLegDayCounter,
             swFloatingLegIndex,
             Handle<Quote>(), 0 * Days, discountingTermStructure));
 
-        ext::shared_ptr<RateHelper> s8y(new SwapRateHelper(
+        std::shared_ptr<RateHelper> s8y(new SwapRateHelper(
             Handle<Quote>(s8yRate), 8 * Years,
             calendar, swFixedLegFrequency,
             swFixedLegConvention, swFixedLegDayCounter,
             swFloatingLegIndex,
             Handle<Quote>(), 0 * Days, discountingTermStructure));
 
-        ext::shared_ptr<RateHelper> s9y(new SwapRateHelper(
+        std::shared_ptr<RateHelper> s9y(new SwapRateHelper(
             Handle<Quote>(s9yRate), 9 * Years,
             calendar, swFixedLegFrequency,
             swFixedLegConvention, swFixedLegDayCounter,
             swFloatingLegIndex,
             Handle<Quote>(), 0 * Days, discountingTermStructure));
 
-        ext::shared_ptr<RateHelper> s10y(new SwapRateHelper(
+        std::shared_ptr<RateHelper> s10y(new SwapRateHelper(
             Handle<Quote>(s10yRate), 10 * Years,
             calendar, swFixedLegFrequency,
             swFixedLegConvention, swFixedLegDayCounter,
             swFloatingLegIndex,
             Handle<Quote>(), 0 * Days, discountingTermStructure));
 
-        ext::shared_ptr<RateHelper> s12y(new SwapRateHelper(
+        std::shared_ptr<RateHelper> s12y(new SwapRateHelper(
             Handle<Quote>(s12yRate), 12 * Years,
             calendar, swFixedLegFrequency,
             swFixedLegConvention, swFixedLegDayCounter,
             swFloatingLegIndex,
             Handle<Quote>(), 0 * Days, discountingTermStructure));
 
-        ext::shared_ptr<RateHelper> s15y(new SwapRateHelper(
+        std::shared_ptr<RateHelper> s15y(new SwapRateHelper(
             Handle<Quote>(s15yRate), 15 * Years,
             calendar, swFixedLegFrequency,
             swFixedLegConvention, swFixedLegDayCounter,
             swFloatingLegIndex,
             Handle<Quote>(), 0 * Days, discountingTermStructure));
 
-        ext::shared_ptr<RateHelper> s20y(new SwapRateHelper(
+        std::shared_ptr<RateHelper> s20y(new SwapRateHelper(
             Handle<Quote>(s20yRate), 20 * Years,
             calendar, swFixedLegFrequency,
             swFixedLegConvention, swFixedLegDayCounter,
             swFloatingLegIndex,
             Handle<Quote>(), 0 * Days, discountingTermStructure));
 
-        ext::shared_ptr<RateHelper> s25y(new SwapRateHelper(
+        std::shared_ptr<RateHelper> s25y(new SwapRateHelper(
             Handle<Quote>(s25yRate), 25 * Years,
             calendar, swFixedLegFrequency,
             swFixedLegConvention, swFixedLegDayCounter,
             swFloatingLegIndex,
             Handle<Quote>(), 0 * Days, discountingTermStructure));
 
-        ext::shared_ptr<RateHelper> s30y(new SwapRateHelper(
+        std::shared_ptr<RateHelper> s30y(new SwapRateHelper(
             Handle<Quote>(s30yRate), 30 * Years,
             calendar, swFixedLegFrequency,
             swFixedLegConvention, swFixedLegDayCounter,
             swFloatingLegIndex,
             Handle<Quote>(), 0 * Days, discountingTermStructure));
 
-        ext::shared_ptr<RateHelper> s35y(new SwapRateHelper(
+        std::shared_ptr<RateHelper> s35y(new SwapRateHelper(
             Handle<Quote>(s35yRate), 35 * Years,
             calendar, swFixedLegFrequency,
             swFixedLegConvention, swFixedLegDayCounter,
             swFloatingLegIndex,
             Handle<Quote>(), 0 * Days, discountingTermStructure));
 
-        ext::shared_ptr<RateHelper> s40y(new SwapRateHelper(
+        std::shared_ptr<RateHelper> s40y(new SwapRateHelper(
             Handle<Quote>(s40yRate), 40 * Years,
             calendar, swFixedLegFrequency,
             swFixedLegConvention, swFixedLegDayCounter,
             swFloatingLegIndex,
             Handle<Quote>(), 0 * Days, discountingTermStructure));
 
-        ext::shared_ptr<RateHelper> s50y(new SwapRateHelper(
+        std::shared_ptr<RateHelper> s50y(new SwapRateHelper(
             Handle<Quote>(s50yRate), 50 * Years,
             calendar, swFixedLegFrequency,
             swFixedLegConvention, swFixedLegDayCounter,
             swFloatingLegIndex,
             Handle<Quote>(), 0 * Days, discountingTermStructure));
 
-        ext::shared_ptr<RateHelper> s60y(new SwapRateHelper(
+        std::shared_ptr<RateHelper> s60y(new SwapRateHelper(
             Handle<Quote>(s60yRate), 60 * Years,
             calendar, swFixedLegFrequency,
             swFixedLegConvention, swFixedLegDayCounter,
@@ -561,7 +554,7 @@ int main(int, char* []) {
             Handle<Quote>(), 0 * Days, discountingTermStructure));
 
         // Euribor 6M curve
-        std::vector<ext::shared_ptr<RateHelper> > euribor6MInstruments;
+        std::vector<std::shared_ptr<RateHelper> > euribor6MInstruments;
         euribor6MInstruments.push_back(d6M);
         euribor6MInstruments.push_back(fra1);
         euribor6MInstruments.push_back(fra2);
@@ -599,7 +592,7 @@ int main(int, char* []) {
         euribor6MInstruments.push_back(s50y);
         euribor6MInstruments.push_back(s60y);
 
-        ext::shared_ptr<YieldTermStructure> euribor6MTermStructure(
+        std::shared_ptr<YieldTermStructure> euribor6MTermStructure(
             new PiecewiseYieldCurve<Discount, Cubic>(
                 settlementDate, euribor6MInstruments,
                 termStructureDayCounter,
@@ -622,7 +615,7 @@ int main(int, char* []) {
 
         // floating leg
         Frequency floatingLegFrequency = Semiannual;
-        ext::shared_ptr<IborIndex> euriborIndex(
+        std::shared_ptr<IborIndex> euriborIndex(
                                      new Euribor6M(forecastingTermStructure));
         Spread spread = 0.0;
 
@@ -700,7 +693,7 @@ int main(int, char* []) {
         Rate fairRate;
         Spread fairSpread;
 
-        ext::shared_ptr<PricingEngine> swapEngine(
+        std::shared_ptr<PricingEngine> swapEngine(
                          new DiscountingSwapEngine(discountingTermStructure));
 
         spot5YearSwap.setPricingEngine(swapEngine);
@@ -810,8 +803,8 @@ int main(int, char* []) {
         // value contained in the Quote triggers a new bootstrapping
         // of the curve and a repricing of the swap.
 
-        ext::shared_ptr<SimpleQuote> fiveYearsRate =
-            ext::dynamic_pointer_cast<SimpleQuote>(s5yRate);
+        std::shared_ptr<SimpleQuote> fiveYearsRate =
+            std::dynamic_pointer_cast<SimpleQuote>(s5yRate);
         fiveYearsRate->setValue(0.0090);
 
         std::cout << dblrule << std::endl;

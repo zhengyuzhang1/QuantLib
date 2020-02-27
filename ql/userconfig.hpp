@@ -63,9 +63,7 @@
    different sessions. You will have to provide and link with the
    library a sessionId() function in namespace QuantLib, returning a
    different session id for each session.*/
-#ifndef QL_ENABLE_SESSIONS
 //#   define QL_ENABLE_SESSIONS
-#endif
 
 /* Define this to enable the thread-safe observer pattern. You should
    enable it if you want to use QuantLib via the SWIG layer within
@@ -101,8 +99,5 @@
 /* Define this to make Singleton initialization thread-safe.
    Note: There is no support for thread safety and multiple sessions.
 */
-#ifndef QL_ENABLE_SINGLETON_THREAD_SAFE_INIT
-//#   define QL_ENABLE_SINGLETON_THREAD_SAFE_INIT
-#endif
 
 #endif

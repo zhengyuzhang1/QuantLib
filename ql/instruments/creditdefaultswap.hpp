@@ -100,8 +100,8 @@ namespace QuantLib {
                           bool settlesAccrual = true,
                           bool paysAtDefaultTime = true,
                           const Date& protectionStart = Date(),
-                          ext::shared_ptr<Claim>  =
-                                                  ext::shared_ptr<Claim>(),
+                          std::shared_ptr<Claim>  =
+                                                  std::shared_ptr<Claim>(),
                           const DayCounter& lastPeriodDayCounter = DayCounter(),
                           const bool rebatesAccrual = true);
         //! CDS quoted as upfront and running spread
@@ -148,8 +148,8 @@ namespace QuantLib {
                           bool paysAtDefaultTime = true,
                           const Date& protectionStart = Date(),
                           const Date& upfrontDate = Date(),
-                          ext::shared_ptr<Claim>  =
-                                                  ext::shared_ptr<Claim>(),
+                          std::shared_ptr<Claim>  =
+                                                  std::shared_ptr<Claim>(),
                           const DayCounter& lastPeriodDayCounter = DayCounter(),
                           const bool rebatesAccrual = true);
         //@}
@@ -164,7 +164,7 @@ namespace QuantLib {
         Protection::Side side() const;
         Real notional() const;
         Rate runningSpread() const;
-        boost::optional<Rate> upfront() const;
+        std::optional<Rate> upfront() const;
         bool settlesAccrual() const;
         bool paysAtDefaultTime() const;
         const Leg& coupons() const;
@@ -266,13 +266,13 @@ namespace QuantLib {
         // data members
         Protection::Side side_;
         Real notional_;
-        boost::optional<Rate> upfront_;
+        std::optional<Rate> upfront_;
         Rate runningSpread_;
         bool settlesAccrual_, paysAtDefaultTime_;
-        ext::shared_ptr<Claim> claim_;
+        std::shared_ptr<Claim> claim_;
         Leg leg_;
-        ext::shared_ptr<CashFlow> upfrontPayment_;
-        ext::shared_ptr<CashFlow> accrualRebate_;
+        std::shared_ptr<CashFlow> upfrontPayment_;
+        std::shared_ptr<CashFlow> accrualRebate_;
         Date protectionStart_;
         Date maturity_;
         // results
@@ -291,15 +291,15 @@ namespace QuantLib {
         arguments();
         Protection::Side side;
         Real notional;
-        boost::optional<Rate> upfront;
+        std::optional<Rate> upfront;
         Rate spread;
         Leg leg;
         // if not initialized by constructors means theres no flows.
-        ext::shared_ptr<CashFlow> upfrontPayment;
-        ext::shared_ptr<CashFlow> accrualRebate;
+        std::shared_ptr<CashFlow> upfrontPayment;
+        std::shared_ptr<CashFlow> accrualRebate;
         bool settlesAccrual;
         bool paysAtDefaultTime;
-        ext::shared_ptr<Claim> claim;
+        std::shared_ptr<Claim> claim;
         Date protectionStart;
         Date maturity;
         void validate() const override;

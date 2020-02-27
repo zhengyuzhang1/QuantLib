@@ -46,7 +46,7 @@ namespace QuantLib {
         data_[to_upper_copy(name)] = history;
     }
 
-    ext::shared_ptr<Observable>
+    std::shared_ptr<Observable>
     IndexManager::notifier(const string& name) const {
         return data_[to_upper_copy(name)];
     }

@@ -44,7 +44,7 @@ namespace QuantLib {
         CatBond(Natural settlementDays, 
                 const Calendar& calendar,
                 const Date& issueDate,
-                ext::shared_ptr<NotionalRisk> notionalRisk)       
+                std::shared_ptr<NotionalRisk> notionalRisk)       
                 : Bond(settlementDays, calendar, issueDate), 
                   notionalRisk_(std::move(notionalRisk))
         {}
@@ -57,7 +57,7 @@ namespace QuantLib {
         Real expectedLoss() { return expectedLoss_; }
         Real exhaustionProbability() { return exhaustionProbability_; }
     protected:
-        ext::shared_ptr<NotionalRisk> notionalRisk_;
+        std::shared_ptr<NotionalRisk> notionalRisk_;
 
         mutable Real lossProbability_;
         mutable Real exhaustionProbability_;
@@ -67,7 +67,7 @@ namespace QuantLib {
     class CatBond::arguments : public Bond::arguments {
       public:
         Date startDate;
-        ext::shared_ptr<NotionalRisk> notionalRisk;
+        std::shared_ptr<NotionalRisk> notionalRisk;
         void validate() const override;
     };
 
@@ -96,9 +96,9 @@ namespace QuantLib {
         FloatingCatBond(Natural settlementDays,
                          Real faceAmount,
                          const Schedule& schedule,
-                         const ext::shared_ptr<IborIndex>& iborIndex,
+                         const std::shared_ptr<IborIndex>& iborIndex,
                          const DayCounter& accrualDayCounter,
-                         ext::shared_ptr<NotionalRisk> notionalRisk,
+                         std::shared_ptr<NotionalRisk> notionalRisk,
                          BusinessDayConvention paymentConvention
                                              = Following,
                          Natural fixingDays = Null<Natural>(),
@@ -120,9 +120,9 @@ namespace QuantLib {
                          const Date& maturityDate,
                          Frequency couponFrequency,
                          const Calendar& calendar,
-                         const ext::shared_ptr<IborIndex>& iborIndex,
+                         const std::shared_ptr<IborIndex>& iborIndex,
                          const DayCounter& accrualDayCounter,
-                         ext::shared_ptr<NotionalRisk> notionalRisk,
+                         std::shared_ptr<NotionalRisk> notionalRisk,
                          BusinessDayConvention accrualConvention = Following,
                          BusinessDayConvention paymentConvention = Following,
                          Natural fixingDays = Null<Natural>(),

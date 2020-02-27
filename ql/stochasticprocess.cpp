@@ -29,7 +29,7 @@ namespace QuantLib {
     StochasticProcess::StochasticProcess() = default;
 
     StochasticProcess::StochasticProcess(
-                                ext::shared_ptr<discretization>  disc)
+                                std::shared_ptr<discretization>  disc)
     : discretization_(std::move(disc)) {}
 
     Size StochasticProcess::factors() const {
@@ -79,7 +79,7 @@ namespace QuantLib {
     StochasticProcess1D::StochasticProcess1D() = default;
 
     StochasticProcess1D::StochasticProcess1D(
-                                ext::shared_ptr<discretization>  disc)
+                                std::shared_ptr<discretization>  disc)
     : discretization_(std::move(disc)) {}
 
     Real StochasticProcess1D::expectation(Time t0, Real x0, Time dt) const {

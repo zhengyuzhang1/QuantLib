@@ -47,7 +47,7 @@ namespace QuantLib {
                          Real nominal,
                          const Date& startDate,
                          const Date& endDate,
-                         const ext::shared_ptr<BMAIndex>& index,
+                         const std::shared_ptr<BMAIndex>& index,
                          Real gearing = 1.0,
                          Spread spread = 0.0,
                          const Date& refPeriodStart = Date(),
@@ -83,7 +83,7 @@ namespace QuantLib {
     class AverageBMALeg {
       public:
         AverageBMALeg(Schedule  schedule,
-                      ext::shared_ptr<BMAIndex>  index);
+                      std::shared_ptr<BMAIndex>  index);
         AverageBMALeg& withNotionals(Real notional);
         AverageBMALeg& withNotionals(const std::vector<Real>& notionals);
         AverageBMALeg& withPaymentDayCounter(const DayCounter&);
@@ -95,7 +95,7 @@ namespace QuantLib {
         operator Leg() const;
       private:
         Schedule schedule_;
-        ext::shared_ptr<BMAIndex> index_;
+        std::shared_ptr<BMAIndex> index_;
         std::vector<Real> notionals_;
         DayCounter paymentDayCounter_;
         BusinessDayConvention paymentAdjustment_;

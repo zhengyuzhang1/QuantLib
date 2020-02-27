@@ -25,7 +25,7 @@
 
 #include <ql/qldefines.hpp>
 
-#define QL_UNIQUE_OR_AUTO_PTR std::unique_ptr
+#define std::unique_ptr std::unique_ptr
 
 
 #endif

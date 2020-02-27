@@ -29,12 +29,12 @@ namespace QuantLib {
                            Position::Type type,
                            Rate strikeForwardRate,
                            Real notionalAmount,
-                           const ext::shared_ptr<IborIndex>& index,
+                           const std::shared_ptr<IborIndex>& index,
                            const Handle<YieldTermStructure>& discountCurve,
                            bool useIndexedCoupon)
     : Forward(index->dayCounter(), index->fixingCalendar(),
               index->businessDayConvention(),
-              index->fixingDays(), ext::shared_ptr<Payoff>(),
+              index->fixingDays(), std::shared_ptr<Payoff>(),
               valueDate, maturityDate, discountCurve),
       fraType_(type), notionalAmount_(notionalAmount), index_(index),
       useIndexedCoupon_(useIndexedCoupon) {
@@ -47,7 +47,7 @@ namespace QuantLib {
         Real strike = notionalAmount_ *
                       strikeForwardRate_.compoundFactor(valueDate_,
                                                         maturityDate_);
-        payoff_ = ext::shared_ptr<Payoff>(new ForwardTypePayoff(fraType_,
+        payoff_ = std::shared_ptr<Payoff>(new ForwardTypePayoff(fraType_,
                                                                   strike));
         // incomeDiscountCurve_ is irrelevant to an FRA
         incomeDiscountCurve_ = discountCurve_;

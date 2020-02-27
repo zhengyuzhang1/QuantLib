@@ -60,12 +60,12 @@ namespace QuantLib {
 
       public:
         LognormalCmsSpreadPricer(
-            const ext::shared_ptr<CmsCouponPricer> cmsPricer,
+            const std::shared_ptr<CmsCouponPricer> cmsPricer,
             const Handle<Quote> &correlation,
             Handle<YieldTermStructure> couponDiscountCurve =
                 Handle<YieldTermStructure>(),
             const Size IntegrationPoints = 16,
-            const boost::optional<VolatilityType> volatilityType= boost::none,
+            const std::optional<VolatilityType> volatilityType= std::nullopt,
             const Real shift1 = Null<Real>(), const Real shift2 = Null<Real>());
 
         /* */
@@ -86,7 +86,7 @@ namespace QuantLib {
         class integrand_f;
         friend class integrand_f;
 
-        ext::shared_ptr<CmsCouponPricer> cmsPricer_;
+        std::shared_ptr<CmsCouponPricer> cmsPricer_;
 
         Handle<YieldTermStructure> couponDiscountCurve_;
 
@@ -100,10 +100,10 @@ namespace QuantLib {
         Real spreadLegValue_;
         Real discount_;
 
-        ext::shared_ptr<SwapSpreadIndex> index_;
+        std::shared_ptr<SwapSpreadIndex> index_;
 
-        ext::shared_ptr<CumulativeNormalDistribution> cnd_;
-        ext::shared_ptr<GaussianQuadrature> integrator_;
+        std::shared_ptr<CumulativeNormalDistribution> cnd_;
+        std::shared_ptr<GaussianQuadrature> integrator_;
 
         Real swapRate1_, swapRate2_, gearing1_, gearing2_;
         Real adjustedRate1_, adjustedRate2_;
@@ -119,7 +119,7 @@ namespace QuantLib {
         mutable Real alpha_, psi_;
         mutable Option::Type optionType_;
 
-        ext::shared_ptr<CmsCoupon> c1_, c2_;
+        std::shared_ptr<CmsCoupon> c1_, c2_;
     };
 }
 

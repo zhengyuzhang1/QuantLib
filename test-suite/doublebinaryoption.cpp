@@ -174,21 +174,21 @@ void DoubleBinaryOptionTest::testHaugValues() {
     DayCounter dc = Actual360();
     Date today = Date::todaysDate();
 
-    ext::shared_ptr<SimpleQuote> spot(new SimpleQuote(100.0));
-    ext::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.04));
-    ext::shared_ptr<YieldTermStructure> qTS = flatRate(today, qRate, dc);
-    ext::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.01));
-    ext::shared_ptr<YieldTermStructure> rTS = flatRate(today, rRate, dc);
-    ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.25));
-    ext::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
+    std::shared_ptr<SimpleQuote> spot(new SimpleQuote(100.0));
+    std::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.04));
+    std::shared_ptr<YieldTermStructure> qTS = flatRate(today, qRate, dc);
+    std::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.01));
+    std::shared_ptr<YieldTermStructure> rTS = flatRate(today, rRate, dc);
+    std::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.25));
+    std::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
 
     for (auto & value : values) {
 
-        ext::shared_ptr<StrikedTypePayoff> payoff(new CashOrNothingPayoff(
+        std::shared_ptr<StrikedTypePayoff> payoff(new CashOrNothingPayoff(
             Option::Call, 0, value.cash));
 
         Date exDate = today + Integer(value.t*360+0.5);
-        ext::shared_ptr<Exercise> exercise;
+        std::shared_ptr<Exercise> exercise;
         if (value.barrierType == DoubleBarrier::KIKO ||
             value.barrierType == DoubleBarrier::KOKI)
             exercise.reset(new AmericanExercise(today, exDate));
@@ -200,14 +200,14 @@ void DoubleBinaryOptionTest::testHaugValues() {
         rRate->setValue(value.r);
         vol  ->setValue(value.v);
 
-        ext::shared_ptr<BlackScholesMertonProcess> stochProcess(new
+        std::shared_ptr<BlackScholesMertonProcess> stochProcess(new
             BlackScholesMertonProcess(Handle<Quote>(spot),
                                       Handle<YieldTermStructure>(qTS),
                                       Handle<YieldTermStructure>(rTS),
                                       Handle<BlackVolTermStructure>(volTS)));
 
         // checking with analytic engine
-        ext::shared_ptr<PricingEngine> engine(
+        std::shared_ptr<PricingEngine> engine(
                              new AnalyticDoubleBarrierBinaryEngine(stochProcess));
         DoubleBarrierOption opt(value.barrierType, 
                           value.barrier_lo, 
@@ -229,7 +229,7 @@ void DoubleBinaryOptionTest::testHaugValues() {
 
         Size steps = 500;
         // checking with binomial engine
-        engine = ext::shared_ptr<PricingEngine>(
+        engine = std::shared_ptr<PricingEngine>(
               new BinomialDoubleBarrierEngine<CoxRossRubinstein,
                               DiscretizedDoubleBarrierOption>(stochProcess, 
                                                                  steps));

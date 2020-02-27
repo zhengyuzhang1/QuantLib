@@ -28,7 +28,7 @@ namespace QuantLib {
     MultiStepSwaption::MultiStepSwaption(const std::vector<Time>& rateTimes,
                                      Size startIndex,
                                      Size endIndex,
-                                     ext::shared_ptr<StrikedTypePayoff> & payOff)
+                                     std::shared_ptr<StrikedTypePayoff> & payOff)
                                      : MultiProductMultiStep(rateTimes),
      startIndex_(startIndex), endIndex_(endIndex), payoff_(payOff) 
     {
@@ -68,9 +68,9 @@ namespace QuantLib {
         }
     }
 
-    QL_UNIQUE_OR_AUTO_PTR<MarketModelMultiProduct>
+    std::unique_ptr<MarketModelMultiProduct>
     MultiStepSwaption::clone() const {
-        return QL_UNIQUE_OR_AUTO_PTR<MarketModelMultiProduct>(
+        return std::unique_ptr<MarketModelMultiProduct>(
                                          new MultiStepSwaption(*this));
     }
 

@@ -28,7 +28,7 @@
 namespace QuantLib {
 
     MakeOIS::MakeOIS(const Period& swapTenor,
-                     const ext::shared_ptr<OvernightIndex>& overnightIndex,
+                     const std::shared_ptr<OvernightIndex>& overnightIndex,
                      Rate fixedRate,
                      const Period& forwardStart)
     : swapTenor_(swapTenor), overnightIndex_(overnightIndex),
@@ -47,11 +47,11 @@ namespace QuantLib {
       fixedDayCount_(overnightIndex->dayCounter()), telescopicValueDates_(false) {}
 
     MakeOIS::operator OvernightIndexedSwap() const {
-        ext::shared_ptr<OvernightIndexedSwap> ois = *this;
+        std::shared_ptr<OvernightIndexedSwap> ois = *this;
         return *ois;
     }
 
-    MakeOIS::operator ext::shared_ptr<OvernightIndexedSwap>() const {
+    MakeOIS::operator std::shared_ptr<OvernightIndexedSwap>() const {
 
         Date startDate;
         if (effectiveDate_ != Date())
@@ -109,7 +109,7 @@ namespace QuantLib {
                            "null term structure set to this instance of " <<
                            overnightIndex_->name());
                 bool includeSettlementDateFlows = false;
-                ext::shared_ptr<PricingEngine> engine(new
+                std::shared_ptr<PricingEngine> engine(new
                     DiscountingSwapEngine(disc, includeSettlementDateFlows));
                 temp.setPricingEngine(engine);
             } else
@@ -118,7 +118,7 @@ namespace QuantLib {
             usedFixedRate = temp.fairRate();
         }
 
-        ext::shared_ptr<OvernightIndexedSwap> ois(new
+        std::shared_ptr<OvernightIndexedSwap> ois(new
             OvernightIndexedSwap(type_, nominal_,
                                  schedule,
                                  usedFixedRate, fixedDayCount_,
@@ -130,7 +130,7 @@ namespace QuantLib {
             Handle<YieldTermStructure> disc =
                                 overnightIndex_->forwardingTermStructure();
             bool includeSettlementDateFlows = false;
-            ext::shared_ptr<PricingEngine> engine(new
+            std::shared_ptr<PricingEngine> engine(new
                 DiscountingSwapEngine(disc, includeSettlementDateFlows));
             ois->setPricingEngine(engine);
         } else
@@ -203,13 +203,13 @@ namespace QuantLib {
     MakeOIS& MakeOIS::withDiscountingTermStructure(
                                         const Handle<YieldTermStructure>& d) {
         bool includeSettlementDateFlows = false;
-        engine_ = ext::shared_ptr<PricingEngine>(new
+        engine_ = std::shared_ptr<PricingEngine>(new
             DiscountingSwapEngine(d, includeSettlementDateFlows));
         return *this;
     }
 
     MakeOIS& MakeOIS::withPricingEngine(
-                             const ext::shared_ptr<PricingEngine>& engine) {
+                             const std::shared_ptr<PricingEngine>& engine) {
         engine_ = engine;
         return *this;
     }

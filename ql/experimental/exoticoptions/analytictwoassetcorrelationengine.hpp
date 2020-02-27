@@ -34,13 +34,13 @@ namespace QuantLib {
         : public TwoAssetCorrelationOption::engine {
       public:
         AnalyticTwoAssetCorrelationEngine(
-                ext::shared_ptr<GeneralizedBlackScholesProcess>  p1,
-                ext::shared_ptr<GeneralizedBlackScholesProcess>  p2,
+                std::shared_ptr<GeneralizedBlackScholesProcess>  p1,
+                std::shared_ptr<GeneralizedBlackScholesProcess>  p2,
                 Handle<Quote>  correlation);
         void calculate() const override;
       private:
-        ext::shared_ptr<GeneralizedBlackScholesProcess> p1_;
-        ext::shared_ptr<GeneralizedBlackScholesProcess> p2_;
+        std::shared_ptr<GeneralizedBlackScholesProcess> p1_;
+        std::shared_ptr<GeneralizedBlackScholesProcess> p2_;
         Handle<Quote> correlation_;
     };
 

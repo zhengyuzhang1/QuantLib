@@ -42,7 +42,7 @@
 
 using namespace QuantLib;
 using namespace boost::unit_test_framework;
-using ext::shared_ptr;
+using std::shared_ptr;
 
 namespace {
 
@@ -177,7 +177,7 @@ namespace {
             bool vegaWeightedSmileFit = false;
 
             SabrVolCube2 = Handle<SwaptionVolatilityStructure>(
-                ext::make_shared<SwaptionVolCube2>(atmVol,
+                std::make_shared<SwaptionVolCube2>(atmVol,
                                      optionTenors,
                                      swapTenors,
                                      strikeSpreads,

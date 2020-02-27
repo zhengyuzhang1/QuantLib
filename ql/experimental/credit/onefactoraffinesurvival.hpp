@@ -43,7 +43,7 @@ namespace QuantLib {
     public:
         // implement remaining constructors.....
         OneFactorAffineSurvivalStructure(
-            ext::shared_ptr<OneFactorAffineModel> model,
+            std::shared_ptr<OneFactorAffineModel> model,
             const DayCounter& dayCounter = DayCounter(),
             const std::vector<Handle<Quote> >& jumps 
                 = std::vector<Handle<Quote> >(),
@@ -52,7 +52,7 @@ namespace QuantLib {
             model_(std::move(model)) {}
 
         OneFactorAffineSurvivalStructure(
-            ext::shared_ptr<OneFactorAffineModel> model,
+            std::shared_ptr<OneFactorAffineModel> model,
             const Date& referenceDate,
             const Calendar& cal = Calendar(),
             const DayCounter& dayCounter = DayCounter(),
@@ -64,7 +64,7 @@ namespace QuantLib {
             jumpDates), model_(std::move(model)) {}
 
         OneFactorAffineSurvivalStructure(
-            ext::shared_ptr<OneFactorAffineModel> model,
+            std::shared_ptr<OneFactorAffineModel> model,
             Natural settlementDays,
             const Calendar& calendar,
             const DayCounter& dayCounter = DayCounter(),
@@ -152,7 +152,7 @@ namespace QuantLib {
             return 0.;
         }
 
-        ext::shared_ptr<OneFactorAffineModel> model_;        
+        std::shared_ptr<OneFactorAffineModel> model_;        
     };
     
     inline Probability

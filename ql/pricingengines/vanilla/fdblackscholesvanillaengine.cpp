@@ -34,7 +34,7 @@
 namespace QuantLib {
 
     FdBlackScholesVanillaEngine::FdBlackScholesVanillaEngine(
-            ext::shared_ptr<GeneralizedBlackScholesProcess> process,
+            std::shared_ptr<GeneralizedBlackScholesProcess> process,
             Size tGrid, Size xGrid, Size dampingSteps, 
             const FdmSchemeDesc& schemeDesc,
             bool localVol, Real illegalLocalVolOverwrite,
@@ -44,14 +44,14 @@ namespace QuantLib {
       schemeDesc_(schemeDesc),
       localVol_(localVol),
       illegalLocalVolOverwrite_(illegalLocalVolOverwrite),
-      quantoHelper_(ext::shared_ptr<FdmQuantoHelper>()),
+      quantoHelper_(std::shared_ptr<FdmQuantoHelper>()),
       cashDividendModel_(cashDividendModel) {
         registerWith(process_);
     }
 
     FdBlackScholesVanillaEngine::FdBlackScholesVanillaEngine(
-            ext::shared_ptr<GeneralizedBlackScholesProcess> process,
-            const ext::shared_ptr<FdmQuantoHelper>& quantoHelper,
+            std::shared_ptr<GeneralizedBlackScholesProcess> process,
+            const std::shared_ptr<FdmQuantoHelper>& quantoHelper,
             Size tGrid, Size xGrid, Size dampingSteps,
             const FdmSchemeDesc& schemeDesc,
             bool localVol, Real illegalLocalVolOverwrite,
@@ -107,10 +107,10 @@ namespace QuantLib {
         }
 
         // 1. Mesher
-        const ext::shared_ptr<StrikedTypePayoff> payoff =
-            ext::dynamic_pointer_cast<StrikedTypePayoff>(arguments_.payoff);
+        const std::shared_ptr<StrikedTypePayoff> payoff =
+            std::dynamic_pointer_cast<StrikedTypePayoff>(arguments_.payoff);
 
-        const ext::shared_ptr<Fdm1dMesher> equityMesher(
+        const std::shared_ptr<Fdm1dMesher> equityMesher(
             new FdmBlackScholesMesher(
                     xGrid_, process_, maturity, payoff->strike(), 
                     Null<Real>(), Null<Real>(), 0.0001, 1.5, 
@@ -118,15 +118,15 @@ namespace QuantLib {
                     dividendSchedule, quantoHelper_,
                     spotAdjustment));
         
-        const ext::shared_ptr<FdmMesher> mesher (
+        const std::shared_ptr<FdmMesher> mesher (
             new FdmMesherComposite(equityMesher));
         
         // 2. Calculator
-        const ext::shared_ptr<FdmInnerValueCalculator> calculator(
+        const std::shared_ptr<FdmInnerValueCalculator> calculator(
                                       new FdmLogInnerValue(payoff, mesher, 0));
 
         // 3. Step conditions
-        const ext::shared_ptr<FdmStepConditionComposite> conditions = 
+        const std::shared_ptr<FdmStepConditionComposite> conditions = 
             FdmStepConditionComposite::vanillaComposite(
                 dividendSchedule, arguments_.exercise, mesher, calculator,
                 process_->riskFreeRate()->referenceDate(),
@@ -139,8 +139,8 @@ namespace QuantLib {
         FdmSolverDesc solverDesc = { mesher, boundaries, conditions, calculator,
                                      maturity, tGrid_, dampingSteps_ };
 
-        const ext::shared_ptr<FdmBlackScholesSolver> solver(
-            ext::make_shared<FdmBlackScholesSolver>(
+        const std::shared_ptr<FdmBlackScholesSolver> solver(
+            std::make_shared<FdmBlackScholesSolver>(
                 Handle<GeneralizedBlackScholesProcess>(process_),
                 payoff->strike(), solverDesc, schemeDesc_,
                 localVol_, illegalLocalVolOverwrite_,
@@ -155,20 +155,20 @@ namespace QuantLib {
     }
 
     MakeFdBlackScholesVanillaEngine::MakeFdBlackScholesVanillaEngine(
-        const ext::shared_ptr<GeneralizedBlackScholesProcess>& process)
+        const std::shared_ptr<GeneralizedBlackScholesProcess>& process)
       : process_(process),
         tGrid_(100),
         xGrid_(100),
         dampingSteps_(0),
-        schemeDesc_(ext::make_shared<FdmSchemeDesc>(FdmSchemeDesc::Douglas())),
+        schemeDesc_(std::make_shared<FdmSchemeDesc>(FdmSchemeDesc::Douglas())),
         localVol_(false),
         illegalLocalVolOverwrite_(-Null<Real>()),
-        quantoHelper_(ext::shared_ptr<FdmQuantoHelper>()),
+        quantoHelper_(std::shared_ptr<FdmQuantoHelper>()),
         cashDividendModel_(FdBlackScholesVanillaEngine::Spot) {}
 
     MakeFdBlackScholesVanillaEngine&
     MakeFdBlackScholesVanillaEngine::withQuantoHelper(
-        const ext::shared_ptr<FdmQuantoHelper>& quantoHelper) {
+        const std::shared_ptr<FdmQuantoHelper>& quantoHelper) {
         quantoHelper_ = quantoHelper;
         return *this;
     }
@@ -194,7 +194,7 @@ namespace QuantLib {
     MakeFdBlackScholesVanillaEngine&
     MakeFdBlackScholesVanillaEngine::withFdmSchemeDesc(
         const FdmSchemeDesc& schemeDesc) {
-        schemeDesc_ = ext::make_shared<FdmSchemeDesc>(schemeDesc);
+        schemeDesc_ = std::make_shared<FdmSchemeDesc>(schemeDesc);
         return *this;
     }
 
@@ -219,8 +219,8 @@ namespace QuantLib {
     }
 
     MakeFdBlackScholesVanillaEngine::operator
-    ext::shared_ptr<PricingEngine>() const {
-        return ext::make_shared<FdBlackScholesVanillaEngine>(
+    std::shared_ptr<PricingEngine>() const {
+        return std::make_shared<FdBlackScholesVanillaEngine>(
             process_,
             quantoHelper_,
             tGrid_, xGrid_, dampingSteps_,

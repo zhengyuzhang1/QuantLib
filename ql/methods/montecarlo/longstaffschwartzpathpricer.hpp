@@ -32,7 +32,7 @@
 #include <ql/math/statistics/incrementalstatistics.hpp>
 #include <ql/methods/montecarlo/pathpricer.hpp>
 #include <ql/methods/montecarlo/earlyexercisepathpricer.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 
 namespace QuantLib {
 
@@ -55,8 +55,8 @@ namespace QuantLib {
 
         LongstaffSchwartzPathPricer(
             const TimeGrid& times,
-            const ext::shared_ptr<EarlyExercisePathPricer<PathType> >& ,
-            const ext::shared_ptr<YieldTermStructure>& termStructure);
+            const std::shared_ptr<EarlyExercisePathPricer<PathType> >& ,
+            const std::shared_ptr<YieldTermStructure>& termStructure);
 
         Real operator()(const PathType& path) const override;
         virtual void calibrate();
@@ -69,7 +69,7 @@ namespace QuantLib {
                                      const std::vector<Real> &price,
                                      const std::vector<Real> &exercise) {}
         bool  calibrationPhase_;
-        const ext::shared_ptr<EarlyExercisePathPricer<PathType> >
+        const std::shared_ptr<EarlyExercisePathPricer<PathType> >
             pathPricer_;
 
         mutable QuantLib::IncrementalStatistics exerciseProbability_;
@@ -78,7 +78,7 @@ namespace QuantLib {
         boost::scoped_array<DiscountFactor> dF_;
 
         mutable std::vector<PathType> paths_;
-        const   std::vector<ext::function<Real(StateType)> > v_;
+        const   std::vector<std::function<Real(StateType)> > v_;
 
         const Size len_;
     };
@@ -86,9 +86,9 @@ namespace QuantLib {
     template <class PathType> inline
     LongstaffSchwartzPathPricer<PathType>::LongstaffSchwartzPathPricer(
         const TimeGrid& times,
-        const ext::shared_ptr<EarlyExercisePathPricer<PathType> >&
+        const std::shared_ptr<EarlyExercisePathPricer<PathType> >&
             pathPricer,
-        const ext::shared_ptr<YieldTermStructure>& termStructure)
+        const std::shared_ptr<YieldTermStructure>& termStructure)
     : calibrationPhase_(true),
       pathPricer_(pathPricer),
       coeff_     (new Array[times.size()-2]),

@@ -21,7 +21,7 @@
 #include <ql/math/functional.hpp>
 #include <ql/math/solvers1d/brent.hpp>
 #include <ql/methods/finitedifferences/utilities/riskneutraldensitycalculator.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 
 namespace QuantLib {
     RiskNeutralDensityCalculator::InvCDFHelper::InvCDFHelper(
@@ -34,7 +34,7 @@ namespace QuantLib {
 
     Real RiskNeutralDensityCalculator::InvCDFHelper::inverseCDF(Real p, Time t)
     const {
-        using namespace ext::placeholders;
+        using namespace std::placeholders;
 
         const Real guessCDF = calculator_->cdf(guess_, t);
 
@@ -52,8 +52,8 @@ namespace QuantLib {
 
         QL_REQUIRE(evaluations, "could not calculate interval");
 
-        const ext::function<Real(Real)> cdf
-            = ext::bind(&RiskNeutralDensityCalculator::cdf,
+        const std::function<Real(Real)> cdf
+            = std::bind(&RiskNeutralDensityCalculator::cdf,
                           calculator_, _1, t);
 
         Brent solver;

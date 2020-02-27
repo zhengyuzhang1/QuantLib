@@ -268,11 +268,6 @@ namespace {
     }
 }
 
-#if defined(QL_ENABLE_SESSIONS)
-namespace QuantLib {
-    Integer sessionId() { return 0; }
-}
-#endif
 
 test_suite* init_unit_test_suite(int, char*[]) {
 

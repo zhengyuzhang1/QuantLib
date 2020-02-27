@@ -25,7 +25,7 @@
 
 #include <ql/math/integrals/gaussianquadratures.hpp>
 #include <ql/methods/montecarlo/lsmbasissystem.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 #include <set>
 #include <numeric>
 #include <utility>
@@ -34,8 +34,8 @@ namespace QuantLib {
     namespace {
 
         // makes typing a little easier
-        typedef std::vector<ext::function<Real(Real)> > VF_R;
-        typedef std::vector<ext::function<Real(Array)> > VF_A;
+        typedef std::vector<std::function<Real(Real)> > VF_R;
+        typedef std::vector<std::function<Real(Array)> > VF_A;
         typedef std::vector<std::vector<Size> > VV;
 
         // pow(x, order)

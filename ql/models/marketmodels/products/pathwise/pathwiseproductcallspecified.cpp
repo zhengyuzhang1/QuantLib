@@ -186,10 +186,10 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
             return done || currentIndex_ == evolution_.evolutionTimes().size();
         }
 
-        QL_UNIQUE_OR_AUTO_PTR<MarketModelPathwiseMultiProduct>
+        std::unique_ptr<MarketModelPathwiseMultiProduct>
         CallSpecifiedPathwiseMultiProduct::clone() const 
         {
-            return QL_UNIQUE_OR_AUTO_PTR<MarketModelPathwiseMultiProduct>(
+            return std::unique_ptr<MarketModelPathwiseMultiProduct>(
                                 new CallSpecifiedPathwiseMultiProduct(*this));
         }
 

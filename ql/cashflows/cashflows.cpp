@@ -40,7 +40,7 @@ namespace QuantLib {
 
         Date d = Date::maxDate();
         for (const auto & i : leg) {
-            ext::shared_ptr<Coupon> c = ext::dynamic_pointer_cast<Coupon>(i);
+            std::shared_ptr<Coupon> c = std::dynamic_pointer_cast<Coupon>(i);
             if (c)
                 d = std::min(d, c->accrualStartDate());
             else
@@ -54,7 +54,7 @@ namespace QuantLib {
 
         Date d = Date::minDate();
         for (const auto & i : leg) {
-            ext::shared_ptr<Coupon> c = ext::dynamic_pointer_cast<Coupon>(i);
+            std::shared_ptr<Coupon> c = std::dynamic_pointer_cast<Coupon>(i);
             if (c)
                 d = std::max(d, c->accrualEndDate());
             else
@@ -188,7 +188,7 @@ namespace QuantLib {
             DayCounter dc;
             Rate result = 0.0;
             for (; first<last && (*first)->date()==paymentDate; ++first) {
-                ext::shared_ptr<Coupon> cp = ext::dynamic_pointer_cast<Coupon>(*first);
+                std::shared_ptr<Coupon> cp = std::dynamic_pointer_cast<Coupon>(*first);
                 if (cp) {
                     if (firstCouponFound) {
                         QL_REQUIRE(nominal       == cp->nominal() &&
@@ -239,7 +239,7 @@ namespace QuantLib {
 
         Date paymentDate = (*cf)->date();
         for (; cf<leg.end() && (*cf)->date()==paymentDate; ++cf) {
-            ext::shared_ptr<Coupon> cp = ext::dynamic_pointer_cast<Coupon>(*cf);
+            std::shared_ptr<Coupon> cp = std::dynamic_pointer_cast<Coupon>(*cf);
             if (cp)
                 return cp->nominal();
         }
@@ -256,7 +256,7 @@ namespace QuantLib {
 
         Date paymentDate = (*cf)->date();
         for (; cf<leg.end() && (*cf)->date()==paymentDate; ++cf) {
-            ext::shared_ptr<Coupon> cp = ext::dynamic_pointer_cast<Coupon>(*cf);
+            std::shared_ptr<Coupon> cp = std::dynamic_pointer_cast<Coupon>(*cf);
             if (cp)
                 return cp->accrualStartDate();
         }
@@ -273,7 +273,7 @@ namespace QuantLib {
 
         Date paymentDate = (*cf)->date();
         for (; cf<leg.end() && (*cf)->date()==paymentDate; ++cf) {
-            ext::shared_ptr<Coupon> cp = ext::dynamic_pointer_cast<Coupon>(*cf);
+            std::shared_ptr<Coupon> cp = std::dynamic_pointer_cast<Coupon>(*cf);
             if (cp)
                 return cp->accrualEndDate();
         }
@@ -290,7 +290,7 @@ namespace QuantLib {
 
         Date paymentDate = (*cf)->date();
         for (; cf<leg.end() && (*cf)->date()==paymentDate; ++cf) {
-            ext::shared_ptr<Coupon> cp = ext::dynamic_pointer_cast<Coupon>(*cf);
+            std::shared_ptr<Coupon> cp = std::dynamic_pointer_cast<Coupon>(*cf);
             if (cp)
                 return cp->referencePeriodStart();
         }
@@ -307,7 +307,7 @@ namespace QuantLib {
 
         Date paymentDate = (*cf)->date();
         for (; cf<leg.end() && (*cf)->date()==paymentDate; ++cf) {
-            ext::shared_ptr<Coupon> cp = ext::dynamic_pointer_cast<Coupon>(*cf);
+            std::shared_ptr<Coupon> cp = std::dynamic_pointer_cast<Coupon>(*cf);
             if (cp)
                 return cp->referencePeriodEnd();
         }
@@ -324,7 +324,7 @@ namespace QuantLib {
 
         Date paymentDate = (*cf)->date();
         for (; cf<leg.end() && (*cf)->date()==paymentDate; ++cf) {
-            ext::shared_ptr<Coupon> cp = ext::dynamic_pointer_cast<Coupon>(*cf);
+            std::shared_ptr<Coupon> cp = std::dynamic_pointer_cast<Coupon>(*cf);
             if (cp)
                 return cp->accrualPeriod();
         }
@@ -341,7 +341,7 @@ namespace QuantLib {
 
         Date paymentDate = (*cf)->date();
         for (; cf<leg.end() && (*cf)->date()==paymentDate; ++cf) {
-            ext::shared_ptr<Coupon> cp = ext::dynamic_pointer_cast<Coupon>(*cf);
+            std::shared_ptr<Coupon> cp = std::dynamic_pointer_cast<Coupon>(*cf);
             if (cp)
                 return cp->accrualDays();
         }
@@ -361,7 +361,7 @@ namespace QuantLib {
 
         Date paymentDate = (*cf)->date();
         for (; cf<leg.end() && (*cf)->date()==paymentDate; ++cf) {
-            ext::shared_ptr<Coupon> cp = ext::dynamic_pointer_cast<Coupon>(*cf);
+            std::shared_ptr<Coupon> cp = std::dynamic_pointer_cast<Coupon>(*cf);
             if (cp)
                 return cp->accruedPeriod(settlementDate);
         }
@@ -381,7 +381,7 @@ namespace QuantLib {
 
         Date paymentDate = (*cf)->date();
         for (; cf<leg.end() && (*cf)->date()==paymentDate; ++cf) {
-            ext::shared_ptr<Coupon> cp = ext::dynamic_pointer_cast<Coupon>(*cf);
+            std::shared_ptr<Coupon> cp = std::dynamic_pointer_cast<Coupon>(*cf);
             if (cp)
                 return cp->accruedDays(settlementDate);
         }
@@ -402,7 +402,7 @@ namespace QuantLib {
         Date paymentDate = (*cf)->date();
         Real result = 0.0;
         for (; cf<leg.end() && (*cf)->date()==paymentDate; ++cf) {
-            ext::shared_ptr<Coupon> cp = ext::dynamic_pointer_cast<Coupon>(*cf);
+            std::shared_ptr<Coupon> cp = std::dynamic_pointer_cast<Coupon>(*cf);
             if (cp)
                 result += cp->accruedAmount(settlementDate);
         }
@@ -508,8 +508,8 @@ namespace QuantLib {
             if (!cf.hasOccurred(settlementDate,
                                 includeSettlementDateFlows) &&
                 !cf.tradingExCoupon(settlementDate)) {
-                ext::shared_ptr<Coupon> cp =
-                    ext::dynamic_pointer_cast<Coupon>(i);
+                std::shared_ptr<Coupon> cp =
+                    std::dynamic_pointer_cast<Coupon>(i);
                 Real df = discountCurve.discount(cf.date());
                 npv += cf.amount() * df;
                 if(cp != nullptr)
@@ -578,14 +578,14 @@ namespace QuantLib {
         }
 
         // helper fucntion used to calculate Time-To-Discount for each stage when calculating discount factor stepwisely
-        Time getStepwiseDiscountTime(const ext::shared_ptr<QuantLib::CashFlow> cashFlow,
+        Time getStepwiseDiscountTime(const std::shared_ptr<QuantLib::CashFlow> cashFlow,
                                      const DayCounter& dc,
                                      Date npvDate,
                                      Date lastDate) {
             Date cashFlowDate = cashFlow->date();
             Date refStartDate, refEndDate;
-            ext::shared_ptr<Coupon> coupon =
-                    ext::dynamic_pointer_cast<Coupon>(cashFlow);
+            std::shared_ptr<Coupon> coupon =
+                    std::dynamic_pointer_cast<Coupon>(cashFlow);
             if (coupon) {
                 refStartDate = coupon->referencePeriodStart();
                 refEndDate = coupon->referencePeriodEnd();
@@ -738,8 +738,8 @@ namespace QuantLib {
         }
 
         struct CashFlowLater {
-            bool operator()(const ext::shared_ptr<CashFlow> &c,
-                            const ext::shared_ptr<CashFlow> &d) {
+            bool operator()(const std::shared_ptr<CashFlow> &c,
+                            const std::shared_ptr<CashFlow> &d) {
                 return c->date() > d->date();
             }
         };
@@ -1167,7 +1167,7 @@ namespace QuantLib {
         class ZSpreadFinder {
           public:
             ZSpreadFinder(const Leg& leg,
-                          const ext::shared_ptr<YieldTermStructure>& discountCurve,
+                          const std::shared_ptr<YieldTermStructure>& discountCurve,
                           Real npv,
                           const DayCounter& dc,
                           Compounding comp,
@@ -1203,7 +1203,7 @@ namespace QuantLib {
           private:
             const Leg& leg_;
             Real npv_;
-            ext::shared_ptr<SimpleQuote> zSpread_;
+            std::shared_ptr<SimpleQuote> zSpread_;
             ZeroSpreadedTermStructure curve_;
             bool includeSettlementDateFlows_;
             Date settlementDate_, npvDate_;
@@ -1212,7 +1212,7 @@ namespace QuantLib {
     } // anonymous namespace ends here
 
     Real CashFlows::npv(const Leg& leg,
-                        const ext::shared_ptr<YieldTermStructure>& discountCurve,
+                        const std::shared_ptr<YieldTermStructure>& discountCurve,
                         Spread zSpread,
                         const DayCounter& dc,
                         Compounding comp,
@@ -1231,7 +1231,7 @@ namespace QuantLib {
             npvDate = settlementDate;
 
         Handle<YieldTermStructure> discountCurveHandle(discountCurve);
-        Handle<Quote> zSpreadQuoteHandle(ext::shared_ptr<Quote>(new
+        Handle<Quote> zSpreadQuoteHandle(std::shared_ptr<Quote>(new
             SimpleQuote(zSpread)));
 
         ZeroSpreadedTermStructure spreadedCurve(discountCurveHandle,
@@ -1247,7 +1247,7 @@ namespace QuantLib {
 
     Spread CashFlows::zSpread(const Leg& leg,
                               Real npv,
-                              const ext::shared_ptr<YieldTermStructure>& discount,
+                              const std::shared_ptr<YieldTermStructure>& discount,
                               const DayCounter& dayCounter,
                               Compounding compounding,
                               Frequency frequency,

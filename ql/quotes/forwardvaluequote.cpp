@@ -24,7 +24,7 @@
 namespace QuantLib {
 
     ForwardValueQuote::ForwardValueQuote(
-                            ext::shared_ptr<Index>  index,
+                            std::shared_ptr<Index>  index,
                             const Date& fixingDate)
     : index_(std::move(index)), fixingDate_(fixingDate) {
         registerWith(index_);

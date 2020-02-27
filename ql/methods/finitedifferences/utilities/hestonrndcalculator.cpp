@@ -26,7 +26,7 @@
 #include <ql/termstructures/volatility/equityfx/blackconstantvol.hpp>
 #include <ql/methods/finitedifferences/utilities/bsmrndcalculator.hpp>
 #include <ql/methods/finitedifferences/utilities/hestonrndcalculator.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 #include <complex>
 #include <utility>
 
@@ -38,7 +38,7 @@ namespace {
         };
 
         HestonParams getHestonParams(
-            const ext::shared_ptr<HestonProcess>& process) {
+            const std::shared_ptr<HestonProcess>& process) {
             const HestonParams p = { process->v0(),    process->kappa(),
                                      process->theta(), process->sigma(),
                                      process->rho() };
@@ -109,7 +109,7 @@ namespace {
 
 
     HestonRNDCalculator::HestonRNDCalculator(
-        ext::shared_ptr<HestonProcess>  hestonProcess,
+        std::shared_ptr<HestonProcess>  hestonProcess,
         Real integrationEps, Size maxIntegrationIterations)
     : hestonProcess_(std::move(hestonProcess)),
       x0_(std::log(hestonProcess_->s0()->value())),
@@ -131,11 +131,11 @@ namespace {
     }
 	
     Real HestonRNDCalculator::cdf(Real x, Time t) const {
-        using namespace ext::placeholders;
+        using namespace std::placeholders;
 
         return GaussLobattoIntegral(
             maxIntegrationIterations_, 0.1*integrationEps_)(
-            ext::bind(&CpxPv_Helper::p0,
+            std::bind(&CpxPv_Helper::p0,
                 CpxPv_Helper(getHestonParams(hestonProcess_), x_t(x,t),t),_1),
             0.0, 1.0)/M_TWOPI + 0.5;
 
@@ -148,13 +148,13 @@ namespace {
         const Volatility expVol
             = std::sqrt(theta + (v0-theta)*(1-std::exp(-kappa*t))/(t*kappa));
 
-        const ext::shared_ptr<BlackScholesMertonProcess> bsmProcess(
-            ext::make_shared<BlackScholesMertonProcess>(
+        const std::shared_ptr<BlackScholesMertonProcess> bsmProcess(
+            std::make_shared<BlackScholesMertonProcess>(
                 hestonProcess_->s0(),
                 hestonProcess_->dividendYield(),
                 hestonProcess_->riskFreeRate(),
                 Handle<BlackVolTermStructure>(
-                    ext::make_shared<BlackConstantVol>(
+                    std::make_shared<BlackConstantVol>(
                             hestonProcess_->riskFreeRate()->referenceDate(),
                             NullCalendar(),
                             expVol,

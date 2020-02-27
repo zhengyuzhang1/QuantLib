@@ -54,7 +54,7 @@ namespace QuantLib {
         mutable bool initialized_ = false, validCurve_ = false, loopRequired_;
         mutable Size firstAliveHelper_, alive_;
         mutable std::vector<Real> previousData_;
-        mutable std::vector<ext::shared_ptr<BootstrapError<Curve> > > errors_;
+        mutable std::vector<std::shared_ptr<BootstrapError<Curve> > > errors_;
     };
 
 
@@ -110,7 +110,7 @@ namespace QuantLib {
         // pillar counter: i
         // helper counter: j
         for (Size i=1, j=firstAliveHelper_; j<n_; ++i, ++j) {
-            const ext::shared_ptr<typename Traits::helper>& helper =
+            const std::shared_ptr<typename Traits::helper>& helper =
                                                         ts_->instruments_[j];
             dates[i] = helper->pillarDate();
             times[i] = ts_->timeFromReference(dates[i]);
@@ -134,7 +134,7 @@ namespace QuantLib {
             if (dates[i] != latestRelevantDate)
                 loopRequired_ = true;
 
-            errors_[i] = ext::shared_ptr<BootstrapError<Curve> >(new
+            errors_[i] = std::shared_ptr<BootstrapError<Curve> >(new
                 BootstrapError<Curve>(ts_, helper, i));
         }
         ts_->maxDate_ = maxDate;
@@ -163,7 +163,7 @@ namespace QuantLib {
 
         // setup helpers
         for (Size j=firstAliveHelper_; j<n_; ++j) {
-            const ext::shared_ptr<typename Traits::helper>& helper =
+            const std::shared_ptr<typename Traits::helper>& helper =
                                                         ts_->instruments_[j];
             // check for valid quote
             QL_REQUIRE(helper->quote()->isValid(),

@@ -23,7 +23,7 @@
 #include <ql/math/functional.hpp>
 #include <ql/math/randomnumbers/rngtraits.hpp>
 #include <ql/math/linearleastsquaresregression.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 
 #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
 #pragma GCC diagnostic push
@@ -48,12 +48,12 @@ void LinearLeastSquaresRegressionTest::testRegression() {
     const Size nr=100000;
     PseudoRandom::rng_type rng(PseudoRandom::urng_type(1234u));
 
-    std::vector<ext::function<Real(Real)> > v = {constant<Real, Real>(1.0),
+    std::vector<std::function<Real(Real)> > v = {constant<Real, Real>(1.0),
                                                  identity<Real>(),
                                                  square<Real>(),
                                                  static_cast<Real (*)(Real)>(std::sin)};
 
-    std::vector<ext::function<Real(Real)> > w(v);
+    std::vector<std::function<Real(Real)> > w(v);
     w.emplace_back(square<Real>());
 
     for (Size k=0; k<3; ++k) {
@@ -119,7 +119,7 @@ void LinearLeastSquaresRegressionTest::testMultiDimRegression() {
     BOOST_TEST_MESSAGE(
         "Testing multi-dimensional linear least-squares regression...");
 
-    using namespace ext::placeholders;
+    using namespace std::placeholders;
 
     SavedSettings backup;
 
@@ -128,10 +128,10 @@ void LinearLeastSquaresRegressionTest::testMultiDimRegression() {
     const Real tolerance = 0.01;
     PseudoRandom::rng_type rng(PseudoRandom::urng_type(1234u));
 
-    std::vector<ext::function<Real(Array)> > v;
+    std::vector<std::function<Real(Array)> > v;
     v.emplace_back(constant<Array, Real>(1.0));
     for (Size i=0; i < dims; ++i) {
-        v.emplace_back(ext::bind(f, _1, i));
+        v.emplace_back(std::bind(f, _1, i));
     }
 
     Array coeff(v.size());
@@ -204,7 +204,7 @@ void LinearLeastSquaresRegressionTest::test1dLinearRegression() {
     y[0]=7.8; y[1]=5.5; y[2]=8.0; y[3]=9.0;
     y[4]=6.5; y[5]=4.0; y[6]=6.3; y[7]=8.4; y[8]=10.2;
 
-    std::vector<ext::function<Real(Real)> > v = {constant<Real, Real>(1.0),
+    std::vector<std::function<Real(Real)> > v = {constant<Real, Real>(1.0),
                                                  identity<Real>()};
 
     LinearRegression m(x, y);

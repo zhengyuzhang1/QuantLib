@@ -142,15 +142,15 @@ void FdCevTest::testFdmCevOp() {
 
     const Option::Type optionTypes[] = { Option::Call, Option::Put};
 
-    const ext::shared_ptr<Exercise> exercise =
-        ext::make_shared<EuropeanExercise>(maturityDate);
+    const std::shared_ptr<Exercise> exercise =
+        std::make_shared<EuropeanExercise>(maturityDate);
 
     for (Option::Type optionType : optionTypes) {
 
-        const ext::shared_ptr<PlainVanillaPayoff> payoff =
-            ext::make_shared<PlainVanillaPayoff>(optionType, strike);
+        const std::shared_ptr<PlainVanillaPayoff> payoff =
+            std::make_shared<PlainVanillaPayoff>(optionType, strike);
 
-        const ext::shared_ptr<YieldTermStructure> rTS =
+        const std::shared_ptr<YieldTermStructure> rTS =
             flatRate(today, 0.15, dc);
 
         const Real f0 = 2.1;
@@ -160,25 +160,25 @@ void FdCevTest::testFdmCevOp() {
         for (Real beta : betas) {
 
             VanillaOption option(payoff, exercise);
-            option.setPricingEngine(ext::make_shared<AnalyticCEVEngine>(
+            option.setPricingEngine(std::make_shared<AnalyticCEVEngine>(
                 f0, alpha, beta, Handle<YieldTermStructure>(rTS)));
 
             const Real analyticNPV = option.NPV();
 
             const Real eps = 1e-3;
 
-            option.setPricingEngine(ext::make_shared<AnalyticCEVEngine>(
+            option.setPricingEngine(std::make_shared<AnalyticCEVEngine>(
                 f0*(1+eps), alpha, beta, Handle<YieldTermStructure>(rTS)));
             const Real analyticUpNPV = option.NPV();
 
-            option.setPricingEngine(ext::make_shared<AnalyticCEVEngine>(
+            option.setPricingEngine(std::make_shared<AnalyticCEVEngine>(
                 f0*(1-eps), alpha, beta, Handle<YieldTermStructure>(rTS)));
             const Real analyticDownNPV = option.NPV();
 
             const Real analyticDelta = (analyticUpNPV - analyticDownNPV)
                 /(2*eps*f0);
 
-            option.setPricingEngine(ext::make_shared<FdCEVVanillaEngine>(
+            option.setPricingEngine(std::make_shared<FdCEVVanillaEngine>(
                 f0, alpha, beta, Handle<YieldTermStructure>(rTS),
                 100, 1000, 1, 1.0, 1e-6));
 

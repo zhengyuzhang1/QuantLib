@@ -27,7 +27,7 @@
 #include <ql/experimental/finitedifferences/fdmvppstepcondition.hpp>
 #include <ql/methods/finitedifferences/operators/fdmlinearopiterator.hpp>
 #include <ql/methods/finitedifferences/utilities/fdminnervaluecalculator.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 #include <utility>
 
 namespace QuantLib {
@@ -35,8 +35,8 @@ namespace QuantLib {
         const FdmVPPStepConditionParams& params,
         Size nStates,
         const FdmVPPStepConditionMesher& mesh,
-        ext::shared_ptr<FdmInnerValueCalculator>  gasPrice,
-        ext::shared_ptr<FdmInnerValueCalculator>  sparkSpreadPrice)
+        std::shared_ptr<FdmInnerValueCalculator>  gasPrice,
+        std::shared_ptr<FdmInnerValueCalculator>  sparkSpreadPrice)
     : heatRate_        (params.heatRate),
       pMin_            (params.pMin),
       pMax_            (params.pMax),
@@ -52,7 +52,7 @@ namespace QuantLib {
       sparkSpreadPrice_(std::move(sparkSpreadPrice)),
       stateEvolveFcts_ (nStates_) {
 
-        using namespace ext::placeholders;
+        using namespace std::placeholders;
 
         QL_REQUIRE(nStates_ == mesher_->layout()->dim()[stateDirection_],
                    "mesher does not fit to vpp arguments");
@@ -61,12 +61,12 @@ namespace QuantLib {
             const Size j = i % (2*tMinUp_ + tMinDown_);
 
             if (j < tMinUp_) {
-                stateEvolveFcts_[i] = ext::function<Real (Real)>(
-                    ext::bind(&FdmVPPStepCondition::evolveAtPMin,this, _1));
+                stateEvolveFcts_[i] = std::function<Real (Real)>(
+                    std::bind(&FdmVPPStepCondition::evolveAtPMin,this, _1));
             }
             else if (j < 2*tMinUp_){
-                stateEvolveFcts_[i] = ext::function<Real (Real)>(
-                    ext::bind(&FdmVPPStepCondition::evolveAtPMax,this, _1));
+                stateEvolveFcts_[i] = std::function<Real (Real)>(
+                    std::bind(&FdmVPPStepCondition::evolveAtPMax,this, _1));
             }
         }
     }
@@ -78,7 +78,7 @@ namespace QuantLib {
 
 
     void FdmVPPStepCondition::applyTo(Array& a, Time t) const {
-        ext::shared_ptr<FdmLinearOpLayout> layout = mesher_->layout();
+        std::shared_ptr<FdmLinearOpLayout> layout = mesher_->layout();
 
         const Size nStates = layout->dim()[stateDirection_];
         const FdmLinearOpIterator endIter = layout->end();

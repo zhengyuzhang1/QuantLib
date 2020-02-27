@@ -36,12 +36,12 @@ namespace QuantLib {
     class FdmBatesOp : public FdmLinearOpComposite {
       public:
         FdmBatesOp(
-            const ext::shared_ptr<FdmMesher>& mesher,
-            const ext::shared_ptr<BatesProcess>& batesProcess,
+            const std::shared_ptr<FdmMesher>& mesher,
+            const std::shared_ptr<BatesProcess>& batesProcess,
             FdmBoundaryConditionSet  bcSet,
             Size integroIntegrationOrder,
-            const ext::shared_ptr<FdmQuantoHelper>& quantoHelper
-                                        = ext::shared_ptr<FdmQuantoHelper>());
+            const std::shared_ptr<FdmQuantoHelper>& quantoHelper
+                                        = std::shared_ptr<FdmQuantoHelper>());
 
         Size size() const override;
         void setTime(Time t1, Time t2) override;
@@ -61,7 +61,7 @@ namespace QuantLib {
       private:
         class IntegroIntegrand {
           public:
-            IntegroIntegrand(const ext::shared_ptr<LinearInterpolation>& i,
+            IntegroIntegrand(const std::shared_ptr<LinearInterpolation>& i,
                              const FdmBoundaryConditionSet& bcSet,
                              Real x, Real delta, Real nu);
             Real operator()(Real y) const;
@@ -69,7 +69,7 @@ namespace QuantLib {
           private:
             const Real x_, delta_, nu_;
             const FdmBoundaryConditionSet& bcSet_;
-            const ext::shared_ptr<LinearInterpolation>& interpl_;
+            const std::shared_ptr<LinearInterpolation>& interpl_;
         };
           
         Disposable<Array> integro(const Array& r) const;  
@@ -79,9 +79,9 @@ namespace QuantLib {
         const Real lambda_, delta_, nu_, m_;
         GaussHermiteIntegration gaussHermiteIntegration_;
         
-        const ext::shared_ptr<FdmMesher> mesher_;
+        const std::shared_ptr<FdmMesher> mesher_;
         const FdmBoundaryConditionSet bcSet_;
-        const ext::shared_ptr<FdmHestonOp> hestonOp_;
+        const std::shared_ptr<FdmHestonOp> hestonOp_;
     };
 
     // inline

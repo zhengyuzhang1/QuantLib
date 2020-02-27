@@ -41,12 +41,12 @@ namespace QuantLib {
         const Date& valueDate,
         // delivery date
         const Date& maturityDate,
-        const ext::shared_ptr<OvernightIndex>& overnightIndex,
+        const std::shared_ptr<OvernightIndex>& overnightIndex,
         const Handle<Quote>& convexityAdjustment)
       :RateHelper(price)
     {
-        ext::shared_ptr<Payoff> payoff;
-        future_ = ext::make_shared<OvernightIndexFuture>(overnightIndex,
+        std::shared_ptr<Payoff> payoff;
+        future_ = std::make_shared<OvernightIndexFuture>(overnightIndex,
             payoff, valueDate, maturityDate, termStructureHandle_,
             convexityAdjustment);
         earliestDate_ = valueDate;
@@ -62,7 +62,7 @@ namespace QuantLib {
         // force recalculation when needed
         bool observer = false;
 
-        ext::shared_ptr<YieldTermStructure> temp(t, null_deleter());
+        std::shared_ptr<YieldTermStructure> temp(t, null_deleter());
         termStructureHandle_.linkTo(temp, observer);
 
         RateHelper::setTermStructure(t);
@@ -86,7 +86,7 @@ namespace QuantLib {
         Month referenceMonth,
         Year referenceYear,
         Frequency referenceFreq,
-        const ext::shared_ptr<OvernightIndex>& overnightIndex,
+        const std::shared_ptr<OvernightIndex>& overnightIndex,
         const Handle<Quote>& convexityAdjustment)
       :OvernightIndexFutureRateHelper(price,
         getValidSofrStart(referenceMonth,referenceYear),
@@ -107,14 +107,14 @@ namespace QuantLib {
         Month referenceMonth,
         Year referenceYear,
         Frequency referenceFreq,
-        const ext::shared_ptr<OvernightIndex>& overnightIndex,
+        const std::shared_ptr<OvernightIndex>& overnightIndex,
         Real convexityAdjustment)
       :OvernightIndexFutureRateHelper(
-        Handle<Quote>(ext::make_shared<SimpleQuote>(price)),
+        Handle<Quote>(std::make_shared<SimpleQuote>(price)),
         getValidSofrStart(referenceMonth,referenceYear),
         getValidSofrEnd(referenceMonth,referenceYear,referenceFreq),
         overnightIndex,
-        Handle<Quote>(ext::make_shared<SimpleQuote>(convexityAdjustment)))
+        Handle<Quote>(std::make_shared<SimpleQuote>(convexityAdjustment)))
     {
         QL_REQUIRE(referenceFreq==Quarterly || referenceFreq==Monthly,
             "only monthly and quarterly SOFR futures accepted");

@@ -64,7 +64,7 @@ namespace QuantLib {
         //@{
         PiecewiseDefaultCurve(
                const Date& referenceDate,
-               const std::vector<ext::shared_ptr<typename Traits::helper> >&
+               const std::vector<std::shared_ptr<typename Traits::helper> >&
                                                                   instruments,
                const DayCounter& dayCounter,
                const std::vector<Handle<Quote> >& jumps = std::vector<Handle<Quote> >(),
@@ -77,7 +77,7 @@ namespace QuantLib {
         }
         PiecewiseDefaultCurve(
                const Date& referenceDate,
-               const std::vector<ext::shared_ptr<typename Traits::helper> >&
+               const std::vector<std::shared_ptr<typename Traits::helper> >&
                                                                   instruments,
                const DayCounter& dayCounter,
                Real accuracy,
@@ -89,7 +89,7 @@ namespace QuantLib {
         }
         PiecewiseDefaultCurve(
                const Date& referenceDate,
-               const std::vector<ext::shared_ptr<typename Traits::helper> >&
+               const std::vector<std::shared_ptr<typename Traits::helper> >&
                                                                   instruments,
                const DayCounter& dayCounter,
                const Interpolator& i)
@@ -101,7 +101,7 @@ namespace QuantLib {
         PiecewiseDefaultCurve(
                Natural settlementDays,
                const Calendar& calendar,
-               const std::vector<ext::shared_ptr<typename Traits::helper> >&
+               const std::vector<std::shared_ptr<typename Traits::helper> >&
                                                                   instruments,
                const DayCounter& dayCounter,
                const std::vector<Handle<Quote> >& jumps = std::vector<Handle<Quote> >(),
@@ -115,7 +115,7 @@ namespace QuantLib {
         PiecewiseDefaultCurve(
                Natural settlementDays,
                const Calendar& calendar,
-               const std::vector<ext::shared_ptr<typename Traits::helper> >&
+               const std::vector<std::shared_ptr<typename Traits::helper> >&
                                                                   instruments,
                const DayCounter& dayCounter,
                Real accuracy,
@@ -128,7 +128,7 @@ namespace QuantLib {
         PiecewiseDefaultCurve(
                Natural settlementDays,
                const Calendar& calendar,
-               const std::vector<ext::shared_ptr<typename Traits::helper> >&
+               const std::vector<std::shared_ptr<typename Traits::helper> >&
                                                                   instruments,
                const DayCounter& dayCounter,
                const Interpolator& i)
@@ -149,11 +149,11 @@ namespace QuantLib {
         */
         PiecewiseDefaultCurve(
             const Date& referenceDate,
-            const std::vector<ext::shared_ptr<typename Traits::helper> >&
+            const std::vector<std::shared_ptr<typename Traits::helper> >&
                                                               instruments,
             const DayCounter& dayCounter,
             Real accuracy,
-            const ext::shared_ptr<OneFactorAffineModel> model,
+            const std::shared_ptr<OneFactorAffineModel> model,
             const Interpolator& i = Interpolator())
         : base_curve(referenceDate, dayCounter, model,
             std::vector<Handle<Quote> >(), std::vector<Date>(), i),
@@ -194,7 +194,7 @@ namespace QuantLib {
         #pragma clang diagnostic pop
         #endif
         // data members
-        std::vector<ext::shared_ptr<typename Traits::helper> > instruments_;
+        std::vector<std::shared_ptr<typename Traits::helper> > instruments_;
         Real accuracy_;
 
         // bootstrapper classes are declared as friend to manipulate

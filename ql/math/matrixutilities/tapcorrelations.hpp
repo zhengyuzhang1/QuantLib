@@ -25,7 +25,7 @@
 #include <ql/utilities/disposable.hpp>
 #include <ql/math/matrix.hpp>
 #include <ql/math/optimization/costfunction.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 #include <utility>
 #include <vector>
 
@@ -96,7 +96,7 @@ namespace QuantLib {
       public:
         FrobeniusCostFunction(
             const Matrix& target,
-            ext::function<Disposable<Matrix>(const Array&,
+            std::function<Disposable<Matrix>(const Array&,
                                              Size,
                                              Size)> f,
             Size matrixSize,
@@ -106,7 +106,7 @@ namespace QuantLib {
         Disposable<Array> values (const Array &x) const override;
       private:
         Matrix target_;
-        ext::function<Disposable<Matrix>(const Array&, Size, Size)> f_;
+        std::function<Disposable<Matrix>(const Array&, Size, Size)> f_;
         Size matrixSize_;
         Size rank_;
     };

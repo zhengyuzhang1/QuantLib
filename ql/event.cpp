@@ -25,7 +25,7 @@
 namespace QuantLib {
 
     bool Event::hasOccurred(const Date& d, // refDate
-                            boost::optional<bool> includeRefDate) const {
+                            std::optional<bool> includeRefDate) const {
         Date refDate =
             d != Date() ? d : Settings::instance().evaluationDate();
         bool includeRefDateEvent =

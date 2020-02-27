@@ -74,8 +74,8 @@ namespace QuantLib {
                                                      cashFlowsGenerated);
             }
 
-            QL_UNIQUE_OR_AUTO_PTR<MarketModelMultiProduct> clone() const override {
-                return QL_UNIQUE_OR_AUTO_PTR<MarketModelMultiProduct>(
+            std::unique_ptr<MarketModelMultiProduct> clone() const override {
+                return std::unique_ptr<MarketModelMultiProduct>(
                                                    new DecoratedHedge(*this));
             }
 
@@ -109,8 +109,8 @@ namespace QuantLib {
 
 
     UpperBoundEngine::UpperBoundEngine(
-                   ext::shared_ptr<MarketModelEvolver>  evolver,
-                   std::vector<ext::shared_ptr<MarketModelEvolver> > 
+                   std::shared_ptr<MarketModelEvolver>  evolver,
+                   std::vector<std::shared_ptr<MarketModelEvolver> > 
                                                                  innerEvolvers,
                    const MarketModelMultiProduct& underlying,
                    const MarketModelExerciseValue& rebate,
@@ -246,7 +246,7 @@ namespace QuantLib {
                     // reset() method brings them to the current point
                     // rather than the beginning of the path.
 
-                    ext::shared_ptr<MarketModelEvolver> currentEvolver =
+                    std::shared_ptr<MarketModelEvolver> currentEvolver =
                         innerEvolvers_[exercise++];
                     currentEvolver->setInitialState(evolver_->currentState());
 

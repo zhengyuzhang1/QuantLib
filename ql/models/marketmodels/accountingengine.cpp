@@ -28,7 +28,7 @@
 namespace QuantLib {
 
     AccountingEngine::AccountingEngine(
-                         ext::shared_ptr<MarketModelEvolver>  evolver,
+                         std::shared_ptr<MarketModelEvolver>  evolver,
                          const Clone<MarketModelMultiProduct>& product,
                          Real initialNumeraireValue)
     : evolver_(std::move(evolver)), product_(product),

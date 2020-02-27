@@ -49,7 +49,7 @@ namespace QuantLib {
 
         // Constructor
         FdBlackScholesVanillaEngine(
-            ext::shared_ptr<GeneralizedBlackScholesProcess>,
+            std::shared_ptr<GeneralizedBlackScholesProcess>,
             Size tGrid = 100, Size xGrid = 100, Size dampingSteps = 0,
             const FdmSchemeDesc& schemeDesc = FdmSchemeDesc::Douglas(),
             bool localVol = false,
@@ -57,8 +57,8 @@ namespace QuantLib {
             CashDividendModel cashDividendModel = Spot);
 
         FdBlackScholesVanillaEngine(
-            ext::shared_ptr<GeneralizedBlackScholesProcess>,
-            const ext::shared_ptr<FdmQuantoHelper>& quantoHelper,
+            std::shared_ptr<GeneralizedBlackScholesProcess>,
+            const std::shared_ptr<FdmQuantoHelper>& quantoHelper,
             Size tGrid = 100, Size xGrid = 100, Size dampingSteps = 0,
             const FdmSchemeDesc& schemeDesc = FdmSchemeDesc::Douglas(),
             bool localVol = false,
@@ -68,12 +68,12 @@ namespace QuantLib {
         void calculate() const override;
 
       private:
-        const ext::shared_ptr<GeneralizedBlackScholesProcess> process_;
+        const std::shared_ptr<GeneralizedBlackScholesProcess> process_;
         const Size tGrid_, xGrid_, dampingSteps_;
         const FdmSchemeDesc schemeDesc_;
         const bool localVol_;
         const Real illegalLocalVolOverwrite_;
-        const ext::shared_ptr<FdmQuantoHelper> quantoHelper_;
+        const std::shared_ptr<FdmQuantoHelper> quantoHelper_;
         const CashDividendModel cashDividendModel_;
     };
 
@@ -81,10 +81,10 @@ namespace QuantLib {
     class MakeFdBlackScholesVanillaEngine {
       public:
         explicit MakeFdBlackScholesVanillaEngine(
-            const ext::shared_ptr<GeneralizedBlackScholesProcess>& process);
+            const std::shared_ptr<GeneralizedBlackScholesProcess>& process);
 
         MakeFdBlackScholesVanillaEngine& withQuantoHelper(
-            const ext::shared_ptr<FdmQuantoHelper>& quantoHelper);
+            const std::shared_ptr<FdmQuantoHelper>& quantoHelper);
 
         MakeFdBlackScholesVanillaEngine& withTGrid(Size tGrid);
         MakeFdBlackScholesVanillaEngine& withXGrid(Size xGrid);
@@ -101,14 +101,14 @@ namespace QuantLib {
         MakeFdBlackScholesVanillaEngine& withCashDividendModel(
             FdBlackScholesVanillaEngine::CashDividendModel cashDividendModel);
 
-        operator ext::shared_ptr<PricingEngine>() const;
+        operator std::shared_ptr<PricingEngine>() const;
       private:
-        ext::shared_ptr<GeneralizedBlackScholesProcess> process_;
+        std::shared_ptr<GeneralizedBlackScholesProcess> process_;
         Size tGrid_, xGrid_, dampingSteps_;
-        ext::shared_ptr<FdmSchemeDesc> schemeDesc_;
+        std::shared_ptr<FdmSchemeDesc> schemeDesc_;
         bool localVol_;
         Real illegalLocalVolOverwrite_;
-        ext::shared_ptr<FdmQuantoHelper> quantoHelper_;
+        std::shared_ptr<FdmQuantoHelper> quantoHelper_;
         FdBlackScholesVanillaEngine::CashDividendModel cashDividendModel_;
     };
 }

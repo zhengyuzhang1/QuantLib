@@ -36,7 +36,7 @@ namespace QuantLib {
                             const Date& startDate,
                             const Date& endDate,
                             Natural fixingDays,
-                            const ext::shared_ptr<InterestRateIndex>& index,
+                            const std::shared_ptr<InterestRateIndex>& index,
                             Real gearing,
                             Spread spread,
                             const Date& refPeriodStart,
@@ -60,7 +60,7 @@ namespace QuantLib {
     }
 
     void FloatingRateCoupon::setPricer(
-                const ext::shared_ptr<FloatingRateCouponPricer>& pricer) {
+                const std::shared_ptr<FloatingRateCouponPricer>& pricer) {
         if (pricer_)
             unregisterWith(pricer_);
         pricer_ = pricer;

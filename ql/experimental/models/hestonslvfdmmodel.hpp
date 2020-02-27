@@ -80,14 +80,14 @@ class SimpleQuote;
             const bool logging = false,
             std::vector<Date>  mandatoryDates = std::vector<Date>());
 
-        ext::shared_ptr<HestonProcess> hestonProcess() const;
-        ext::shared_ptr<LocalVolTermStructure> localVol() const;
-        ext::shared_ptr<LocalVolTermStructure> leverageFunction() const;
+        std::shared_ptr<HestonProcess> hestonProcess() const;
+        std::shared_ptr<LocalVolTermStructure> localVol() const;
+        std::shared_ptr<LocalVolTermStructure> leverageFunction() const;
 
         struct LogEntry {
             const Time t;
-            const ext::shared_ptr<Array> prob;
-            const ext::shared_ptr<FdmMesherComposite> mesher;
+            const std::shared_ptr<Array> prob;
+            const std::shared_ptr<FdmMesherComposite> mesher;
         };
 
         const std::list<LogEntry>& logEntries() const;
@@ -101,7 +101,7 @@ class SimpleQuote;
         const HestonSLVFokkerPlanckFdmParams params_;
         const std::vector<Date> mandatoryDates_;
 
-        mutable ext::shared_ptr<LocalVolTermStructure> leverageFunction_;
+        mutable std::shared_ptr<LocalVolTermStructure> leverageFunction_;
 
         const bool logging_;
         mutable std::list<LogEntry> logEntries_;

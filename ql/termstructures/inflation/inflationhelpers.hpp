@@ -43,7 +43,7 @@ namespace QuantLib {
             Calendar calendar,   // index may have null calendar as valid on every day
             BusinessDayConvention paymentConvention,
             DayCounter dayCounter,
-            ext::shared_ptr<ZeroInflationIndex> zii,
+            std::shared_ptr<ZeroInflationIndex> zii,
             Handle<YieldTermStructure> nominalTermStructure);
         /*! \deprecated Use the other constructor.
                         Deprecated in version 1.15.
@@ -56,7 +56,7 @@ namespace QuantLib {
             Calendar calendar,   // index may have null calendar as valid on every day
             BusinessDayConvention paymentConvention,
             DayCounter dayCounter,
-            ext::shared_ptr<ZeroInflationIndex> zii);
+            std::shared_ptr<ZeroInflationIndex> zii);
 
         void setTermStructure(ZeroInflationTermStructure*) override;
         Real impliedQuote() const override;
@@ -66,8 +66,8 @@ namespace QuantLib {
         Calendar calendar_;
         BusinessDayConvention paymentConvention_;
         DayCounter dayCounter_;
-        ext::shared_ptr<ZeroInflationIndex> zii_;
-        ext::shared_ptr<ZeroCouponInflationSwap> zciis_;
+        std::shared_ptr<ZeroInflationIndex> zii_;
+        std::shared_ptr<ZeroCouponInflationSwap> zciis_;
         Handle<YieldTermStructure> nominalTermStructure_;
     };
 
@@ -82,7 +82,7 @@ namespace QuantLib {
                                       const Calendar& calendar,
                                       BusinessDayConvention paymentConvention,
                                       const DayCounter& dayCounter,
-                                      const ext::shared_ptr<YoYInflationIndex>& yii,
+                                      const std::shared_ptr<YoYInflationIndex>& yii,
                                       const Handle<YieldTermStructure>& nominalTermStructure);
         /*! \deprecated Use the other constructor.
                         Deprecated in version 1.15.
@@ -94,7 +94,7 @@ namespace QuantLib {
                                       Calendar  calendar,
                                       BusinessDayConvention paymentConvention,
                                       DayCounter  dayCounter,
-                                      ext::shared_ptr<YoYInflationIndex>  yii);
+                                      std::shared_ptr<YoYInflationIndex>  yii);
 
         void setTermStructure(YoYInflationTermStructure*) override;
         Real impliedQuote() const override;
@@ -104,8 +104,8 @@ namespace QuantLib {
         Calendar calendar_;
         BusinessDayConvention paymentConvention_;
         DayCounter dayCounter_;
-        ext::shared_ptr<YoYInflationIndex> yii_;
-        ext::shared_ptr<YearOnYearInflationSwap> yyiis_;
+        std::shared_ptr<YoYInflationIndex> yii_;
+        std::shared_ptr<YearOnYearInflationSwap> yyiis_;
         Handle<YieldTermStructure> nominalTermStructure_;
     };
 

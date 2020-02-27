@@ -59,8 +59,8 @@ namespace QuantLib {
                Real a, Real b, Real c, Real d,
                bool aIsFixed, bool bIsFixed, bool cIsFixed, bool dIsFixed,
                bool vegaWeighted,
-               ext::shared_ptr<EndCriteria>  endCriteria,
-               ext::shared_ptr<OptimizationMethod>  optMethod)
+               std::shared_ptr<EndCriteria>  endCriteria,
+               std::shared_ptr<OptimizationMethod>  optMethod)
     : aIsFixed_(aIsFixed), bIsFixed_(bIsFixed),
       cIsFixed_(cIsFixed), dIsFixed_(dIsFixed),
       a_(a), b_(b), c_(c), d_(d),
@@ -81,7 +81,7 @@ namespace QuantLib {
             Real xtol = 1.0e-8;
             Real gtol = 1.0e-8;
             bool useCostFunctionsJacobian = false;
-            optMethod_ = ext::shared_ptr<OptimizationMethod>(new
+            optMethod_ = std::shared_ptr<OptimizationMethod>(new
                 LevenbergMarquardt(epsfcn, xtol, gtol, useCostFunctionsJacobian));
         }
         if (!endCriteria_) {
@@ -90,7 +90,7 @@ namespace QuantLib {
             Real rootEpsilon = 1.0e-8;
             Real functionEpsilon = 0.3e-4;     // Why 0.3e-4 ?
             Real gradientNormEpsilon = 0.3e-4; // Why 0.3e-4 ?
-            endCriteria_ = ext::make_shared<EndCriteria>(maxIterations, maxStationaryStateIterations,
+            endCriteria_ = std::make_shared<EndCriteria>(maxIterations, maxStationaryStateIterations,
                             rootEpsilon, functionEpsilon, gradientNormEpsilon);
         }
     }
@@ -119,7 +119,7 @@ namespace QuantLib {
         } else {
 
             AbcdError costFunction(this);
-            transformation_ = ext::shared_ptr<ParametersTransformation>(new
+            transformation_ = std::shared_ptr<ParametersTransformation>(new
                 AbcdParametersTransformation);
 
             Array guess(4);

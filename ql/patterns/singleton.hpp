@@ -26,18 +26,6 @@
 
 #include <ql/qldefines.hpp>
 
-#ifdef QL_ENABLE_SINGLETON_THREAD_SAFE_INIT
-    #if defined(QL_ENABLE_SESSIONS)
-        #ifdef BOOST_MSVC
-            #pragma message(\
-                "Thread-safe singleton initialization not supported "  \
-                "when sessions are enabled.")
-        #else
-            #warning \
-                Thread-safe singleton initialization not supported \
-                when sessions are enabled.
-        #endif
-    #else
         #include <boost/atomic.hpp>
         #include <boost/thread/mutex.hpp>
         #if !defined(BOOST_ATOMIC_ADDRESS_LOCK_FREE)
@@ -52,11 +40,9 @@
             #endif
         #endif
         #define QL_SINGLETON_THREAD_SAFE_INIT
-    #endif
-#endif
 
 #include <ql/types.hpp>
-#include <ql/shared_ptr.hpp>
+#include <memory>
 #if defined(QL_PATCH_MSVC)
     #pragma managed(push, off)
 #endif
@@ -79,10 +65,6 @@
 
 namespace QuantLib {
 
-    #if defined(QL_ENABLE_SESSIONS)
-    // definition must be provided by the user
-    Integer sessionId();
-    #endif
 
     // this is required on VC++ when CLR support is enabled
     #if defined(QL_PATCH_MSVC)
@@ -111,7 +93,7 @@ namespace QuantLib {
     class Singleton : private boost::noncopyable {
     #if (QL_MANAGED == 1) && !defined(QL_SINGLETON_THREAD_SAFE_INIT)
       private:
-        static std::map<Integer, ext::shared_ptr<T> > instances_;
+        static std::map<Integer, std::shared_ptr<T> > instances_;
     #endif
 
     #if defined(QL_SINGLETON_THREAD_SAFE_INIT)
@@ -131,7 +113,7 @@ namespace QuantLib {
     
     #if (QL_MANAGED == 1) && !defined(QL_SINGLETON_THREAD_SAFE_INIT)
       template <class T>
-      std::map<Integer, ext::shared_ptr<T> > Singleton<T>::instances_;
+      std::map<Integer, std::shared_ptr<T> > Singleton<T>::instances_;
     #endif
 
     #if defined(QL_SINGLETON_THREAD_SAFE_INIT) 
@@ -145,7 +127,7 @@ namespace QuantLib {
     T& Singleton<T>::instance() {
 
         #if (QL_MANAGED == 0) && !defined(QL_SINGLETON_THREAD_SAFE_INIT)
-        static std::map<Integer, ext::shared_ptr<T> > instances_;
+        static std::map<Integer, std::shared_ptr<T> > instances_;
         #endif
 
         // thread safe double checked locking pattern with atomic memory calls
@@ -164,15 +146,11 @@ namespace QuantLib {
 
         #else //this is not thread safe
 
-        #if defined(QL_ENABLE_SESSIONS)
-        Integer id = sessionId();
-        #else
         Integer id = 0;
-        #endif
 
-        ext::shared_ptr<T>& instance = instances_[id];
+        std::shared_ptr<T>& instance = instances_[id];
         if (!instance)
-            instance = ext::shared_ptr<T>(new T);
+            instance = std::shared_ptr<T>(new T);
 
         #endif
 

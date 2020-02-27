@@ -33,7 +33,7 @@ namespace QuantLib {
         Calendar calendar,
         BusinessDayConvention paymentConvention,
         DayCounter dayCounter,
-        ext::shared_ptr<ZeroInflationIndex> zii,
+        std::shared_ptr<ZeroInflationIndex> zii,
         Handle<YieldTermStructure> nominalTermStructure)
     : BootstrapHelper<ZeroInflationTermStructure>(quote),
       swapObsLag_(swapObsLag), maturity_(maturity), calendar_(std::move(calendar)),
@@ -82,7 +82,7 @@ namespace QuantLib {
         Calendar calendar,   // index may have null calendar as valid on every day
         BusinessDayConvention paymentConvention,
         DayCounter dayCounter,
-        ext::shared_ptr<ZeroInflationIndex> zii)
+        std::shared_ptr<ZeroInflationIndex> zii)
     : BootstrapHelper<ZeroInflationTermStructure>(quote),
       swapObsLag_(swapObsLag), maturity_(maturity), calendar_(std::move(calendar)),
       paymentConvention_(paymentConvention), dayCounter_(std::move(dayCounter)),
@@ -144,9 +144,9 @@ namespace QuantLib {
         // The effect of the new inflation term structure is
         // felt via the effect on the inflation index
         Handle<ZeroInflationTermStructure> zits(
-            ext::shared_ptr<ZeroInflationTermStructure>(z, null_deleter()), own);
+            std::shared_ptr<ZeroInflationTermStructure>(z, null_deleter()), own);
 
-        ext::shared_ptr<ZeroInflationIndex> new_zii = zii_->clone(zits);
+        std::shared_ptr<ZeroInflationIndex> new_zii = zii_->clone(zits);
 
         Handle<YieldTermStructure> nominalTS =
             !nominalTermStructure_.empty() ? nominalTermStructure_ : z->nominalTermStructure();
@@ -160,7 +160,7 @@ namespace QuantLib {
                                 new_zii, swapObsLag_));
         // Because very simple instrument only takes
         // standard discounting swap engine.
-        zciis_->setPricingEngine(ext::shared_ptr<PricingEngine>(
+        zciis_->setPricingEngine(std::shared_ptr<PricingEngine>(
                 new DiscountingSwapEngine(nominalTS)));
     }
 
@@ -172,7 +172,7 @@ namespace QuantLib {
         const Calendar& calendar,
         BusinessDayConvention paymentConvention,
         const DayCounter& dayCounter,
-        const ext::shared_ptr<YoYInflationIndex>& yii,
+        const std::shared_ptr<YoYInflationIndex>& yii,
         const Handle<YieldTermStructure>& nominalTermStructure)
     : BootstrapHelper<YoYInflationTermStructure>(quote),
       swapObsLag_(swapObsLag), maturity_(maturity),
@@ -221,7 +221,7 @@ namespace QuantLib {
         Calendar calendar,
         BusinessDayConvention paymentConvention,
         DayCounter dayCounter,
-        ext::shared_ptr<YoYInflationIndex> yii)
+        std::shared_ptr<YoYInflationIndex> yii)
     : BootstrapHelper<YoYInflationTermStructure>(quote),
       swapObsLag_(swapObsLag), maturity_(maturity),
       calendar_(std::move(calendar)), paymentConvention_(paymentConvention),
@@ -282,9 +282,9 @@ namespace QuantLib {
         // The effect of the new inflation term structure is
         // felt via the effect on the inflation index
         Handle<YoYInflationTermStructure> yyts(
-            ext::shared_ptr<YoYInflationTermStructure>(y, null_deleter()), own);
+            std::shared_ptr<YoYInflationTermStructure>(y, null_deleter()), own);
 
-        ext::shared_ptr<YoYInflationIndex> new_yii = yii_->clone(yyts);
+        std::shared_ptr<YoYInflationIndex> new_yii = yii_->clone(yyts);
 
         // always works because tenor is always 1 year so
         // no problem with different days-in-month
@@ -316,7 +316,7 @@ namespace QuantLib {
 
         // Because very simple instrument only takes
         // standard discounting swap engine.
-        yyiis_->setPricingEngine(ext::shared_ptr<PricingEngine>(
+        yyiis_->setPricingEngine(std::shared_ptr<PricingEngine>(
                     new DiscountingSwapEngine(!nominalTermStructure_.empty() ?
                                               nominalTermStructure_ :
                                               y->nominalTermStructure())));

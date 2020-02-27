@@ -45,7 +45,7 @@ namespace QuantLib {
         //! stores the historical fixings of the index
         void setHistory(const std::string& name, const TimeSeries<Real>&);
         //! observer notifying of changes in the index fixings
-        ext::shared_ptr<Observable> notifier(const std::string& name) const;
+        std::shared_ptr<Observable> notifier(const std::string& name) const;
         //! returns all names of the indexes for which fixings were stored
         std::vector<std::string> histories() const;
         //! clears the historical fixings of the index

@@ -100,7 +100,7 @@ namespace QuantLib {
         return result;
     }
 
-    Real blackFormula(const ext::shared_ptr<PlainVanillaPayoff>& payoff,
+    Real blackFormula(const std::shared_ptr<PlainVanillaPayoff>& payoff,
                       Real forward,
                       Real stdDev,
                       Real discount,
@@ -151,7 +151,7 @@ namespace QuantLib {
     }
 
     Real blackFormulaImpliedStdDevApproximation(
-                      const ext::shared_ptr<PlainVanillaPayoff>& payoff,
+                      const std::shared_ptr<PlainVanillaPayoff>& payoff,
                       Real forward,
                       Real blackPrice,
                       Real discount,
@@ -212,7 +212,7 @@ namespace QuantLib {
     }
 
     Real blackFormulaImpliedStdDevChambers(
-        const ext::shared_ptr<PlainVanillaPayoff> &payoff,
+        const std::shared_ptr<PlainVanillaPayoff> &payoff,
         Real forward,
         Real blackPrice,
         Real blackAtmPrice,
@@ -282,7 +282,7 @@ namespace QuantLib {
     }
 
     Real blackFormulaImpliedStdDevApproximationRS(
-        const ext::shared_ptr<PlainVanillaPayoff> &payoff,
+        const std::shared_ptr<PlainVanillaPayoff> &payoff,
         Real F, Real marketValue,
         Real df, Real displacement) {
 
@@ -402,7 +402,7 @@ namespace QuantLib {
     }
 
     Real blackFormulaImpliedStdDev(
-                        const ext::shared_ptr<PlainVanillaPayoff>& payoff,
+                        const std::shared_ptr<PlainVanillaPayoff>& payoff,
                         Real forward,
                         Real blackPrice,
                         Real discount,
@@ -505,7 +505,7 @@ namespace QuantLib {
     }
 
     Real blackFormulaImpliedStdDevLiRS(
-        const ext::shared_ptr<PlainVanillaPayoff>& payoff,
+        const std::shared_ptr<PlainVanillaPayoff>& payoff,
         Real forward,
         Real blackPrice,
         Real discount,
@@ -541,7 +541,7 @@ namespace QuantLib {
     }
 
     Real blackFormulaCashItmProbability(
-                        const ext::shared_ptr<PlainVanillaPayoff>& payoff,
+                        const std::shared_ptr<PlainVanillaPayoff>& payoff,
                         Real forward,
                         Real stdDev,
                         Real displacement) {
@@ -569,7 +569,7 @@ namespace QuantLib {
     }
 
     Real blackFormulaAssetItmProbability(
-                        const ext::shared_ptr<PlainVanillaPayoff>& payoff,
+                        const std::shared_ptr<PlainVanillaPayoff>& payoff,
                         Real forward,
                         Real stdDev,
                         Real displacement) {
@@ -615,7 +615,7 @@ namespace QuantLib {
     }
 
     Real blackFormulaStdDevDerivative(
-                        const ext::shared_ptr<PlainVanillaPayoff>& payoff,
+                        const std::shared_ptr<PlainVanillaPayoff>& payoff,
                         Real forward,
                         Real stdDev,
                         Real discount,
@@ -649,7 +649,7 @@ namespace QuantLib {
     }
 
     Real blackFormulaStdDevSecondDerivative(
-                        const ext::shared_ptr<PlainVanillaPayoff>& payoff,
+                        const std::shared_ptr<PlainVanillaPayoff>& payoff,
                         Real forward,
                         Real stdDev,
                         Real discount,
@@ -683,7 +683,7 @@ namespace QuantLib {
     }
 
     Real bachelierBlackFormula(
-                        const ext::shared_ptr<PlainVanillaPayoff>& payoff,
+                        const std::shared_ptr<PlainVanillaPayoff>& payoff,
                         Real forward,
                         Real stdDev,
                         Real discount) {
@@ -785,7 +785,7 @@ namespace QuantLib {
     }
 
     Real bachelierBlackFormulaStdDevDerivative(
-                        const ext::shared_ptr<PlainVanillaPayoff>& payoff,
+                        const std::shared_ptr<PlainVanillaPayoff>& payoff,
                         Real forward,
                         Real stdDev,
                         Real discount) {
@@ -809,7 +809,7 @@ namespace QuantLib {
     }
 
     Real bachelierBlackFormulaAssetItmProbability(
-                        const ext::shared_ptr<PlainVanillaPayoff>& payoff,
+                        const std::shared_ptr<PlainVanillaPayoff>& payoff,
                         Real forward,
                         Real stdDev) {
         return bachelierBlackFormulaAssetItmProbability(payoff->optionType(),

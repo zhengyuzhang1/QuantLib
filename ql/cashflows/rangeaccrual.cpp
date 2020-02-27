@@ -39,7 +39,7 @@ namespace QuantLib {
     RangeAccrualFloatersCoupon::RangeAccrualFloatersCoupon(
                 const Date& paymentDate,
                 Real nominal,
-                const ext::shared_ptr<IborIndex>& index,
+                const std::shared_ptr<IborIndex>& index,
                 const Date& startDate,                                  // S
                 const Date& endDate,                                    // T
                 Natural fixingDays,
@@ -48,7 +48,7 @@ namespace QuantLib {
                 Rate spread,
                 const Date& refPeriodStart,
                 const Date& refPeriodEnd,
-                ext::shared_ptr<Schedule>   observationsSchedule,
+                std::shared_ptr<Schedule>   observationsSchedule,
                 Real lowerTrigger,                                    // l
                 Real upperTrigger                                     // u
         )
@@ -112,8 +112,8 @@ namespace QuantLib {
 
         Date paymentDate = coupon_->date();
 
-        ext::shared_ptr<IborIndex> index =
-            ext::dynamic_pointer_cast<IborIndex>(coupon_->index());
+        std::shared_ptr<IborIndex> index =
+            std::dynamic_pointer_cast<IborIndex>(coupon_->index());
         const Handle<YieldTermStructure>& rateCurve =
             index->forwardingTermStructure();
         discount_ = rateCurve->discount(paymentDate);
@@ -168,8 +168,8 @@ namespace QuantLib {
     //===========================================================================//
     RangeAccrualPricerByBgm::RangeAccrualPricerByBgm(
             Real correlation,
-            ext::shared_ptr<SmileSection>  smilesOnExpiry,
-            ext::shared_ptr<SmileSection>  smilesOnPayment,
+            std::shared_ptr<SmileSection>  smilesOnExpiry,
+            std::shared_ptr<SmileSection>  smilesOnPayment,
             bool withSmile,
             bool byCallSpread)
     : correlation_(correlation),
@@ -530,7 +530,7 @@ namespace QuantLib {
 
     RangeAccrualLeg::RangeAccrualLeg(
                             Schedule  schedule,
-                            ext::shared_ptr<IborIndex>  index)
+                            std::shared_ptr<IborIndex>  index)
     : schedule_(std::move(schedule)), index_(std::move(index)),
       paymentAdjustment_(Following),
       observationConvention_(ModifiedFollowing) {}
@@ -656,7 +656,7 @@ namespace QuantLib {
 
         Date refStart, start, refEnd, end;
         Date paymentDate;
-        std::vector<ext::shared_ptr<Schedule> > observationsSchedules;
+        std::vector<std::shared_ptr<Schedule> > observationsSchedules;
 
         for (Size i=0; i<n; ++i) {
             refStart = start = schedule_.date(i);
@@ -671,7 +671,7 @@ namespace QuantLib {
                 refEnd = calendar.adjust(start + schedule_.tenor(), bdc);
             }
             if (detail::get(gearings_, i, 1.0) == 0.0) { // fixed coupon
-                leg.push_back(ext::shared_ptr<CashFlow>(new
+                leg.push_back(std::shared_ptr<CashFlow>(new
                     FixedRateCoupon(paymentDate,
                                     detail::get(notionals_, i, Null<Real>()),
                                     detail::get(spreads_, i, 0.0),
@@ -679,13 +679,13 @@ namespace QuantLib {
                                     start, end, refStart, refEnd)));
             } else { // floating coupon
                 observationsSchedules.push_back(
-                    ext::make_shared<Schedule>(start, end,
+                    std::make_shared<Schedule>(start, end,
                                  observationTenor_, calendar,
                                  observationConvention_,
                                  observationConvention_,
                                  DateGeneration::Forward, false));
 
-                    leg.push_back(ext::shared_ptr<CashFlow>(new
+                    leg.push_back(std::shared_ptr<CashFlow>(new
                        RangeAccrualFloatersCoupon(
                             paymentDate,
                             detail::get(notionals_, i, Null<Real>()),

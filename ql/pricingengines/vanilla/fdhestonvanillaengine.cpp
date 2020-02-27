@@ -36,10 +36,10 @@
 namespace QuantLib {
 
     FdHestonVanillaEngine::FdHestonVanillaEngine(
-            const ext::shared_ptr<HestonModel>& model,
+            const std::shared_ptr<HestonModel>& model,
             Size tGrid, Size xGrid, Size vGrid, Size dampingSteps,
             const FdmSchemeDesc& schemeDesc,
-            ext::shared_ptr<LocalVolTermStructure> leverageFct)
+            std::shared_ptr<LocalVolTermStructure> leverageFct)
     : GenericModelEngine<HestonModel,
                         DividendVanillaOption::arguments,
                         DividendVanillaOption::results>(model),
@@ -47,15 +47,15 @@ namespace QuantLib {
       vGrid_(vGrid), dampingSteps_(dampingSteps),
       schemeDesc_(schemeDesc),
       leverageFct_(std::move(leverageFct)),
-      quantoHelper_(ext::shared_ptr<FdmQuantoHelper>()) {
+      quantoHelper_(std::shared_ptr<FdmQuantoHelper>()) {
     }
 
     FdHestonVanillaEngine::FdHestonVanillaEngine(
-            const ext::shared_ptr<HestonModel>& model,
-            const ext::shared_ptr<FdmQuantoHelper>& quantoHelper,
+            const std::shared_ptr<HestonModel>& model,
+            const std::shared_ptr<FdmQuantoHelper>& quantoHelper,
             Size tGrid, Size xGrid, Size vGrid, Size dampingSteps,
             const FdmSchemeDesc& schemeDesc,
-            ext::shared_ptr<LocalVolTermStructure> leverageFct)
+            std::shared_ptr<LocalVolTermStructure> leverageFct)
     : GenericModelEngine<HestonModel,
                         DividendVanillaOption::arguments,
                         DividendVanillaOption::results>(model),
@@ -69,25 +69,25 @@ namespace QuantLib {
 
     FdmSolverDesc FdHestonVanillaEngine::getSolverDesc(Real) const {
         // 1. Mesher
-        const ext::shared_ptr<HestonProcess> process = model_->process();
+        const std::shared_ptr<HestonProcess> process = model_->process();
         const Time maturity = process->time(arguments_.exercise->lastDate());
 
         // 1.1 The variance mesher
         const Size tGridMin = 5;
         const Size tGridAvgSteps = std::max(tGridMin, tGrid_/50);
-        const ext::shared_ptr<FdmHestonLocalVolatilityVarianceMesher> vMesher
-            = ext::make_shared<FdmHestonLocalVolatilityVarianceMesher>(
+        const std::shared_ptr<FdmHestonLocalVolatilityVarianceMesher> vMesher
+            = std::make_shared<FdmHestonLocalVolatilityVarianceMesher>(
                   vGrid_, process, leverageFct_, maturity, tGridAvgSteps);
 
         const Volatility avgVolaEstimate = vMesher->volaEstimate();
 
         // 1.2 The equity mesher
-        const ext::shared_ptr<StrikedTypePayoff> payoff =
-            ext::dynamic_pointer_cast<StrikedTypePayoff>(arguments_.payoff);
+        const std::shared_ptr<StrikedTypePayoff> payoff =
+            std::dynamic_pointer_cast<StrikedTypePayoff>(arguments_.payoff);
 
-        ext::shared_ptr<Fdm1dMesher> equityMesher;
+        std::shared_ptr<Fdm1dMesher> equityMesher;
         if (strikes_.empty()) {
-            equityMesher = ext::shared_ptr<Fdm1dMesher>(
+            equityMesher = std::shared_ptr<Fdm1dMesher>(
                 new FdmBlackScholesMesher(
                     xGrid_, 
                     FdmBlackScholesMesher::processHelper(
@@ -102,7 +102,7 @@ namespace QuantLib {
         else {
             QL_REQUIRE(arguments_.cashFlow.empty(),"multiple strikes engine "
                        "does not work with discrete dividends");
-            equityMesher = ext::shared_ptr<Fdm1dMesher>(
+            equityMesher = std::shared_ptr<Fdm1dMesher>(
                 new FdmBlackScholesMultiStrikeMesher(
                     xGrid_,
                     FdmBlackScholesMesher::processHelper(
@@ -112,15 +112,15 @@ namespace QuantLib {
                     std::pair<Real, Real>(payoff->strike(), 0.075)));            
         }
         
-        const ext::shared_ptr<FdmMesher> mesher(
+        const std::shared_ptr<FdmMesher> mesher(
             new FdmMesherComposite(equityMesher, vMesher));
 
         // 2. Calculator
-        const ext::shared_ptr<FdmInnerValueCalculator> calculator(
+        const std::shared_ptr<FdmInnerValueCalculator> calculator(
                           new FdmLogInnerValue(arguments_.payoff, mesher, 0));
 
         // 3. Step conditions
-        const ext::shared_ptr<FdmStepConditionComposite> conditions = 
+        const std::shared_ptr<FdmStepConditionComposite> conditions = 
              FdmStepConditionComposite::vanillaComposite(
                                  arguments_.cashFlow, arguments_.exercise, 
                                  mesher, calculator, 
@@ -146,11 +146,11 @@ namespace QuantLib {
                         == arguments_.exercise->type()
                 && cachedArgs2result.first.exercise->dates()
                         == arguments_.exercise->dates()) {
-                ext::shared_ptr<PlainVanillaPayoff> p1 =
-                    ext::dynamic_pointer_cast<PlainVanillaPayoff>(
+                std::shared_ptr<PlainVanillaPayoff> p1 =
+                    std::dynamic_pointer_cast<PlainVanillaPayoff>(
                                                             arguments_.payoff);
-                ext::shared_ptr<PlainVanillaPayoff> p2 =
-                    ext::dynamic_pointer_cast<PlainVanillaPayoff>(
+                std::shared_ptr<PlainVanillaPayoff> p2 =
+                    std::dynamic_pointer_cast<PlainVanillaPayoff>(
                                           cachedArgs2result.first.payoff);
 
                 if (p1 && p1->strike()     == p2->strike()
@@ -164,9 +164,9 @@ namespace QuantLib {
             }
         }
 
-        const ext::shared_ptr<HestonProcess> process = model_->process();
+        const std::shared_ptr<HestonProcess> process = model_->process();
 
-        ext::shared_ptr<FdmHestonSolver> solver(new FdmHestonSolver(
+        std::shared_ptr<FdmHestonSolver> solver(new FdmHestonSolver(
                     Handle<HestonProcess>(process),
                     getSolverDesc(1.5), schemeDesc_,
                     Handle<FdmQuantoHelper>(quantoHelper_), leverageFct_));
@@ -180,12 +180,12 @@ namespace QuantLib {
         results_.theta = solver->thetaAt(spot, v0);
         
         cachedArgs2results_.resize(strikes_.size());
-        const ext::shared_ptr<StrikedTypePayoff> payoff =
-            ext::dynamic_pointer_cast<StrikedTypePayoff>(arguments_.payoff);
+        const std::shared_ptr<StrikedTypePayoff> payoff =
+            std::dynamic_pointer_cast<StrikedTypePayoff>(arguments_.payoff);
         for (Size i=0; i < strikes_.size(); ++i) {
             cachedArgs2results_[i].first.exercise = arguments_.exercise;
             cachedArgs2results_[i].first.payoff = 
-                ext::make_shared<PlainVanillaPayoff>(
+                std::make_shared<PlainVanillaPayoff>(
                     payoff->optionType(), strikes_[i]);
             const Real d = payoff->strike()/strikes_[i];
             
@@ -212,19 +212,19 @@ namespace QuantLib {
 
 
     MakeFdHestonVanillaEngine::MakeFdHestonVanillaEngine(
-        const ext::shared_ptr<HestonModel>& hestonModel)
+        const std::shared_ptr<HestonModel>& hestonModel)
       : hestonModel_(hestonModel),
         tGrid_(100),
         xGrid_(100),
         vGrid_(50),
         dampingSteps_(0),
         schemeDesc_(
-            ext::make_shared<FdmSchemeDesc>(FdmSchemeDesc::Hundsdorfer())),
-        leverageFct_(ext::shared_ptr<LocalVolTermStructure>()),
-        quantoHelper_(ext::shared_ptr<FdmQuantoHelper>()) {}
+            std::make_shared<FdmSchemeDesc>(FdmSchemeDesc::Hundsdorfer())),
+        leverageFct_(std::shared_ptr<LocalVolTermStructure>()),
+        quantoHelper_(std::shared_ptr<FdmQuantoHelper>()) {}
 
     MakeFdHestonVanillaEngine& MakeFdHestonVanillaEngine::withQuantoHelper(
-        const ext::shared_ptr<FdmQuantoHelper>& quantoHelper) {
+        const std::shared_ptr<FdmQuantoHelper>& quantoHelper) {
         quantoHelper_ = quantoHelper;
         return *this;
     }
@@ -256,20 +256,20 @@ namespace QuantLib {
     MakeFdHestonVanillaEngine&
     MakeFdHestonVanillaEngine::withFdmSchemeDesc(
         const FdmSchemeDesc& schemeDesc) {
-        schemeDesc_ = ext::make_shared<FdmSchemeDesc>(schemeDesc);
+        schemeDesc_ = std::make_shared<FdmSchemeDesc>(schemeDesc);
         return *this;
     }
 
     MakeFdHestonVanillaEngine&
     MakeFdHestonVanillaEngine::withLeverageFunction(
-        ext::shared_ptr<LocalVolTermStructure>& leverageFct) {
+        std::shared_ptr<LocalVolTermStructure>& leverageFct) {
         leverageFct_ = leverageFct;
         return *this;
     }
 
     MakeFdHestonVanillaEngine::operator
-    ext::shared_ptr<PricingEngine>() const {
-        return ext::make_shared<FdHestonVanillaEngine>(
+    std::shared_ptr<PricingEngine>() const {
+        return std::make_shared<FdHestonVanillaEngine>(
             hestonModel_,
             quantoHelper_,
             tGrid_, xGrid_, vGrid_, dampingSteps_,

@@ -27,7 +27,7 @@
 
 #include <ql/methods/finitedifferences/boundarycondition.hpp>
 #include <ql/methods/finitedifferences/operators/fdmlinearop.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 
 namespace QuantLib {
 
@@ -42,13 +42,13 @@ namespace QuantLib {
         typedef BoundaryCondition<FdmLinearOp>::Side Side;
 
         FdmTimeDepDirichletBoundary(
-            const ext::shared_ptr<FdmMesher>& mesher,
-            ext::function<Real (Real)> valueOnBoundary,
+            const std::shared_ptr<FdmMesher>& mesher,
+            std::function<Real (Real)> valueOnBoundary,
             Size direction, Side side);
 
         FdmTimeDepDirichletBoundary(
-            const ext::shared_ptr<FdmMesher>& mesher,
-            ext::function<Disposable<Array> (Real)> valueOnBoundary,
+            const std::shared_ptr<FdmMesher>& mesher,
+            std::function<Disposable<Array> (Real)> valueOnBoundary,
             Size direction, Side side);
 
         void setTime(Time) override;
@@ -59,8 +59,8 @@ namespace QuantLib {
 
       private:
         const std::vector<Size> indices_;
-        const ext::function<Real (Real)> valueOnBoundary_;
-        const ext::function<Disposable<Array>(Real)> valuesOnBoundary_;
+        const std::function<Real (Real)> valueOnBoundary_;
+        const std::function<Disposable<Array>(Real)> valuesOnBoundary_;
 
         Array values_;
     };

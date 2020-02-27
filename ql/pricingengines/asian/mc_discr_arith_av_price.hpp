@@ -57,7 +57,7 @@ namespace QuantLib {
             stats_type;
         // constructor
         MCDiscreteArithmeticAPEngine(
-             const ext::shared_ptr<GeneralizedBlackScholesProcess>& process,
+             const std::shared_ptr<GeneralizedBlackScholesProcess>& process,
              bool brownianBridge,
              bool antitheticVariate,
              bool controlVariate,
@@ -66,10 +66,10 @@ namespace QuantLib {
              Size maxSamples,
              BigNatural seed);
       protected:
-        ext::shared_ptr<path_pricer_type> pathPricer() const override;
-        ext::shared_ptr<path_pricer_type> controlPathPricer() const override;
-        ext::shared_ptr<PricingEngine> controlPricingEngine() const override {
-            return ext::shared_ptr<PricingEngine>(
+        std::shared_ptr<path_pricer_type> pathPricer() const override;
+        std::shared_ptr<path_pricer_type> controlPathPricer() const override;
+        std::shared_ptr<PricingEngine> controlPricingEngine() const override {
+            return std::shared_ptr<PricingEngine>(
                 new AnalyticDiscreteGeometricAveragePriceAsianEngine(
                                                              this->process_));
         }
@@ -97,7 +97,7 @@ namespace QuantLib {
     template <class RNG, class S>
     inline
     MCDiscreteArithmeticAPEngine<RNG,S>::MCDiscreteArithmeticAPEngine(
-             const ext::shared_ptr<GeneralizedBlackScholesProcess>& process,
+             const std::shared_ptr<GeneralizedBlackScholesProcess>& process,
              bool brownianBridge,
              bool antitheticVariate,
              bool controlVariate,
@@ -116,21 +116,21 @@ namespace QuantLib {
 
     template <class RNG, class S>
     inline
-    ext::shared_ptr<
+    std::shared_ptr<
             typename MCDiscreteArithmeticAPEngine<RNG,S>::path_pricer_type>
         MCDiscreteArithmeticAPEngine<RNG,S>::pathPricer() const {
 
-        ext::shared_ptr<PlainVanillaPayoff> payoff =
-            ext::dynamic_pointer_cast<PlainVanillaPayoff>(
+        std::shared_ptr<PlainVanillaPayoff> payoff =
+            std::dynamic_pointer_cast<PlainVanillaPayoff>(
                 this->arguments_.payoff);
         QL_REQUIRE(payoff, "non-plain payoff given");
 
-        ext::shared_ptr<EuropeanExercise> exercise =
-            ext::dynamic_pointer_cast<EuropeanExercise>(
+        std::shared_ptr<EuropeanExercise> exercise =
+            std::dynamic_pointer_cast<EuropeanExercise>(
                 this->arguments_.exercise);
         QL_REQUIRE(exercise, "wrong exercise given");
 
-        return ext::shared_ptr<typename
+        return std::shared_ptr<typename
             MCDiscreteArithmeticAPEngine<RNG,S>::path_pricer_type>(
                 new ArithmeticAPOPathPricer(
                     payoff->optionType(),
@@ -143,24 +143,24 @@ namespace QuantLib {
 
     template <class RNG, class S>
     inline
-    ext::shared_ptr<
+    std::shared_ptr<
             typename MCDiscreteArithmeticAPEngine<RNG,S>::path_pricer_type>
         MCDiscreteArithmeticAPEngine<RNG,S>::controlPathPricer() const {
 
-        ext::shared_ptr<PlainVanillaPayoff> payoff =
-            ext::dynamic_pointer_cast<PlainVanillaPayoff>(
+        std::shared_ptr<PlainVanillaPayoff> payoff =
+            std::dynamic_pointer_cast<PlainVanillaPayoff>(
                 this->arguments_.payoff);
         QL_REQUIRE(payoff, "non-plain payoff given");
 
-        ext::shared_ptr<EuropeanExercise> exercise =
-            ext::dynamic_pointer_cast<EuropeanExercise>(
+        std::shared_ptr<EuropeanExercise> exercise =
+            std::dynamic_pointer_cast<EuropeanExercise>(
                 this->arguments_.exercise);
         QL_REQUIRE(exercise, "wrong exercise given");
 
         // for seasoned option the geometric strike might be rescaled
         // to obtain an equivalent arithmetic strike.
         // Any change applied here MUST be applied to the analytic engine too
-        return ext::shared_ptr<typename
+        return std::shared_ptr<typename
             MCDiscreteArithmeticAPEngine<RNG,S>::path_pricer_type>(
             new GeometricAPOPathPricer(
               payoff->optionType(),
@@ -173,7 +173,7 @@ namespace QuantLib {
     class MakeMCDiscreteArithmeticAPEngine {
       public:
         MakeMCDiscreteArithmeticAPEngine(
-            const ext::shared_ptr<GeneralizedBlackScholesProcess>& process);
+            const std::shared_ptr<GeneralizedBlackScholesProcess>& process);
         // named parameters
         MakeMCDiscreteArithmeticAPEngine& withBrownianBridge(bool b = true);
         MakeMCDiscreteArithmeticAPEngine& withSamples(Size samples);
@@ -183,9 +183,9 @@ namespace QuantLib {
         MakeMCDiscreteArithmeticAPEngine& withAntitheticVariate(bool b = true);
         MakeMCDiscreteArithmeticAPEngine& withControlVariate(bool b = true);
         // conversion to pricing engine
-        operator ext::shared_ptr<PricingEngine>() const;
+        operator std::shared_ptr<PricingEngine>() const;
       private:
-        ext::shared_ptr<GeneralizedBlackScholesProcess> process_;
+        std::shared_ptr<GeneralizedBlackScholesProcess> process_;
         bool antithetic_, controlVariate_;
         Size samples_, maxSamples_;
         Real tolerance_;
@@ -196,7 +196,7 @@ namespace QuantLib {
     template <class RNG, class S>
     inline
     MakeMCDiscreteArithmeticAPEngine<RNG,S>::MakeMCDiscreteArithmeticAPEngine(
-             const ext::shared_ptr<GeneralizedBlackScholesProcess>& process)
+             const std::shared_ptr<GeneralizedBlackScholesProcess>& process)
     : process_(process), antithetic_(false), controlVariate_(false),
       samples_(Null<Size>()), maxSamples_(Null<Size>()),
       tolerance_(Null<Real>()), brownianBridge_(true), seed_(0) {}
@@ -260,9 +260,9 @@ namespace QuantLib {
 
     template <class RNG, class S>
     inline
-    MakeMCDiscreteArithmeticAPEngine<RNG,S>::operator ext::shared_ptr<PricingEngine>()
+    MakeMCDiscreteArithmeticAPEngine<RNG,S>::operator std::shared_ptr<PricingEngine>()
                                                                       const {
-        return ext::shared_ptr<PricingEngine>(new
+        return std::shared_ptr<PricingEngine>(new
             MCDiscreteArithmeticAPEngine<RNG,S>(process_,
                                                 brownianBridge_,
                                                 antithetic_, controlVariate_,

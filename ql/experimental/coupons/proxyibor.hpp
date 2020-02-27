@@ -40,14 +40,14 @@ namespace QuantLib {
                   bool endOfMonth,
                   const DayCounter& dayCounter,
                   Handle<Quote>  gearing,
-                  ext::shared_ptr<IborIndex>  iborIndex,
+                  std::shared_ptr<IborIndex>  iborIndex,
                   Handle<Quote>  spread);
       private:
         // overload
         Rate forecastFixing(const Date& fixingDate) const override;
 
         Handle<Quote> gearing_;
-        ext::shared_ptr<IborIndex> iborIndex_;
+        std::shared_ptr<IborIndex> iborIndex_;
         Handle<Quote> spread_;
     };
 

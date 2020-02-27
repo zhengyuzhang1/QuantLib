@@ -45,7 +45,7 @@ namespace QuantLib {
 
         // constructors
         ImplicitEulerScheme(
-            ext::shared_ptr<FdmLinearOpComposite>  map,
+            std::shared_ptr<FdmLinearOpComposite>  map,
             const bc_set& bcSet = bc_set(),
             Real relTol = 1e-8,
             SolverType solverType = BiCGstab);
@@ -61,10 +61,10 @@ namespace QuantLib {
         Disposable<Array> apply(const Array& r, Real theta) const;
           
         Time dt_;
-        ext::shared_ptr<Size> iterations_;
+        std::shared_ptr<Size> iterations_;
 
         const Real relTol_;
-        const ext::shared_ptr<FdmLinearOpComposite> map_;
+        const std::shared_ptr<FdmLinearOpComposite> map_;
         const BoundaryConditionSchemeHelper bcSet_;
         const SolverType solverType_;
     };

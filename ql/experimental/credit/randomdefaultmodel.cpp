@@ -44,7 +44,7 @@ namespace QuantLib {
     }
 
     GaussianRandomDefaultModel::GaussianRandomDefaultModel(
-                               ext::shared_ptr<Pool> pool,
+                               std::shared_ptr<Pool> pool,
                                const std::vector<DefaultProbKey>& defaultKeys,
                                Handle<OneFactorCopula> copula,
                                Real accuracy,

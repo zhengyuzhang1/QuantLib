@@ -86,7 +86,7 @@ namespace QuantLib {
     AnalyticCEVEngine::AnalyticCEVEngine(
         Real f0, Real alpha, Real beta,
         const Handle<YieldTermStructure>& discountCurve)
-    : calculator_(ext::make_shared<CEVCalculator>(f0, alpha,beta)),
+    : calculator_(std::make_shared<CEVCalculator>(f0, alpha,beta)),
       discountCurve_(discountCurve) {
         registerWith(discountCurve_);
     }
@@ -96,8 +96,8 @@ namespace QuantLib {
         QL_REQUIRE(arguments_.exercise->type() == Exercise::European,
                    "not an European option");
 
-        ext::shared_ptr<StrikedTypePayoff> payoff =
-            ext::dynamic_pointer_cast<StrikedTypePayoff>(arguments_.payoff);
+        std::shared_ptr<StrikedTypePayoff> payoff =
+            std::dynamic_pointer_cast<StrikedTypePayoff>(arguments_.payoff);
         QL_REQUIRE(payoff, "non-striked payoff given");
 
         const Date exerciseDate = arguments_.exercise->lastDate();

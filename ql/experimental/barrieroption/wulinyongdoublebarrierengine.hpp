@@ -42,11 +42,11 @@ namespace QuantLib {
     class WulinYongDoubleBarrierEngine : public DoubleBarrierOption::engine {
       public:
         WulinYongDoubleBarrierEngine(
-            ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
+            std::shared_ptr<GeneralizedBlackScholesProcess>  process,
             int series = 5);
         void calculate() const override;
       private:
-        ext::shared_ptr<GeneralizedBlackScholesProcess> process_;
+        std::shared_ptr<GeneralizedBlackScholesProcess> process_;
         const int series_;
         CumulativeNormalDistribution f_;
         // helper methods

@@ -28,9 +28,9 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 
 namespace QuantLib {
 
-    PathwiseAccountingEngine::PathwiseAccountingEngine(ext::shared_ptr<LogNormalFwdRateEuler>  evolver, // method relies heavily on LMM Euler
+    PathwiseAccountingEngine::PathwiseAccountingEngine(std::shared_ptr<LogNormalFwdRateEuler>  evolver, // method relies heavily on LMM Euler
         const Clone<MarketModelPathwiseMultiProduct>& product,
-        ext::shared_ptr<MarketModel>  pseudoRootStructure, // we need pseudo-roots and displacements
+        std::shared_ptr<MarketModel>  pseudoRootStructure, // we need pseudo-roots and displacements
         Real initialNumeraireValue)
         : evolver_(std::move(evolver)), product_(product),pseudoRootStructure_(std::move(pseudoRootStructure)),
         initialNumeraireValue_(initialNumeraireValue),
@@ -326,9 +326,9 @@ namespace QuantLib {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     PathwiseVegasAccountingEngine::PathwiseVegasAccountingEngine(
-        ext::shared_ptr<LogNormalFwdRateEuler>  evolver, // method relies heavily on LMM Euler
+        std::shared_ptr<LogNormalFwdRateEuler>  evolver, // method relies heavily on LMM Euler
         const Clone<MarketModelPathwiseMultiProduct>& product,
-        ext::shared_ptr<MarketModel>  pseudoRootStructure, // we need pseudo-roots and displacements
+        std::shared_ptr<MarketModel>  pseudoRootStructure, // we need pseudo-roots and displacements
         const std::vector<std::vector<Matrix> >& vegaBumps,
         Real initialNumeraireValue)
         : evolver_(std::move(evolver)), product_(product),pseudoRootStructure_(std::move(pseudoRootStructure)),
@@ -716,9 +716,9 @@ namespace QuantLib {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     PathwiseVegasOuterAccountingEngine::PathwiseVegasOuterAccountingEngine(
-        ext::shared_ptr<LogNormalFwdRateEuler>  evolver, // method relies heavily on LMM Euler
+        std::shared_ptr<LogNormalFwdRateEuler>  evolver, // method relies heavily on LMM Euler
         const Clone<MarketModelPathwiseMultiProduct>& product,
-        ext::shared_ptr<MarketModel>  pseudoRootStructure, // we need pseudo-roots and displacements
+        std::shared_ptr<MarketModel>  pseudoRootStructure, // we need pseudo-roots and displacements
         const std::vector<std::vector<Matrix> >& vegaBumps,
         Real initialNumeraireValue)
         : evolver_(std::move(evolver)), 

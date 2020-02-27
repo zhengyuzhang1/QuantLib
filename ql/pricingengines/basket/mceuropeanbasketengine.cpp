@@ -24,7 +24,7 @@
 namespace QuantLib {
 
     EuropeanMultiPathPricer::EuropeanMultiPathPricer(
-                                const ext::shared_ptr<BasketPayoff>& payoff,
+                                const std::shared_ptr<BasketPayoff>& payoff,
                                 DiscountFactor discount)
     :  payoff_(payoff), discount_(discount) {}
 

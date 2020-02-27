@@ -51,21 +51,21 @@ namespace {
 
     typedef BootstrapHelper<ZeroInflationTermStructure> Helper;
 
-    std::vector<ext::shared_ptr<Helper> > makeHelpers(
+    std::vector<std::shared_ptr<Helper> > makeHelpers(
         const std::vector<Datum>& iiData,
-        const ext::shared_ptr<ZeroInflationIndex>& ii,
+        const std::shared_ptr<ZeroInflationIndex>& ii,
         const Period& observationLag,
         const Calendar& calendar,
         const BusinessDayConvention& bdc,
         const DayCounter& dc,
         const Handle<YieldTermStructure>& yTS) {
 
-        std::vector<ext::shared_ptr<Helper> > instruments;
+        std::vector<std::shared_ptr<Helper> > instruments;
         for (Datum datum : iiData) {
             Date maturity = datum.date;
-            Handle<Quote> quote(ext::shared_ptr<Quote>(
+            Handle<Quote> quote(std::shared_ptr<Quote>(
                                 new SimpleQuote(datum.rate/100.0)));
-            ext::shared_ptr<Helper> h(
+            std::shared_ptr<Helper> h(
                       new ZeroCouponInflationSwapHelper(quote, observationLag,
                                                         maturity, calendar,
                                                         bdc, dc, ii, yTS));
@@ -83,7 +83,7 @@ namespace {
         Period observationLag;
         DayCounter dayCounter;
 
-        ext::shared_ptr<UKRPI> ii;
+        std::shared_ptr<UKRPI> ii;
 
         RelinkableHandle<YieldTermStructure> yTS;
         RelinkableHandle<ZeroInflationTermStructure> cpiTS;
@@ -112,7 +112,7 @@ namespace {
                 .withConvention(ModifiedFollowing);
 
             bool interp = false;
-            ii = ext::make_shared<UKRPI>(interp, cpiTS);
+            ii = std::make_shared<UKRPI>(interp, cpiTS);
 
             std::vector<Real> fixData = {
                 206.1, 207.3, 208.0, 208.9, 209.7, 210.9,
@@ -125,7 +125,7 @@ namespace {
                 ii->addFixing(rpiSchedule[i], fixData[i]);
             }
 
-            yTS.linkTo(ext::shared_ptr<YieldTermStructure>(
+            yTS.linkTo(std::shared_ptr<YieldTermStructure>(
                           new FlatForward(evaluationDate, 0.05, dayCounter)));
 
             // now build the zero inflation curve
@@ -151,12 +151,12 @@ namespace {
                 { Date(25, November, 2059), 3.714 },
             };
 
-            std::vector<ext::shared_ptr<Helper> > helpers =
+            std::vector<std::shared_ptr<Helper> > helpers =
                 makeHelpers(zciisData, ii,
                             observationLag, calendar, convention, dayCounter, yTS);
 
             Rate baseZeroRate = zciisData[0].rate/100.0;
-            cpiTS.linkTo(ext::shared_ptr<ZeroInflationTermStructure>(
+            cpiTS.linkTo(std::shared_ptr<ZeroInflationTermStructure>(
                   new PiecewiseZeroInflationCurve<Linear>(
                          evaluationDate, calendar, dayCounter, observationLag,
                          ii->frequency(),ii->interpolated(), baseZeroRate,
@@ -166,7 +166,7 @@ namespace {
         // teardown
         ~CommonVars() {
             // break circular references and allow curves to be destroyed
-            cpiTS.linkTo(ext::shared_ptr<ZeroInflationTermStructure>());
+            cpiTS.linkTo(std::shared_ptr<ZeroInflationTermStructure>());
         }
     };
 
@@ -183,7 +183,7 @@ void InflationCPIBondTest::testCleanPrice() {
     DayCounter fixedDayCount = Actual365Fixed();
     BusinessDayConvention fixedPaymentConvention = ModifiedFollowing;
     Calendar fixedPaymentCalendar = UnitedKingdom();
-    ext::shared_ptr<ZeroInflationIndex> fixedIndex = common.ii;
+    std::shared_ptr<ZeroInflationIndex> fixedIndex = common.ii;
     Period contractObservationLag = Period(3,Months);
     CPI::InterpolationType observationInterpolation = CPI::Flat;
     Natural settlementDays = 3;
@@ -205,7 +205,7 @@ void InflationCPIBondTest::testCleanPrice() {
                  observationInterpolation, fixedSchedule,
                  fixedRates, fixedDayCount, fixedPaymentConvention);
 
-    ext::shared_ptr<DiscountingBondEngine> engine(
+    std::shared_ptr<DiscountingBondEngine> engine(
                                  new DiscountingBondEngine(common.yTS));
     bond.setPricingEngine(engine);
 

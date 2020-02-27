@@ -31,7 +31,7 @@ namespace QuantLib {
                          const Date& startDate,
                          const Date& endDate,
                          Natural fixingDays,
-                         const ext::shared_ptr<SwapIndex>& swapIndex,
+                         const std::shared_ptr<SwapIndex>& swapIndex,
                          Real gearing,
                          Spread spread,
                          const Date& refPeriodStart,
@@ -56,7 +56,7 @@ namespace QuantLib {
 
 
     CmsLeg::CmsLeg(Schedule  schedule,
-                   ext::shared_ptr<SwapIndex>  swapIndex)
+                   std::shared_ptr<SwapIndex>  swapIndex)
     : schedule_(std::move(schedule)), swapIndex_(std::move(swapIndex)),
       paymentAdjustment_(Following),
       inArrears_(false), zeroPayments_(false) {}

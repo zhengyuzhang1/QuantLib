@@ -59,7 +59,7 @@ namespace QuantLib {
         //! \name Other methods
         //@{
         //! returns a copy of itself linked to a different forwarding curve
-        virtual ext::shared_ptr<IborIndex> clone(
+        virtual std::shared_ptr<IborIndex> clone(
                         const Handle<YieldTermStructure>& forwarding) const;
         // @}
       protected:
@@ -96,7 +96,7 @@ namespace QuantLib {
                        const Handle<YieldTermStructure>& h =
                                     Handle<YieldTermStructure>());
         //! returns a copy of itself linked to a different forwarding curve
-        ext::shared_ptr<IborIndex> clone(
+        std::shared_ptr<IborIndex> clone(
                                    const Handle<YieldTermStructure>& h) const override;
     };
 

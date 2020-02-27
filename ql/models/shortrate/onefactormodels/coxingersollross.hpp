@@ -54,9 +54,9 @@ namespace QuantLib {
                                         Time maturity,
                                         Time bondMaturity) const override;
 
-        ext::shared_ptr<ShortRateDynamics> dynamics() const override;
+        std::shared_ptr<ShortRateDynamics> dynamics() const override;
 
-        ext::shared_ptr<Lattice> tree(const TimeGrid& grid) const override;
+        std::shared_ptr<Lattice> tree(const TimeGrid& grid) const override;
 
         class Dynamics;
       protected:
@@ -83,7 +83,7 @@ namespace QuantLib {
         HelperProcess(Real theta, Real k, Real sigma, Real y0)
         : y0_(y0), theta_(theta), k_(k), sigma_(sigma) {
             discretization_ =
-                ext::shared_ptr<discretization>(new EulerDiscretization);
+                std::shared_ptr<discretization>(new EulerDiscretization);
         }
 
         Real x0() const override {
@@ -117,7 +117,7 @@ namespace QuantLib {
                  Real k,
                  Real sigma,
                  Real x0)
-        : ShortRateDynamics(ext::shared_ptr<StochasticProcess1D>(
+        : ShortRateDynamics(std::shared_ptr<StochasticProcess1D>(
                         new HelperProcess(theta, k, sigma, std::sqrt(x0)))) {}
 
         Real variable(Time, Rate r) const override {

@@ -23,7 +23,7 @@
 
 #include <ql/termstructures/credit/hazardratestructure.hpp>
 #include <ql/math/integrals/gaussianquadratures.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 
 namespace QuantLib {
 

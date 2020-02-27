@@ -68,7 +68,7 @@ void SofrFuturesTest::testBootstrap() {
         {Quarterly, Sep, 2020, 97.175},
     };
 
-    ext::shared_ptr<OvernightIndex> index = ext::make_shared<Sofr>();
+    std::shared_ptr<OvernightIndex> index = std::make_shared<Sofr>();
     index->addFixing(Date(17,October,2018), 0.0217);
     index->addFixing(Date(18,October,2018), 0.0219);
     index->addFixing(Date(19,October,2018), 0.0219);
@@ -77,19 +77,19 @@ void SofrFuturesTest::testBootstrap() {
     index->addFixing(Date(24,October,2018), 0.0218);
     index->addFixing(Date(25,October,2018), 0.0219);
 
-    std::vector<ext::shared_ptr<RateHelper> > helpers;
+    std::vector<std::shared_ptr<RateHelper> > helpers;
     for (Size i=0; i<sofrQuotes.size(); i++){
-        helpers.push_back(ext::make_shared<SofrFutureRateHelper>(
+        helpers.push_back(std::make_shared<SofrFutureRateHelper>(
                  sofrQuotes[i].price, sofrQuotes[i].month, sofrQuotes[i].year,
                  sofrQuotes[i].freq, index));
     }
 
-    ext::shared_ptr<PiecewiseYieldCurve<Discount,Linear> > curve =
-        ext::make_shared<PiecewiseYieldCurve<Discount,Linear> >(today, helpers,
+    std::shared_ptr<PiecewiseYieldCurve<Discount,Linear> > curve =
+        std::make_shared<PiecewiseYieldCurve<Discount,Linear> >(today, helpers,
                                                                 Actual365Fixed());
 
     // test curve with one of the futures
-    ext::shared_ptr<Payoff> payoff(new ForwardTypePayoff(Position::Long, 97.440));
+    std::shared_ptr<Payoff> payoff(new ForwardTypePayoff(Position::Long, 97.440));
     OvernightIndexFuture sf(index, payoff,
                             Date(20, Mar, 2019), Date(19, Jun, 2019),
                             Handle<YieldTermStructure>(curve));

@@ -26,7 +26,7 @@
 namespace QuantLib {
 
     DigitalIborCoupon::DigitalIborCoupon(
-                      const ext::shared_ptr<IborCoupon>& underlying,
+                      const std::shared_ptr<IborCoupon>& underlying,
                       Rate callStrike,
                       Position::Type callPosition,
                       bool isCallATMIncluded,
@@ -35,7 +35,7 @@ namespace QuantLib {
                       Position::Type putPosition,
                       bool isPutATMIncluded,
                       Rate putDigitalPayoff,
-                      const ext::shared_ptr<DigitalReplication>& replication,
+                      const std::shared_ptr<DigitalReplication>& replication,
                       bool nakedOption)
     : DigitalCoupon(underlying, callStrike, callPosition, isCallATMIncluded,
                     callDigitalPayoff, putStrike, putPosition,
@@ -54,7 +54,7 @@ namespace QuantLib {
 
 
     DigitalIborLeg::DigitalIborLeg(Schedule  schedule,
-                                   ext::shared_ptr<IborIndex>  index)
+                                   std::shared_ptr<IborIndex>  index)
     : schedule_(std::move(schedule)), index_(std::move(index)),
       paymentAdjustment_(Following), inArrears_(false),
       longCallOption_(Position::Long), callATM_(false),
@@ -186,7 +186,7 @@ namespace QuantLib {
     }
 
     DigitalIborLeg& DigitalIborLeg::withReplication(
-                   const ext::shared_ptr<DigitalReplication>& replication) {
+                   const std::shared_ptr<DigitalReplication>& replication) {
         replication_ = replication;
         return *this;
     }

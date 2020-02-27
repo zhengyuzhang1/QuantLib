@@ -140,9 +140,9 @@ namespace QuantLib {
         return cmSwapRates_;
     }
 
-    QL_UNIQUE_OR_AUTO_PTR<CurveState>
+    std::unique_ptr<CurveState>
     CoterminalSwapCurveState::clone() const {
-        return QL_UNIQUE_OR_AUTO_PTR<CurveState>(
+        return std::unique_ptr<CurveState>(
                                          new CoterminalSwapCurveState(*this));
     }
 

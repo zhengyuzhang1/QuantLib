@@ -33,8 +33,8 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 #include <ql/types.hpp>
 #include <ql/patterns/singleton.hpp>
 
-#include <ql/shared_ptr.hpp>
-#include <boost/unordered_set.hpp>
+#include <memory>
+#include <unordered_set>
 
 
 #ifndef QL_ENABLE_THREAD_SAFE_OBSERVER_PATTERN
@@ -63,10 +63,10 @@ namespace QuantLib {
           = default;
 
         void registerDeferredObservers(
-            const boost::unordered_set<Observer*>& observers);
+            const std::unordered_set<Observer*>& observers);
         void unregisterDeferredObserver(Observer*);
 
-        typedef boost::unordered_set<Observer*> set_type;
+        typedef std::unordered_set<Observer*> set_type;
         typedef set_type::iterator iterator;
         set_type deferredObservers_;
 
@@ -88,10 +88,10 @@ namespace QuantLib {
         */
         void notifyObservers();
       private:
-        typedef boost::unordered_set<Observer*>::iterator iterator;
+        typedef std::unordered_set<Observer*>::iterator iterator;
         std::pair<iterator, bool> registerObserver(Observer*);
         Size unregisterObserver(Observer*);
-        boost::unordered_set<Observer*> observers_;
+        std::unordered_set<Observer*> observers_;
         ObservableSettings& settings_;
     };
 
@@ -99,7 +99,7 @@ namespace QuantLib {
     /*! \ingroup patterns */
     class Observer {
       public:
-        typedef boost::unordered_set<ext::shared_ptr<Observable> > set_type;
+        typedef std::unordered_set<std::shared_ptr<Observable> > set_type;
         typedef set_type::iterator iterator;
 
         // constructors, assignment, destructor
@@ -110,13 +110,13 @@ namespace QuantLib {
 
         // observer interface
         std::pair<iterator, bool>
-            registerWith(const ext::shared_ptr<Observable>&);
+            registerWith(const std::shared_ptr<Observable>&);
 
         /*! register with all observables of a given observer. Note
             that this does not include registering with the observer
             itself. */
-        void registerWithObservables(const ext::shared_ptr<Observer>&);
-        Size unregisterWith(const ext::shared_ptr<Observable>&);
+        void registerWithObservables(const std::shared_ptr<Observer>&);
+        Size unregisterWith(const std::shared_ptr<Observable>&);
         void unregisterWithAll();
 
         /*! This method must be implemented in derived classes. An
@@ -140,7 +140,7 @@ namespace QuantLib {
     // inline definitions
 
     inline void ObservableSettings::registerDeferredObservers(
-        const boost::unordered_set<Observer*>& observers) {
+        const std::unordered_set<Observer*>& observers) {
         if (updatesDeferred()) {
             deferredObservers_.insert(observers.begin(), observers.end());
         }
@@ -172,7 +172,7 @@ namespace QuantLib {
         return *this;
     }
 
-    inline std::pair<boost::unordered_set<Observer*>::iterator, bool>
+    inline std::pair<std::unordered_set<Observer*>::iterator, bool>
     Observable::registerObserver(Observer* o) {
         return observers_.insert(o);
     }
@@ -207,7 +207,7 @@ namespace QuantLib {
     }
 
     inline std::pair<Observer::iterator, bool>
-    Observer::registerWith(const ext::shared_ptr<Observable>& h) {
+    Observer::registerWith(const std::shared_ptr<Observable>& h) {
         if (h) {
             h->registerObserver(this);
             return observables_.insert(h);
@@ -216,7 +216,7 @@ namespace QuantLib {
     }
 
     inline void
-    Observer::registerWithObservables(const ext::shared_ptr<Observer> &o) {
+    Observer::registerWithObservables(const std::shared_ptr<Observer> &o) {
         if (o) {
             iterator i;
             for (i = o->observables_.begin(); i != o->observables_.end(); ++i)
@@ -225,7 +225,7 @@ namespace QuantLib {
     }
 
     inline
-    Size Observer::unregisterWith(const ext::shared_ptr<Observable>& h) {
+    Size Observer::unregisterWith(const std::shared_ptr<Observable>& h) {
         if (h)
             h->unregisterObserver(this);
         return observables_.erase(h);
@@ -260,11 +260,11 @@ namespace QuantLib {
 
     //! Object that gets notified when a given observable changes
     /*! \ingroup patterns */
-    class Observer : public ext::enable_shared_from_this<Observer> {
+    class Observer : public std::enable_shared_from_this<Observer> {
         friend class Observable;
         friend class ObservableSettings;
       public:
-        typedef boost::unordered_set<ext::shared_ptr<Observable> > set_type;
+        typedef std::unordered_set<std::shared_ptr<Observable> > set_type;
         typedef set_type::iterator iterator;
 
         // constructors, assignment, destructor
@@ -274,12 +274,12 @@ namespace QuantLib {
         virtual ~Observer();
         // observer interface
         std::pair<iterator, bool>
-            registerWith(const ext::shared_ptr<Observable>&);
+            registerWith(const std::shared_ptr<Observable>&);
         /*! register with all observables of a given observer. Note
             that this does not include registering with the observer
             itself. */
-        void registerWithObservables(const ext::shared_ptr<Observer>&);
-        Size unregisterWith(const ext::shared_ptr<Observable>&);
+        void registerWithObservables(const std::shared_ptr<Observer>&);
+        Size unregisterWith(const std::shared_ptr<Observable>&);
         void unregisterWithAll();
 
         /*! This method must be implemented in derived classes. An
@@ -308,14 +308,14 @@ namespace QuantLib {
                 boost::lock_guard<boost::recursive_mutex> lock(mutex_);
                 if (active_) {
                     // c++17 is required if used with std::shared_ptr<T>
-                    const ext::weak_ptr<Observer> o
+                    const std::weak_ptr<Observer> o
                         = observer_->weak_from_this();
 
                     //check for empty weak reference
                     //https://stackoverflow.com/questions/45507041/how-to-check-if-weak-ptr-is-empty-non-assigned
-                    const ext::weak_ptr<Observer> empty;
+                    const std::weak_ptr<Observer> empty;
                     if (o.owner_before(empty) || empty.owner_before(o)) {
-                        const ext::shared_ptr<Observer> obs(o.lock());
+                        const std::shared_ptr<Observer> obs(o.lock());
                         if (obs)
                             obs->update();
                     }
@@ -336,7 +336,7 @@ namespace QuantLib {
             Observer* const observer_;
         };
 
-        ext::shared_ptr<Proxy> proxy_;
+        std::shared_ptr<Proxy> proxy_;
         mutable boost::recursive_mutex mutex_;
 
         set_type observables_;
@@ -351,7 +351,7 @@ namespace QuantLib {
     class Observable {
         friend class Observer;
       public:
-        typedef boost::unordered_set<ext::shared_ptr<Observer::Proxy> >
+        typedef std::unordered_set<std::shared_ptr<Observer::Proxy> >
             set_type;
         typedef set_type::iterator iterator;
 
@@ -365,10 +365,10 @@ namespace QuantLib {
         */
         void notifyObservers();
       private:
-        void registerObserver(const ext::shared_ptr<Observer::Proxy>&);
-        void unregisterObserver(const ext::shared_ptr<Observer::Proxy>&);
+        void registerObserver(const std::shared_ptr<Observer::Proxy>&);
+        void unregisterObserver(const std::shared_ptr<Observer::Proxy>&);
 
-        ext::shared_ptr<detail::Signal> sig_;
+        std::shared_ptr<detail::Signal> sig_;
 
         set_type observers_;
         mutable boost::recursive_mutex mutex_;
@@ -393,14 +393,14 @@ namespace QuantLib {
       private:
         ObservableSettings() : updatesType_(UpdatesEnabled) {}
 
-        typedef std::set<ext::weak_ptr<Observer::Proxy>,
-                         boost::owner_less<ext::weak_ptr<Observer::Proxy> > >
+        typedef std::set<std::weak_ptr<Observer::Proxy>,
+                         boost::owner_less<std::weak_ptr<Observer::Proxy> > >
             set_type;
         typedef set_type::iterator iterator;
 
         void registerDeferredObservers(const Observable::set_type& observers);
         void unregisterDeferredObserver(
-            const ext::shared_ptr<Observer::Proxy>& proxy);
+            const std::shared_ptr<Observer::Proxy>& proxy);
 
         set_type deferredObservers_;
         mutable boost::mutex mutex_;
@@ -418,7 +418,7 @@ namespace QuantLib {
     }
 
     inline void ObservableSettings::unregisterDeferredObserver(
-        const ext::shared_ptr<Observer::Proxy>& o) {
+        const std::shared_ptr<Observer::Proxy>& o) {
         deferredObservers_.erase(o);
     }
 
@@ -435,7 +435,7 @@ namespace QuantLib {
             for (iterator i=deferredObservers_.begin();
                 i!=deferredObservers_.end(); ++i) {
                 try {
-                    const ext::shared_ptr<Observer::Proxy> proxy = i->lock();
+                    const std::shared_ptr<Observer::Proxy> proxy = i->lock();
                     if (proxy)
                         proxy->update();
                 } catch (std::exception& e) {
@@ -512,7 +512,7 @@ namespace QuantLib {
     }
 
     inline std::pair<Observer::iterator, bool>
-    Observer::registerWith(const ext::shared_ptr<Observable>& h) {
+    Observer::registerWith(const std::shared_ptr<Observable>& h) {
         boost::lock_guard<boost::recursive_mutex> lock(mutex_);
         if (!proxy_) {
             proxy_.reset(new Proxy(this));
@@ -526,7 +526,7 @@ namespace QuantLib {
     }
 
     inline void
-    Observer::registerWithObservables(const ext::shared_ptr<Observer>& o) {
+    Observer::registerWithObservables(const std::shared_ptr<Observer>& o) {
         if (o) {
             boost::lock_guard<boost::recursive_mutex> lock(o->mutex_);
 
@@ -537,7 +537,7 @@ namespace QuantLib {
     }
 
     inline
-    Size Observer::unregisterWith(const ext::shared_ptr<Observable>& h) {
+    Size Observer::unregisterWith(const std::shared_ptr<Observable>& h) {
         boost::lock_guard<boost::recursive_mutex> lock(mutex_);
 
         if (h)  {

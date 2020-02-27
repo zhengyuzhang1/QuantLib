@@ -31,7 +31,7 @@ namespace QuantLib {
                     const Schedule& fixedLegSchedule,
                     Rate fixedRate,
                     DayCounter  fixedDC,
-                    ext::shared_ptr<OvernightIndex>  overnightIndex,
+                    std::shared_ptr<OvernightIndex>  overnightIndex,
                     const Schedule& overnightLegSchedule,
                     Spread spread,
                     Real meanReversionSpeed,
@@ -56,7 +56,7 @@ namespace QuantLib {
                     const Schedule& fixedLegSchedule,
                     Rate fixedRate,
                     DayCounter  fixedDC,
-                    ext::shared_ptr<OvernightIndex>  overnightIndex,
+                    std::shared_ptr<OvernightIndex>  overnightIndex,
                     const Schedule& overnightLegSchedule,
                     Spread spread,
                     Real meanReversionSpeed,
@@ -86,12 +86,12 @@ namespace QuantLib {
             .withNotionals(nominals_)
             .withSpreads(spread_);
 
-        ext::shared_ptr<FloatingRateCouponPricer> arithmeticPricer(
+        std::shared_ptr<FloatingRateCouponPricer> arithmeticPricer(
                 new ArithmeticAveragedOvernightIndexedCouponPricer(mrs_, vol_, byApprox_));
 
         for (const auto & i : legs_[1]) {
-            ext::shared_ptr<OvernightIndexedCoupon> 
-                c = ext::dynamic_pointer_cast<OvernightIndexedCoupon> (i);
+            std::shared_ptr<OvernightIndexedCoupon> 
+                c = std::dynamic_pointer_cast<OvernightIndexedCoupon> (i);
             c->setPricer(arithmeticPricer);
         }
 

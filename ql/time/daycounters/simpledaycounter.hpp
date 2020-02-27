@@ -57,7 +57,7 @@ namespace QuantLib {
         };
       public:
         SimpleDayCounter()
-        : DayCounter(ext::shared_ptr<DayCounter::Impl>(
+        : DayCounter(std::shared_ptr<DayCounter::Impl>(
                                              new SimpleDayCounter::Impl())) {}
     };
 

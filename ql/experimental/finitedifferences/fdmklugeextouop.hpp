@@ -64,9 +64,9 @@ namespace QuantLib {
     class FdmKlugeExtOUOp : public FdmLinearOpComposite {
       public:
         FdmKlugeExtOUOp(
-            const ext::shared_ptr<FdmMesher>& mesher,
-            const ext::shared_ptr<KlugeExtOUProcess>& klugeOUProcess,
-            const ext::shared_ptr<YieldTermStructure>& rTS,
+            const std::shared_ptr<FdmMesher>& mesher,
+            const std::shared_ptr<KlugeExtOUProcess>& klugeOUProcess,
+            const std::shared_ptr<YieldTermStructure>& rTS,
             const FdmBoundaryConditionSet& bcSet,
             Size integroIntegrationOrder);
 
@@ -87,15 +87,15 @@ namespace QuantLib {
 #endif
       private:
 
-        const ext::shared_ptr<FdmMesher> mesher_;
-        const ext::shared_ptr<ExtOUWithJumpsProcess> kluge_;
-        const ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> extOU_;
+        const std::shared_ptr<FdmMesher> mesher_;
+        const std::shared_ptr<ExtOUWithJumpsProcess> kluge_;
+        const std::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> extOU_;
 
-        const ext::shared_ptr<YieldTermStructure> rTS_;
+        const std::shared_ptr<YieldTermStructure> rTS_;
         const FdmBoundaryConditionSet bcSet_;
 
-        const ext::shared_ptr<FdmExtOUJumpOp> klugeOp_;
-        const ext::shared_ptr<FdmExtendedOrnsteinUhlenbeckOp> ouOp_;
+        const std::shared_ptr<FdmExtOUJumpOp> klugeOp_;
+        const std::shared_ptr<FdmExtendedOrnsteinUhlenbeckOp> ouOp_;
 
         const NinePointLinearOp corrMap_;
     };

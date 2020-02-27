@@ -25,8 +25,8 @@
 #define quantlib_two_dimensional_integral_2d_hpp
 
 #include <ql/math/integrals/integral.hpp>
-#include <ql/shared_ptr.hpp>
-#include <ql/functional.hpp>
+#include <memory>
+#include <functional>
 #include <utility>
 
 namespace QuantLib {
@@ -39,29 +39,29 @@ namespace QuantLib {
 
     class TwoDimensionalIntegral {
       public:
-        TwoDimensionalIntegral(ext::shared_ptr<Integrator>  integratorX,
-                               ext::shared_ptr<Integrator>  integratorY)
+        TwoDimensionalIntegral(std::shared_ptr<Integrator>  integratorX,
+                               std::shared_ptr<Integrator>  integratorY)
         : integratorX_(std::move(integratorX)),
           integratorY_(std::move(integratorY)) {
         }
 
-        Real operator()(const ext::function<Real (Real, Real)>& f,
+        Real operator()(const std::function<Real (Real, Real)>& f,
                         const std::pair<Real, Real>& a,
                         const std::pair<Real, Real>& b) const {
-            using namespace ext::placeholders;
+            using namespace std::placeholders;
             return (*integratorX_)(
-                 ext::bind(&TwoDimensionalIntegral::g, this, f, _1,
+                 std::bind(&TwoDimensionalIntegral::g, this, f, _1,
                              a.second, b.second), a.first, b.first);
         }
 
       private:
-        Real g(const ext::function<Real (Real, Real)>& f,
+        Real g(const std::function<Real (Real, Real)>& f,
                Real x, Real a, Real b) const {
-            using namespace ext::placeholders;
-            return (*integratorY_)(ext::bind(f, x, _1), a, b);
+            using namespace std::placeholders;
+            return (*integratorY_)(std::bind(f, x, _1), a, b);
         }
 
-        const ext::shared_ptr<Integrator> integratorX_, integratorY_;
+        const std::shared_ptr<Integrator> integratorX_, integratorY_;
     };
 }
 #endif

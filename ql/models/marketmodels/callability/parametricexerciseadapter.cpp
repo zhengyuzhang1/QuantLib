@@ -67,9 +67,9 @@ namespace QuantLib {
                                    variables_);
     }
 
-    QL_UNIQUE_OR_AUTO_PTR<ExerciseStrategy<CurveState> >
+    std::unique_ptr<ExerciseStrategy<CurveState> >
     ParametricExerciseAdapter::clone() const {
-        return QL_UNIQUE_OR_AUTO_PTR<ExerciseStrategy<CurveState> >(
+        return std::unique_ptr<ExerciseStrategy<CurveState> >(
                                         new ParametricExerciseAdapter(*this));
     }
 

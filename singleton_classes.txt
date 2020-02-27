@@ -1,0 +1,11 @@
+ObservableSettings ql/patterns/observable.hpp
+Tracing ql/utilities/tracing.hpp
+UnitOfMeasureConversionManager ql/experimental/commodities/unitofmeasureconversionmanager.cpp
+UnitOfMeasureConversionManager ql/experimental/commodities/unitofmeasureconversionmanager.hpp
+CommoditySettings ql/experimental/commodities/commoditysettings.hpp
+Settings ql/settings.hpp
+IndexManager ql/indexes/indexmanager.hpp
+SeedGenerator ql/math/randomnumbers/seedgenerator.hpp
+ExchangeRateManager ql/currencies/exchangeratemanager.hpp
+
+

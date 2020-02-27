@@ -39,7 +39,7 @@ namespace QuantLib {
     class QL_DEPRECATED OperatorFactory {
       public:
         static TridiagonalOperator getOperator(
-             const ext::shared_ptr<GeneralizedBlackScholesProcess> &process,
+             const std::shared_ptr<GeneralizedBlackScholesProcess> &process,
              const Array &grid,
              Time residualTime,
              bool timeDependent) {
@@ -56,7 +56,7 @@ namespace QuantLib {
 #endif
         };
         static TridiagonalOperator getOperator(
-          const ext::shared_ptr<OneFactorModel::ShortRateDynamics> &process,
+          const std::shared_ptr<OneFactorModel::ShortRateDynamics> &process,
           const Array &grid) {
             return OneFactorOperator(grid, process);
         }

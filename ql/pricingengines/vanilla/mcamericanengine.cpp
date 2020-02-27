@@ -25,12 +25,12 @@
 #include <ql/errors.hpp>
 #include <ql/math/functional.hpp>
 #include <ql/instruments/payoffs.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 
 namespace QuantLib {
 
     AmericanPathPricer::AmericanPathPricer(
-        const ext::shared_ptr<Payoff>& payoff,
+        const std::shared_ptr<Payoff>& payoff,
         Size polynomOrder,
         LsmBasisSystem::PolynomType polynomType)
     : scalingValue_(1.0),
@@ -45,13 +45,13 @@ namespace QuantLib {
                    || polynomType == LsmBasisSystem::Chebyshev2nd,
                    "insufficient polynom type");
 
-        using namespace ext::placeholders;
+        using namespace std::placeholders;
 
         // the payoff gives an additional value
-        v_.emplace_back(ext::bind(&AmericanPathPricer::payoff, this, _1));
+        v_.emplace_back(std::bind(&AmericanPathPricer::payoff, this, _1));
 
-        const ext::shared_ptr<StrikedTypePayoff> strikePayoff
-            = ext::dynamic_pointer_cast<StrikedTypePayoff>(payoff_);
+        const std::shared_ptr<StrikedTypePayoff> strikePayoff
+            = std::dynamic_pointer_cast<StrikedTypePayoff>(payoff_);
 
         if (strikePayoff) {
             // FLOATING_POINT_EXCEPTION
@@ -73,7 +73,7 @@ namespace QuantLib {
         return path[t]*scalingValue_;
     }
 
-    std::vector<ext::function<Real(Real)> >
+    std::vector<std::function<Real(Real)> >
     AmericanPathPricer::basisSystem() const {
         return v_;
     }

@@ -43,7 +43,7 @@ namespace QuantLib {
                   const Date& startDate,
                   const Date& endDate,
                   Natural fixingDays,
-                  const ext::shared_ptr<SwapIndex>& index,
+                  const std::shared_ptr<SwapIndex>& index,
                   Real gearing = 1.0,
                   Spread spread = 0.0,
                   const Date& refPeriodStart = Date(),
@@ -53,7 +53,7 @@ namespace QuantLib {
                   const Date& exCouponDate = Date());
         //! \name Inspectors
         //@{
-        const ext::shared_ptr<SwapIndex>& swapIndex() const {
+        const std::shared_ptr<SwapIndex>& swapIndex() const {
             return swapIndex_;
         }
         //@}
@@ -62,7 +62,7 @@ namespace QuantLib {
         void accept(AcyclicVisitor&) override;
         //@}
       private:
-        ext::shared_ptr<SwapIndex> swapIndex_;
+        std::shared_ptr<SwapIndex> swapIndex_;
     };
 
 
@@ -70,7 +70,7 @@ namespace QuantLib {
     class CmsLeg {
       public:
         CmsLeg(Schedule  schedule,
-               ext::shared_ptr<SwapIndex>  swapIndex);
+               std::shared_ptr<SwapIndex>  swapIndex);
         CmsLeg& withNotionals(Real notional);
         CmsLeg& withNotionals(const std::vector<Real>& notionals);
         CmsLeg& withPaymentDayCounter(const DayCounter&);
@@ -90,7 +90,7 @@ namespace QuantLib {
         operator Leg() const;
       private:
         Schedule schedule_;
-        ext::shared_ptr<SwapIndex> swapIndex_;
+        std::shared_ptr<SwapIndex> swapIndex_;
         std::vector<Real> notionals_;
         DayCounter paymentDayCounter_;
         BusinessDayConvention paymentAdjustment_;

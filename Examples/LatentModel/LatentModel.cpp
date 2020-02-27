@@ -33,13 +33,6 @@
 using namespace std;
 using namespace QuantLib;
 
-#if defined(QL_ENABLE_SESSIONS)
-namespace QuantLib {
-
-    Integer sessionId() { return 0; }
-
-}
-#endif
 
 
 /* This sample code shows basic usage of a Latent variable model.
@@ -73,7 +66,7 @@ int main(int, char* []) {
         std::vector<Handle<DefaultProbabilityTermStructure> > defTS;
         for(double & hazardRate : hazardRates)
             defTS.emplace_back(
-                ext::make_shared<FlatHazardRate>(0, TARGET(), hazardRate, 
+                std::make_shared<FlatHazardRate>(0, TARGET(), hazardRate, 
                     Actual365Fixed()));
         std::vector<Issuer> issuers;
         for(Size i=0; i<hazardRates.size(); i++) {
@@ -85,7 +78,7 @@ int main(int, char* []) {
             issuers.emplace_back(curves);
         }
 
-        ext::shared_ptr<Pool> thePool = ext::make_shared<Pool>();
+        std::shared_ptr<Pool> thePool = std::make_shared<Pool>();
         for(Size i=0; i<hazardRates.size(); i++)
             thePool->add(names[i], issuers[i], NorthAmericaCorpDefaultKey(
                     EURCurrency(), QuantLib::SeniorSec, Period(), 1.));
@@ -94,10 +87,10 @@ int main(int, char* []) {
             NorthAmericaCorpDefaultKey(EURCurrency(), SeniorSec, Period(), 1.));
         // Recoveries are irrelevant in this example but must be given as the 
         //   lib stands.
-        std::vector<ext::shared_ptr<RecoveryRateModel> > rrModels(
-            hazardRates.size(), ext::make_shared<ConstantRecoveryModel>(
+        std::vector<std::shared_ptr<RecoveryRateModel> > rrModels(
+            hazardRates.size(), std::make_shared<ConstantRecoveryModel>(
             ConstantRecoveryModel(0.5, SeniorSec)));
-        ext::shared_ptr<Basket> theBskt = ext::make_shared<Basket>(
+        std::shared_ptr<Basket> theBskt = std::make_shared<Basket>(
             todaysDate, names, std::vector<Real>(hazardRates.size(), 100.), 
             thePool);
         /* --------------------------------------------------------------
@@ -110,7 +103,7 @@ int main(int, char* []) {
         // --- Default Latent models -------------------------------------
         #ifndef QL_PATCH_SOLARIS
         // Gaussian integrable joint default model:
-        ext::shared_ptr<GaussianDefProbLM> lmG(new 
+        std::shared_ptr<GaussianDefProbLM> lmG(new 
             GaussianDefProbLM(fctrsWeights, 
             LatentModelIntegrationType::GaussianQuadrature,
 			GaussianCopulaPolicy::initTraits() // otherwise gcc screams
@@ -122,7 +115,7 @@ int main(int, char* []) {
         TCopulaPolicy::initTraits iniT;
         iniT.tOrders = ordersT;
         // StudentT integrable joint default model:
-        ext::shared_ptr<TDefProbLM> lmT(new TDefProbLM(fctrsWeights, 
+        std::shared_ptr<TDefProbLM> lmT(new TDefProbLM(fctrsWeights, 
             // LatentModelIntegrationType::GaussianQuadrature,
             LatentModelIntegrationType::Trapezoid,
             iniT));
@@ -133,13 +126,13 @@ int main(int, char* []) {
         // Size numCoresUsed = 4;
         #ifndef QL_PATCH_SOLARIS
         // Sobol, many cores
-        ext::shared_ptr<DefaultLossModel> rdlmG(
-            ext::make_shared<RandomDefaultLM<GaussianCopulaPolicy> >(lmG, 
+        std::shared_ptr<DefaultLossModel> rdlmG(
+            std::make_shared<RandomDefaultLM<GaussianCopulaPolicy> >(lmG, 
                 std::vector<Real>(), numSimulations, 1.e-6, 2863311530UL));
         #endif
         // StudentT random joint default model:
-        ext::shared_ptr<DefaultLossModel> rdlmT(
-            ext::make_shared<RandomDefaultLM<TCopulaPolicy> >(lmT, 
+        std::shared_ptr<DefaultLossModel> rdlmT(
+            std::make_shared<RandomDefaultLM<TCopulaPolicy> >(lmT, 
             std::vector<Real>(), numSimulations, 1.e-6, 2863311530UL));
 
         /* --------------------------------------------------------------

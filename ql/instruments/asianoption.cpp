@@ -29,8 +29,8 @@ namespace QuantLib {
         Real runningAccumulator,
         Size pastFixings,
         std::vector<Date>  fixingDates,
-        const ext::shared_ptr<StrikedTypePayoff>& payoff,
-        const ext::shared_ptr<Exercise>& exercise)
+        const std::shared_ptr<StrikedTypePayoff>& payoff,
+        const std::shared_ptr<Exercise>& exercise)
     : OneAssetOption(payoff, exercise),
       averageType_(averageType), runningAccumulator_(runningAccumulator),
       pastFixings_(pastFixings), fixingDates_(std::move(fixingDates)) {
@@ -81,8 +81,8 @@ namespace QuantLib {
 
     ContinuousAveragingAsianOption::ContinuousAveragingAsianOption(
         Average::Type averageType,
-        const ext::shared_ptr<StrikedTypePayoff>& payoff,
-        const ext::shared_ptr<Exercise>& exercise)
+        const std::shared_ptr<StrikedTypePayoff>& payoff,
+        const std::shared_ptr<Exercise>& exercise)
     : OneAssetOption(payoff, exercise),
       averageType_(averageType) {}
 

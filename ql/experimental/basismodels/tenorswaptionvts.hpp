@@ -37,7 +37,7 @@ namespace QuantLib {
       protected:
         class TenorSwaptionSmileSection : public SmileSection {
           protected:
-            ext::shared_ptr<SmileSection> baseSmileSection_;
+            std::shared_ptr<SmileSection> baseSmileSection_;
             Real swapRateBase_;
             Real swapRateTarg_;
             Real swapRateFinl_;
@@ -65,8 +65,8 @@ namespace QuantLib {
         Handle<SwaptionVolatilityStructure> baseVTS_;
         Handle<YieldTermStructure> discountCurve_;
 
-        ext::shared_ptr<IborIndex> baseIndex_;
-        ext::shared_ptr<IborIndex> targIndex_;
+        std::shared_ptr<IborIndex> baseIndex_;
+        std::shared_ptr<IborIndex> targIndex_;
         Period baseFixedFreq_;
         Period targFixedFreq_;
         DayCounter baseFixedDC_;
@@ -76,8 +76,8 @@ namespace QuantLib {
         // constructor
         TenorSwaptionVTS(const Handle<SwaptionVolatilityStructure>& baseVTS,
                          const Handle<YieldTermStructure>& discountCurve,
-                         const ext::shared_ptr<IborIndex>& baseIndex,
-                         const ext::shared_ptr<IborIndex>& targIndex,
+                         const std::shared_ptr<IborIndex>& baseIndex,
+                         const std::shared_ptr<IborIndex>& targIndex,
                          const Period& baseFixedFreq,
                          const Period& targFixedFreq,
                          const DayCounter& baseFixedDC,
@@ -108,9 +108,9 @@ namespace QuantLib {
         //! the largest length for which the term structure can return vols
         virtual const Period& maxSwapTenor() const { return baseVTS_->maxSwapTenor(); }
 
-        virtual ext::shared_ptr<SmileSection> smileSectionImpl(Time optionTime,
+        virtual std::shared_ptr<SmileSection> smileSectionImpl(Time optionTime,
                                                                Time swapLength) const {
-            return ext::shared_ptr<SmileSection>(
+            return std::shared_ptr<SmileSection>(
                 new TenorSwaptionSmileSection(*this, optionTime, swapLength));
         }
 

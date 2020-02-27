@@ -50,7 +50,7 @@ namespace QuantLib {
         };
       public:
         Business252(Calendar c = Brazil())
-        : DayCounter(ext::shared_ptr<DayCounter::Impl>(
+        : DayCounter(std::shared_ptr<DayCounter::Impl>(
                                                  new Business252::Impl(c))) {}
     };
 

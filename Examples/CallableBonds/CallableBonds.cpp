@@ -40,20 +40,15 @@
 using namespace std;
 using namespace QuantLib;
 
-#if defined(QL_ENABLE_SESSIONS)
-namespace QuantLib {
-    Integer sessionId() { return 0; }
-}
-#endif
 
 
-ext::shared_ptr<YieldTermStructure>
+std::shared_ptr<YieldTermStructure>
     flatRate(const Date& today,
-             const ext::shared_ptr<Quote>& forward,
+             const std::shared_ptr<Quote>& forward,
              const DayCounter& dc,
              const Compounding& compounding,
              const Frequency& frequency) {
-    return ext::shared_ptr<YieldTermStructure>(
+    return std::shared_ptr<YieldTermStructure>(
                                        new FlatForward(today,
                                                        Handle<Quote>(forward),
                                                        dc,
@@ -62,14 +57,14 @@ ext::shared_ptr<YieldTermStructure>
 }
 
 
-ext::shared_ptr<YieldTermStructure>
+std::shared_ptr<YieldTermStructure>
     flatRate(const Date& today,
              Rate forward,
              const DayCounter& dc,
              const Compounding &compounding,
              const Frequency &frequency) {
     return flatRate(today,
-            ext::shared_ptr<Quote>(new SimpleQuote(forward)),
+            std::shared_ptr<Quote>(new SimpleQuote(forward)),
             dc,
             compounding,
             frequency);
@@ -125,7 +120,7 @@ int main(int, char* [])
 
             Bond::Price myPrice(callPrice, Bond::Price::Clean);
             callSchedule.push_back(
-                ext::make_shared<Callability>(
+                std::make_shared<Callability>(
                                     myPrice,
                                     Callability::Call,
                                     callDate ));
@@ -169,10 +164,10 @@ int main(int, char* [])
 
         Real sigma = QL_EPSILON; // core dumps if zero on Cygwin
 
-        ext::shared_ptr<ShortRateModel> hw0(
+        std::shared_ptr<ShortRateModel> hw0(
                        new HullWhite(termStructure,reversionParameter,sigma));
 
-        ext::shared_ptr<PricingEngine> engine0(
+        std::shared_ptr<PricingEngine> engine0(
                       new TreeCallableFixedRateBondEngine(hw0,gridIntervals));
 
         CallableFixedRateBond callableBond(settlementDays, faceAmount, sch,
@@ -206,10 +201,10 @@ int main(int, char* [])
 
         cout << "sigma/vol (%) = " << 100.*sigma << endl;
 
-        ext::shared_ptr<ShortRateModel> hw1(
+        std::shared_ptr<ShortRateModel> hw1(
                        new HullWhite(termStructure,reversionParameter,sigma));
 
-        ext::shared_ptr<PricingEngine> engine1(
+        std::shared_ptr<PricingEngine> engine1(
                       new TreeCallableFixedRateBondEngine(hw1,gridIntervals));
 
         callableBond.setPricingEngine(engine1);
@@ -232,10 +227,10 @@ int main(int, char* [])
 
         sigma = .03;
 
-        ext::shared_ptr<ShortRateModel> hw2(
+        std::shared_ptr<ShortRateModel> hw2(
                      new HullWhite(termStructure, reversionParameter, sigma));
 
-        ext::shared_ptr<PricingEngine> engine2(
+        std::shared_ptr<PricingEngine> engine2(
                       new TreeCallableFixedRateBondEngine(hw2,gridIntervals));
 
         callableBond.setPricingEngine(engine2);
@@ -262,10 +257,10 @@ int main(int, char* [])
 
         sigma = .06;
 
-        ext::shared_ptr<ShortRateModel> hw3(
+        std::shared_ptr<ShortRateModel> hw3(
                      new HullWhite(termStructure, reversionParameter, sigma));
 
-        ext::shared_ptr<PricingEngine> engine3(
+        std::shared_ptr<PricingEngine> engine3(
                       new TreeCallableFixedRateBondEngine(hw3,gridIntervals));
 
         callableBond.setPricingEngine(engine3);
@@ -292,10 +287,10 @@ int main(int, char* [])
 
         sigma = .12;
 
-        ext::shared_ptr<ShortRateModel> hw4(
+        std::shared_ptr<ShortRateModel> hw4(
                      new HullWhite(termStructure, reversionParameter, sigma));
 
-        ext::shared_ptr<PricingEngine> engine4(
+        std::shared_ptr<PricingEngine> engine4(
                       new TreeCallableFixedRateBondEngine(hw4,gridIntervals));
 
         callableBond.setPricingEngine(engine4);

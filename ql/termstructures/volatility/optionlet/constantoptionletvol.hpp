@@ -76,8 +76,8 @@ namespace QuantLib {
         Real displacement() const override;
 
       protected:
-        ext::shared_ptr<SmileSection> smileSectionImpl(const Date& d) const override;
-        ext::shared_ptr<SmileSection> smileSectionImpl(Time) const override;
+        std::shared_ptr<SmileSection> smileSectionImpl(const Date& d) const override;
+        std::shared_ptr<SmileSection> smileSectionImpl(Time) const override;
         Volatility volatilityImpl(Time,
                                   Rate) const override;
       private:

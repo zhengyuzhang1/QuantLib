@@ -21,7 +21,7 @@
 #include <ql/math/optimization/constraint.hpp>
 #include <ql/math/optimization/lmdif.hpp>
 #include <ql/math/optimization/levenbergmarquardt.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 
 namespace QuantLib {
 
@@ -38,7 +38,7 @@ namespace QuantLib {
 
     EndCriteria::Type LevenbergMarquardt::minimize(Problem& P,
                                                    const EndCriteria& endCriteria) {
-        using namespace ext::placeholders;
+        using namespace std::placeholders;
 
         EndCriteria::Type ecType = EndCriteria::None;
         P.reset();
@@ -83,10 +83,10 @@ namespace QuantLib {
         // call lmdif to minimize the sum of the squares of m functions
         // in n variables by the Levenberg-Marquardt algorithm.
         MINPACK::LmdifCostFunction lmdifCostFunction =
-            ext::bind(&LevenbergMarquardt::fcn, this, _1, _2, _3, _4, _5);
+            std::bind(&LevenbergMarquardt::fcn, this, _1, _2, _3, _4, _5);
         MINPACK::LmdifCostFunction lmdifJacFunction =
             useCostFunctionsJacobian_
-                ? ext::bind(&LevenbergMarquardt::jacFcn, this, _1, _2, _3,
+                ? std::bind(&LevenbergMarquardt::jacFcn, this, _1, _2, _3,
                               _4, _5)
                 : MINPACK::LmdifCostFunction();
         MINPACK::lmdif(m, n, xx.get(), fvec.get(),

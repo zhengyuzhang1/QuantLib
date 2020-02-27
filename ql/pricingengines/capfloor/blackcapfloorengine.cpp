@@ -36,7 +36,7 @@ namespace QuantLib {
                               const DayCounter& dc,
                               Real displacement)
     : discountCurve_(std::move(discountCurve)),
-      vol_(ext::shared_ptr<OptionletVolatilityStructure>(new
+      vol_(std::shared_ptr<OptionletVolatilityStructure>(new
           ConstantOptionletVolatility(0, NullCalendar(), Following, v, dc))),
       displacement_(displacement) {
         registerWith(discountCurve_);
@@ -48,7 +48,7 @@ namespace QuantLib {
                               const DayCounter& dc,
                               Real displacement)
     : discountCurve_(std::move(discountCurve)),
-      vol_(ext::shared_ptr<OptionletVolatilityStructure>(new
+      vol_(std::shared_ptr<OptionletVolatilityStructure>(new
           ConstantOptionletVolatility(0, NullCalendar(), Following, v, dc))),
       displacement_(displacement) {
         registerWith(discountCurve_);

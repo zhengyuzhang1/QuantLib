@@ -24,7 +24,7 @@
 #include <ql/models/marketmodels/curvestate.hpp>
 #include <ql/models/marketmodels/evolutiondescription.hpp>
 #include <ql/models/marketmodels/piecewiseconstantcorrelation.hpp>
-#include <ql/shared_ptr.hpp>
+#include <memory>
 #include <vector>
 
 namespace QuantLib {
@@ -37,12 +37,12 @@ namespace QuantLib {
         virtual ~CTSMMCapletCalibration();
         CTSMMCapletCalibration(
             EvolutionDescription  evolution,
-            ext::shared_ptr<PiecewiseConstantCorrelation>  corr,
-            std::vector<ext::shared_ptr<
+            std::shared_ptr<PiecewiseConstantCorrelation>  corr,
+            std::vector<std::shared_ptr<
                         PiecewiseConstantVariance> > 
                                     displacedSwapVariances,
             std::vector<Volatility>  mktCapletVols, // displaced??
-            ext::shared_ptr<CurveState>  cs,
+            std::shared_ptr<CurveState>  cs,
             Spread displacement); // ??
         // modifiers
         bool calibrate(Natural numberOfFactors,
@@ -75,13 +75,13 @@ namespace QuantLib {
         static void performChecks(
             const EvolutionDescription& evolution,
             const PiecewiseConstantCorrelation& corr,
-            const std::vector<ext::shared_ptr<
+            const std::vector<std::shared_ptr<
                         PiecewiseConstantVariance> >&
                                     displacedSwapVariances,
             const std::vector<Volatility>& mktCapletVols,
             const CurveState& cs);
 
-        const ext::shared_ptr<CurveState>& curveState() const;
+        const std::shared_ptr<CurveState>& curveState() const;
         std::vector<Spread> displacements() const;
       protected:
         virtual Natural calibrationImpl_(Natural numberOfFactors,
@@ -90,15 +90,15 @@ namespace QuantLib {
                                          Real innerTolerance) = 0;
         // input
         EvolutionDescription evolution_;
-        ext::shared_ptr<PiecewiseConstantCorrelation> corr_;
-        std::vector<ext::shared_ptr<PiecewiseConstantVariance> >
+        std::shared_ptr<PiecewiseConstantCorrelation> corr_;
+        std::vector<std::shared_ptr<PiecewiseConstantVariance> >
                                                 displacedSwapVariances_;
         
         std::vector<Volatility> mktCapletVols_, mdlCapletVols_;
         std::vector<Volatility> mktSwaptionVols_, mdlSwaptionVols_;
         std::vector<std::vector<Volatility> > timeDependentCalibratedSwaptionVols_;
         
-        ext::shared_ptr<CurveState> cs_;
+        std::shared_ptr<CurveState> cs_;
         Spread displacement_;
         Size numberOfRates_;
         // working variables
@@ -181,7 +181,7 @@ namespace QuantLib {
         return swapCovariancePseudoRoots_[i];
     }
 
-    inline const ext::shared_ptr<CurveState>&
+    inline const std::shared_ptr<CurveState>&
     CTSMMCapletCalibration::curveState() const {
         return cs_;
     }

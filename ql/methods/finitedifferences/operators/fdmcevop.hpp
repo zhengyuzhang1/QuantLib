@@ -43,8 +43,8 @@ namespace QuantLib {
       public:
 
         FdmCEVOp(
-            const ext::shared_ptr<FdmMesher>& mesher,
-            const ext::shared_ptr<YieldTermStructure>& rTS,
+            const std::shared_ptr<FdmMesher>& mesher,
+            const std::shared_ptr<YieldTermStructure>& rTS,
             Real f0, Real alpha, Real beta,
             Size direction);
 
@@ -62,7 +62,7 @@ namespace QuantLib {
         Disposable<std::vector<SparseMatrix> > toMatrixDecomp() const;
 #endif
       private:
-        const ext::shared_ptr<YieldTermStructure>& rTS_;
+        const std::shared_ptr<YieldTermStructure>& rTS_;
         const Size direction_;
         const TripleBandLinearOp dxxMap_;
         TripleBandLinearOp mapT_;

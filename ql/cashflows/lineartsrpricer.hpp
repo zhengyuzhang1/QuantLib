@@ -165,8 +165,8 @@ namespace QuantLib {
                         Handle<YieldTermStructure> couponDiscountCurve =
                             Handle<YieldTermStructure>(),
                         const Settings &settings = Settings(),
-                        ext::shared_ptr<Integrator> integrator =
-                            ext::shared_ptr<Integrator>());
+                        std::shared_ptr<Integrator> integrator =
+                            std::shared_ptr<Integrator>());
 
         /* */
         Real swapletPrice() const override;
@@ -240,13 +240,13 @@ namespace QuantLib {
         Period swapTenor_;
         Real spreadLegValue_, swapRateValue_, couponDiscountRatio_, annuity_;
 
-        ext::shared_ptr<SwapIndex> swapIndex_;
-        ext::shared_ptr<VanillaSwap> swap_;
-        ext::shared_ptr<SmileSection> smileSection_;
+        std::shared_ptr<SwapIndex> swapIndex_;
+        std::shared_ptr<VanillaSwap> swap_;
+        std::shared_ptr<SmileSection> smileSection_;
 
         Settings settings_;
         DayCounter volDayCounter_;
-        ext::shared_ptr<Integrator> integrator_;
+        std::shared_ptr<Integrator> integrator_;
 
         Real adjustedLowerBound_, adjustedUpperBound_;
     };

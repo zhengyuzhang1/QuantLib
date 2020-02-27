@@ -38,13 +38,13 @@ namespace QuantLib {
       const Handle<DefaultProbabilityTermStructure>& invstDTS,
       Real invstRecoveryRate)
   : baseSwapEngine_(Handle<PricingEngine>(
-      ext::make_shared<DiscountingSwapEngine>(discountCurve))),
+      std::make_shared<DiscountingSwapEngine>(discountCurve))),
     swaptionletEngine_(swaptionEngine),
     discountCurve_(discountCurve),
     defaultTS_(ctptyDTS), 
     ctptyRecoveryRate_(ctptyRecoveryRate),
     invstDTS_(invstDTS.empty() ? Handle<DefaultProbabilityTermStructure>(
-        ext::make_shared<FlatHazardRate>(0, NullCalendar(), 1.e-12, 
+        std::make_shared<FlatHazardRate>(0, NullCalendar(), 1.e-12, 
         ctptyDTS->dayCounter()) ) : invstDTS ),
     invstRecoveryRate_(invstRecoveryRate)
   {
@@ -62,15 +62,15 @@ namespace QuantLib {
         const Handle<DefaultProbabilityTermStructure>& invstDTS,
         Real invstRecoveryRate)
   : baseSwapEngine_(Handle<PricingEngine>(
-      ext::make_shared<DiscountingSwapEngine>(discountCurve))),
+      std::make_shared<DiscountingSwapEngine>(discountCurve))),
     swaptionletEngine_(Handle<PricingEngine>(
-      ext::make_shared<BlackSwaptionEngine>(discountCurve,
+      std::make_shared<BlackSwaptionEngine>(discountCurve,
         blackVol))),
     discountCurve_(discountCurve),
     defaultTS_(ctptyDTS), 
     ctptyRecoveryRate_(ctptyRecoveryRate),
     invstDTS_(invstDTS.empty() ? Handle<DefaultProbabilityTermStructure>(
-        ext::make_shared<FlatHazardRate>(0, NullCalendar(), 1.e-12, 
+        std::make_shared<FlatHazardRate>(0, NullCalendar(), 1.e-12, 
         ctptyDTS->dayCounter()) ) : invstDTS ),
     invstRecoveryRate_(invstRecoveryRate)
   {
@@ -87,15 +87,15 @@ namespace QuantLib {
         const Handle<DefaultProbabilityTermStructure>& invstDTS,
         Real invstRecoveryRate)
   : baseSwapEngine_(Handle<PricingEngine>(
-      ext::make_shared<DiscountingSwapEngine>(discountCurve))),
+      std::make_shared<DiscountingSwapEngine>(discountCurve))),
     swaptionletEngine_(Handle<PricingEngine>(
-      ext::make_shared<BlackSwaptionEngine>(discountCurve,
+      std::make_shared<BlackSwaptionEngine>(discountCurve,
         blackVol))),
     discountCurve_(discountCurve),
     defaultTS_(ctptyDTS), 
     ctptyRecoveryRate_(ctptyRecoveryRate),
     invstDTS_(invstDTS.empty() ? Handle<DefaultProbabilityTermStructure>(
-        ext::make_shared<FlatHazardRate>(0, NullCalendar(), 1.e-12, 
+        std::make_shared<FlatHazardRate>(0, NullCalendar(), 1.e-12, 
         ctptyDTS->dayCounter()) ) : invstDTS ),
     invstRecoveryRate_(invstRecoveryRate)
   {
@@ -137,7 +137,7 @@ namespace QuantLib {
 
     baseSwapEngine_->calculate();
 
-    ext::shared_ptr<FixedRateCoupon> coupon = ext::dynamic_pointer_cast<FixedRateCoupon>(arguments_.legs[0][0]);
+    std::shared_ptr<FixedRateCoupon> coupon = std::dynamic_pointer_cast<FixedRateCoupon>(arguments_.legs[0][0]);
     QL_REQUIRE(coupon,"dynamic cast of fixed leg coupon failed.");
     Rate baseSwapRate = coupon->rate();
 
@@ -155,18 +155,18 @@ namespace QuantLib {
     // Swaplet options summatory:
     while(nextFD != arguments_.fixedPayDates.end()) {
       // iFD coupon not fixed, create swaptionlet:
-      ext::shared_ptr<FloatingRateCoupon> floatCoupon = ext::dynamic_pointer_cast<FloatingRateCoupon>(arguments_.legs[1][0]);
+      std::shared_ptr<FloatingRateCoupon> floatCoupon = std::dynamic_pointer_cast<FloatingRateCoupon>(arguments_.legs[1][0]);
       QL_REQUIRE(floatCoupon,"dynamic cast of floating leg coupon failed.");
-      ext::shared_ptr<IborIndex> swapIndex = ext::dynamic_pointer_cast<IborIndex>(floatCoupon->index());
+      std::shared_ptr<IborIndex> swapIndex = std::dynamic_pointer_cast<IborIndex>(floatCoupon->index());
       QL_REQUIRE(swapIndex,"dynamic cast of floating leg index failed.");
 
       // Alternatively one could cap this period to, say, 1M 
-      // Period swapPeriod = ext::dynamic_pointer_cast<FloatingRateCoupon>(
+      // Period swapPeriod = std::dynamic_pointer_cast<FloatingRateCoupon>(
       //   arguments_.legs[1][0])->index()->tenor();
 
       Period baseSwapsTenor(arguments_.fixedPayDates.back().serialNumber() 
 	    - swapletStart.serialNumber(), Days);
-      ext::shared_ptr<VanillaSwap> swaplet = MakeVanillaSwap(
+      std::shared_ptr<VanillaSwap> swaplet = MakeVanillaSwap(
         baseSwapsTenor,
         swapIndex, 
         baseSwapFairRate // strike
@@ -176,7 +176,7 @@ namespace QuantLib {
           ////////	    .withSettlementDays(2)
         .withEffectiveDate(swapletStart)
         .withTerminationDate(arguments_.fixedPayDates.back());
-      ext::shared_ptr<VanillaSwap> revSwaplet = MakeVanillaSwap(
+      std::shared_ptr<VanillaSwap> revSwaplet = MakeVanillaSwap(
         baseSwapsTenor,
         swapIndex, 
         baseSwapFairRate // strike
@@ -188,9 +188,9 @@ namespace QuantLib {
         .withTerminationDate(arguments_.fixedPayDates.back());
 
       Swaption swaptionlet(swaplet, 
-        ext::make_shared<EuropeanExercise>(swapletStart));
+        std::make_shared<EuropeanExercise>(swapletStart));
       Swaption putSwaplet(revSwaplet, 
-        ext::make_shared<EuropeanExercise>(swapletStart));
+        std::make_shared<EuropeanExercise>(swapletStart));
       swaptionlet.setPricingEngine(swaptionletEngine_.currentLink());
       putSwaplet.setPricingEngine(swaptionletEngine_.currentLink());
 

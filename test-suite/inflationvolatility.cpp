@@ -59,26 +59,26 @@ namespace {
     vector<Rate> cStrikesEU;
     vector<Rate> fStrikesEU;
     vector<Period> cfMaturitiesEU;
-    ext::shared_ptr<Matrix> cPriceEU;
-    ext::shared_ptr<Matrix> fPriceEU;
+    std::shared_ptr<Matrix> cPriceEU;
+    std::shared_ptr<Matrix> fPriceEU;
 
-    ext::shared_ptr<YoYInflationIndex> yoyIndexUK;
-    ext::shared_ptr<YoYInflationIndex> yoyIndexEU;
+    std::shared_ptr<YoYInflationIndex> yoyIndexUK;
+    std::shared_ptr<YoYInflationIndex> yoyIndexEU;
 
     vector<Rate> cStrikesUK;
     vector<Rate> fStrikesUK;
     vector<Period> cfMaturitiesUK;
-    ext::shared_ptr<Matrix> cPriceUK;
-    ext::shared_ptr<Matrix> fPriceUK;
+    std::shared_ptr<Matrix> cPriceUK;
+    std::shared_ptr<Matrix> fPriceUK;
 
-    ext::shared_ptr<InterpolatedYoYCapFloorTermPriceSurface<Bicubic,Cubic> > priceSurfEU;
+    std::shared_ptr<InterpolatedYoYCapFloorTermPriceSurface<Bicubic,Cubic> > priceSurfEU;
 
     void reset() {
         nominalEUR = Handle<YieldTermStructure>();
         nominalGBP = Handle<YieldTermStructure>();
         priceSurfEU.reset();
-        yoyEU.linkTo(ext::shared_ptr<YoYInflationTermStructure>());
-        yoyUK.linkTo(ext::shared_ptr<YoYInflationTermStructure>());
+        yoyEU.linkTo(std::shared_ptr<YoYInflationTermStructure>());
+        yoyUK.linkTo(std::shared_ptr<YoYInflationTermStructure>());
         yoyIndexUK.reset();
         yoyIndexEU.reset();
         cPriceEU.reset();
@@ -101,8 +101,8 @@ namespace {
         Date eval = Date(Day(23), Month(11), Year(2007));
         Settings::instance().evaluationDate() = eval;
 
-        yoyIndexUK = ext::shared_ptr<YoYInflationIndex>(new YYUKRPIr(true, yoyUK));
-        yoyIndexEU = ext::shared_ptr<YoYInflationIndex>(new YYEUHICPr(true, yoyEU));
+        yoyIndexUK = std::shared_ptr<YoYInflationIndex>(new YYUKRPIr(true, yoyUK));
+        yoyIndexEU = std::shared_ptr<YoYInflationIndex>(new YYEUHICPr(true, yoyEU));
 
         // nominal yield curve (interpolated; times assume year parts have 365 days)
         std::vector<Time> timesEUR = {
@@ -143,7 +143,7 @@ namespace {
             d.push_back( dd );
         }
 
-        ext::shared_ptr<InterpolatedZeroCurve<Cubic> >
+        std::shared_ptr<InterpolatedZeroCurve<Cubic> >
             euriborTS(new InterpolatedZeroCurve<Cubic>(d, r, Actual365Fixed()));
         Handle<YieldTermStructure> nominalHeur(euriborTS, false);
         nominalEUR = nominalHeur;   // copy to global
@@ -158,7 +158,7 @@ namespace {
             d.push_back( dd );
         }
 
-        ext::shared_ptr<InterpolatedZeroCurve<Cubic> >
+        std::shared_ptr<InterpolatedZeroCurve<Cubic> >
             gbpLiborTS(new InterpolatedZeroCurve<Cubic>(d, r, Actual365Fixed()));
         Handle<YieldTermStructure> nominalHgbp(gbpLiborTS, false);
         nominalGBP = nominalHgbp;   // copy to global
@@ -191,7 +191,7 @@ namespace {
         bool indexIsInterpolated = true;    // actually false for UKRPI but smooth surfaces are
                                             // better for finding intersections etc
 
-        ext::shared_ptr<InterpolatedYoYInflationCurve<Linear> >
+        std::shared_ptr<InterpolatedYoYInflationCurve<Linear> >
             pYTSEU( new InterpolatedYoYInflationCurve<Linear>(
                     eval, TARGET(), Actual365Fixed(), Period(2,Months), Monthly,
                     indexIsInterpolated, nominalGBP, d, r) );
@@ -228,8 +228,8 @@ namespace {
         for(double i : capStrikesEU) cStrikesEU.push_back(i);
         for(double i : floorStrikesEU) fStrikesEU.push_back(i);
         for(auto i : capMaturitiesEU) cfMaturitiesEU.push_back(i);
-        ext::shared_ptr<Matrix> tcPriceEU(new Matrix(ncStrikesEU, ncfMaturitiesEU));
-        ext::shared_ptr<Matrix> tfPriceEU(new Matrix(nfStrikesEU, ncfMaturitiesEU));
+        std::shared_ptr<Matrix> tcPriceEU(new Matrix(ncStrikesEU, ncfMaturitiesEU));
+        std::shared_ptr<Matrix> tfPriceEU(new Matrix(nfStrikesEU, ncfMaturitiesEU));
         for(Size i = 0; i < ncStrikesEU; i++) {
             for(Size j = 0; j < ncfMaturitiesEU; j++) {
                 (*tcPriceEU)[i][j] = capPricesEU[i][j];
@@ -259,10 +259,10 @@ namespace {
         DayCounter dc = Actual365Fixed();
         TARGET cal;
         BusinessDayConvention bdc = ModifiedFollowing;
-        ext::shared_ptr<QuantLib::YieldTermStructure> pn =
+        std::shared_ptr<QuantLib::YieldTermStructure> pn =
             nominalEUR.currentLink();
         Handle<QuantLib::YieldTermStructure> n(pn,false);
-        ext::shared_ptr<InterpolatedYoYCapFloorTermPriceSurface<Bicubic,Cubic> >
+        std::shared_ptr<InterpolatedYoYCapFloorTermPriceSurface<Bicubic,Cubic> >
         cfEUprices(new InterpolatedYoYCapFloorTermPriceSurface<Bicubic,Cubic>(
                                        fixingDays,
                                        yyLag, yoyIndexEU, baseRate,
@@ -294,14 +294,14 @@ void InflationVolTest::testYoYPriceSurfaceToVol() {
     // caplet pricer, recall that setCapletVolatility(Handle<YoYOptionletVolatilitySurface>)
     // exists ... we'll use it with the -Curve variant of the surface
     // test UNIT DISPLACED pricer
-    ext::shared_ptr<YoYOptionletVolatilitySurface> pVS;
+    std::shared_ptr<YoYOptionletVolatilitySurface> pVS;
     Handle<YoYOptionletVolatilitySurface> hVS(pVS, false); // pVS does NOT own whatever it points to later, hence the handle does not either
-    ext::shared_ptr<YoYInflationUnitDisplacedBlackCapFloorEngine>
+    std::shared_ptr<YoYInflationUnitDisplacedBlackCapFloorEngine>
         yoyPricerUD(new YoYInflationUnitDisplacedBlackCapFloorEngine(yoyIndexEU,hVS,nominalEUR)); //hVS
     // N.B. the vol gets set in the stripper ... else no point!
 
     // cap stripper
-    ext::shared_ptr<YoYOptionletStripper> yoyOptionletStripper(
+    std::shared_ptr<YoYOptionletStripper> yoyOptionletStripper(
                              new InterpolatedYoYOptionletStripper<Linear>() );
 
     // now set up all the variables for the stripping
@@ -310,7 +310,7 @@ void InflationVolTest::testYoYPriceSurfaceToVol() {
     BusinessDayConvention bdc = ModifiedFollowing;
     DayCounter dc = Actual365Fixed();
 
-    ext::shared_ptr<YoYCapFloorTermPriceSurface> capFloorPrices = priceSurfEU;
+    std::shared_ptr<YoYCapFloorTermPriceSurface> capFloorPrices = priceSurfEU;
     Period lag = priceSurfEU->observationLag();
 
     Real slope = -0.5; //when you have bad data, i.e. very low/constant
@@ -325,7 +325,7 @@ void InflationVolTest::testYoYPriceSurfaceToVol() {
 
     // Actually is doesn't matter what the interpolation is because we only
     // intend to use the K values that correspond to quotes ... for model fitting.
-    ext::shared_ptr<KInterpolatedYoYOptionletVolatilitySurface<Linear> > yoySurf(new
+    std::shared_ptr<KInterpolatedYoYOptionletVolatilitySurface<Linear> > yoySurf(new
                     KInterpolatedYoYOptionletVolatilitySurface<Linear>(settlementDays,
                 cal, bdc, dc, lag, capFloorPrices, yoyPricerUD, yoyOptionletStripper,
                                                               slope) );

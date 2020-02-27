@@ -70,17 +70,10 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 
 using namespace QuantLib;
 
-#if defined(QL_ENABLE_SESSIONS)
-namespace QuantLib {
-
-    Integer sessionId() { return 0; }
-
-}
-#endif
 
 
 std::vector<std::vector<Matrix> > theVegaBumps(bool factorwiseBumping,
-                                               ext::shared_ptr<MarketModel> marketModel,
+                                               std::shared_ptr<MarketModel> marketModel,
                                                bool doCaps)
 {
     Real multiplierCutOff = 50.0;
@@ -246,13 +239,13 @@ int Bermudan()
 
     FlatVol  calibration(
         volatilities,
-        ext::shared_ptr<PiecewiseConstantCorrelation>(new  ExponentialForwardCorrelation(correlations)),
+        std::shared_ptr<PiecewiseConstantCorrelation>(new  ExponentialForwardCorrelation(correlations)),
         evolution,
         numberOfFactors,
         initialRates,
         displacements);
 
-    ext::shared_ptr<MarketModel> marketModel(new FlatVol(calibration));
+    std::shared_ptr<MarketModel> marketModel(new FlatVol(calibration));
 
     // we use a factory since there is data that will only be known later
     SobolBrownianGeneratorFactory generatorFactory(
@@ -266,7 +259,7 @@ int Bermudan()
         numeraires   // numeraires for each step
         );
 
-    ext::shared_ptr<MarketModelEvolver> evolverPtr(new LogNormalFwdRatePc(evolver));
+    std::shared_ptr<MarketModelEvolver> evolverPtr(new LogNormalFwdRatePc(evolver));
 
     int t1= clock();
 
@@ -370,7 +363,7 @@ int Bermudan()
             doCaps));
 
         PathwiseVegasOuterAccountingEngine
-            accountingEngineVegas(ext::make_shared<LogNormalFwdRateEuler>(evolverEuler),
+            accountingEngineVegas(std::make_shared<LogNormalFwdRateEuler>(evolverEuler),
             callableProductPathwisePtr,
             marketModel,
             theBumps,
@@ -415,12 +408,12 @@ int Bermudan()
         MTBrownianGeneratorFactory uFactory(seed+142);
 
 
-        ext::shared_ptr<MarketModelEvolver> upperEvolver(new LogNormalFwdRatePc( ext::shared_ptr<MarketModel>(new FlatVol(calibration)),
+        std::shared_ptr<MarketModelEvolver> upperEvolver(new LogNormalFwdRatePc( std::shared_ptr<MarketModel>(new FlatVol(calibration)),
             uFactory,
             numeraires   // numeraires for each step
             ));
 
-        std::vector<ext::shared_ptr<MarketModelEvolver> > innerEvolvers;
+        std::vector<std::shared_ptr<MarketModelEvolver> > innerEvolvers;
 
         std::valarray<bool> isExerciseTime =   isInSubset(evolution.evolutionTimes(),    exerciseStrategy.exerciseTimes());
 
@@ -429,7 +422,7 @@ int Bermudan()
             if (isExerciseTime[s])
             {
                 MTBrownianGeneratorFactory iFactory(seed+s);
-                ext::shared_ptr<MarketModelEvolver> e =ext::shared_ptr<MarketModelEvolver> (static_cast<MarketModelEvolver*>(new   LogNormalFwdRatePc(ext::shared_ptr<MarketModel>(new FlatVol(calibration)),
+                std::shared_ptr<MarketModelEvolver> e =std::shared_ptr<MarketModelEvolver> (static_cast<MarketModelEvolver*>(new   LogNormalFwdRatePc(std::shared_ptr<MarketModel>(new FlatVol(calibration)),
                     uFactory,
                     numeraires ,  // numeraires for each step
                     s)));
@@ -594,13 +587,13 @@ int InverseFloater(Real rateLevel)
 
     FlatVol  calibration(
         volatilities,
-        ext::shared_ptr<PiecewiseConstantCorrelation>(new  ExponentialForwardCorrelation(correlations)),
+        std::shared_ptr<PiecewiseConstantCorrelation>(new  ExponentialForwardCorrelation(correlations)),
         evolution,
         numberOfFactors,
         initialRates,
         displacements);
 
-    ext::shared_ptr<MarketModel> marketModel(new FlatVol(calibration));
+    std::shared_ptr<MarketModel> marketModel(new FlatVol(calibration));
 
     // we use a factory since there is data that will only be known later
     SobolBrownianGeneratorFactory generatorFactory(
@@ -614,7 +607,7 @@ int InverseFloater(Real rateLevel)
         numeraires   // numeraires for each step
         );
 
-    ext::shared_ptr<MarketModelEvolver> evolverPtr(new LogNormalFwdRatePc(evolver));
+    std::shared_ptr<MarketModelEvolver> evolverPtr(new LogNormalFwdRatePc(evolver));
 
     int t1= clock();
 
@@ -714,7 +707,7 @@ int InverseFloater(Real rateLevel)
             doCaps));
 
         PathwiseVegasOuterAccountingEngine
-            accountingEngineVegas(ext::make_shared<LogNormalFwdRateEuler>(evolverEuler),
+            accountingEngineVegas(std::make_shared<LogNormalFwdRateEuler>(evolverEuler),
    //         pathwiseInverseFloaterPtr,
             callableProductPathwisePtr,
             marketModel,
@@ -760,12 +753,12 @@ int InverseFloater(Real rateLevel)
         MTBrownianGeneratorFactory uFactory(seed+142);
 
 
-        ext::shared_ptr<MarketModelEvolver> upperEvolver(new LogNormalFwdRatePc( ext::shared_ptr<MarketModel>(new FlatVol(calibration)),
+        std::shared_ptr<MarketModelEvolver> upperEvolver(new LogNormalFwdRatePc( std::shared_ptr<MarketModel>(new FlatVol(calibration)),
             uFactory,
             numeraires   // numeraires for each step
             ));
 
-        std::vector<ext::shared_ptr<MarketModelEvolver> > innerEvolvers;
+        std::vector<std::shared_ptr<MarketModelEvolver> > innerEvolvers;
 
         std::valarray<bool> isExerciseTime =   isInSubset(evolution.evolutionTimes(),    exerciseStrategy.exerciseTimes());
 
@@ -774,7 +767,7 @@ int InverseFloater(Real rateLevel)
             if (isExerciseTime[s])
             {
                 MTBrownianGeneratorFactory iFactory(seed+s);
-                ext::shared_ptr<MarketModelEvolver> e =ext::shared_ptr<MarketModelEvolver> (static_cast<MarketModelEvolver*>(new   LogNormalFwdRatePc(ext::shared_ptr<MarketModel>(new FlatVol(calibration)),
+                std::shared_ptr<MarketModelEvolver> e =std::shared_ptr<MarketModelEvolver> (static_cast<MarketModelEvolver*>(new   LogNormalFwdRatePc(std::shared_ptr<MarketModel>(new FlatVol(calibration)),
                     uFactory,
                     numeraires ,  // numeraires for each step
                     s)));

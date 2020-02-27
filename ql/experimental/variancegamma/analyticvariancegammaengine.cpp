@@ -32,7 +32,7 @@ namespace QuantLib {
 
         class Integrand {
         public:
-            Integrand(ext::shared_ptr<StrikedTypePayoff>  payoff,
+            Integrand(std::shared_ptr<StrikedTypePayoff>  payoff,
                 Real s0, Real t, Real riskFreeDiscount, Real dividendDiscount,
                 Real sigma, Real nu, Real theta)
                 : payoff_(std::move(payoff)), s0_(s0), t_(t), riskFreeDiscount_(riskFreeDiscount),
@@ -61,7 +61,7 @@ namespace QuantLib {
             }
 
         private:
-            ext::shared_ptr<StrikedTypePayoff> payoff_;
+            std::shared_ptr<StrikedTypePayoff> payoff_;
             Real s0_;
             Real t_;
             Real riskFreeDiscount_;
@@ -76,7 +76,7 @@ namespace QuantLib {
 
 
     VarianceGammaEngine::VarianceGammaEngine(
-        ext::shared_ptr<VarianceGammaProcess>  process,
+        std::shared_ptr<VarianceGammaProcess>  process,
         Real absoluteError)
         : process_(std::move(process)), absErr_(absoluteError) {
             QL_REQUIRE(absErr_>0, "absolute error must be positive")
@@ -88,8 +88,8 @@ namespace QuantLib {
         QL_REQUIRE(arguments_.exercise->type() == Exercise::European,
             "not an European Option");
 
-        ext::shared_ptr<StrikedTypePayoff> payoff =
-            ext::dynamic_pointer_cast<StrikedTypePayoff>(arguments_.payoff);
+        std::shared_ptr<StrikedTypePayoff> payoff =
+            std::dynamic_pointer_cast<StrikedTypePayoff>(arguments_.payoff);
         QL_REQUIRE(payoff, "non-striked payoff given");
 
         DiscountFactor dividendDiscount =

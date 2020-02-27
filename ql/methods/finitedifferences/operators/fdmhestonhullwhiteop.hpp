@@ -41,9 +41,9 @@ namespace QuantLib {
     class FdmHestonHullWhiteEquityPart {
       public:
         FdmHestonHullWhiteEquityPart(
-            const ext::shared_ptr<FdmMesher>& mesher,
-            ext::shared_ptr<HullWhite>  hwModel,
-            ext::shared_ptr<YieldTermStructure>  qTS);
+            const std::shared_ptr<FdmMesher>& mesher,
+            std::shared_ptr<HullWhite>  hwModel,
+            std::shared_ptr<YieldTermStructure>  qTS);
 
         void setTime(Time t1, Time t2);
         const TripleBandLinearOp& getMap() const;
@@ -55,17 +55,17 @@ namespace QuantLib {
         const TripleBandLinearOp dxxMap_;
         TripleBandLinearOp mapT_;
 
-        const ext::shared_ptr<HullWhite> hwModel_;
-        const ext::shared_ptr<FdmMesher> mesher_;
-        const ext::shared_ptr<YieldTermStructure> qTS_;
+        const std::shared_ptr<HullWhite> hwModel_;
+        const std::shared_ptr<FdmMesher> mesher_;
+        const std::shared_ptr<YieldTermStructure> qTS_;
     };
 
     class FdmHestonHullWhiteOp : public FdmLinearOpComposite {
       public:
         FdmHestonHullWhiteOp(
-            const ext::shared_ptr<FdmMesher>& mesher,
-            const ext::shared_ptr<HestonProcess>& hestonProcess,
-            const ext::shared_ptr<HullWhiteProcess>& hwProcess,
+            const std::shared_ptr<FdmMesher>& mesher,
+            const std::shared_ptr<HestonProcess>& hestonProcess,
+            const std::shared_ptr<HullWhiteProcess>& hwProcess,
             Real equityShortRateCorrelation);
 
         Size size() const override;
@@ -85,7 +85,7 @@ namespace QuantLib {
 #endif
       private:
         const Real v0_, kappa_, theta_, sigma_, rho_;
-        const ext::shared_ptr<HullWhite> hwModel_;
+        const std::shared_ptr<HullWhite> hwModel_;
 
         NinePointLinearOp hestonCorrMap_;
         NinePointLinearOp equityIrCorrMap_;

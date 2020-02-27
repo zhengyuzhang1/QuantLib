@@ -58,8 +58,8 @@ namespace QuantLib {
             Handle<YieldTermStructure>  dividendTS,
             Handle<YieldTermStructure>  riskFreeTS,
             Handle<BlackVolTermStructure>  blackVolTS,
-            const ext::shared_ptr<discretization>& d =
-                  ext::shared_ptr<discretization>(new EulerDiscretization),
+            const std::shared_ptr<discretization>& d =
+                  std::shared_ptr<discretization>(new EulerDiscretization),
             bool forceDiscretization = false);
 
         GeneralizedBlackScholesProcess(
@@ -128,8 +128,8 @@ namespace QuantLib {
             const Handle<Quote>& x0,
             const Handle<YieldTermStructure>& riskFreeTS,
             const Handle<BlackVolTermStructure>& blackVolTS,
-            const ext::shared_ptr<discretization>& d =
-                  ext::shared_ptr<discretization>(new EulerDiscretization),
+            const std::shared_ptr<discretization>& d =
+                  std::shared_ptr<discretization>(new EulerDiscretization),
             bool forceDiscretization = false);
     };
 
@@ -150,8 +150,8 @@ namespace QuantLib {
             const Handle<YieldTermStructure>& dividendTS,
             const Handle<YieldTermStructure>& riskFreeTS,
             const Handle<BlackVolTermStructure>& blackVolTS,
-            const ext::shared_ptr<discretization>& d =
-                  ext::shared_ptr<discretization>(new EulerDiscretization),
+            const std::shared_ptr<discretization>& d =
+                  std::shared_ptr<discretization>(new EulerDiscretization),
             bool forceDiscretization = false);
     };
 
@@ -173,8 +173,8 @@ namespace QuantLib {
             const Handle<Quote>& x0,
             const Handle<YieldTermStructure>& riskFreeTS,
             const Handle<BlackVolTermStructure>& blackVolTS,
-            const ext::shared_ptr<discretization>& d =
-                  ext::shared_ptr<discretization>(new EulerDiscretization),
+            const std::shared_ptr<discretization>& d =
+                  std::shared_ptr<discretization>(new EulerDiscretization),
             bool forceDiscretization = false);
     };
 
@@ -198,8 +198,8 @@ namespace QuantLib {
             const Handle<YieldTermStructure>& foreignRiskFreeTS,
             const Handle<YieldTermStructure>& domesticRiskFreeTS,
             const Handle<BlackVolTermStructure>& blackVolTS,
-            const ext::shared_ptr<discretization>& d =
-                  ext::shared_ptr<discretization>(new EulerDiscretization),
+            const std::shared_ptr<discretization>& d =
+                  std::shared_ptr<discretization>(new EulerDiscretization),
             bool forceDiscretization = false);
     };
 

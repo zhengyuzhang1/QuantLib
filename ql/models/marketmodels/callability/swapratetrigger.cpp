@@ -68,9 +68,9 @@ namespace QuantLib {
         ++currentIndex_;
     }
 
-    QL_UNIQUE_OR_AUTO_PTR<ExerciseStrategy<CurveState> >
+    std::unique_ptr<ExerciseStrategy<CurveState> >
     SwapRateTrigger::clone() const {
-        return QL_UNIQUE_OR_AUTO_PTR<ExerciseStrategy<CurveState> >(
+        return std::unique_ptr<ExerciseStrategy<CurveState> >(
                                                   new SwapRateTrigger(*this));
     }
 

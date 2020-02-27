@@ -36,8 +36,8 @@ namespace QuantLib {
     class OvernightIndexFuture : public Forward {
     public:
         OvernightIndexFuture(
-            const ext::shared_ptr<OvernightIndex>& overnightIndex,
-            const ext::shared_ptr<Payoff>& payoff,
+            const std::shared_ptr<OvernightIndex>& overnightIndex,
+            const std::shared_ptr<Payoff>& payoff,
             const Date& valueDate,
             const Date& maturityDate,
             const Handle<YieldTermStructure>& discountCurve,
@@ -54,7 +54,7 @@ namespace QuantLib {
         Real convexityAdjustment() const;
 
     protected:
-        ext::shared_ptr<OvernightIndex> overnightIndex_;
+        std::shared_ptr<OvernightIndex> overnightIndex_;
         Handle<Quote> convexityAdjustment_;
     };
 

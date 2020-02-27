@@ -46,7 +46,7 @@ namespace QuantLib {
         */
         QL_DEPRECATED
         BSMOperator(const Array& grid,
-                    const ext::shared_ptr<GeneralizedBlackScholesProcess>&,
+                    const std::shared_ptr<GeneralizedBlackScholesProcess>&,
                     Time residualTime);
     };
 

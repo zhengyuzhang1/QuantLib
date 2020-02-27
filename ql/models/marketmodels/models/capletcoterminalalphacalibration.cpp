@@ -30,18 +30,18 @@ namespace QuantLib {
 
     CTSMMCapletAlphaFormCalibration::CTSMMCapletAlphaFormCalibration(
                             const EvolutionDescription& evolution,
-                            const ext::shared_ptr<PiecewiseConstantCorrelation>& corr,
-                            const std::vector<ext::shared_ptr<
+                            const std::shared_ptr<PiecewiseConstantCorrelation>& corr,
+                            const std::vector<std::shared_ptr<
                                         PiecewiseConstantVariance> >&
                                                 displacedSwapVariances,
                             const std::vector<Volatility>& mktCapletVols,
-                            const ext::shared_ptr<CurveState>& cs,
+                            const std::shared_ptr<CurveState>& cs,
                             Spread displacement,
                             const std::vector<Real>& alphaInitial,
                             const std::vector<Real>& alphaMax,
                             const std::vector<Real>& alphaMin,
                             bool maximizeHomogeneity,
-                            ext::shared_ptr<AlphaForm> parametricForm)
+                            std::shared_ptr<AlphaForm> parametricForm)
     : CTSMMCapletCalibration(evolution, corr, displacedSwapVariances,
                              mktCapletVols, cs, displacement),
       alphaInitial_(alphaInitial), alphaMax_(alphaMax), alphaMin_(alphaMin),
@@ -49,7 +49,7 @@ namespace QuantLib {
       parametricForm_(std::move(parametricForm)),
       alpha_(numberOfRates_), a_(numberOfRates_), b_(numberOfRates_) {
           if (!parametricForm_)
-              parametricForm_ = ext::shared_ptr<AlphaForm>(new
+              parametricForm_ = std::shared_ptr<AlphaForm>(new
                 AlphaFormLinearHyperbolic(evolution.rateTimes()));
 
         QL_REQUIRE(numberOfRates_==alphaInitial.size(),
@@ -69,7 +69,7 @@ namespace QuantLib {
     Natural CTSMMCapletAlphaFormCalibration::capletAlphaFormCalibration(
             const EvolutionDescription& evolution,
             const PiecewiseConstantCorrelation& corr,
-            const std::vector<ext::shared_ptr<
+            const std::vector<std::shared_ptr<
                 PiecewiseConstantVariance> >&
                     displacedSwapVariances,
             const std::vector<Volatility>& capletVols,
@@ -80,7 +80,7 @@ namespace QuantLib {
             const std::vector<Real>& alphaMax,
             const std::vector<Real>& alphaMin,
             bool maximizeHomogeneity,
-            ext::shared_ptr<AlphaForm> parametricForm,
+            std::shared_ptr<AlphaForm> parametricForm,
 
             const Size numberOfFactors,
             Integer maxIterations,

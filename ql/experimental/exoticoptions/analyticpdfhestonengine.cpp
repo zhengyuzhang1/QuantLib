@@ -24,13 +24,13 @@
 #include <ql/math/integrals/gausslobattointegral.hpp>
 #include <ql/methods/finitedifferences/utilities/hestonrndcalculator.hpp>
 #include <ql/experimental/exoticoptions/analyticpdfhestonengine.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 #include <utility>
 
 namespace QuantLib {
 
     AnalyticPDFHestonEngine::AnalyticPDFHestonEngine(
-        ext::shared_ptr<HestonModel>  model,
+        std::shared_ptr<HestonModel>  model,
         Real integrationEps_,
         Size maxIntegrationIterations)
     : maxIntegrationIterations_(maxIntegrationIterations),
@@ -38,13 +38,13 @@ namespace QuantLib {
       model_(std::move(model)) {  }
 
     void AnalyticPDFHestonEngine::calculate() const {
-        using namespace ext::placeholders;
+        using namespace std::placeholders;
 
         // this is an European option pricer
         QL_REQUIRE(arguments_.exercise->type() == Exercise::European,
                    "not an European option");
 
-        const ext::shared_ptr<HestonProcess>& process = model_->process();
+        const std::shared_ptr<HestonProcess>& process = model_->process();
 
         const Time t = process->time(arguments_.exercise->lastDate());
 
@@ -60,7 +60,7 @@ namespace QuantLib {
 
         results_.value = GaussLobattoIntegral(
             maxIntegrationIterations_, integrationEps_)(
-            ext::bind(&AnalyticPDFHestonEngine::weightedPayoff, this,_1, t),
+            std::bind(&AnalyticPDFHestonEngine::weightedPayoff, this,_1, t),
                          -xMax+drift, xMax+drift);
     }
 

@@ -33,7 +33,7 @@ namespace QuantLib {
 
 
     AnalyticGJRGARCHEngine::AnalyticGJRGARCHEngine(
-                              const ext::shared_ptr<GJRGARCHModel>& model)
+                              const std::shared_ptr<GJRGARCHModel>& model)
     : GenericModelEngine<GJRGARCHModel,
                          VanillaOption::arguments,
                          VanillaOption::results>(model) {init_ = false;}
@@ -44,11 +44,11 @@ namespace QuantLib {
                    "not an European option");
 
         // plain vanilla
-        ext::shared_ptr<StrikedTypePayoff> payoff =
-            ext::dynamic_pointer_cast<StrikedTypePayoff>(arguments_.payoff);
+        std::shared_ptr<StrikedTypePayoff> payoff =
+            std::dynamic_pointer_cast<StrikedTypePayoff>(arguments_.payoff);
         QL_REQUIRE(payoff, "non-striked payoff given");
 
-        const ext::shared_ptr<GJRGARCHProcess>& process = model_->process();
+        const std::shared_ptr<GJRGARCHProcess>& process = model_->process();
 
         const Rate riskFreeDiscount = process->riskFreeRate()->discount(
                                             arguments_.exercise->lastDate());

@@ -47,10 +47,10 @@ namespace QuantLib {
         : public ContinuousPartialFloatingLookbackOption::engine {
       public:
         AnalyticContinuousPartialFloatingLookbackEngine(
-            ext::shared_ptr<GeneralizedBlackScholesProcess>  process);
+            std::shared_ptr<GeneralizedBlackScholesProcess>  process);
         void calculate() const override;
       private:
-        ext::shared_ptr<GeneralizedBlackScholesProcess> process_;
+        std::shared_ptr<GeneralizedBlackScholesProcess> process_;
         CumulativeNormalDistribution f_;
         // helper methods
         Real underlying() const;

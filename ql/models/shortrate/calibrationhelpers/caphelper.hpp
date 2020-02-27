@@ -35,7 +35,7 @@ namespace QuantLib {
       public:
         CapHelper(const Period& length,
                   const Handle<Quote>& volatility,
-                  ext::shared_ptr<IborIndex>  index,
+                  std::shared_ptr<IborIndex>  index,
                   // data for ATM swap-rate calculation
                   Frequency fixedLegFrequency,
                   DayCounter  fixedLegDayCounter,
@@ -48,9 +48,9 @@ namespace QuantLib {
         Real blackPrice(Volatility volatility) const override;
       private:
         void performCalculations() const override;
-        mutable ext::shared_ptr<Cap> cap_;
+        mutable std::shared_ptr<Cap> cap_;
         const Period length_;
-        const ext::shared_ptr<IborIndex> index_;
+        const std::shared_ptr<IborIndex> index_;
         const Frequency fixedLegFrequency_;
         const DayCounter fixedLegDayCounter_;
         const bool includeFirstSwaplet_;

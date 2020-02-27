@@ -23,13 +23,13 @@
 namespace QuantLib {
 
     InterestRateVolSurface::InterestRateVolSurface(
-                            ext::shared_ptr<InterestRateIndex>  index,
+                            std::shared_ptr<InterestRateIndex>  index,
                             BusinessDayConvention bdc,
                             const DayCounter& dc)
     : BlackVolSurface(bdc, dc), index_(std::move(index)) {}
 
     InterestRateVolSurface::InterestRateVolSurface(
-                            ext::shared_ptr<InterestRateIndex>  index,
+                            std::shared_ptr<InterestRateIndex>  index,
                             const Date& refDate,
                             const Calendar& cal,
                             BusinessDayConvention bdc,
@@ -37,7 +37,7 @@ namespace QuantLib {
     : BlackVolSurface(refDate, cal, bdc, dc), index_(std::move(index)) {}
 
     InterestRateVolSurface::InterestRateVolSurface(
-                            ext::shared_ptr<InterestRateIndex>  index,
+                            std::shared_ptr<InterestRateIndex>  index,
                             Natural settlDays,
                             const Calendar& cal,
                             BusinessDayConvention bdc,
@@ -45,7 +45,7 @@ namespace QuantLib {
     : BlackVolSurface(settlDays, cal, bdc, dc), index_(std::move(index)) {}
 
     Date InterestRateVolSurface::optionDateFromTenor(const Period& p) const {
-        ext::shared_ptr<InterestRateIndex> i = index();
+        std::shared_ptr<InterestRateIndex> i = index();
         // optionlet style
         Date refDate = i->fixingCalendar().adjust(referenceDate(), Following);
         Date settlement = i->valueDate(refDate);

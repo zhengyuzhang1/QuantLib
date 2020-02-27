@@ -38,7 +38,7 @@ namespace QuantLib {
       public:
           FdmExtOUJumpSolver(
             Handle<ExtOUWithJumpsProcess>  process,
-            ext::shared_ptr<YieldTermStructure>  rTS,
+            std::shared_ptr<YieldTermStructure>  rTS,
             FdmSolverDesc  solverDesc,
             const FdmSchemeDesc& schemeDesc = FdmSchemeDesc::Hundsdorfer());
 
@@ -49,11 +49,11 @@ namespace QuantLib {
 
       private:
         const Handle<ExtOUWithJumpsProcess> process_;
-        const ext::shared_ptr<YieldTermStructure> rTS_;
+        const std::shared_ptr<YieldTermStructure> rTS_;
         const FdmSolverDesc solverDesc_;
         const FdmSchemeDesc schemeDesc_;
 
-        mutable ext::shared_ptr<Fdm2DimSolver> solver_;
+        mutable std::shared_ptr<Fdm2DimSolver> solver_;
     };
 }
 

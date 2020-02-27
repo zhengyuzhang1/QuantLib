@@ -32,7 +32,7 @@
 
 #include <ql/types.hpp>
 #include <ql/errors.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 
 #ifdef VERSION
 /* This comes from ./configure, and for some reason it interferes with
@@ -282,7 +282,7 @@ int main( int argc, char* argv[] )
             // fork worker processes
             boost::thread_group threadGroup;
             for (unsigned i=0; i < nProc; ++i) {
-                threadGroup.create_thread(QuantLib::ext::bind(worker, cmd.str()));
+                threadGroup.create_thread(std::bind(worker, cmd.str()));
             }
 
             struct mutex_remove {
@@ -412,7 +412,7 @@ int main( int argc, char* argv[] )
                     BOOST_TEST_FOREACH( test_observer*, to,
                         framework::impl::s_frk_state().m_observers )
                         framework::impl::s_frk_state().m_aux_em.vexecute(
-                            ext::bind( &test_observer::test_start, to, 1 ) );
+                            std::bind( &test_observer::test_start, to, 1 ) );
 
                     framework::impl::s_frk_state().execute_test_tree( id.id );
 

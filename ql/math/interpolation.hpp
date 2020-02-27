@@ -69,7 +69,7 @@ namespace QuantLib {
             virtual Real derivative(Real) const = 0;
             virtual Real secondDerivative(Real) const = 0;
         };
-        ext::shared_ptr<Impl> impl_;
+        std::shared_ptr<Impl> impl_;
       public:
         typedef Real argument_type;
         typedef Real result_type;

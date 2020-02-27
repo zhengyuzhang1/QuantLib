@@ -89,29 +89,29 @@ void ForwardOptionTest::testValues() {
     DayCounter dc = Actual360();
     Date today = Date::todaysDate();
 
-    ext::shared_ptr<SimpleQuote> spot(new SimpleQuote(0.0));
-    ext::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.0));
+    std::shared_ptr<SimpleQuote> spot(new SimpleQuote(0.0));
+    std::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.0));
     Handle<YieldTermStructure> qTS(flatRate(today, qRate, dc));
-    ext::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
+    std::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
     Handle<YieldTermStructure> rTS(flatRate(today, rRate, dc));
-    ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
+    std::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
     Handle<BlackVolTermStructure> volTS(flatVol(today, vol, dc));
 
-    ext::shared_ptr<BlackScholesMertonProcess> stochProcess(
+    std::shared_ptr<BlackScholesMertonProcess> stochProcess(
          new BlackScholesMertonProcess(Handle<Quote>(spot),
                                        Handle<YieldTermStructure>(qTS),
                                        Handle<YieldTermStructure>(rTS),
                                        Handle<BlackVolTermStructure>(volTS)));
 
-    ext::shared_ptr<PricingEngine> engine(
+    std::shared_ptr<PricingEngine> engine(
               new ForwardVanillaEngine<AnalyticEuropeanEngine>(stochProcess));
 
     for (auto & value : values) {
 
-        ext::shared_ptr<StrikedTypePayoff> payoff(
+        std::shared_ptr<StrikedTypePayoff> payoff(
                                  new PlainVanillaPayoff(value.type, 0.0));
         Date exDate = today + Integer(value.t*360+0.5);
-        ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
+        std::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
         Date reset = today + Integer(value.start*360+0.5);
 
         spot ->setValue(value.s);
@@ -155,30 +155,30 @@ void ForwardOptionTest::testPerformanceValues() {
     DayCounter dc = Actual360();
     Date today = Date::todaysDate();
 
-    ext::shared_ptr<SimpleQuote> spot(new SimpleQuote(0.0));
-    ext::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.0));
+    std::shared_ptr<SimpleQuote> spot(new SimpleQuote(0.0));
+    std::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.0));
     Handle<YieldTermStructure> qTS(flatRate(today, qRate, dc));
-    ext::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
+    std::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
     Handle<YieldTermStructure> rTS(flatRate(today, rRate, dc));
-    ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
+    std::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
     Handle<BlackVolTermStructure> volTS(flatVol(today, vol, dc));
 
-    ext::shared_ptr<BlackScholesMertonProcess> stochProcess(
+    std::shared_ptr<BlackScholesMertonProcess> stochProcess(
          new BlackScholesMertonProcess(Handle<Quote>(spot),
                                        Handle<YieldTermStructure>(qTS),
                                        Handle<YieldTermStructure>(rTS),
                                        Handle<BlackVolTermStructure>(volTS)));
 
-    ext::shared_ptr<PricingEngine> engine(
+    std::shared_ptr<PricingEngine> engine(
         new ForwardPerformanceVanillaEngine<AnalyticEuropeanEngine>(
                                                                stochProcess));
 
     for (auto & value : values) {
 
-        ext::shared_ptr<StrikedTypePayoff> payoff(
+        std::shared_ptr<StrikedTypePayoff> payoff(
                                  new PlainVanillaPayoff(value.type, 0.0));
         Date exDate = today + Integer(value.t*360+0.5);
-        ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
+        std::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
         Date reset = today + Integer(value.start*360+0.5);
 
         spot ->setValue(value.s);
@@ -231,18 +231,18 @@ namespace {
         Date today = Date::todaysDate();
         Settings::instance().evaluationDate() = today;
 
-        ext::shared_ptr<SimpleQuote> spot(new SimpleQuote(0.0));
-        ext::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.0));
+        std::shared_ptr<SimpleQuote> spot(new SimpleQuote(0.0));
+        std::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.0));
         Handle<YieldTermStructure> qTS(flatRate(qRate, dc));
-        ext::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
+        std::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
         Handle<YieldTermStructure> rTS(flatRate(rRate, dc));
-        ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
+        std::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
         Handle<BlackVolTermStructure> volTS(flatVol(vol, dc));
 
-        ext::shared_ptr<BlackScholesMertonProcess> stochProcess(
+        std::shared_ptr<BlackScholesMertonProcess> stochProcess(
           new BlackScholesMertonProcess(Handle<Quote>(spot), qTS, rTS, volTS));
 
-        ext::shared_ptr<PricingEngine> engine(
+        std::shared_ptr<PricingEngine> engine(
                             new Engine<AnalyticEuropeanEngine>(stochProcess));
 
         for (auto & type : types) {
@@ -251,12 +251,12 @@ namespace {
               for (int startMonth : startMonths) {
 
                 Date exDate = today + length*Years;
-                ext::shared_ptr<Exercise> exercise(
+                std::shared_ptr<Exercise> exercise(
                                                 new EuropeanExercise(exDate));
 
                 Date reset = today + startMonth*Months;
 
-                ext::shared_ptr<StrikedTypePayoff> payoff(
+                std::shared_ptr<StrikedTypePayoff> payoff(
                                        new PlainVanillaPayoff(type, 0.0));
 
                 ForwardVanillaOption option(moneynes, reset,
@@ -386,7 +386,7 @@ class TestBinomialEngine : public BinomialVanillaEngine<CoxRossRubinstein>
 private:
 public:
    explicit TestBinomialEngine(
-           const ext::shared_ptr<GeneralizedBlackScholesProcess > &process)
+           const std::shared_ptr<GeneralizedBlackScholesProcess > &process)
    : BinomialVanillaEngine<CoxRossRubinstein>(process, 300) // fixed steps
     {}
 };
@@ -400,30 +400,30 @@ void ForwardOptionTest::testGreeksInitialization() {
    Date today = Date::todaysDate();
    Settings::instance().evaluationDate() = today;
 
-   ext::shared_ptr<SimpleQuote> spot(new SimpleQuote(100.0));
-   ext::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.04));
+   std::shared_ptr<SimpleQuote> spot(new SimpleQuote(100.0));
+   std::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.04));
    Handle<YieldTermStructure> qTS(flatRate(qRate, dc));
-   ext::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.01));
+   std::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.01));
    Handle<YieldTermStructure> rTS(flatRate(rRate, dc));
-   ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.11));
+   std::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.11));
    Handle<BlackVolTermStructure> volTS(flatVol(vol, dc));
 
-   ext::shared_ptr<BlackScholesMertonProcess> stochProcess(
+   std::shared_ptr<BlackScholesMertonProcess> stochProcess(
       new BlackScholesMertonProcess(Handle<Quote>(spot), qTS, rTS, volTS));
 
-   ext::shared_ptr<PricingEngine> engine(
+   std::shared_ptr<PricingEngine> engine(
                         new ForwardVanillaEngine<TestBinomialEngine>(stochProcess));
    Date exDate = today + 1*Years;
-   ext::shared_ptr<Exercise> exercise(
+   std::shared_ptr<Exercise> exercise(
                                  new EuropeanExercise(exDate));
    Date reset = today + 6*Months;
-   ext::shared_ptr<StrikedTypePayoff> payoff(
+   std::shared_ptr<StrikedTypePayoff> payoff(
                         new PlainVanillaPayoff(Option::Call, 0.0));
 
    ForwardVanillaOption option(0.9, reset, payoff, exercise);
    option.setPricingEngine(engine);
 
-   ext::shared_ptr<PricingEngine> ctrlengine(
+   std::shared_ptr<PricingEngine> ctrlengine(
                         new TestBinomialEngine(stochProcess));
    VanillaOption ctrloption(payoff, exercise);
    ctrloption.setPricingEngine(ctrlengine);

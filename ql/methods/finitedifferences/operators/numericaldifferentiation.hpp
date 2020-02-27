@@ -26,7 +26,7 @@
 #define quantlib_numerical_differentiation_hpp
 
 #include <ql/math/array.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 
 namespace QuantLib {
 
@@ -46,11 +46,11 @@ namespace QuantLib {
         enum Scheme { Central, Backward, Forward };
 
         NumericalDifferentiation(
-            ext::function<Real(Real)> f,
+            std::function<Real(Real)> f,
             Size orderOfDerivative, const Array& x_offsets);
 
         NumericalDifferentiation(
-            ext::function<Real(Real)> f,
+            std::function<Real(Real)> f,
             Size orderOfDerivative,
             Real stepSize, Size steps, Scheme scheme);
 
@@ -60,7 +60,7 @@ namespace QuantLib {
 
       private:
         const Array offsets_, w_;
-        const ext::function<Real(Real)> f_;
+        const std::function<Real(Real)> f_;
     };
 
 

@@ -34,11 +34,11 @@
 
 namespace QuantLib {
 
-    FdmBatesOp::FdmBatesOp(const ext::shared_ptr<FdmMesher>& mesher,
-                           const ext::shared_ptr<BatesProcess>& batesProcess,
+    FdmBatesOp::FdmBatesOp(const std::shared_ptr<FdmMesher>& mesher,
+                           const std::shared_ptr<BatesProcess>& batesProcess,
                            FdmBoundaryConditionSet  bcSet,
                            const Size integroIntegrationOrder, 
-                           const ext::shared_ptr<FdmQuantoHelper>& quantoHelper)
+                           const std::shared_ptr<FdmQuantoHelper>& quantoHelper)
     : lambda_(batesProcess->lambda()), 
       delta_ (batesProcess->delta()), 
       nu_    (batesProcess->nu()),
@@ -48,12 +48,12 @@ namespace QuantLib {
       bcSet_(std::move(bcSet)),
       hestonOp_(new FdmHestonOp(
         mesher,
-        ext::make_shared<HestonProcess>(
+        std::make_shared<HestonProcess>(
           batesProcess->riskFreeRate(),
           Handle<YieldTermStructure>(
-            ext::make_shared<ZeroSpreadedTermStructure>(
+            std::make_shared<ZeroSpreadedTermStructure>(
                 batesProcess->dividendYield(),
-                Handle<Quote>(ext::shared_ptr<Quote>(new SimpleQuote(lambda_*m_))),
+                Handle<Quote>(std::shared_ptr<Quote>(new SimpleQuote(lambda_*m_))),
                 Continuous,
                 NoFrequency,
                 batesProcess->dividendYield()->dayCounter())),
@@ -66,7 +66,7 @@ namespace QuantLib {
         quantoHelper)) {}
 
     FdmBatesOp::IntegroIntegrand::IntegroIntegrand(
-                    const ext::shared_ptr<LinearInterpolation>& interpl,
+                    const std::shared_ptr<LinearInterpolation>& interpl,
                     const FdmBoundaryConditionSet& bcSet,
                     Real x, Real delta, Real nu)
     : x_(x), delta_(delta), nu_(nu), 
@@ -79,8 +79,8 @@ namespace QuantLib {
         for (auto iter=bcSet_.begin();
             iter < bcSet_.end(); ++iter) {
 
-            const ext::shared_ptr<FdmDirichletBoundary> dirichlet
-                = ext::dynamic_pointer_cast<FdmDirichletBoundary>(*iter);
+            const std::shared_ptr<FdmDirichletBoundary> dirichlet
+                = std::dynamic_pointer_cast<FdmDirichletBoundary>(*iter);
 
             QL_REQUIRE(dirichlet, "FdmBatesOp can only deal with Dirichlet "
                                   "boundary conditions.")
@@ -93,7 +93,7 @@ namespace QuantLib {
     }
     
     Disposable<Array> FdmBatesOp::integro(const Array& r) const {
-        const ext::shared_ptr<FdmLinearOpLayout> layout = mesher_->layout();
+        const std::shared_ptr<FdmLinearOpLayout> layout = mesher_->layout();
         
         QL_REQUIRE(layout->dim().size() == 2, "invalid layout dimension");
 
@@ -110,9 +110,9 @@ namespace QuantLib {
             f[j][i] = r[iter.index()];
             
         }
-        std::vector<ext::shared_ptr<LinearInterpolation> > interpl(f.rows());
+        std::vector<std::shared_ptr<LinearInterpolation> > interpl(f.rows());
         for (Size i=0; i < f.rows(); ++i) {
-            interpl[i] = ext::make_shared<LinearInterpolation>(
+            interpl[i] = std::make_shared<LinearInterpolation>(
                 x.begin(), x.end(), f.row_begin(i));
         }
         

@@ -59,7 +59,7 @@ namespace QuantLib {
       public:
 
         LiborForwardModelProcess(Size size,
-                                 ext::shared_ptr<IborIndex>  index);
+                                 std::shared_ptr<IborIndex>  index);
 
         Disposable<Array>  initialValues() const override;
         Disposable<Array>  drift(Time t, const Array& x) const override;
@@ -74,13 +74,13 @@ namespace QuantLib {
         Size size() const override;
         Size factors() const override;
 
-        ext::shared_ptr<IborIndex> index() const;
+        std::shared_ptr<IborIndex> index() const;
         Leg cashFlows(
                                                      Real amount = 1.0) const;
 
         void setCovarParam(
-               const ext::shared_ptr<LfmCovarianceParameterization>& param);
-        ext::shared_ptr<LfmCovarianceParameterization> covarParam() const;
+               const std::shared_ptr<LfmCovarianceParameterization>& param);
+        std::shared_ptr<LfmCovarianceParameterization> covarParam() const;
 
         // convenience support methods
         Size nextIndexReset(Time t) const;
@@ -95,8 +95,8 @@ namespace QuantLib {
       private:
         Size size_;
 
-        const ext::shared_ptr<IborIndex> index_;
-        ext::shared_ptr<LfmCovarianceParameterization> lfmParam_;
+        const std::shared_ptr<IborIndex> index_;
+        std::shared_ptr<LfmCovarianceParameterization> lfmParam_;
 
         Array initialValues_;
 

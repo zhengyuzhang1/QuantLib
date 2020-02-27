@@ -180,9 +180,9 @@ namespace QuantLib {
     }
 
 
-    ext::shared_ptr<ZeroInflationIndex> ZeroInflationIndex::clone(
+    std::shared_ptr<ZeroInflationIndex> ZeroInflationIndex::clone(
                           const Handle<ZeroInflationTermStructure>& h) const {
-        return ext::make_shared<ZeroInflationIndex>(
+        return std::make_shared<ZeroInflationIndex>(
                       familyName_, region_, revised_,
                                              interpolated_, frequency_,
                                              availabilityLag_, currency_, h);
@@ -332,9 +332,9 @@ namespace QuantLib {
         return yoyInflation_->yoyRate(d,0*Days);
     }
 
-    ext::shared_ptr<YoYInflationIndex> YoYInflationIndex::clone(
+    std::shared_ptr<YoYInflationIndex> YoYInflationIndex::clone(
                            const Handle<YoYInflationTermStructure>& h) const {
-        return ext::make_shared<YoYInflationIndex>(
+        return std::make_shared<YoYInflationIndex>(
                       familyName_, region_, revised_,
                                             interpolated_, ratio_, frequency_,
                                             availabilityLag_, currency_, h);

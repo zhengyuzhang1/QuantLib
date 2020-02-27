@@ -33,8 +33,8 @@ namespace QuantLib {
     class HestonSLVProcess : public StochasticProcess {
       public:
         HestonSLVProcess(
-            const ext::shared_ptr<HestonProcess>& hestonProcess,
-            ext::shared_ptr<LocalVolTermStructure>  leverageFct);
+            const std::shared_ptr<HestonProcess>& hestonProcess,
+            std::shared_ptr<LocalVolTermStructure>  leverageFct);
 
         Size size()    const override { return Size(2); }
         Size factors() const override { return Size(2); }
@@ -58,7 +58,7 @@ namespace QuantLib {
         Real kappa() const { return kappa_; }
         Real theta() const { return theta_; }
         Real sigma() const { return sigma_; }
-        ext::shared_ptr<LocalVolTermStructure> leverageFct() const {
+        std::shared_ptr<LocalVolTermStructure> leverageFct() const {
             return leverageFct_;
         }
 
@@ -75,8 +75,8 @@ namespace QuantLib {
       private:
         Real kappa_, theta_, sigma_, rho_, v0_;
 
-        const ext::shared_ptr<HestonProcess> hestonProcess_;
-        const ext::shared_ptr<LocalVolTermStructure> leverageFct_;
+        const std::shared_ptr<HestonProcess> hestonProcess_;
+        const std::shared_ptr<LocalVolTermStructure> leverageFct_;
     };
 }
 #endif

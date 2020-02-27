@@ -40,11 +40,11 @@ namespace QuantLib {
                   model cannot provide one itself.
         */
         //@{
-        TreeCapFloorEngine(const ext::shared_ptr<ShortRateModel>& model,
+        TreeCapFloorEngine(const std::shared_ptr<ShortRateModel>& model,
                            Size timeSteps,
                            Handle<YieldTermStructure>  termStructure =
                                                  Handle<YieldTermStructure>());
-        TreeCapFloorEngine(const ext::shared_ptr<ShortRateModel>& model,
+        TreeCapFloorEngine(const std::shared_ptr<ShortRateModel>& model,
                            const TimeGrid& timeGrid,
                            Handle<YieldTermStructure>  termStructure =
                                                  Handle<YieldTermStructure>());

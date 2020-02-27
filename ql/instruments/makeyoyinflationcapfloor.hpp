@@ -39,7 +39,7 @@ namespace QuantLib {
       public:
         MakeYoYInflationCapFloor(
                         YoYInflationCapFloor::Type capFloorType,
-                        ext::shared_ptr<YoYInflationIndex> index,
+                        std::shared_ptr<YoYInflationIndex> index,
                         const Size& length, Calendar cal,
                         const Period& observationLag);
         /*! \deprecated Use the other constructor.  In order to
@@ -55,7 +55,7 @@ namespace QuantLib {
         MakeYoYInflationCapFloor(
                         YoYInflationCapFloor::Type capFloorType,
                         const Size& length, Calendar cal,
-                        ext::shared_ptr<YoYInflationIndex> index,
+                        std::shared_ptr<YoYInflationIndex> index,
                         const Period& observationLag, Rate strike = Null<Rate>(),
                         const Period& forwardStart=0*Days);
         MakeYoYInflationCapFloor& withNominal(Real n);
@@ -65,7 +65,7 @@ namespace QuantLib {
         MakeYoYInflationCapFloor& withPaymentAdjustment(BusinessDayConvention);
         MakeYoYInflationCapFloor& withFixingDays(Natural fixingDays);
         MakeYoYInflationCapFloor& withPricingEngine(
-                const ext::shared_ptr<PricingEngine>& engine);
+                const std::shared_ptr<PricingEngine>& engine);
         //! only get last coupon
         MakeYoYInflationCapFloor& asOptionlet(bool b = true);
         MakeYoYInflationCapFloor& withStrike(Rate strike);
@@ -74,13 +74,13 @@ namespace QuantLib {
         MakeYoYInflationCapFloor& withForwardStart(Period forwardStart);
 
         operator YoYInflationCapFloor() const;
-        operator ext::shared_ptr<YoYInflationCapFloor>() const ;
+        operator std::shared_ptr<YoYInflationCapFloor>() const ;
 
       private:
         YoYInflationCapFloor::Type capFloorType_;
         Size length_;
         Calendar calendar_;
-        ext::shared_ptr<YoYInflationIndex> index_;
+        std::shared_ptr<YoYInflationIndex> index_;
         Period observationLag_;
         Rate strike_;
         bool firstCapletExcluded_, asOptionlet_;
@@ -92,7 +92,7 @@ namespace QuantLib {
         Real nominal_;
         Handle<YieldTermStructure> nominalTermStructure_;
 
-        ext::shared_ptr<PricingEngine> engine_;
+        std::shared_ptr<PricingEngine> engine_;
     };
 
 }

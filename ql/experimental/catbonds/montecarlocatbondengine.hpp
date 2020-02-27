@@ -33,16 +33,16 @@ namespace QuantLib {
     {
     public:
         MonteCarloCatBondEngine(
-              const ext::shared_ptr<CatRisk> catRisk,
+              const std::shared_ptr<CatRisk> catRisk,
               Handle<YieldTermStructure>  discountCurve =
                                                 Handle<YieldTermStructure>(),
-              boost::optional<bool> includeSettlementDateFlows = boost::none);
+              std::optional<bool> includeSettlementDateFlows = std::nullopt);
         void calculate() const override;
         Handle<YieldTermStructure> discountCurve() const {
             return discountCurve_;
         }
     protected:
-        Real cashFlowRiskyValue(const ext::shared_ptr<CashFlow> cf, 
+        Real cashFlowRiskyValue(const std::shared_ptr<CashFlow> cf, 
                                 const NotionalPath& notionalPath) const;
 
         Real npv(bool includeSettlementDateFlows, 
@@ -56,9 +56,9 @@ namespace QuantLib {
                      Date settlementDate, 
                      const NotionalPath& notionalPath) const;
       private:
-        ext::shared_ptr<CatRisk> catRisk_;
+        std::shared_ptr<CatRisk> catRisk_;
         Handle<YieldTermStructure> discountCurve_;
-        boost::optional<bool> includeSettlementDateFlows_;
+        std::optional<bool> includeSettlementDateFlows_;
     };
 
 }

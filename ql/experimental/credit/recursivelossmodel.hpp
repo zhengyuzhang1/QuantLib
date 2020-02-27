@@ -22,7 +22,7 @@
 
 #include <ql/experimental/credit/constantlosslatentmodel.hpp>
 #include <ql/experimental/credit/defaultlossmodel.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 #include <map>
 #include <algorithm>
 
@@ -48,7 +48,7 @@ namespace QuantLib {
     class RecursiveLossModel : public DefaultLossModel {
     public:
         RecursiveLossModel(
-            const ext::shared_ptr<ConstantLossLatentmodel<copulaPolicy> >& m,
+            const std::shared_ptr<ConstantLossLatentmodel<copulaPolicy> >& m,
 // nope! use max common divisor. See O'Kane. Or give both options at least.
             Size nbuckets  = 1)
         : copula_(m), nBuckets_(nbuckets), wk_() { }
@@ -105,7 +105,7 @@ namespace QuantLib {
        Real percentile(const Date& d, Real percentile) const override;
        Real expectedShortfall(const Date& d, Real perctl) const override;
     protected:
-        const ext::shared_ptr<ConstantLossLatentmodel<copulaPolicy> > copula_;
+        const std::shared_ptr<ConstantLossLatentmodel<copulaPolicy> > copula_;
     private:
         // loss model descriptor members
         const Size nBuckets_;
@@ -159,17 +159,17 @@ namespace QuantLib {
             basket_->remainingProbabilities(date);
 
         return copula_->integratedExpectedValue(
-            ext::function<Real (const std::vector<Real>& v1)>(
-                ext::bind(
+            std::function<Real (const std::vector<Real>& v1)>(
+                std::bind(
                     &RecursiveLossModel::expectedConditionalLoss,
                     this,
-                    ext::cref(uncDefProb),
+                    std::cref(uncDefProb),
                     _1)
                 )
             );
             */
 /**/
-        using namespace ext::placeholders;
+        using namespace std::placeholders;
 
         std::vector<Probability> uncDefProb = 
             basket_->remainingProbabilities(date);
@@ -178,11 +178,11 @@ namespace QuantLib {
            invProb.push_back(copula_->inverseCumulativeY(uncDefProb[i], i));
            ///  invProb.push_back(CP::inverseCumulativeY(uncDefProb[i], i));//<-static call
         return copula_->integratedExpectedValue(
-            ext::function<Real (const std::vector<Real>& v1)>(
-                ext::bind(
+            std::function<Real (const std::vector<Real>& v1)>(
+                std::bind(
                     &RecursiveLossModel::expectedConditionalLossInvP,
                     this,
-                    ext::cref(invProb),
+                    std::cref(invProb),
                     _1)
                 )
             );
@@ -193,16 +193,16 @@ namespace QuantLib {
     inline Disposable<std::vector<Real> > 
     RecursiveLossModel<CP>::lossProbability(const Date& date) const {
 
-        using namespace ext::placeholders;
+        using namespace std::placeholders;
 
         std::vector<Probability> uncDefProb = 
             basket_->remainingProbabilities(date);
         return copula_->integratedExpectedValueV(
-            ext::function<Disposable<std::vector<Real> > (const std::vector<Real>& v1)>(
-                ext::bind(
+            std::function<Disposable<std::vector<Real> > (const std::vector<Real>& v1)>(
+                std::bind(
                     &RecursiveLossModel::conditionalLossProb,
                     this,
-                    ext::cref(uncDefProb),
+                    std::cref(uncDefProb),
                     _1)
                 )
             );

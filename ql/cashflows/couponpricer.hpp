@@ -99,7 +99,7 @@ namespace QuantLib {
                 Handle<OptionletVolatilityStructure>(),
             const TimingAdjustment timingAdjustment = Black76,
             const Handle<Quote> correlation =
-                Handle<Quote>(ext::shared_ptr<Quote>(new SimpleQuote(1.0))))
+                Handle<Quote>(std::shared_ptr<Quote>(new SimpleQuote(1.0))))
             : IborCouponPricer(v), timingAdjustment_(timingAdjustment),
               correlation_(correlation) {
             QL_REQUIRE(timingAdjustment_ == Black76 ||
@@ -125,7 +125,7 @@ namespace QuantLib {
         Real gearing_;
         Spread spread_;
         Time accrualPeriod_;
-        ext::shared_ptr<IborIndex> index_;
+        std::shared_ptr<IborIndex> index_;
         Real discount_;
         Real spreadLegValue_;
 
@@ -171,30 +171,30 @@ namespace QuantLib {
     };
 
     void setCouponPricer(const Leg& leg,
-                         const ext::shared_ptr<FloatingRateCouponPricer>&);
+                         const std::shared_ptr<FloatingRateCouponPricer>&);
 
     void setCouponPricers(
             const Leg& leg,
-            const std::vector<ext::shared_ptr<FloatingRateCouponPricer> >&);
+            const std::vector<std::shared_ptr<FloatingRateCouponPricer> >&);
 
     /*! set the first matching pricer (if any) to each coupon of the leg */
     void setCouponPricers(
             const Leg& leg,
-            const ext::shared_ptr<FloatingRateCouponPricer>&,
-            const ext::shared_ptr<FloatingRateCouponPricer>&);
+            const std::shared_ptr<FloatingRateCouponPricer>&,
+            const std::shared_ptr<FloatingRateCouponPricer>&);
 
     void setCouponPricers(
             const Leg& leg,
-            const ext::shared_ptr<FloatingRateCouponPricer>&,
-            const ext::shared_ptr<FloatingRateCouponPricer>&,
-            const ext::shared_ptr<FloatingRateCouponPricer>&);
+            const std::shared_ptr<FloatingRateCouponPricer>&,
+            const std::shared_ptr<FloatingRateCouponPricer>&,
+            const std::shared_ptr<FloatingRateCouponPricer>&);
 
     void setCouponPricers(
             const Leg& leg,
-            const ext::shared_ptr<FloatingRateCouponPricer>&,
-            const ext::shared_ptr<FloatingRateCouponPricer>&,
-            const ext::shared_ptr<FloatingRateCouponPricer>&,
-            const ext::shared_ptr<FloatingRateCouponPricer>&);
+            const std::shared_ptr<FloatingRateCouponPricer>&,
+            const std::shared_ptr<FloatingRateCouponPricer>&,
+            const std::shared_ptr<FloatingRateCouponPricer>&,
+            const std::shared_ptr<FloatingRateCouponPricer>&);
 
     // inline
 

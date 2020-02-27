@@ -46,7 +46,7 @@ namespace QuantLib {
         void resetModel() override;
     public:
         HomogeneousPoolLossModel(
-            const ext::shared_ptr<ConstantLossLatentmodel<copulaPolicy> >& 
+            const std::shared_ptr<ConstantLossLatentmodel<copulaPolicy> >& 
                 copula,
             Size nBuckets,
             Real max = 5.,
@@ -83,7 +83,7 @@ namespace QuantLib {
             return dist.expectedShortfall(percentile);
         }
     protected:
-        const ext::shared_ptr<ConstantLossLatentmodel<copulaPolicy> > copula_;
+        const std::shared_ptr<ConstantLossLatentmodel<copulaPolicy> > copula_;
         Size nBuckets_;
         mutable Real attach_, detach_, notional_, attachAmount_, detachAmount_;
         mutable std::vector<Real> notionals_;

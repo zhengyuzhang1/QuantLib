@@ -30,7 +30,7 @@ namespace QuantLib {
                       const std::vector<Time>& rateTimes,
                       std::vector<Real>  accruals,
                       const std::vector<Time>& paymentTimes,
-                      std::vector<ext::shared_ptr<Payoff> >  payoffs)
+                      std::vector<std::shared_ptr<Payoff> >  payoffs)
     : MultiProductMultiStep(rateTimes), accruals_(std::move(accruals)),
       paymentTimes_(paymentTimes), payoffs_(std::move(payoffs)) {
         checkIncreasingTimes(paymentTimes);
@@ -53,9 +53,9 @@ namespace QuantLib {
         return (currentIndex_ == payoffs_.size());
     }
 
-    QL_UNIQUE_OR_AUTO_PTR<MarketModelMultiProduct>
+    std::unique_ptr<MarketModelMultiProduct>
     MultiStepOptionlets::clone() const {
-        return QL_UNIQUE_OR_AUTO_PTR<MarketModelMultiProduct>(
+        return std::unique_ptr<MarketModelMultiProduct>(
                                                  new MultiStepOptionlets(*this));
     }
 

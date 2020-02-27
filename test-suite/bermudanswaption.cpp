@@ -51,7 +51,7 @@ namespace {
         BusinessDayConvention fixedConvention, floatingConvention;
         Frequency fixedFrequency, floatingFrequency;
         DayCounter fixedDayCount;
-        ext::shared_ptr<IborIndex> index;
+        std::shared_ptr<IborIndex> index;
         Natural settlementDays;
 
         RelinkableHandle<YieldTermStructure> termStructure;
@@ -71,14 +71,14 @@ namespace {
             fixedFrequency = Annual;
             floatingFrequency = Semiannual;
             fixedDayCount = Thirty360();
-            index = ext::shared_ptr<IborIndex>(new Euribor6M(termStructure));
+            index = std::shared_ptr<IborIndex>(new Euribor6M(termStructure));
             calendar = index->fixingCalendar();
             today = calendar.adjust(Date::todaysDate());
             settlement = calendar.advance(today,settlementDays,Days);
         }
 
         // utilities
-        ext::shared_ptr<VanillaSwap> makeSwap(Rate fixedRate) {
+        std::shared_ptr<VanillaSwap> makeSwap(Rate fixedRate) {
             Date start = calendar.advance(settlement, startYears, Years);
             Date maturity = calendar.advance(start, length, Years);
             Schedule fixedSchedule(start, maturity,
@@ -93,12 +93,12 @@ namespace {
                                    floatingConvention,
                                    floatingConvention,
                                    DateGeneration::Forward, false);
-            ext::shared_ptr<VanillaSwap> swap(
+            std::shared_ptr<VanillaSwap> swap(
                       new VanillaSwap(type, nominal,
                                       fixedSchedule, fixedRate, fixedDayCount,
                                       floatSchedule, index, 0.0,
                                       index->dayCounter()));
-            swap->setPricingEngine(ext::shared_ptr<PricingEngine>(
+            swap->setPricingEngine(std::shared_ptr<PricingEngine>(
                                    new DiscountingSwapEngine(termStructure)));
             return swap;
         }
@@ -126,25 +126,25 @@ void BermudanSwaptionTest::testCachedValues() {
 
     Rate atmRate = vars.makeSwap(0.0)->fairRate();
 
-    ext::shared_ptr<VanillaSwap> itmSwap = vars.makeSwap(0.8*atmRate);
-    ext::shared_ptr<VanillaSwap> atmSwap = vars.makeSwap(atmRate);
-    ext::shared_ptr<VanillaSwap> otmSwap = vars.makeSwap(1.2*atmRate);
+    std::shared_ptr<VanillaSwap> itmSwap = vars.makeSwap(0.8*atmRate);
+    std::shared_ptr<VanillaSwap> atmSwap = vars.makeSwap(atmRate);
+    std::shared_ptr<VanillaSwap> otmSwap = vars.makeSwap(1.2*atmRate);
 
     Real a = 0.048696, sigma = 0.0058904;
-    ext::shared_ptr<HullWhite> model(new HullWhite(vars.termStructure,
+    std::shared_ptr<HullWhite> model(new HullWhite(vars.termStructure,
                                                      a, sigma));
     std::vector<Date> exerciseDates;
     const Leg& leg = atmSwap->fixedLeg();
     for (const auto & i : leg) {
-        ext::shared_ptr<Coupon> coupon =
-            ext::dynamic_pointer_cast<Coupon>(i);
+        std::shared_ptr<Coupon> coupon =
+            std::dynamic_pointer_cast<Coupon>(i);
             exerciseDates.push_back(coupon->accrualStartDate());
     }
-    ext::shared_ptr<Exercise> exercise(new BermudanExercise(exerciseDates));
+    std::shared_ptr<Exercise> exercise(new BermudanExercise(exerciseDates));
 
-    ext::shared_ptr<PricingEngine> treeEngine(
+    std::shared_ptr<PricingEngine> treeEngine(
                                             new TreeSwaptionEngine(model, 50));
-    ext::shared_ptr<PricingEngine> fdmEngine(
+    std::shared_ptr<PricingEngine> fdmEngine(
                                          new FdHullWhiteSwaptionEngine(model));
 
     Real itmValue,    atmValue,    otmValue;
@@ -203,7 +203,7 @@ void BermudanSwaptionTest::testCachedValues() {
     for (auto & exerciseDate : exerciseDates)
         exerciseDate = vars.calendar.adjust(exerciseDate-10);
     exercise =
-        ext::shared_ptr<Exercise>(new BermudanExercise(exerciseDates));
+        std::shared_ptr<Exercise>(new BermudanExercise(exerciseDates));
 
     if (!IborCoupon::usingAtParCoupons()) {
         itmValue = 42.1917; atmValue = 12.7788; otmValue = 2.4388;
@@ -248,27 +248,27 @@ void BermudanSwaptionTest::testCachedG2Values() {
                                           Actual365Fixed()));
 
     const Rate atmRate = vars.makeSwap(0.0)->fairRate();
-    std::vector<ext::shared_ptr<Swaption> > swaptions;
+    std::vector<std::shared_ptr<Swaption> > swaptions;
     for (Real s=0.5; s<1.51; s+=0.25) {
-        const ext::shared_ptr<VanillaSwap> swap(vars.makeSwap(s*atmRate));
+        const std::shared_ptr<VanillaSwap> swap(vars.makeSwap(s*atmRate));
 
         std::vector<Date> exerciseDates;
         for (const auto & i : swap->fixedLeg()) {
-            exerciseDates.push_back(ext::dynamic_pointer_cast<Coupon>(
+            exerciseDates.push_back(std::dynamic_pointer_cast<Coupon>(
                 i)->accrualStartDate());
         }
-        swaptions.push_back(ext::make_shared<Swaption>(swap,
-            ext::make_shared<BermudanExercise>(exerciseDates)));
+        swaptions.push_back(std::make_shared<Swaption>(swap,
+            std::make_shared<BermudanExercise>(exerciseDates)));
     }
 
     const Real a=0.1, sigma=0.01, b=0.2, eta=0.013, rho=-0.5;
 
-    const ext::shared_ptr<G2> g2Model(ext::make_shared<G2>(
+    const std::shared_ptr<G2> g2Model(std::make_shared<G2>(
         vars.termStructure, a, sigma, b, eta, rho));
-    const ext::shared_ptr<PricingEngine> fdmEngine(
-        ext::make_shared<FdG2SwaptionEngine>(g2Model, 50, 75, 75, 0, 1e-3));
-    const ext::shared_ptr<PricingEngine> treeEngine(
-        ext::make_shared<TreeSwaptionEngine>(g2Model, 50));
+    const std::shared_ptr<PricingEngine> fdmEngine(
+        std::make_shared<FdG2SwaptionEngine>(g2Model, 50, 75, 75, 0, 1e-3));
+    const std::shared_ptr<PricingEngine> treeEngine(
+        std::make_shared<TreeSwaptionEngine>(g2Model, 50));
 
     Real expectedFdm[5], expectedTree[5];
     if (!IborCoupon::usingAtParCoupons()) {

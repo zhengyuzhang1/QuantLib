@@ -47,7 +47,7 @@ namespace QuantLib {
         Quantity quantity_;
     };
 
-    typedef std::vector<ext::shared_ptr<PricingPeriod> > PricingPeriods;
+    typedef std::vector<std::shared_ptr<PricingPeriod> > PricingPeriods;
 }
 
 #endif

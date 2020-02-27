@@ -43,16 +43,16 @@ namespace QuantLib {
     */
     class MakeSwaption {
       public:
-        MakeSwaption(ext::shared_ptr<SwapIndex>  swapIndex,
+        MakeSwaption(std::shared_ptr<SwapIndex>  swapIndex,
                      const Period& optionTenor,
                      Rate strike = Null<Rate>());
 
-        MakeSwaption(ext::shared_ptr<SwapIndex>  swapIndex,
+        MakeSwaption(std::shared_ptr<SwapIndex>  swapIndex,
                      const Date& fixingDate,
                      Rate strike = Null<Rate>());
 
         operator Swaption() const;
-        operator ext::shared_ptr<Swaption>() const ;
+        operator std::shared_ptr<Swaption>() const ;
 
         MakeSwaption& withNominal(Real n);
         MakeSwaption& withSettlementType(Settlement::Type delivery);
@@ -62,24 +62,24 @@ namespace QuantLib {
         MakeSwaption& withUnderlyingType(const VanillaSwap::Type type);
 
         MakeSwaption& withPricingEngine(
-                              const ext::shared_ptr<PricingEngine>& engine);
+                              const std::shared_ptr<PricingEngine>& engine);
       private:
-        ext::shared_ptr<SwapIndex> swapIndex_;
+        std::shared_ptr<SwapIndex> swapIndex_;
         Settlement::Type delivery_;
         Settlement::Method settlementMethod_;
-        mutable ext::shared_ptr<VanillaSwap> underlyingSwap_;
+        mutable std::shared_ptr<VanillaSwap> underlyingSwap_;
 
         Period optionTenor_;
         BusinessDayConvention optionConvention_;
         mutable Date fixingDate_;
         Date exerciseDate_;
-        mutable ext::shared_ptr<Exercise> exercise_;
+        mutable std::shared_ptr<Exercise> exercise_;
 
         Rate strike_;
         VanillaSwap::Type underlyingType_;
         Real nominal_;
 
-        ext::shared_ptr<PricingEngine> engine_;
+        std::shared_ptr<PricingEngine> engine_;
     };
 
 }

@@ -88,7 +88,7 @@ namespace QuantLib {
 
 #else
 
-#include <ql/functional.hpp>
+#include <functional>
 
 #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
 #pragma GCC diagnostic push
@@ -131,7 +131,7 @@ namespace QuantLib {
     }
 
     void Observable::registerObserver(
-        const ext::shared_ptr<Observer::Proxy>& observerProxy) {
+        const std::shared_ptr<Observer::Proxy>& observerProxy) {
         {
             boost::lock_guard<boost::recursive_mutex> lock(mutex_);
             observers_.insert(observerProxy);
@@ -143,7 +143,7 @@ namespace QuantLib {
     }
 
     void Observable::unregisterObserver(
-        const ext::shared_ptr<Observer::Proxy>& observerProxy) {
+        const std::shared_ptr<Observer::Proxy>& observerProxy) {
         {
             boost::lock_guard<boost::recursive_mutex> lock(mutex_);
             observers_.erase(observerProxy);

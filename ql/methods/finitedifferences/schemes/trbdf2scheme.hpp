@@ -30,7 +30,7 @@
 #include <ql/methods/finitedifferences/operatortraits.hpp>
 #include <ql/methods/finitedifferences/operators/fdmlinearopcomposite.hpp>
 #include <ql/methods/finitedifferences/schemes/boundaryconditionschemehelper.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 
 namespace QuantLib {
 
@@ -49,8 +49,8 @@ namespace QuantLib {
         // constructors
         TrBDF2Scheme(
             Real alpha,
-            const ext::shared_ptr<FdmLinearOpComposite>& map,
-            const ext::shared_ptr<TrapezoidalScheme>& trapezoidalScheme,
+            const std::shared_ptr<FdmLinearOpComposite>& map,
+            const std::shared_ptr<TrapezoidalScheme>& trapezoidalScheme,
             const bc_set& bcSet = bc_set(),
             Real relTol = 1e-8,
             SolverType solverType = BiCGstab);
@@ -64,11 +64,11 @@ namespace QuantLib {
 
         Time dt_;
         Real beta_;
-        ext::shared_ptr<Size> iterations_;
+        std::shared_ptr<Size> iterations_;
 
         const Real alpha_;
-        const ext::shared_ptr<FdmLinearOpComposite> map_;
-        const ext::shared_ptr<TrapezoidalScheme>& trapezoidalScheme_;
+        const std::shared_ptr<FdmLinearOpComposite> map_;
+        const std::shared_ptr<TrapezoidalScheme>& trapezoidalScheme_;
         const BoundaryConditionSchemeHelper bcSet_;
         const Real relTol_;
         const SolverType solverType_;
@@ -77,14 +77,14 @@ namespace QuantLib {
     template <class TrapezoidalScheme>
     inline TrBDF2Scheme<TrapezoidalScheme>::TrBDF2Scheme(
         Real alpha,
-        const ext::shared_ptr<FdmLinearOpComposite>& map,
-        const ext::shared_ptr<TrapezoidalScheme>& trapezoidalScheme,
+        const std::shared_ptr<FdmLinearOpComposite>& map,
+        const std::shared_ptr<TrapezoidalScheme>& trapezoidalScheme,
         const bc_set& bcSet,
         Real relTol,
         SolverType solverType)
     : dt_(Null<Real>()),
       beta_(Null<Real>()),
-      iterations_(ext::make_shared<Size>(0u)),
+      iterations_(std::make_shared<Size>(0u)),
       alpha_(alpha),
       map_(map),
       trapezoidalScheme_(trapezoidalScheme),
@@ -111,7 +111,7 @@ namespace QuantLib {
 
     template <class TrapezoidalScheme>
     inline void TrBDF2Scheme<TrapezoidalScheme>::step(array_type& fn, Time t) {
-        using namespace ext::placeholders;
+        using namespace std::placeholders;
 
         QL_REQUIRE(t-dt_ > -1e-8, "a step towards negative time given");
 
@@ -131,12 +131,12 @@ namespace QuantLib {
             fn = map_->solve_splitting(0, f, -beta_);
         }
         else {
-            const ext::function<Disposable<Array>(const Array&)>
-                preconditioner(ext::bind(
+            const std::function<Disposable<Array>(const Array&)>
+                preconditioner(std::bind(
                     &FdmLinearOpComposite::preconditioner, map_, _1, -beta_));
 
-            const ext::function<Disposable<Array>(const Array&)> applyF(
-                ext::bind(&TrBDF2Scheme<TrapezoidalScheme>::apply, this, _1));
+            const std::function<Disposable<Array>(const Array&)> applyF(
+                std::bind(&TrBDF2Scheme<TrapezoidalScheme>::apply, this, _1));
 
             if (solverType_ == BiCGstab) {
                 const BiCGStabResult result =

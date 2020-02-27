@@ -27,7 +27,7 @@ namespace QuantLib {
 
     DiscountingSwapEngine::DiscountingSwapEngine(
                             Handle<YieldTermStructure>  discountCurve,
-                            boost::optional<bool> includeSettlementDateFlows,
+                            std::optional<bool> includeSettlementDateFlows,
                             Date settlementDate,
                             Date npvDate)
     : discountCurve_(std::move(discountCurve)),

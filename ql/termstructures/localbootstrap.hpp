@@ -31,7 +31,7 @@
 #include <ql/math/optimization/levenbergmarquardt.hpp>
 #include <ql/math/optimization/problem.hpp>
 #include <ql/utilities/dataformatters.hpp>
-#include <ql/shared_ptr.hpp>
+#include <memory>
 
 namespace QuantLib {
 
@@ -41,7 +41,7 @@ namespace QuantLib {
         typedef typename Curve::traits_type Traits;
         typedef typename Traits::helper helper;
         typedef
-          typename std::vector< ext::shared_ptr<helper> >::const_iterator
+          typename std::vector< std::shared_ptr<helper> >::const_iterator
                                                               helper_iterator;
       public:
         PenaltyFunction(Curve* curve,
@@ -138,8 +138,8 @@ namespace QuantLib {
 
         // ensure rate helpers are sorted
         std::sort(ts_->instruments_.begin(), ts_->instruments_.end(),
-                  [](const ext::shared_ptr<helper>& h1,
-                     const ext::shared_ptr<helper>& h2) {
+                  [](const std::shared_ptr<helper>& h1,
+                     const std::shared_ptr<helper>& h2) {
                         return h1->pillarDate() < h2->pillarDate();
                   });
 

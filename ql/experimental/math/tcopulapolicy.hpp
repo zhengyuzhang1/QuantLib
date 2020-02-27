@@ -23,7 +23,7 @@
 #include <ql/errors.hpp>
 #include <ql/utilities/disposable.hpp>
 #include <ql/experimental/math/convolvedstudentt.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 #include <boost/math/distributions/students_t.hpp>
 #include <vector>
 

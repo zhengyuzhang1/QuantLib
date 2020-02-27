@@ -35,8 +35,8 @@
 namespace QuantLib {
 
 OptionletStripper1::OptionletStripper1(
-    const ext::shared_ptr< CapFloorTermVolSurface > &termVolSurface,
-    const ext::shared_ptr< IborIndex > &index, Rate switchStrike, Real accuracy,
+    const std::shared_ptr< CapFloorTermVolSurface > &termVolSurface,
+    const std::shared_ptr< IborIndex > &index, Rate switchStrike, Real accuracy,
     Natural maxIter, const Handle< YieldTermStructure > &discount,
     const VolatilityType type, const Real displacement, bool dontThrow)
     : OptionletStripper(termVolSurface, index, discount, type, displacement),
@@ -58,7 +58,7 @@ OptionletStripper1::OptionletStripper1(
         // update dates
         const Date& referenceDate = termVolSurface_->referenceDate();
         const DayCounter& dc = termVolSurface_->dayCounter();
-        ext::shared_ptr<BlackCapFloorEngine> dummy(new
+        std::shared_ptr<BlackCapFloorEngine> dummy(new
                     BlackCapFloorEngine(// discounting does not matter here
                                         iborIndex_->forwardingTermStructure(),
                                         0.20, dc));
@@ -69,7 +69,7 @@ OptionletStripper1::OptionletStripper1(
                                          0.04, // dummy strike
                                          0*Days)
                 .withPricingEngine(dummy);
-            ext::shared_ptr<FloatingRateCoupon> lFRC =
+            std::shared_ptr<FloatingRateCoupon> lFRC =
                                                 temp.lastFloatingRateCoupon();
             optionletDates_[i] = lFRC->fixingDate();
             optionletPaymentDates_[i] = lFRC->date();
@@ -94,16 +94,16 @@ OptionletStripper1::OptionletStripper1(
 
         const std::vector<Rate>& strikes = termVolSurface_->strikes();
 
-        ext::shared_ptr<PricingEngine> capFloorEngine;
-        ext::shared_ptr<SimpleQuote> volQuote(new SimpleQuote);
+        std::shared_ptr<PricingEngine> capFloorEngine;
+        std::shared_ptr<SimpleQuote> volQuote(new SimpleQuote);
 
         if (volatilityType_ == ShiftedLognormal) {
-            capFloorEngine = ext::make_shared<BlackCapFloorEngine>(
+            capFloorEngine = std::make_shared<BlackCapFloorEngine>(
                         
                             discountCurve, Handle<Quote>(volQuote),
                             dc, displacement_);
         } else if (volatilityType_ == Normal) {
-            capFloorEngine = ext::make_shared<BachelierCapFloorEngine>(
+            capFloorEngine = std::make_shared<BachelierCapFloorEngine>(
                         
                             discountCurve, Handle<Quote>(volQuote),
                             dc);
@@ -124,7 +124,7 @@ OptionletStripper1::OptionletStripper1(
                 capFloorVols_[i][j] = termVolSurface_->volatility(
                     capFloorLengths_[i], strikes[j], true);
                 volQuote->setValue(capFloorVols_[i][j]);
-                ext::shared_ptr<CapFloor> capFloor =
+                std::shared_ptr<CapFloor> capFloor =
                     MakeCapFloor(capFloorType, capFloorLengths_[i],
                                  iborIndex_, strikes[j], -0 * Days)
                         .withPricingEngine(capFloorEngine);

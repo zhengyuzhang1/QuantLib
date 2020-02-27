@@ -65,7 +65,7 @@ namespace QuantLib {
             forecasting and discounting.
         */
         AnalyticEuropeanEngine(
-                    ext::shared_ptr<GeneralizedBlackScholesProcess> );
+                    std::shared_ptr<GeneralizedBlackScholesProcess> );
 
         /*! This constructor allows to use a different term structure
             for discounting the payoff. As usual, the risk-free rate
@@ -73,11 +73,11 @@ namespace QuantLib {
             price.
         */
         AnalyticEuropeanEngine(
-             ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
+             std::shared_ptr<GeneralizedBlackScholesProcess>  process,
              Handle<YieldTermStructure>  discountCurve);
         void calculate() const override;
       private:
-        ext::shared_ptr<GeneralizedBlackScholesProcess> process_;
+        std::shared_ptr<GeneralizedBlackScholesProcess> process_;
         Handle<YieldTermStructure> discountCurve_;
     };
 

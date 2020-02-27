@@ -85,7 +85,7 @@ namespace QuantLib {
                     const DayCounter& dayCounter,
                     const Calendar& calendar,
                     BusinessDayConvention businessDayConvention,
-                    ext::shared_ptr<FixedRateBond>  fixedCouponBond,
+                    std::shared_ptr<FixedRateBond>  fixedCouponBond,
                     const Handle<YieldTermStructure>& discountCurve =
                                                 Handle<YieldTermStructure>(),
                     const Handle<YieldTermStructure>& incomeDiscountCurve =
@@ -115,7 +115,7 @@ namespace QuantLib {
         //@}
 
       protected:
-        ext::shared_ptr<FixedRateBond> fixedCouponBond_;
+        std::shared_ptr<FixedRateBond> fixedCouponBond_;
         void performCalculations() const override;
     };
 

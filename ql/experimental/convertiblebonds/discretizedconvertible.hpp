@@ -35,7 +35,7 @@ namespace QuantLib {
       public:
         DiscretizedConvertible(
              ConvertibleBond::option::arguments ,
-             ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
+             std::shared_ptr<GeneralizedBlackScholesProcess>  process,
              const TimeGrid& grid = TimeGrid());
 
         void reset(Size size) override;
@@ -72,7 +72,7 @@ namespace QuantLib {
         void applyCallability(Size, bool convertible);
         void addCoupon(Size);
         ConvertibleBond::option::arguments arguments_;
-        ext::shared_ptr<GeneralizedBlackScholesProcess> process_;
+        std::shared_ptr<GeneralizedBlackScholesProcess> process_;
         std::vector<Time> stoppingTimes_;
         std::vector<Time> callabilityTimes_;
         std::vector<Time> couponTimes_;

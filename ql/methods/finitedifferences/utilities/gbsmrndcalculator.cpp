@@ -28,13 +28,13 @@
 #include <ql/pricingengines/blackcalculator.hpp>
 #include <ql/methods/finitedifferences/utilities/gbsmrndcalculator.hpp>
 #include <ql/math/distributions/normaldistribution.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 #include <utility>
 
 namespace QuantLib {
 
     GBSMRNDCalculator::GBSMRNDCalculator(
-        ext::shared_ptr<GeneralizedBlackScholesProcess>  process)
+        std::shared_ptr<GeneralizedBlackScholesProcess>  process)
     : process_(std::move(process)) { }
 
     Real GBSMRNDCalculator::pdf(Real k, Time t) const {
@@ -75,7 +75,7 @@ namespace QuantLib {
     }
 
     Real GBSMRNDCalculator::invcdf(Real q, Time t) const {
-        using namespace ext::placeholders;
+        using namespace std::placeholders;
 
         const Real fwd = process_->x0()
             / process_->riskFreeRate()->discount(t, true)
@@ -102,8 +102,8 @@ namespace QuantLib {
 
         return Brent().solve(
             compose(subtract<Real>(q),
-                    ext::function<Real(Real)>(
-                        ext::bind(&GBSMRNDCalculator::cdf, this, _1, t))),
+                    std::function<Real(Real)>(
+                        std::bind(&GBSMRNDCalculator::cdf, this, _1, t))),
             1e-10, 0.5*(lower+upper), lower, upper);
     }
 }

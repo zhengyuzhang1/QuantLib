@@ -130,9 +130,9 @@ namespace QuantLib
 
     }
 
-    QL_UNIQUE_OR_AUTO_PTR<MarketModelBasisSystem>
+    std::unique_ptr<MarketModelBasisSystem>
     SwapForwardBasisSystem::clone() const {
-        return QL_UNIQUE_OR_AUTO_PTR<MarketModelBasisSystem>(
+        return std::unique_ptr<MarketModelBasisSystem>(
                                                   new SwapForwardBasisSystem(*this));
     }
 

@@ -41,8 +41,8 @@
 namespace QuantLib {
 
     FdExtOUJumpVanillaEngine::FdExtOUJumpVanillaEngine(
-                      ext::shared_ptr<ExtOUWithJumpsProcess>  process,
-                      ext::shared_ptr<YieldTermStructure>  rTS,
+                      std::shared_ptr<ExtOUWithJumpsProcess>  process,
+                      std::shared_ptr<YieldTermStructure>  rTS,
                       Size tGrid, Size xGrid, Size yGrid,
                       const FdmSchemeDesc& schemeDesc)
     : process_(std::move(process)),
@@ -58,26 +58,26 @@ namespace QuantLib {
         const Time maturity 
             = rTS_->dayCounter().yearFraction(rTS_->referenceDate(),
                                               arguments_.exercise->lastDate());
-        const ext::shared_ptr<StochasticProcess1D> ouProcess(
+        const std::shared_ptr<StochasticProcess1D> ouProcess(
                               process_->getExtendedOrnsteinUhlenbeckProcess());
-        const ext::shared_ptr<Fdm1dMesher> xMesher(
+        const std::shared_ptr<Fdm1dMesher> xMesher(
                      new FdmSimpleProcess1dMesher(xGrid_, ouProcess,maturity));
 
-        const ext::shared_ptr<Fdm1dMesher> yMesher(
+        const std::shared_ptr<Fdm1dMesher> yMesher(
             new ExponentialJump1dMesher(yGrid_, 
                                         process_->beta(), 
                                         process_->jumpIntensity(),
                                         process_->eta()));
 
-        const ext::shared_ptr<FdmMesher> mesher(
+        const std::shared_ptr<FdmMesher> mesher(
             new FdmMesherComposite(xMesher, yMesher));
 
         // 2. Calculator
-        const ext::shared_ptr<FdmInnerValueCalculator> calculator(
+        const std::shared_ptr<FdmInnerValueCalculator> calculator(
                     new FdmExtOUJumpModelInnerValue(arguments_.payoff, mesher));
 
         // 3. Step conditions
-        const ext::shared_ptr<FdmStepConditionComposite> conditions =
+        const std::shared_ptr<FdmStepConditionComposite> conditions =
             FdmStepConditionComposite::vanillaComposite(
                                 DividendSchedule(), arguments_.exercise, 
                                 mesher, calculator, 
@@ -90,7 +90,7 @@ namespace QuantLib {
         FdmSolverDesc solverDesc = { mesher, boundaries, conditions,
                                     calculator, maturity, tGrid_, 0 };
 
-        const ext::shared_ptr<FdmExtOUJumpSolver> solver(
+        const std::shared_ptr<FdmExtOUJumpSolver> solver(
             new FdmExtOUJumpSolver(Handle<ExtOUWithJumpsProcess>(process_), 
                                    rTS_, solverDesc, schemeDesc_));
       

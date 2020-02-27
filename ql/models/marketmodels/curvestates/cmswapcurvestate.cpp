@@ -178,8 +178,8 @@ namespace QuantLib {
         }
     }
 
-    QL_UNIQUE_OR_AUTO_PTR<CurveState> CMSwapCurveState::clone() const {
-        return QL_UNIQUE_OR_AUTO_PTR<CurveState>(new CMSwapCurveState(*this));
+    std::unique_ptr<CurveState> CMSwapCurveState::clone() const {
+        return std::unique_ptr<CurveState>(new CMSwapCurveState(*this));
     }
 
 }

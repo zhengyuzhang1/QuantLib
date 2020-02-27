@@ -196,7 +196,7 @@ namespace QuantLib {
                        firstPeriodDC_.empty() ? rate.dayCounter()
                        : firstPeriodDC_,
                        rate.compounding(), rate.frequency());
-        leg.push_back(ext::shared_ptr<CashFlow>(new
+        leg.push_back(std::shared_ptr<CashFlow>(new
             FixedRateCoupon(paymentDate, nominal, r,
                             start, end, ref, end, exCouponDate)));
         // regular periods
@@ -218,7 +218,7 @@ namespace QuantLib {
                 nominal = notionals_[i-1];
             else
                 nominal = notionals_.back();
-            leg.push_back(ext::shared_ptr<CashFlow>(new
+            leg.push_back(std::shared_ptr<CashFlow>(new
                 FixedRateCoupon(paymentDate, nominal, rate,
                                 start, end, start, end, exCouponDate)));
         }
@@ -247,7 +247,7 @@ namespace QuantLib {
                 lastPeriodDC_ , rate.compounding(), rate.frequency() );
             if ((schedule_.hasIsRegular() && schedule_.isRegular(N - 1)) ||
                 !schedule_.hasTenor()) {
-                leg.push_back(ext::shared_ptr<CashFlow>(new
+                leg.push_back(std::shared_ptr<CashFlow>(new
                     FixedRateCoupon(paymentDate, nominal, r,
                                     start, end, start, end, exCouponDate)));
             } else {
@@ -256,7 +256,7 @@ namespace QuantLib {
                                             schedule_.tenor(),
                                             schedule_.businessDayConvention(),
                                             schedule_.endOfMonth());
-                leg.push_back(ext::shared_ptr<CashFlow>(new
+                leg.push_back(std::shared_ptr<CashFlow>(new
                     FixedRateCoupon(paymentDate, nominal, r,
                                     start, end, start, ref, exCouponDate)));
             }

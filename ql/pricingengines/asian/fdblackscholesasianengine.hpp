@@ -43,14 +43,14 @@ namespace QuantLib {
       public:
         // Constructor
         FdBlackScholesAsianEngine(
-                      ext::shared_ptr<GeneralizedBlackScholesProcess> ,
+                      std::shared_ptr<GeneralizedBlackScholesProcess> ,
                       Size tGrid = 100, Size xGrid = 100, Size aGrid = 50,
                       const FdmSchemeDesc& schemeDesc=FdmSchemeDesc::Douglas());
 
         void calculate() const override;
 
       private:
-        const ext::shared_ptr<GeneralizedBlackScholesProcess> process_;
+        const std::shared_ptr<GeneralizedBlackScholesProcess> process_;
         const Size tGrid_, xGrid_, aGrid_;
         const FdmSchemeDesc schemeDesc_;
     };

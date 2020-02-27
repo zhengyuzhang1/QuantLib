@@ -33,7 +33,7 @@
 #include <ql/methods/montecarlo/lsmbasissystem.hpp>
 #include <ql/pricingengines/mclongstaffschwartzengine.hpp>
 #include <ql/exercise.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 
 namespace QuantLib {
 
@@ -48,7 +48,7 @@ namespace QuantLib {
         : public MCLongstaffSchwartzEngine<BasketOption::engine,
                                            MultiVariate,RNG> {
       public:
-        MCAmericanBasketEngine(const ext::shared_ptr<StochasticProcessArray>&,
+        MCAmericanBasketEngine(const std::shared_ptr<StochasticProcessArray>&,
                                Size timeSteps,
                                Size timeStepsPerYear,
                                bool brownianBridge,
@@ -62,7 +62,7 @@ namespace QuantLib {
                                LsmBasisSystem::PolynomType
                                    polynomType = LsmBasisSystem::Monomial);
       protected:
-        ext::shared_ptr<LongstaffSchwartzPathPricer<MultiPath> >
+        std::shared_ptr<LongstaffSchwartzPathPricer<MultiPath> >
             lsmPathPricer() const override;
 
       private:
@@ -76,7 +76,7 @@ namespace QuantLib {
     class MakeMCAmericanBasketEngine {
       public:
         MakeMCAmericanBasketEngine(
-                            const ext::shared_ptr<StochasticProcessArray>&);
+                            const std::shared_ptr<StochasticProcessArray>&);
         // named parameters
         MakeMCAmericanBasketEngine& withSteps(Size steps);
         MakeMCAmericanBasketEngine& withStepsPerYear(Size steps);
@@ -92,9 +92,9 @@ namespace QuantLib {
             withBasisSystem(LsmBasisSystem::PolynomType polynomType);
 
         // conversion to pricing engine
-        operator ext::shared_ptr<PricingEngine>() const;
+        operator std::shared_ptr<PricingEngine>() const;
       private:
-        ext::shared_ptr<StochasticProcessArray> process_;
+        std::shared_ptr<StochasticProcessArray> process_;
         bool brownianBridge_, antithetic_;
         Size steps_, stepsPerYear_, samples_,
             maxSamples_, calibrationSamples_, polynomOrder_;
@@ -108,7 +108,7 @@ namespace QuantLib {
         : public EarlyExercisePathPricer<MultiPath>  {
       public:
         AmericanBasketPathPricer(Size assetNumber,
-                                 const ext::shared_ptr<Payoff>& payoff,
+                                 const std::shared_ptr<Payoff>& payoff,
                                  Size polynomOrder = 2,
                                  LsmBasisSystem::PolynomType
                                  polynomType = LsmBasisSystem::Monomial);
@@ -116,21 +116,21 @@ namespace QuantLib {
         Array state(const MultiPath& path, Size t) const override;
         Real operator()(const MultiPath& path, Size t) const override;
 
-        std::vector<ext::function<Real(Array)> > basisSystem() const override;
+        std::vector<std::function<Real(Array)> > basisSystem() const override;
 
       protected:
         Real payoff(const Array& state) const;
 
         const Size assetNumber_;
-        const ext::shared_ptr<Payoff> payoff_;
+        const std::shared_ptr<Payoff> payoff_;
 
         Real scalingValue_;
-        std::vector<ext::function<Real(Array)> > v_;
+        std::vector<std::function<Real(Array)> > v_;
     };
 
     template <class RNG> inline
     MCAmericanBasketEngine<RNG>::MCAmericanBasketEngine(
-                   const ext::shared_ptr<StochasticProcessArray>& processes,
+                   const std::shared_ptr<StochasticProcessArray>& processes,
                    Size timeSteps,
                    Size timeStepsPerYear,
                    bool brownianBridge,
@@ -157,34 +157,34 @@ namespace QuantLib {
           polynomOrder_(polynomOrder), polynomType_(polynomType) {}
 
     template <class RNG>
-    inline ext::shared_ptr<LongstaffSchwartzPathPricer<MultiPath> >
+    inline std::shared_ptr<LongstaffSchwartzPathPricer<MultiPath> >
     MCAmericanBasketEngine<RNG>::lsmPathPricer() const {
 
-        ext::shared_ptr<StochasticProcessArray> processArray =
-            ext::dynamic_pointer_cast<StochasticProcessArray>(
+        std::shared_ptr<StochasticProcessArray> processArray =
+            std::dynamic_pointer_cast<StochasticProcessArray>(
                                                               this->process_);
         QL_REQUIRE(processArray && processArray->size()>0,
                    "Stochastic process array required");
 
-        ext::shared_ptr<GeneralizedBlackScholesProcess> process =
-            ext::dynamic_pointer_cast<GeneralizedBlackScholesProcess>(
+        std::shared_ptr<GeneralizedBlackScholesProcess> process =
+            std::dynamic_pointer_cast<GeneralizedBlackScholesProcess>(
                processArray->process(0));
         QL_REQUIRE(process, "generalized Black-Scholes process required");
 
-        ext::shared_ptr<EarlyExercise> exercise =
-            ext::dynamic_pointer_cast<EarlyExercise>(
+        std::shared_ptr<EarlyExercise> exercise =
+            std::dynamic_pointer_cast<EarlyExercise>(
                 this->arguments_.exercise);
         QL_REQUIRE(exercise, "wrong exercise given");
         QL_REQUIRE(!exercise->payoffAtExpiry(),
                    "payoff at expiry not handled");
 
-        ext::shared_ptr<AmericanBasketPathPricer> earlyExercisePathPricer(
+        std::shared_ptr<AmericanBasketPathPricer> earlyExercisePathPricer(
             new AmericanBasketPathPricer(processArray->size(),
                                          this->arguments_.payoff,
                                          polynomOrder_,
                                          polynomType_));
 
-        return ext::make_shared<LongstaffSchwartzPathPricer<MultiPath> > (
+        return std::make_shared<LongstaffSchwartzPathPricer<MultiPath> > (
              
                      this->timeGrid(),
                      earlyExercisePathPricer,
@@ -194,7 +194,7 @@ namespace QuantLib {
 
     template <class RNG>
     inline MakeMCAmericanBasketEngine<RNG>::MakeMCAmericanBasketEngine(
-                     const ext::shared_ptr<StochasticProcessArray>& process)
+                     const std::shared_ptr<StochasticProcessArray>& process)
     : process_(process), brownianBridge_(false), antithetic_(false),
       steps_(Null<Size>()), stepsPerYear_(Null<Size>()),
       samples_(Null<Size>()), maxSamples_(Null<Size>()),
@@ -291,12 +291,12 @@ namespace QuantLib {
     template <class RNG>
     inline
     MakeMCAmericanBasketEngine<RNG>::operator
-    ext::shared_ptr<PricingEngine>() const {
+    std::shared_ptr<PricingEngine>() const {
         QL_REQUIRE(steps_ != Null<Size>() || stepsPerYear_ != Null<Size>(),
                    "number of steps not given");
         QL_REQUIRE(steps_ == Null<Size>() || stepsPerYear_ == Null<Size>(),
                    "number of steps overspecified");
-        return ext::shared_ptr<PricingEngine>(new
+        return std::shared_ptr<PricingEngine>(new
             MCAmericanBasketEngine<RNG>(process_,
                                         steps_,
                                         stepsPerYear_,

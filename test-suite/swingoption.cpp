@@ -46,7 +46,7 @@ using namespace boost::unit_test_framework;
 
 
 namespace {
-    ext::shared_ptr<ExtOUWithJumpsProcess> createKlugeProcess() {
+    std::shared_ptr<ExtOUWithJumpsProcess> createKlugeProcess() {
         Array x0(2);
         x0[0] = 3.0; x0[1] = 0.0;
 
@@ -56,10 +56,10 @@ namespace {
         const Real speed = 1.0;
         const Real volatility = 2.0;
 
-        ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> ouProcess(
+        std::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> ouProcess(
             new ExtendedOrnsteinUhlenbeckProcess(speed, volatility, x0[0],
                                                  constant<Real, Real>(x0[0])));
-        return ext::make_shared<ExtOUWithJumpsProcess>(
+        return std::make_shared<ExtOUWithJumpsProcess>(
             ouProcess, x0[1], beta,
                                       jumpIntensity, eta);
     }
@@ -80,7 +80,7 @@ void SwingOptionTest::testExtendedOrnsteinUhlenbeckProcess() {
         ExtendedOrnsteinUhlenbeckProcess::Trapezodial,
         ExtendedOrnsteinUhlenbeckProcess::GaussLobatto};
 
-    std::vector<ext::function<Real (Real)>> f
+    std::vector<std::function<Real (Real)>> f
         = { constant<Real, Real>(level),
             add<Real>(1.0),
             static_cast<Real(*)(Real)>(std::sin) }; 
@@ -135,10 +135,10 @@ void SwingOptionTest::testFdmExponentialJump1dMesher() {
 
     ExponentialJump1dMesher mesher(dummySteps, beta, jumpIntensity, eta);
 
-    ext::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> ouProcess(
+    std::shared_ptr<ExtendedOrnsteinUhlenbeckProcess> ouProcess(
         new ExtendedOrnsteinUhlenbeckProcess(1.0, 1.0, x[0],
                                              constant<Real, Real>(1.0)));
-    ext::shared_ptr<ExtOUWithJumpsProcess> jumpProcess(
+    std::shared_ptr<ExtOUWithJumpsProcess> jumpProcess(
         new ExtOUWithJumpsProcess(ouProcess, x[1], beta, jumpIntensity, eta));
 
     const Time dt = 1.0/(10.0*beta);
@@ -177,7 +177,7 @@ void SwingOptionTest::testExtOUJumpVanillaEngine() {
 
     SavedSettings backup;
 
-    ext::shared_ptr<ExtOUWithJumpsProcess> jumpProcess = createKlugeProcess();
+    std::shared_ptr<ExtOUWithJumpsProcess> jumpProcess = createKlugeProcess();
 
     const Date today = Date::todaysDate();
     Settings::instance().evaluationDate() = today;
@@ -187,12 +187,12 @@ void SwingOptionTest::testExtOUJumpVanillaEngine() {
     const Time maturity = dc.yearFraction(today, maturityDate);
 
     const Rate irRate = 0.1;
-    ext::shared_ptr<YieldTermStructure> rTS(flatRate(today, irRate, dc));
-    ext::shared_ptr<StrikedTypePayoff> payoff(
+    std::shared_ptr<YieldTermStructure> rTS(flatRate(today, irRate, dc));
+    std::shared_ptr<StrikedTypePayoff> payoff(
                                      new PlainVanillaPayoff(Option::Call, 30));
-    ext::shared_ptr<Exercise> exercise(new EuropeanExercise(maturityDate));
+    std::shared_ptr<Exercise> exercise(new EuropeanExercise(maturityDate));
 
-    ext::shared_ptr<PricingEngine> engine(
+    std::shared_ptr<PricingEngine> engine(
                  new FdExtOUJumpVanillaEngine(jumpProcess, rTS, 25, 200, 50));
 
     VanillaOption option(payoff, exercise);
@@ -244,9 +244,9 @@ void SwingOptionTest::testFdBSSwingOption() {
     Date maturityDate = settlementDate + Period(12, Months);
 
     Real strike = 30;
-    ext::shared_ptr<StrikedTypePayoff> payoff(
+    std::shared_ptr<StrikedTypePayoff> payoff(
         new PlainVanillaPayoff(Option::Put, strike));
-    ext::shared_ptr<StrikedTypePayoff> forward(
+    std::shared_ptr<StrikedTypePayoff> forward(
         new VanillaForwardPayoff(Option::Put, strike));
 
     std::vector<Date> exerciseDates(1, settlementDate+Period(1, Months));
@@ -254,7 +254,7 @@ void SwingOptionTest::testFdBSSwingOption() {
         exerciseDates.push_back(exerciseDates.back()+Period(1, Months));
     }
 
-    ext::shared_ptr<SwingExercise> swingExercise(
+    std::shared_ptr<SwingExercise> swingExercise(
                                             new SwingExercise(exerciseDates));
 
     Handle<YieldTermStructure> riskFreeTS(flatRate(0.14, dayCounter));
@@ -262,15 +262,15 @@ void SwingOptionTest::testFdBSSwingOption() {
     Handle<BlackVolTermStructure> volTS(
                                     flatVol(settlementDate, 0.4, dayCounter));
 
-    Handle<Quote> s0(ext::shared_ptr<Quote>(new SimpleQuote(30.0)));
+    Handle<Quote> s0(std::shared_ptr<Quote>(new SimpleQuote(30.0)));
 
-    ext::shared_ptr<BlackScholesMertonProcess> process(
+    std::shared_ptr<BlackScholesMertonProcess> process(
             new BlackScholesMertonProcess(s0, dividendTS, riskFreeTS, volTS));
-    ext::shared_ptr<PricingEngine> engine(
+    std::shared_ptr<PricingEngine> engine(
                                 new FdSimpleBSSwingEngine(process, 50, 200));
     
     VanillaOption bermudanOption(payoff, swingExercise);
-    bermudanOption.setPricingEngine(ext::shared_ptr<PricingEngine>(
+    bermudanOption.setPricingEngine(std::shared_ptr<PricingEngine>(
                           new FdBlackScholesVanillaEngine(process, 50, 200)));
     const Real bermudanOptionPrices = bermudanOption.NPV();
     
@@ -293,10 +293,10 @@ void SwingOptionTest::testFdBSSwingOption() {
         
         Real lowerBound = 0.0;
         for (Size j=exerciseDates.size()-i-1; j < exerciseDates.size(); ++j) {
-            VanillaOption europeanOption(payoff, ext::shared_ptr<Exercise>(
+            VanillaOption europeanOption(payoff, std::shared_ptr<Exercise>(
                                      new EuropeanExercise(exerciseDates[j])));
             europeanOption.setPricingEngine(
-                ext::shared_ptr<PricingEngine>(
+                std::shared_ptr<PricingEngine>(
                                           new AnalyticEuropeanEngine(process)));
             lowerBound += europeanOption.NPV();
         }
@@ -323,16 +323,16 @@ void SwingOptionTest::testExtOUJumpSwingOption() {
     Date maturityDate = settlementDate + Period(12, Months);
 
     Real strike = 30;
-    ext::shared_ptr<StrikedTypePayoff> payoff(
+    std::shared_ptr<StrikedTypePayoff> payoff(
         new PlainVanillaPayoff(Option::Put, strike));
-    ext::shared_ptr<StrikedTypePayoff> forward(
+    std::shared_ptr<StrikedTypePayoff> forward(
         new VanillaForwardPayoff(Option::Put, strike));
 
     std::vector<Date> exerciseDates(1, settlementDate+Period(1, Months));
     while (exerciseDates.back() < maturityDate) {
         exerciseDates.push_back(exerciseDates.back()+Period(1, Months));
     }
-    ext::shared_ptr<SwingExercise> swingExercise(
+    std::shared_ptr<SwingExercise> swingExercise(
                                             new SwingExercise(exerciseDates));
 
     std::vector<Time> exerciseTimes(exerciseDates.size());
@@ -347,16 +347,16 @@ void SwingOptionTest::testExtOUJumpSwingOption() {
         exerciseIndex[i] = grid.closestIndex(exerciseTimes[i]);
     }
 
-    ext::shared_ptr<ExtOUWithJumpsProcess> jumpProcess = createKlugeProcess();
+    std::shared_ptr<ExtOUWithJumpsProcess> jumpProcess = createKlugeProcess();
 
     const Rate irRate = 0.1;
-    ext::shared_ptr<YieldTermStructure> rTS(
+    std::shared_ptr<YieldTermStructure> rTS(
                                 flatRate(settlementDate, irRate, dayCounter));
 
-    ext::shared_ptr<PricingEngine> swingEngine(
+    std::shared_ptr<PricingEngine> swingEngine(
                 new FdSimpleExtOUJumpSwingEngine(jumpProcess, rTS, 25, 50, 25));
 
-    ext::shared_ptr<PricingEngine> vanillaEngine(
+    std::shared_ptr<PricingEngine> vanillaEngine(
                 new FdExtOUJumpVanillaEngine(jumpProcess, rTS, 25, 50, 25));
 
     VanillaOption bermudanOption(payoff, swingExercise);
@@ -389,10 +389,10 @@ void SwingOptionTest::testExtOUJumpSwingOption() {
 
         Real lowerBound = 0.0;
         for (Size j=exerciseDates.size()-i-1; j < exerciseDates.size(); ++j) {
-            VanillaOption europeanOption(payoff, ext::shared_ptr<Exercise>(
+            VanillaOption europeanOption(payoff, std::shared_ptr<Exercise>(
                                      new EuropeanExercise(exerciseDates[j])));
             europeanOption.setPricingEngine(
-                ext::shared_ptr<PricingEngine>(vanillaEngine));
+                std::shared_ptr<PricingEngine>(vanillaEngine));
             lowerBound += europeanOption.NPV();
         }
 

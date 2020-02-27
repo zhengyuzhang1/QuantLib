@@ -19,7 +19,7 @@
 
 #include <ql/math/optimization/spherecylinder.hpp>
 #include <ql/errors.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 #include <algorithm>
 
 namespace QuantLib {

@@ -33,12 +33,12 @@ namespace QuantLib {
         : public ContinuousAveragingAsianOption::engine {
       public:
         ContinuousArithmeticAsianLevyEngine(
-            ext::shared_ptr<GeneralizedBlackScholesProcess>  process,
+            std::shared_ptr<GeneralizedBlackScholesProcess>  process,
             Handle<Quote>  currentAverage,
             Date startDate);
         void calculate() const override;
       private:
-        ext::shared_ptr<GeneralizedBlackScholesProcess> process_;
+        std::shared_ptr<GeneralizedBlackScholesProcess> process_;
         Handle<Quote> currentAverage_ ;
         Date startDate_;
     };

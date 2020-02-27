@@ -137,7 +137,7 @@ namespace QuantLib {
         Frequency frequency_;
         CallabilitySchedule putCallSchedule_;
         //! must be set by derived classes for impliedVolatility() to work
-        mutable ext::shared_ptr<PricingEngine> blackEngine_;
+        mutable std::shared_ptr<PricingEngine> blackEngine_;
         //! Black fwd yield volatility quote handle to internal blackEngine_
         mutable RelinkableHandle<Quote> blackVolQuote_;
         //! Black fwd yield volatility quote handle to internal blackEngine_
@@ -151,9 +151,9 @@ namespace QuantLib {
                              Real targetValue);
             Real operator()(Volatility x) const;
           private:
-            ext::shared_ptr<PricingEngine> engine_;
+            std::shared_ptr<PricingEngine> engine_;
             Real targetValue_;
-            ext::shared_ptr<SimpleQuote> vol_;
+            std::shared_ptr<SimpleQuote> vol_;
             const Instrument::results* results_;
         };
         //! Helper class for option adjusted spread calculations

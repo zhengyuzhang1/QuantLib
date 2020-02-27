@@ -87,9 +87,9 @@ namespace QuantLib {
         parameters[0] = strikes_.at(exerciseIndex);
     }
 
-    QL_UNIQUE_OR_AUTO_PTR<MarketModelParametricExercise>
+    std::unique_ptr<MarketModelParametricExercise>
     TriggeredSwapExercise::clone() const {
-        return QL_UNIQUE_OR_AUTO_PTR<MarketModelParametricExercise>(
+        return std::unique_ptr<MarketModelParametricExercise>(
                                             new TriggeredSwapExercise(*this));
     }
 

@@ -45,16 +45,16 @@ namespace QuantLib {
         HestonSLVMCModel(
             Handle<LocalVolTermStructure>  localVol,
             Handle<HestonModel>  hestonModel,
-            ext::shared_ptr<BrownianGeneratorFactory>  brownianGeneratorFactory,
+            std::shared_ptr<BrownianGeneratorFactory>  brownianGeneratorFactory,
             const Date& endDate,
             Size timeStepsPerYear = 365,
             Size nBins = 201,
             Size calibrationPaths = (1 << 15),
             const std::vector<Date>& mandatoryDates = std::vector<Date>());
 
-        ext::shared_ptr<HestonProcess> hestonProcess() const;
-        ext::shared_ptr<LocalVolTermStructure> localVol() const;
-        ext::shared_ptr<LocalVolTermStructure> leverageFunction() const;
+        std::shared_ptr<HestonProcess> hestonProcess() const;
+        std::shared_ptr<LocalVolTermStructure> localVol() const;
+        std::shared_ptr<LocalVolTermStructure> leverageFunction() const;
 
       protected:
         void performCalculations() const override;
@@ -62,12 +62,12 @@ namespace QuantLib {
       private:
         const Handle<LocalVolTermStructure> localVol_;
         const Handle<HestonModel> hestonModel_;
-        const ext::shared_ptr<BrownianGeneratorFactory> brownianGeneratorFactory_;
+        const std::shared_ptr<BrownianGeneratorFactory> brownianGeneratorFactory_;
         const Date endDate_;
         const Size nBins_, calibrationPaths_;
-        ext::shared_ptr<TimeGrid> timeGrid_;
+        std::shared_ptr<TimeGrid> timeGrid_;
 
-        mutable ext::shared_ptr<FixedLocalVolSurface> leverageFunction_;
+        mutable std::shared_ptr<FixedLocalVolSurface> leverageFunction_;
     };
 }
 

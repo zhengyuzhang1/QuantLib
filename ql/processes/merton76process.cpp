@@ -32,7 +32,7 @@ namespace QuantLib {
              Handle<Quote>  jumpInt,
              Handle<Quote>  logJMean,
              Handle<Quote>  logJVol,
-             const ext::shared_ptr<discretization>& disc)
+             const std::shared_ptr<discretization>& disc)
     : blackProcess_(new BlackScholesMertonProcess(stateVariable, dividendTS,
                                                   riskFreeTS, blackVolTS,
                                                   disc)),

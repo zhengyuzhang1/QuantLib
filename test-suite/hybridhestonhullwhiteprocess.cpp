@@ -50,7 +50,7 @@
 #include <ql/pricingengines/vanilla/analytichestonhullwhiteengine.hpp>
 #include <ql/pricingengines/vanilla/fdhestonvanillaengine.hpp>
 #include <ql/pricingengines/vanilla/fdhestonhullwhitevanillaengine.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 
 using namespace QuantLib;
 using namespace boost::unit_test_framework;
@@ -69,25 +69,25 @@ void HybridHestonHullWhiteProcessTest::testBsmHullWhiteEngine() {
     Settings::instance().evaluationDate() = today;
 
     const Handle<Quote> spot(
-                         ext::shared_ptr<Quote>(new SimpleQuote(100.0)));
-    ext::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.04));
+                         std::shared_ptr<Quote>(new SimpleQuote(100.0)));
+    std::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.04));
     const Handle<YieldTermStructure> qTS(flatRate(today, qRate, dc));
-    ext::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0525));
+    std::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0525));
     const Handle<YieldTermStructure> rTS(flatRate(today, rRate, dc));
-    ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.25));
+    std::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.25));
     const Handle<BlackVolTermStructure> volTS(flatVol(today, vol, dc));
 
     // FLOATING_POINT_EXCEPTION
-    ext::shared_ptr<HullWhite> hullWhiteModel(
+    std::shared_ptr<HullWhite> hullWhiteModel(
         new HullWhite(Handle<YieldTermStructure>(rTS), 0.00883, 0.00526));
 
-    ext::shared_ptr<BlackScholesMertonProcess> stochProcess(
+    std::shared_ptr<BlackScholesMertonProcess> stochProcess(
                       new BlackScholesMertonProcess(spot, qTS, rTS, volTS));
 
-    ext::shared_ptr<Exercise> exercise(new EuropeanExercise(maturity));
+    std::shared_ptr<Exercise> exercise(new EuropeanExercise(maturity));
 
     Real fwd = spot->value()*qTS->discount(maturity)/rTS->discount(maturity);
-    ext::shared_ptr<StrikedTypePayoff> payoff(new
+    std::shared_ptr<StrikedTypePayoff> payoff(new
                                       PlainVanillaPayoff(Option::Call, fwd));
 
     EuropeanOption option(payoff, exercise);
@@ -98,7 +98,7 @@ void HybridHestonHullWhiteProcessTest::testBsmHullWhiteEngine() {
                                             0.256402830, 0.268236596, 0.290461343 };
 
     for (Size i=0; i < corr.size(); ++i) {
-        ext::shared_ptr<PricingEngine> bsmhwEngine(
+        std::shared_ptr<PricingEngine> bsmhwEngine(
                          new AnalyticBSMHullWhiteEngine(corr[i], stochProcess,
                                                         hullWhiteModel));
 
@@ -108,9 +108,9 @@ void HybridHestonHullWhiteProcessTest::testBsmHullWhiteEngine() {
         const Handle<BlackVolTermStructure> compVolTS(
                                         flatVol(today, expectedVol[i], dc));
 
-        ext::shared_ptr<BlackScholesMertonProcess> bsProcess(
+        std::shared_ptr<BlackScholesMertonProcess> bsProcess(
                     new BlackScholesMertonProcess(spot, qTS, rTS, compVolTS));
-        ext::shared_ptr<PricingEngine> bsEngine(
+        std::shared_ptr<PricingEngine> bsEngine(
                                        new AnalyticEuropeanEngine(bsProcess));
 
         EuropeanOption comp(payoff, exercise);
@@ -165,7 +165,7 @@ void HybridHestonHullWhiteProcessTest::testCompareBsmHWandHestonHW() {
     Settings::instance().evaluationDate() = today;
 
     const Handle<Quote> spot(
-                         ext::shared_ptr<Quote>(new SimpleQuote(100.0)));
+                         std::shared_ptr<Quote>(new SimpleQuote(100.0)));
     std::vector<Date> dates;
     std::vector<Rate> rates, divRates;
 
@@ -176,33 +176,33 @@ void HybridHestonHullWhiteProcessTest::testCompareBsmHWandHestonHW() {
         divRates.push_back(0.02 + 0.0001*std::exp(std::sin(i/5.0)));
     }
 
-    const Handle<Quote> s0(ext::shared_ptr<Quote>(new SimpleQuote(100)));
+    const Handle<Quote> s0(std::shared_ptr<Quote>(new SimpleQuote(100)));
     const Handle<YieldTermStructure> rTS(
-       ext::shared_ptr<YieldTermStructure>(new ZeroCurve(dates, rates, dc)));
+       std::shared_ptr<YieldTermStructure>(new ZeroCurve(dates, rates, dc)));
     const Handle<YieldTermStructure> qTS(
-       ext::shared_ptr<YieldTermStructure>(
+       std::shared_ptr<YieldTermStructure>(
                                           new ZeroCurve(dates, divRates, dc)));
 
-    ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.25));
+    std::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.25));
     const Handle<BlackVolTermStructure> volTS(flatVol(today, vol, dc));
 
-    ext::shared_ptr<BlackScholesMertonProcess> bsmProcess(
+    std::shared_ptr<BlackScholesMertonProcess> bsmProcess(
                       new BlackScholesMertonProcess(spot, qTS, rTS, volTS));
 
-    ext::shared_ptr<HestonProcess> hestonProcess(
+    std::shared_ptr<HestonProcess> hestonProcess(
                    new HestonProcess(rTS, qTS, spot,
                                      vol->value()*vol->value(), 1.0,
                                      vol->value()*vol->value(), 1e-4, 0.0));
 
-    ext::shared_ptr<HestonModel> hestonModel(new HestonModel(hestonProcess));
+    std::shared_ptr<HestonModel> hestonModel(new HestonModel(hestonProcess));
 
-    ext::shared_ptr<HullWhite> hullWhiteModel(
+    std::shared_ptr<HullWhite> hullWhiteModel(
         new HullWhite(Handle<YieldTermStructure>(rTS), 0.01, 0.01));
 
-    ext::shared_ptr<PricingEngine> bsmhwEngine(
+    std::shared_ptr<PricingEngine> bsmhwEngine(
              new AnalyticBSMHullWhiteEngine(0.0, bsmProcess, hullWhiteModel));
 
-    ext::shared_ptr<PricingEngine> hestonHwEngine(
+    std::shared_ptr<PricingEngine> hestonHwEngine(
           new AnalyticHestonHullWhiteEngine(hestonModel, hullWhiteModel, 128));
 
 
@@ -217,13 +217,13 @@ void HybridHestonHullWhiteProcessTest::testCompareBsmHWandHestonHW() {
             for (unsigned long l : maturity) {
                 const Date maturityDate = today + Period(l, Years);
 
-                ext::shared_ptr<Exercise> exercise(
+                std::shared_ptr<Exercise> exercise(
                                          new EuropeanExercise(maturityDate));
 
                 Real fwd = j * spot->value()
                     *qTS->discount(maturityDate)/rTS->discount(maturityDate);
 
-                ext::shared_ptr<StrikedTypePayoff> payoff(new
+                std::shared_ptr<StrikedTypePayoff> payoff(new
                                           PlainVanillaPayoff(type, fwd));
 
                 EuropeanOption option(payoff, exercise);
@@ -281,20 +281,20 @@ void HybridHestonHullWhiteProcessTest::testZeroBondPricing() {
     rates.push_back(0.04);
     times.push_back(dc.yearFraction(today, dates.back()));
 
-    const Handle<Quote> s0(ext::shared_ptr<Quote>(new SimpleQuote(100)));
+    const Handle<Quote> s0(std::shared_ptr<Quote>(new SimpleQuote(100)));
 
     const Handle<YieldTermStructure> ts(
-       ext::shared_ptr<YieldTermStructure>(new ZeroCurve(dates, rates, dc)));
+       std::shared_ptr<YieldTermStructure>(new ZeroCurve(dates, rates, dc)));
     const Handle<YieldTermStructure> ds(flatRate(today, 0.0, dc));
 
-    const ext::shared_ptr<HestonProcess> hestonProcess(
+    const std::shared_ptr<HestonProcess> hestonProcess(
             new HestonProcess(ts, ds, s0, 0.02, 1.0, 0.2, 0.5, -0.8));
-    const ext::shared_ptr<HullWhiteForwardProcess> hwProcess(
+    const std::shared_ptr<HullWhiteForwardProcess> hwProcess(
                    new HullWhiteForwardProcess(ts, 0.05, 0.05));
     hwProcess->setForwardMeasureTime(dc.yearFraction(today, maturity));
-    const ext::shared_ptr<HullWhite> hwModel(new HullWhite(ts, 0.05, 0.05));
+    const std::shared_ptr<HullWhite> hwModel(new HullWhite(ts, 0.05, 0.05));
 
-    const ext::shared_ptr<HybridHestonHullWhiteProcess> jointProcess(
+    const std::shared_ptr<HybridHestonHullWhiteProcess> jointProcess(
         new HybridHestonHullWhiteProcess(hestonProcess, hwProcess, -0.4));
 
     TimeGrid grid(times.begin(), times.end()-1);
@@ -392,20 +392,20 @@ void HybridHestonHullWhiteProcessTest::testMcVanillaPricing() {
 
     const Date maturity = today + Period(20, Years);
 
-    const Handle<Quote> s0(ext::shared_ptr<Quote>(new SimpleQuote(100)));
+    const Handle<Quote> s0(std::shared_ptr<Quote>(new SimpleQuote(100)));
     const Handle<YieldTermStructure> rTS(
-       ext::shared_ptr<YieldTermStructure>(new ZeroCurve(dates, rates, dc)));
+       std::shared_ptr<YieldTermStructure>(new ZeroCurve(dates, rates, dc)));
     const Handle<YieldTermStructure> qTS(
-       ext::shared_ptr<YieldTermStructure>(
+       std::shared_ptr<YieldTermStructure>(
                                           new ZeroCurve(dates, divRates, dc)));
-    ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.25));
+    std::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.25));
     const Handle<BlackVolTermStructure> volTS(flatVol(today, vol, dc));
 
-    const ext::shared_ptr<BlackScholesMertonProcess> bsmProcess(
+    const std::shared_ptr<BlackScholesMertonProcess> bsmProcess(
               new BlackScholesMertonProcess(s0, qTS, rTS, volTS));
-    const ext::shared_ptr<HestonProcess> hestonProcess(
+    const std::shared_ptr<HestonProcess> hestonProcess(
               new HestonProcess(rTS, qTS, s0, 0.0625, 0.5, 0.0625, 1e-5, 0.3));
-    const ext::shared_ptr<HullWhiteForwardProcess> hwProcess(
+    const std::shared_ptr<HullWhiteForwardProcess> hwProcess(
               new HullWhiteForwardProcess(rTS, 0.01, 0.01));
     hwProcess->setForwardMeasureTime(dc.yearFraction(today, maturity));
 
@@ -415,17 +415,17 @@ void HybridHestonHullWhiteProcessTest::testMcVanillaPricing() {
 
     for (double i : corr) {
         for (double j : strike) {
-            ext::shared_ptr<HybridHestonHullWhiteProcess> jointProcess(
+            std::shared_ptr<HybridHestonHullWhiteProcess> jointProcess(
                 new HybridHestonHullWhiteProcess(hestonProcess,
                                                  hwProcess, i));
 
-            ext::shared_ptr<StrikedTypePayoff> payoff(
+            std::shared_ptr<StrikedTypePayoff> payoff(
                                new PlainVanillaPayoff(Option::Put, j));
-            ext::shared_ptr<Exercise> exercise(
+            std::shared_ptr<Exercise> exercise(
                                new EuropeanExercise(maturity));
 
             VanillaOption optionHestonHW(payoff, exercise);
-            ext::shared_ptr<PricingEngine> engine =
+            std::shared_ptr<PricingEngine> engine =
                 MakeMCHestonHullWhiteEngine<PseudoRandom>(jointProcess)
                 .withSteps(1)
                 .withAntitheticVariate()
@@ -435,13 +435,13 @@ void HybridHestonHullWhiteProcessTest::testMcVanillaPricing() {
 
             optionHestonHW.setPricingEngine(engine);
 
-            const ext::shared_ptr<HullWhite> hwModel(
+            const std::shared_ptr<HullWhite> hwModel(
                         new HullWhite(Handle<YieldTermStructure>(rTS),
                                       hwProcess->a(), hwProcess->sigma()));
 
             VanillaOption optionBsmHW(payoff, exercise);
             optionBsmHW.setPricingEngine(
-                ext::shared_ptr<PricingEngine>(
+                std::shared_ptr<PricingEngine>(
                            new AnalyticBSMHullWhiteEngine(i, bsmProcess,
                                                           hwModel)));
 
@@ -488,16 +488,16 @@ void HybridHestonHullWhiteProcessTest::testMcPureHestonPricing() {
 
     const Date maturity = today + Period(2, Years);
 
-    const Handle<Quote> s0(ext::shared_ptr<Quote>(new SimpleQuote(100)));
+    const Handle<Quote> s0(std::shared_ptr<Quote>(new SimpleQuote(100)));
     const Handle<YieldTermStructure> rTS(
-       ext::shared_ptr<YieldTermStructure>(new ZeroCurve(dates, rates, dc)));
+       std::shared_ptr<YieldTermStructure>(new ZeroCurve(dates, rates, dc)));
     const Handle<YieldTermStructure> qTS(
-       ext::shared_ptr<YieldTermStructure>(
+       std::shared_ptr<YieldTermStructure>(
                                           new ZeroCurve(dates, divRates, dc)));
 
-    const ext::shared_ptr<HestonProcess> hestonProcess(
+    const std::shared_ptr<HestonProcess> hestonProcess(
               new HestonProcess(rTS, qTS, s0, 0.08, 1.5, 0.0625, 0.5, -0.8));
-    const ext::shared_ptr<HullWhiteForwardProcess> hwProcess(
+    const std::shared_ptr<HullWhiteForwardProcess> hwProcess(
               new HullWhiteForwardProcess(rTS, 0.1, 1e-8));
     hwProcess->setForwardMeasureTime(dc.yearFraction(
                                         today, maturity+Period(1, Years)));
@@ -508,22 +508,22 @@ void HybridHestonHullWhiteProcessTest::testMcPureHestonPricing() {
 
     for (double i : corr) {
         for (double j : strike) {
-            ext::shared_ptr<HybridHestonHullWhiteProcess> jointProcess(
+            std::shared_ptr<HybridHestonHullWhiteProcess> jointProcess(
                 new HybridHestonHullWhiteProcess(
                         hestonProcess, hwProcess,
                         i, HybridHestonHullWhiteProcess::Euler));
 
-            ext::shared_ptr<StrikedTypePayoff> payoff(
+            std::shared_ptr<StrikedTypePayoff> payoff(
                                new PlainVanillaPayoff(Option::Put, j));
-            ext::shared_ptr<Exercise> exercise(
+            std::shared_ptr<Exercise> exercise(
                                new EuropeanExercise(maturity));
 
             VanillaOption optionHestonHW(payoff, exercise);
             VanillaOption optionPureHeston(payoff, exercise);
             optionPureHeston.setPricingEngine(
-                ext::shared_ptr<PricingEngine>(
+                std::shared_ptr<PricingEngine>(
                     new AnalyticHestonEngine(
-                          ext::make_shared<HestonModel>(
+                          std::make_shared<HestonModel>(
                                            hestonProcess))));
 
             Real expected   = optionPureHeston.NPV();
@@ -577,22 +577,22 @@ void HybridHestonHullWhiteProcessTest::testAnalyticHestonHullWhitePricing() {
     }
 
     const Date maturity = today + Period(5, Years);
-    const Handle<Quote> s0(ext::shared_ptr<Quote>(new SimpleQuote(100)));
+    const Handle<Quote> s0(std::shared_ptr<Quote>(new SimpleQuote(100)));
     const Handle<YieldTermStructure> rTS(
-       ext::shared_ptr<YieldTermStructure>(new ZeroCurve(dates, rates, dc)));
+       std::shared_ptr<YieldTermStructure>(new ZeroCurve(dates, rates, dc)));
     const Handle<YieldTermStructure> qTS(
-       ext::shared_ptr<YieldTermStructure>(
+       std::shared_ptr<YieldTermStructure>(
                                           new ZeroCurve(dates, divRates, dc)));
 
-    const ext::shared_ptr<HestonProcess> hestonProcess(
+    const std::shared_ptr<HestonProcess> hestonProcess(
             new HestonProcess(rTS, qTS, s0, 0.08, 1.5, 0.0625, 0.5, -0.8));
-    const ext::shared_ptr<HestonModel> hestonModel(
+    const std::shared_ptr<HestonModel> hestonModel(
                                             new HestonModel(hestonProcess));
 
-    const ext::shared_ptr<HullWhiteForwardProcess> hwFwdProcess(
+    const std::shared_ptr<HullWhiteForwardProcess> hwFwdProcess(
               new HullWhiteForwardProcess(rTS, 0.01, 0.01));
     hwFwdProcess->setForwardMeasureTime(dc.yearFraction(today, maturity));
-    const ext::shared_ptr<HullWhite> hullWhiteModel(new HullWhite(
+    const std::shared_ptr<HullWhite> hullWhiteModel(new HullWhite(
                                rTS, hwFwdProcess->a(), hwFwdProcess->sigma()));
 
     const Real tol = 0.002;
@@ -601,14 +601,14 @@ void HybridHestonHullWhiteProcessTest::testAnalyticHestonHullWhitePricing() {
 
     for (auto type : types) {
         for (double j : strike) {
-            ext::shared_ptr<HybridHestonHullWhiteProcess> jointProcess(
+            std::shared_ptr<HybridHestonHullWhiteProcess> jointProcess(
                 new HybridHestonHullWhiteProcess(
                         hestonProcess, hwFwdProcess, 0.0,
                         HybridHestonHullWhiteProcess::Euler));
 
-            ext::shared_ptr<StrikedTypePayoff> payoff(
+            std::shared_ptr<StrikedTypePayoff> payoff(
                                new PlainVanillaPayoff(type, j));
-            ext::shared_ptr<Exercise> exercise(
+            std::shared_ptr<Exercise> exercise(
                                new EuropeanExercise(maturity));
 
             VanillaOption optionHestonHW(payoff, exercise);
@@ -622,7 +622,7 @@ void HybridHestonHullWhiteProcessTest::testAnalyticHestonHullWhitePricing() {
 
             VanillaOption optionPureHeston(payoff, exercise);
             optionPureHeston.setPricingEngine(
-                ext::shared_ptr<PricingEngine>(
+                std::shared_ptr<PricingEngine>(
                     new AnalyticHestonHullWhiteEngine(hestonModel,
                                                       hullWhiteModel, 128)));
 
@@ -645,7 +645,7 @@ void HybridHestonHullWhiteProcessTest::testAnalyticHestonHullWhitePricing() {
 void HybridHestonHullWhiteProcessTest::testCallableEquityPricing() {
     BOOST_TEST_MESSAGE("Testing the pricing of a callable equity product...");
 
-    using namespace ext::placeholders;
+    using namespace std::placeholders;
 
     SavedSettings backup;
 
@@ -663,22 +663,22 @@ void HybridHestonHullWhiteProcessTest::testCallableEquityPricing() {
 
     Settings::instance().evaluationDate() = today;
 
-    Handle<Quote> spot(ext::shared_ptr<Quote>(new SimpleQuote(100.0)));
-    ext::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.04));
+    Handle<Quote> spot(std::shared_ptr<Quote>(new SimpleQuote(100.0)));
+    std::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.04));
     Handle<YieldTermStructure> qTS(flatRate(today, qRate, dc));
-    ext::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.04));
+    std::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.04));
     Handle<YieldTermStructure> rTS(flatRate(today, rRate, dc));
 
-    const ext::shared_ptr<HestonProcess> hestonProcess(
+    const std::shared_ptr<HestonProcess> hestonProcess(
             new HestonProcess(rTS, qTS, spot, 0.0625, 1.0,
                               0.24*0.24, 1e-4, 0.0));
     // FLOATING_POINT_EXCEPTION
-    const ext::shared_ptr<HullWhiteForwardProcess> hwProcess(
+    const std::shared_ptr<HullWhiteForwardProcess> hwProcess(
             new HullWhiteForwardProcess(rTS, 0.00883, 0.00526));
     hwProcess->setForwardMeasureTime(
                       dc.yearFraction(today, today+Period(maturity+1, Years)));
 
-    const ext::shared_ptr<HybridHestonHullWhiteProcess> jointProcess(
+    const std::shared_ptr<HybridHestonHullWhiteProcess> jointProcess(
         new HybridHestonHullWhiteProcess(hestonProcess, hwProcess, -0.4));
 
     Schedule schedule(today, today + Period(maturity, Years),
@@ -688,7 +688,7 @@ void HybridHestonHullWhiteProcessTest::testCallableEquityPricing() {
 
     std::vector<Time> times(maturity+1);
     std::transform(schedule.begin(), schedule.end(), times.begin(),
-                   ext::bind(&Actual365Fixed::yearFraction,
+                   std::bind(&Actual365Fixed::yearFraction,
                                dc, today, _1, Date(), Date()));
 
     for (Size i=0; i<=maturity; ++i)
@@ -786,22 +786,22 @@ void HybridHestonHullWhiteProcessTest::testDiscretizationError() {
     const Date maturity = today + Period(10, Years);
     const Volatility v = 0.25;
 
-    const Handle<Quote> s0(ext::shared_ptr<Quote>(new SimpleQuote(100)));
-    const ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(v));
+    const Handle<Quote> s0(std::shared_ptr<Quote>(new SimpleQuote(100)));
+    const std::shared_ptr<SimpleQuote> vol(new SimpleQuote(v));
     const Handle<BlackVolTermStructure> volTS(flatVol(today, vol, dc));
     const Handle<YieldTermStructure> rTS(
-       ext::shared_ptr<YieldTermStructure>(new ZeroCurve(dates, rates, dc)));
+       std::shared_ptr<YieldTermStructure>(new ZeroCurve(dates, rates, dc)));
     const Handle<YieldTermStructure> qTS(
-       ext::shared_ptr<YieldTermStructure>(
+       std::shared_ptr<YieldTermStructure>(
                                           new ZeroCurve(dates, divRates, dc)));
 
-    const ext::shared_ptr<BlackScholesMertonProcess> bsmProcess(
+    const std::shared_ptr<BlackScholesMertonProcess> bsmProcess(
                           new BlackScholesMertonProcess(s0, qTS, rTS, volTS));
 
-    const ext::shared_ptr<HestonProcess> hestonProcess(
+    const std::shared_ptr<HestonProcess> hestonProcess(
            new HestonProcess(rTS, qTS, s0, v*v, 1, v*v, 1e-6, -0.4));
 
-    const ext::shared_ptr<HullWhiteForwardProcess> hwProcess(
+    const std::shared_ptr<HullWhiteForwardProcess> hwProcess(
               new HullWhiteForwardProcess(rTS, 0.01, 0.01));
     hwProcess->setForwardMeasureTime(20.1472222222222222);
 
@@ -811,23 +811,23 @@ void HybridHestonHullWhiteProcessTest::testDiscretizationError() {
 
     for (double i : corr) {
         for (double j : strike) {
-            ext::shared_ptr<StrikedTypePayoff> payoff(
+            std::shared_ptr<StrikedTypePayoff> payoff(
                                new PlainVanillaPayoff(Option::Put, j));
-            ext::shared_ptr<Exercise> exercise(
+            std::shared_ptr<Exercise> exercise(
                                new EuropeanExercise(maturity));
 
             VanillaOption optionBsmHW(payoff, exercise);
-            const ext::shared_ptr<HullWhite> hwModel(new HullWhite(
+            const std::shared_ptr<HullWhite> hwModel(new HullWhite(
                                rTS, hwProcess->a(), hwProcess->sigma()));
             optionBsmHW.setPricingEngine(
-                ext::shared_ptr<PricingEngine>(
+                std::shared_ptr<PricingEngine>(
                          new AnalyticBSMHullWhiteEngine(i, bsmProcess,
                                                         hwModel)));
 
             Real expected = optionBsmHW.NPV();
 
             VanillaOption optionHestonHW(payoff, exercise);
-            ext::shared_ptr<HybridHestonHullWhiteProcess> jointProcess(
+            std::shared_ptr<HybridHestonHullWhiteProcess> jointProcess(
                 new HybridHestonHullWhiteProcess(hestonProcess,
                                                  hwProcess, i));
             optionHestonHW.setPricingEngine(
@@ -863,7 +863,7 @@ void HybridHestonHullWhiteProcessTest::testFdmHestonHullWhiteEngine() {
     const Date exerciseDate = Date(28, March, 2012);
     DayCounter dc = Actual365Fixed();
     
-    Handle<Quote> s0(ext::shared_ptr<Quote>(new SimpleQuote(100.0)));
+    Handle<Quote> s0(std::shared_ptr<Quote>(new SimpleQuote(100.0)));
 
     const Handle<YieldTermStructure> rTS(flatRate(0.05, dc));
     const Handle<YieldTermStructure> qTS(flatRate(0.02, dc));
@@ -872,37 +872,37 @@ void HybridHestonHullWhiteProcessTest::testFdmHestonHullWhiteEngine() {
     const Handle<BlackVolTermStructure> volTS(flatVol(vol, dc));
 
     const Real v0 = vol*vol;
-    ext::shared_ptr<HestonProcess> hestonProcess(
+    std::shared_ptr<HestonProcess> hestonProcess(
         new HestonProcess(rTS, qTS, s0, v0, 1.0, v0, 0.000001, 0.0));
 
-    ext::shared_ptr<BlackScholesMertonProcess> stochProcess(
+    std::shared_ptr<BlackScholesMertonProcess> stochProcess(
                       new BlackScholesMertonProcess(s0, qTS, rTS, volTS));
 
-    ext::shared_ptr<HullWhiteProcess> hwProcess(
+    std::shared_ptr<HullWhiteProcess> hwProcess(
                               new HullWhiteProcess(rTS, 0.00883, 0.01));
-    ext::shared_ptr<HullWhite> hwModel(
+    std::shared_ptr<HullWhite> hwModel(
                     new HullWhite(rTS, hwProcess->a(), hwProcess->sigma()));
     
-    ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exerciseDate));
+    std::shared_ptr<Exercise> exercise(new EuropeanExercise(exerciseDate));
     const Real corr[] = {-0.85, 0.5 };
     const Real strike[] = { 75, 120, 160 };
 
     for (double i : corr) {
         for (double j : strike) {
-            ext::shared_ptr<StrikedTypePayoff> payoff(
+            std::shared_ptr<StrikedTypePayoff> payoff(
                               new PlainVanillaPayoff(Option::Call, j));
             VanillaOption option(payoff, exercise);
             
-            option.setPricingEngine(ext::shared_ptr<PricingEngine>(
+            option.setPricingEngine(std::shared_ptr<PricingEngine>(
                 new FdHestonHullWhiteVanillaEngine(
-                    ext::make_shared<HestonModel>(
+                    std::make_shared<HestonModel>(
                         hestonProcess),
                                         hwProcess, i, 50, 200, 10, 15)));
             const Real calculated = option.NPV();
             const Real calculatedDelta = option.delta();
             const Real calculatedGamma = option.gamma();
             
-            option.setPricingEngine(ext::shared_ptr<PricingEngine>(
+            option.setPricingEngine(std::shared_ptr<PricingEngine>(
                 new AnalyticBSMHullWhiteEngine(i,
                                                stochProcess, hwModel)));
             const Real expected = option.NPV();
@@ -1001,31 +1001,31 @@ namespace {
         Option::Type optionType;
     };
 
-    ext::shared_ptr<HestonProcess> makeHestonProcess(
+    std::shared_ptr<HestonProcess> makeHestonProcess(
                                              const HestonModelData& params) {
 
         Handle<Quote> spot(
-                ext::make_shared<SimpleQuote>(100));
+                std::make_shared<SimpleQuote>(100));
 
         DayCounter dayCounter = Actual365Fixed();
         Handle<YieldTermStructure> rTS(flatRate(params.r, dayCounter));
         Handle<YieldTermStructure> qTS(flatRate(params.q, dayCounter));
         
-        return ext::make_shared<HestonProcess>(
+        return std::make_shared<HestonProcess>(
                    rTS, qTS, spot, params.v0, params.kappa, 
                    params.theta, params.sigma, params.rho);
     }
     
-    ext::shared_ptr<VanillaOption> makeVanillaOption(
+    std::shared_ptr<VanillaOption> makeVanillaOption(
                                             const VanillaOptionData& params) {
         
         Date maturity = Date(Settings::instance().evaluationDate()) 
                                           + Period(Size(params.maturity*365), Days);
-        ext::shared_ptr<Exercise> exercise(new EuropeanExercise(maturity));
-        ext::shared_ptr<StrikedTypePayoff> payoff(
+        std::shared_ptr<Exercise> exercise(new EuropeanExercise(maturity));
+        std::shared_ptr<StrikedTypePayoff> payoff(
                     new PlainVanillaPayoff(params.optionType, params.strike));
         
-        return ext::make_shared<VanillaOption>(
+        return std::make_shared<VanillaOption>(
                                           payoff, exercise);
     }
 }
@@ -1048,25 +1048,25 @@ void HybridHestonHullWhiteProcessTest::testBsmHullWhitePricing() {
     HullWhiteModelData hwModelData = hullWhiteModels[0];
     bool controlVariate[] = { true, false };
 
-    ext::shared_ptr<HestonProcess> hp(makeHestonProcess(hestonModelData));
-    ext::shared_ptr<HestonModel> hestonModel(new HestonModel(hp));
+    std::shared_ptr<HestonProcess> hp(makeHestonProcess(hestonModelData));
+    std::shared_ptr<HestonModel> hestonModel(new HestonModel(hp));
     
-    ext::shared_ptr<HullWhiteProcess> hwProcess(
+    std::shared_ptr<HullWhiteProcess> hwProcess(
         new HullWhiteProcess(hp->riskFreeRate(),
                              hwModelData.a, hwModelData.sigma));
-    ext::shared_ptr<HullWhite> hullWhiteModel(
+    std::shared_ptr<HullWhite> hullWhiteModel(
         new HullWhite(hp->riskFreeRate(), 
                       hwProcess->a(), hwProcess->sigma()));
 
 
-    ext::shared_ptr<BlackScholesMertonProcess> bsmProcess(
+    std::shared_ptr<BlackScholesMertonProcess> bsmProcess(
         new BlackScholesMertonProcess(
             hp->s0(), hp->dividendYield(), hp->riskFreeRate(), 
             Handle<BlackVolTermStructure>(
                 flatVol(today, std::sqrt(hestonModelData.theta),
                         hp->riskFreeRate()->dayCounter()))));
     
-    ext::shared_ptr<PricingEngine> bsmhwEngine(
+    std::shared_ptr<PricingEngine> bsmhwEngine(
                      new AnalyticBSMHullWhiteEngine(equityIrCorr, bsmProcess,
                                                     hullWhiteModel));
     
@@ -1078,7 +1078,7 @@ void HybridHestonHullWhiteProcessTest::testBsmHullWhitePricing() {
             for (unsigned long u : listOfTimeStepsPerYear) {
                 Size tSteps = Size(maturity*u);
     
-                ext::shared_ptr<FdHestonHullWhiteVanillaEngine> fdEngine(
+                std::shared_ptr<FdHestonHullWhiteVanillaEngine> fdEngine(
                     new FdHestonHullWhiteVanillaEngine(
                                     hestonModel, hwProcess, equityIrCorr,  
                                     tSteps, 400, 2, 10, 0, i,
@@ -1089,7 +1089,7 @@ void HybridHestonHullWhiteProcessTest::testBsmHullWhitePricing() {
                 for (double & strike : strikes) {
                     VanillaOptionData optionData 
                                   = { strike, maturity, Option::Call }; 
-                    ext::shared_ptr<VanillaOption> option 
+                    std::shared_ptr<VanillaOption> option 
                                         = makeVanillaOption(optionData);
                     option->setPricingEngine(bsmhwEngine);
                     Real expected = option->NPV();
@@ -1136,17 +1136,17 @@ void HybridHestonHullWhiteProcessTest::testSpatialDiscretizatinError() {
         for (Size i=0; i < schemes.size(); ++i) {
             for (auto & j : hestonModels) {
                 Real avgPriceDiff = 0;
-                ext::shared_ptr<HestonProcess> hestonProcess(
+                std::shared_ptr<HestonProcess> hestonProcess(
                                         makeHestonProcess(j));
-                ext::shared_ptr<HestonModel> hestonModel(
+                std::shared_ptr<HestonModel> hestonModel(
                                         new HestonModel(hestonProcess));
     
-                ext::shared_ptr<PricingEngine> analyticEngine(
+                std::shared_ptr<PricingEngine> analyticEngine(
                                new AnalyticHestonEngine(hestonModel, 172));
     
                 Size tSteps = Size(maturity*u);
     
-                ext::shared_ptr<FdHestonVanillaEngine> fdEngine(
+                std::shared_ptr<FdHestonVanillaEngine> fdEngine(
                     new FdHestonVanillaEngine(
                         hestonModel, tSteps, 200, 40, 0,
                         schemes[i].schemeDesc));
@@ -1155,7 +1155,7 @@ void HybridHestonHullWhiteProcessTest::testSpatialDiscretizatinError() {
                 for (double & strike : strikes) {
                     VanillaOptionData optionData 
                                   = { strike, maturity, Option::Call }; 
-                    ext::shared_ptr<VanillaOption> option 
+                    std::shared_ptr<VanillaOption> option 
                                         = makeVanillaOption(optionData);
                     option->setPricingEngine(analyticEngine);
                     Real expected = option->NPV();
@@ -1202,7 +1202,7 @@ namespace {
       public:
         explicit HestonHullWhiteCorrelationConstraint(
             Real equityShortRateCorr)
-        : Constraint(ext::shared_ptr<Constraint::Impl>(
+        : Constraint(std::shared_ptr<Constraint::Impl>(
              new HestonHullWhiteCorrelationConstraint::Impl(
                                                      equityShortRateCorr))) {}
     };
@@ -1232,13 +1232,13 @@ void HybridHestonHullWhiteProcessTest::testHestonHullWhiteCalibration() {
 
     // assuming, that the Hull-White process is already calibrated 
     // on a given set of pure interest rate calibration instruments.
-    ext::shared_ptr<HullWhiteProcess> hwProcess(
+    std::shared_ptr<HullWhiteProcess> hwProcess(
                               new HullWhiteProcess(rTS, 0.00883, 0.00631));
-    ext::shared_ptr<HullWhite> hullWhiteModel(
+    std::shared_ptr<HullWhite> hullWhiteModel(
                     new HullWhite(rTS, hwProcess->a(), hwProcess->sigma()));
                     
     const Handle<YieldTermStructure> qTS(flatRate(0.02, dc));
-    Handle<Quote> s0(ext::shared_ptr<Quote>(new SimpleQuote(100.0)));
+    Handle<Quote> s0(std::shared_ptr<Quote>(new SimpleQuote(100.0)));
 
     // starting point of the pure Heston calibration
     const Real start_v0    = 0.2*0.2;
@@ -1247,14 +1247,14 @@ void HybridHestonHullWhiteProcessTest::testHestonHullWhiteCalibration() {
     const Real start_sigma = 0.25;
     const Real start_rho   = -0.5;
     
-    const ext::shared_ptr<HestonProcess> hestonProcess(
+    const std::shared_ptr<HestonProcess> hestonProcess(
         new HestonProcess(rTS, qTS, s0, start_v0, start_kappa, 
                           start_theta, start_sigma, start_rho));
-    const ext::shared_ptr<HestonModel> analyticHestonModel
+    const std::shared_ptr<HestonModel> analyticHestonModel
                                             (new HestonModel(hestonProcess));
-    const ext::shared_ptr<PricingEngine> analyticHestonEngine(
+    const std::shared_ptr<PricingEngine> analyticHestonEngine(
                          new AnalyticHestonEngine(analyticHestonModel, 164));
-    const ext::shared_ptr<HestonModel> fdmHestonModel
+    const std::shared_ptr<HestonModel> fdmHestonModel
                                             (new HestonModel(hestonProcess));
 
     const Real equityShortRateCorr = -0.5;
@@ -1274,23 +1274,23 @@ void HybridHestonHullWhiteProcessTest::testHestonHullWhiteCalibration() {
         0.303219,0.291534,0.286187,0.283073,0.280239,0.276414,0.270926,0.262173
     };
     
-    std::vector<ext::shared_ptr<BlackCalibrationHelper> > options;
+    std::vector<std::shared_ptr<BlackCalibrationHelper> > options;
     
     for (Size i=0; i < maturities.size(); ++i) {
         const Period maturity((int)(maturities[i]*12.0+0.5), Months);
-        ext::shared_ptr<Exercise> exercise(
+        std::shared_ptr<Exercise> exercise(
                                         new EuropeanExercise(today + maturity));
 
         for (Size j=0; j < strikes.size(); ++j) {
-            ext::shared_ptr<StrikedTypePayoff> payoff(new PlainVanillaPayoff(
+            std::shared_ptr<StrikedTypePayoff> payoff(new PlainVanillaPayoff(
                 strikes[j] * rTS->discount(maturities[i]) >=
                         s0->value() * qTS->discount(maturities[i])
                     ? Option::Call
                     : Option::Put,
                 strikes[j]));
-            RelinkableHandle<Quote> v(ext::shared_ptr<Quote>(
+            RelinkableHandle<Quote> v(std::shared_ptr<Quote>(
                 new SimpleQuote(vol[i*strikes.size()+j])));
-            options.push_back(ext::shared_ptr<BlackCalibrationHelper>(
+            options.push_back(std::shared_ptr<BlackCalibrationHelper>(
                 new HestonModelHelper(maturity, calendar, s0,
                                       strikes[j], v, rTS, qTS,
                                       BlackCalibrationHelper::PriceError)));
@@ -1298,10 +1298,10 @@ void HybridHestonHullWhiteProcessTest::testHestonHullWhiteCalibration() {
             
             // Improve the quality of the starting point 
             // for the full Heston-Hull-White calibration 
-            ext::shared_ptr<SimpleQuote> volQuote(new SimpleQuote);
-            ext::shared_ptr<GeneralizedBlackScholesProcess> bsProcess =
+            std::shared_ptr<SimpleQuote> volQuote(new SimpleQuote);
+            std::shared_ptr<GeneralizedBlackScholesProcess> bsProcess =
                 detail::ImpliedVolatilityHelper::clone(
-                    ext::make_shared<GeneralizedBlackScholesProcess>(
+                    std::make_shared<GeneralizedBlackScholesProcess>(
                         
                             s0, qTS, rTS, Handle<BlackVolTermStructure>(
                                                     flatVol(v->value(), dc))),
@@ -1309,7 +1309,7 @@ void HybridHestonHullWhiteProcessTest::testHestonHullWhiteCalibration() {
 
             VanillaOption dummyOption(payoff, exercise);
 
-            ext::shared_ptr<PricingEngine> bshwEngine(
+            std::shared_ptr<PricingEngine> bshwEngine(
                 new AnalyticBSMHullWhiteEngine(equityShortRateCorr,
                                                bsProcess, hullWhiteModel));
 
@@ -1317,10 +1317,10 @@ void HybridHestonHullWhiteProcessTest::testHestonHullWhiteCalibration() {
                 dummyOption, *bshwEngine, *volQuote,
                 marketValue, 1e-8, 100, 0.0001, 10);
 
-            v.linkTo(ext::shared_ptr<Quote>(new SimpleQuote(vt)));
+            v.linkTo(std::shared_ptr<Quote>(new SimpleQuote(vt)));
             
             options.back()->setPricingEngine(
-                ext::shared_ptr<PricingEngine>(analyticHestonEngine));
+                std::shared_ptr<PricingEngine>(analyticHestonEngine));
         }
     }    
         
@@ -1335,7 +1335,7 @@ void HybridHestonHullWhiteProcessTest::testHestonHullWhiteCalibration() {
 
     for (Size i=0; i < maturities.size(); ++i) {
         const Size tGrid = static_cast<Size>(std::max(5.0, maturities[i]*5.0));
-        ext::shared_ptr<FdHestonHullWhiteVanillaEngine> engine(
+        std::shared_ptr<FdHestonHullWhiteVanillaEngine> engine(
             new FdHestonHullWhiteVanillaEngine(fdmHestonModel, hwProcess, 
                                                equityShortRateCorr, 
                                                tGrid, 45, 11, 5, 0, true));
@@ -1351,11 +1351,11 @@ void HybridHestonHullWhiteProcessTest::testHestonHullWhiteCalibration() {
             // is used to calculate the prices for all strikes
             const Size js = (j + (strikes.size()-1)/2) % strikes.size();
  
-            ext::shared_ptr<StrikedTypePayoff> payoff(
+            std::shared_ptr<StrikedTypePayoff> payoff(
                              new PlainVanillaPayoff(Option::Call, strikes[js]));
-            Handle<Quote> v(ext::shared_ptr<Quote>(
+            Handle<Quote> v(std::shared_ptr<Quote>(
                                     new SimpleQuote(vol[i*strikes.size()+js])));
-            options.push_back(ext::shared_ptr<BlackCalibrationHelper>(
+            options.push_back(std::shared_ptr<BlackCalibrationHelper>(
                 new HestonModelHelper(maturity, calendar, s0,
                                       strikes[js], v, rTS, qTS,
                                       BlackCalibrationHelper::PriceError)));
@@ -1427,10 +1427,10 @@ void HybridHestonHullWhiteProcessTest::testH1HWPricingEngine() {
     const Date exerciseDate = Date(13, July, 2022);
     const DayCounter dc = Actual365Fixed();
 
-    const ext::shared_ptr<Exercise> exercise(
+    const std::shared_ptr<Exercise> exercise(
         new EuropeanExercise(exerciseDate));
 
-    const Handle<Quote> s0(ext::shared_ptr<Quote>(new SimpleQuote(100.0)));
+    const Handle<Quote> s0(std::shared_ptr<Quote>(new SimpleQuote(100.0)));
 
     const Real r       = 0.02;
     const Real q       = 0.00;
@@ -1447,12 +1447,12 @@ void HybridHestonHullWhiteProcessTest::testH1HWPricingEngine() {
     const Handle<YieldTermStructure> qTS(flatRate(today, q, dc));
 
     const Handle<BlackVolTermStructure> flatVolTS(flatVol(today, 0.20, dc));
-    const ext::shared_ptr<GeneralizedBlackScholesProcess> bsProcess(
+    const std::shared_ptr<GeneralizedBlackScholesProcess> bsProcess(
         new GeneralizedBlackScholesProcess(s0, qTS, rTS, flatVolTS));
 
-    const ext::shared_ptr<HullWhiteProcess> hwProcess(
+    const std::shared_ptr<HullWhiteProcess> hwProcess(
         new HullWhiteProcess(rTS, kappa_r, sigma_r));
-    const ext::shared_ptr<HullWhite> hullWhiteModel(
+    const std::shared_ptr<HullWhite> hullWhiteModel(
         new HullWhite(Handle<YieldTermStructure>(rTS), kappa_r, sigma_r));
 
     const Real tol = 0.0001;
@@ -1462,19 +1462,19 @@ void HybridHestonHullWhiteProcessTest::testH1HWPricingEngine() {
             { 0.263626, 0.211625, 0.199907, 0.193502, 0.190025 } };
 
     for (Size j=0; j < sigma_v.size(); ++j) {
-        const ext::shared_ptr<HestonProcess> hestonProcess(
+        const std::shared_ptr<HestonProcess> hestonProcess(
             new HestonProcess(rTS, qTS, s0, v0, kappa_v, theta,
                               sigma_v[j], rho_sv));
-        const ext::shared_ptr<HestonModel> hestonModel(
+        const std::shared_ptr<HestonModel> hestonModel(
             new HestonModel(hestonProcess));
 
         for (Size i=0; i < strikes.size(); ++i) {
-            const ext::shared_ptr<StrikedTypePayoff> payoff(
+            const std::shared_ptr<StrikedTypePayoff> payoff(
                 new PlainVanillaPayoff(Option::Call, strikes[i]));
 
             VanillaOption option(payoff, exercise);
 
-            const ext::shared_ptr<PricingEngine> analyticH1HWEngine(
+            const std::shared_ptr<PricingEngine> analyticH1HWEngine(
                 new AnalyticH1HWEngine(hestonModel, hullWhiteModel,
                                        rho_sr, 144));
             option.setPricingEngine(analyticH1HWEngine);

@@ -72,7 +72,7 @@ namespace QuantLib {
         //@}
       protected:
         struct Data;
-        ext::shared_ptr<Data> data_;
+        std::shared_ptr<Data> data_;
     };
 
     struct Currency::Data {

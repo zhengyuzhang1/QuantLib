@@ -64,15 +64,15 @@ namespace QuantLib {
     class Commodity : public Instrument {
       public:
         explicit Commodity(
-                     ext::shared_ptr<SecondaryCosts>  secondaryCosts);
-        const ext::shared_ptr<SecondaryCosts>& secondaryCosts() const;
+                     std::shared_ptr<SecondaryCosts>  secondaryCosts);
+        const std::shared_ptr<SecondaryCosts>& secondaryCosts() const;
         const SecondaryCostAmounts& secondaryCostAmounts() const;
         const PricingErrors& pricingErrors() const;
         void addPricingError(PricingError::Level errorLevel,
                              const std::string& error,
                              const std::string& detail = "") const;
       protected:
-        ext::shared_ptr<SecondaryCosts> secondaryCosts_;
+        std::shared_ptr<SecondaryCosts> secondaryCosts_;
         mutable PricingErrors pricingErrors_;
         mutable SecondaryCostAmounts secondaryCostAmounts_;
     };

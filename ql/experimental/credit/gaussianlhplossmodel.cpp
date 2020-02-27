@@ -56,13 +56,13 @@ namespace QuantLib {
             //g++ complains default value not seen as typename
             GaussianCopulaPolicy::initTraits()),
           sqrt1minuscorrel_(std::sqrt(1.-correlation)),
-          correl_(Handle<Quote>(ext::make_shared<SimpleQuote>(correlation))),
+          correl_(Handle<Quote>(std::make_shared<SimpleQuote>(correlation))),
           beta_(sqrt(correlation)),
           biphi_(-sqrt(correlation))
         {
             for(double recoverie : recoveries)
                 rrQuotes_.emplace_back(
-                ext::make_shared<RecoveryRateQuote>(recoverie));
+                std::make_shared<RecoveryRateQuote>(recoverie));
         }
 
         GaussianLHPLossModel::GaussianLHPLossModel(
@@ -80,7 +80,7 @@ namespace QuantLib {
             registerWith(correl_);
             for(double recoverie : recoveries)
                 rrQuotes_.emplace_back(
-                ext::make_shared<RecoveryRateQuote>(recoverie));
+                std::make_shared<RecoveryRateQuote>(recoverie));
         }
 
 

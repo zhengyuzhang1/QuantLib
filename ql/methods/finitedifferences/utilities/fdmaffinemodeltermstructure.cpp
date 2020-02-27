@@ -32,7 +32,7 @@ namespace QuantLib {
         const DayCounter& dayCounter,
         const Date& referenceDate,
         const Date& modelReferenceDate,
-        ext::shared_ptr<AffineModel>  model)
+        std::shared_ptr<AffineModel>  model)
     : YieldTermStructure(referenceDate, cal, dayCounter),
       r_(r),
       t_(dayCounter.yearFraction(modelReferenceDate, referenceDate)),

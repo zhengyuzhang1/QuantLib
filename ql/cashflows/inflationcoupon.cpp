@@ -31,7 +31,7 @@ namespace QuantLib {
                                     const Date& startDate,
                                     const Date& endDate,
                                     Natural fixingDays,
-                                    ext::shared_ptr<InflationIndex>  index,
+                                    std::shared_ptr<InflationIndex>  index,
                                     const Period& observationLag,
                                     DayCounter  dayCounter,
                                     const Date& refPeriodStart,
@@ -48,7 +48,7 @@ namespace QuantLib {
     }
 
 
-    void InflationCoupon::setPricer(const ext::shared_ptr<InflationCouponPricer>& pricer) {
+    void InflationCoupon::setPricer(const std::shared_ptr<InflationCouponPricer>& pricer) {
         QL_REQUIRE(checkPricerImpl(pricer),"pricer given is wrong type");
         if (pricer_)
             unregisterWith(pricer_);

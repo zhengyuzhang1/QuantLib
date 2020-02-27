@@ -40,12 +40,12 @@ namespace QuantLib {
     class FdmHestonEquityPart {
       public:
         FdmHestonEquityPart(
-            const ext::shared_ptr<FdmMesher>& mesher,
-            ext::shared_ptr<YieldTermStructure>  rTS,
-            ext::shared_ptr<YieldTermStructure>  qTS,
-            ext::shared_ptr<FdmQuantoHelper>  quantoHelper,
-            ext::shared_ptr<LocalVolTermStructure>  leverageFct
-                = ext::shared_ptr<LocalVolTermStructure>());
+            const std::shared_ptr<FdmMesher>& mesher,
+            std::shared_ptr<YieldTermStructure>  rTS,
+            std::shared_ptr<YieldTermStructure>  qTS,
+            std::shared_ptr<FdmQuantoHelper>  quantoHelper,
+            std::shared_ptr<LocalVolTermStructure>  leverageFct
+                = std::shared_ptr<LocalVolTermStructure>());
 
         void setTime(Time t1, Time t2);
         const TripleBandLinearOp& getMap() const;
@@ -59,17 +59,17 @@ namespace QuantLib {
         const TripleBandLinearOp dxxMap_;
         TripleBandLinearOp mapT_;
 
-        const ext::shared_ptr<FdmMesher> mesher_;
-        const ext::shared_ptr<YieldTermStructure> rTS_, qTS_;
-        const ext::shared_ptr<FdmQuantoHelper> quantoHelper_;
-        const ext::shared_ptr<LocalVolTermStructure> leverageFct_;
+        const std::shared_ptr<FdmMesher> mesher_;
+        const std::shared_ptr<YieldTermStructure> rTS_, qTS_;
+        const std::shared_ptr<FdmQuantoHelper> quantoHelper_;
+        const std::shared_ptr<LocalVolTermStructure> leverageFct_;
     };
 
     class FdmHestonVariancePart {
       public:
         FdmHestonVariancePart(
-            const ext::shared_ptr<FdmMesher>& mesher,
-            ext::shared_ptr<YieldTermStructure>  rTS,
+            const std::shared_ptr<FdmMesher>& mesher,
+            std::shared_ptr<YieldTermStructure>  rTS,
             Real sigma, Real kappa, Real theta);
 
         void setTime(Time t1, Time t2);
@@ -79,19 +79,19 @@ namespace QuantLib {
         const TripleBandLinearOp dyMap_;
         TripleBandLinearOp mapT_;
 
-        const ext::shared_ptr<YieldTermStructure> rTS_;
+        const std::shared_ptr<YieldTermStructure> rTS_;
     };
 
 
     class FdmHestonOp : public FdmLinearOpComposite {
       public:
         FdmHestonOp(
-            const ext::shared_ptr<FdmMesher>& mesher,
-            const ext::shared_ptr<HestonProcess>& hestonProcess,
-            const ext::shared_ptr<FdmQuantoHelper>& quantoHelper
-                = ext::shared_ptr<FdmQuantoHelper>(),
-            const ext::shared_ptr<LocalVolTermStructure>& leverageFct
-                = ext::shared_ptr<LocalVolTermStructure>());
+            const std::shared_ptr<FdmMesher>& mesher,
+            const std::shared_ptr<HestonProcess>& hestonProcess,
+            const std::shared_ptr<FdmQuantoHelper>& quantoHelper
+                = std::shared_ptr<FdmQuantoHelper>(),
+            const std::shared_ptr<LocalVolTermStructure>& leverageFct
+                = std::shared_ptr<LocalVolTermStructure>());
 
         Size size() const override;
         void setTime(Time t1, Time t2) override;

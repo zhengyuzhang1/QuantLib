@@ -39,10 +39,10 @@ namespace QuantLib {
         : public DividendVanillaOption::engine {
       public:
         AnalyticDividendEuropeanEngine(
-                    ext::shared_ptr<GeneralizedBlackScholesProcess> );
+                    std::shared_ptr<GeneralizedBlackScholesProcess> );
         void calculate() const override;
       private:
-        ext::shared_ptr<GeneralizedBlackScholesProcess> process_;
+        std::shared_ptr<GeneralizedBlackScholesProcess> process_;
     };
 
 }

@@ -31,26 +31,26 @@ namespace QuantLib {
       public:
         CTSMMCapletAlphaFormCalibration(
             const EvolutionDescription& evolution,
-            const ext::shared_ptr<PiecewiseConstantCorrelation>& corr,
-            const std::vector<ext::shared_ptr<
+            const std::shared_ptr<PiecewiseConstantCorrelation>& corr,
+            const std::vector<std::shared_ptr<
                         PiecewiseConstantVariance> >&
                                     displacedSwapVariances,
             const std::vector<Volatility>& capletVols,
-            const ext::shared_ptr<CurveState>& cs,
+            const std::shared_ptr<CurveState>& cs,
             Spread displacement,
             const std::vector<Real>& alphaInitial,
             const std::vector<Real>& alphaMax,
             const std::vector<Real>& alphaMin,
             bool maximizeHomogeneity,
-            ext::shared_ptr<AlphaForm> parametricForm =
-                                    ext::shared_ptr<AlphaForm>());
+            std::shared_ptr<AlphaForm> parametricForm =
+                                    std::shared_ptr<AlphaForm>());
         // inspector
         const std::vector<Real>& alpha() const;
         // actual calibration function
         static Natural capletAlphaFormCalibration(
             const EvolutionDescription& evolution,
             const PiecewiseConstantCorrelation& corr,
-            const std::vector<ext::shared_ptr<
+            const std::vector<std::shared_ptr<
                 PiecewiseConstantVariance> >&
                     displacedSwapVariances,
             const std::vector<Volatility>& capletVols,
@@ -61,7 +61,7 @@ namespace QuantLib {
             const std::vector<Real>& alphaMax,
             const std::vector<Real>& alphaMin,
             bool maximizeHomogeneity,
-            ext::shared_ptr<AlphaForm> parametricForm,
+            std::shared_ptr<AlphaForm> parametricForm,
 
             const Size numberOfFactors,
             Integer steps,
@@ -79,7 +79,7 @@ namespace QuantLib {
         // input
         std::vector<Real> alphaInitial_, alphaMax_, alphaMin_;
         bool maximizeHomogeneity_;
-        ext::shared_ptr<AlphaForm> parametricForm_;
+        std::shared_ptr<AlphaForm> parametricForm_;
         // results
         std::vector<Real> alpha_, a_, b_;
     };

@@ -38,13 +38,6 @@
 using namespace std;
 using namespace QuantLib;
 
-#if defined(QL_ENABLE_SESSIONS)
-namespace QuantLib {
-
-    Integer sessionId() { return 0; }
-
-}
-#endif
 
 int main(int, char* []) {
 
@@ -57,7 +50,7 @@ int main(int, char* []) {
          *********************/
 
         RelinkableHandle<YieldTermStructure> euriborTermStructure;
-        ext::shared_ptr<IborIndex> euribor3m(
+        std::shared_ptr<IborIndex> euribor3m(
                                        new Euribor3M(euriborTermStructure));
 
         Date todaysDate = Date(23, May, 2006);
@@ -93,15 +86,15 @@ int main(int, char* []) {
 
 
         // FRAs
-        ext::shared_ptr<SimpleQuote> fra1x4Rate(
+        std::shared_ptr<SimpleQuote> fra1x4Rate(
                                       new SimpleQuote(threeMonthFraQuote[1]));
-        ext::shared_ptr<SimpleQuote> fra2x5Rate(
+        std::shared_ptr<SimpleQuote> fra2x5Rate(
                                       new SimpleQuote(threeMonthFraQuote[2]));
-        ext::shared_ptr<SimpleQuote> fra3x6Rate(
+        std::shared_ptr<SimpleQuote> fra3x6Rate(
                                       new SimpleQuote(threeMonthFraQuote[3]));
-        ext::shared_ptr<SimpleQuote> fra6x9Rate(
+        std::shared_ptr<SimpleQuote> fra6x9Rate(
                                       new SimpleQuote(threeMonthFraQuote[6]));
-        ext::shared_ptr<SimpleQuote> fra9x12Rate(
+        std::shared_ptr<SimpleQuote> fra9x12Rate(
                                       new SimpleQuote(threeMonthFraQuote[9]));
 
         RelinkableHandle<Quote> h1x4;  h1x4.linkTo(fra1x4Rate);
@@ -123,27 +116,27 @@ int main(int, char* []) {
         BusinessDayConvention convention = euribor3m->businessDayConvention();
         bool endOfMonth = euribor3m->endOfMonth();
 
-        ext::shared_ptr<RateHelper> fra1x4(
+        std::shared_ptr<RateHelper> fra1x4(
                            new FraRateHelper(h1x4, 1, 4,
                                              fixingDays, calendar, convention,
                                              endOfMonth, fraDayCounter));
 
-        ext::shared_ptr<RateHelper> fra2x5(
+        std::shared_ptr<RateHelper> fra2x5(
                            new FraRateHelper(h2x5, 2, 5,
                                              fixingDays, calendar, convention,
                                              endOfMonth, fraDayCounter));
 
-        ext::shared_ptr<RateHelper> fra3x6(
+        std::shared_ptr<RateHelper> fra3x6(
                            new FraRateHelper(h3x6, 3, 6,
                                              fixingDays, calendar, convention,
                                              endOfMonth, fraDayCounter));
 
-        ext::shared_ptr<RateHelper> fra6x9(
+        std::shared_ptr<RateHelper> fra6x9(
                            new FraRateHelper(h6x9, 6, 9,
                                              fixingDays, calendar, convention,
                                              endOfMonth, fraDayCounter));
 
-        ext::shared_ptr<RateHelper> fra9x12(
+        std::shared_ptr<RateHelper> fra9x12(
                            new FraRateHelper(h9x12, 9, 12,
                                              fixingDays, calendar, convention,
                                              endOfMonth, fraDayCounter));
@@ -161,7 +154,7 @@ int main(int, char* []) {
         double tolerance = 1.0e-15;
 
         // A FRA curve
-        std::vector<ext::shared_ptr<RateHelper> > fraInstruments;
+        std::vector<std::shared_ptr<RateHelper> > fraInstruments;
 
         fraInstruments.push_back(fra1x4);
         fraInstruments.push_back(fra2x5);
@@ -169,7 +162,7 @@ int main(int, char* []) {
         fraInstruments.push_back(fra6x9);
         fraInstruments.push_back(fra9x12);
 
-        ext::shared_ptr<YieldTermStructure> fraTermStructure(
+        std::shared_ptr<YieldTermStructure> fraTermStructure(
                      new PiecewiseYieldCurve<Discount,LogLinear>(
                                          settlementDate, fraInstruments,
                                          termStructureDayCounter,

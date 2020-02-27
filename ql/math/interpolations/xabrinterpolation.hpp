@@ -94,7 +94,7 @@ template <typename Model> class XABRCoeffHolder {
     Real error_, maxError_;
     EndCriteria::Type XABREndCriteria_;
     /*! Model instance (if required) */
-    ext::shared_ptr<typename Model::type> modelInstance_;
+    std::shared_ptr<typename Model::type> modelInstance_;
     /*! additional parameters */
     std::vector<Real> addParams_;
 };
@@ -107,8 +107,8 @@ class XABRInterpolationImpl : public Interpolation::templateImpl<I1, I2>,
         const I1 &xBegin, const I1 &xEnd, const I2 &yBegin, Time t,
         const Real &forward, const std::vector<Real>& params,
         const std::vector<bool>& paramIsFixed, bool vegaWeighted,
-        ext::shared_ptr<EndCriteria> endCriteria,
-        ext::shared_ptr<OptimizationMethod> optMethod,
+        std::shared_ptr<EndCriteria> endCriteria,
+        std::shared_ptr<OptimizationMethod> optMethod,
         const Real errorAccept, const bool useMaxError, const Size maxGuesses,
         const std::vector<Real>& addParams = std::vector<Real>())
         : Interpolation::templateImpl<I1, I2>(xBegin, xEnd, yBegin, 1),
@@ -118,12 +118,12 @@ class XABRInterpolationImpl : public Interpolation::templateImpl<I1, I2>,
           maxGuesses_(maxGuesses), vegaWeighted_(vegaWeighted) {
         // if no optimization method or endCriteria is provided, we provide one
         if (!optMethod_)
-            optMethod_ = ext::shared_ptr<OptimizationMethod>(
+            optMethod_ = std::shared_ptr<OptimizationMethod>(
                 new LevenbergMarquardt(1e-8, 1e-8, 1e-8));
-        // optMethod_ = ext::shared_ptr<OptimizationMethod>(new
+        // optMethod_ = std::shared_ptr<OptimizationMethod>(new
         //    Simplex(0.01));
         if (!endCriteria_) {
-            endCriteria_ = ext::make_shared<EndCriteria>(
+            endCriteria_ = std::make_shared<EndCriteria>(
                 60000, 100, 1e-8, 1e-8, 1e-8);
         }
         this->weights_ =
@@ -311,8 +311,8 @@ class XABRInterpolationImpl : public Interpolation::templateImpl<I1, I2>,
       private:
         XABRInterpolationImpl *xabr_;
     };
-    ext::shared_ptr<EndCriteria> endCriteria_;
-    ext::shared_ptr<OptimizationMethod> optMethod_;
+    std::shared_ptr<EndCriteria> endCriteria_;
+    std::shared_ptr<OptimizationMethod> optMethod_;
     const Real errorAccept_;
     const bool useMaxError_;
     const Size maxGuesses_;

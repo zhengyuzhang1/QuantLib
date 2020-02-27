@@ -27,7 +27,7 @@
 #include <ql/math/solvers1d/newtonsafe.hpp>
 #include <ql/quotes/simplequote.hpp>
 #include <ql/exercise.hpp>
-#include <ql/shared_ptr.hpp>
+#include <memory>
 #include <utility>
 
 namespace QuantLib {
@@ -44,10 +44,10 @@ namespace QuantLib {
             Real operator()(Volatility x) const;
             Real derivative(Volatility x) const;
           private:
-            ext::shared_ptr<PricingEngine> engine_;
+            std::shared_ptr<PricingEngine> engine_;
             Handle<YieldTermStructure> discountCurve_;
             Real targetValue_;
-            ext::shared_ptr<SimpleQuote> vol_;
+            std::shared_ptr<SimpleQuote> vol_;
             const Instrument::results* results_;
         };
 
@@ -61,16 +61,16 @@ namespace QuantLib {
 
             // set an implausible value, so that calculation is forced
             // at first ImpliedSwaptionVolHelper::operator()(Volatility x) call
-            vol_ = ext::make_shared<SimpleQuote>(-1.0);
+            vol_ = std::make_shared<SimpleQuote>(-1.0);
             Handle<Quote> h(vol_);
 
             switch (type) {
             case ShiftedLognormal:
-                engine_ = ext::make_shared<BlackSwaptionEngine>(
+                engine_ = std::make_shared<BlackSwaptionEngine>(
                     discountCurve_, h, Actual365Fixed(), displacement);
                 break;
             case Normal:
-                engine_ = ext::make_shared<BachelierSwaptionEngine>(
+                engine_ = std::make_shared<BachelierSwaptionEngine>(
                     discountCurve_, h, Actual365Fixed());
                 break;
             default:
@@ -130,11 +130,11 @@ namespace QuantLib {
         }
     }
 
-    Swaption::Swaption(ext::shared_ptr<VanillaSwap> swap,
-                       const ext::shared_ptr<Exercise>& exercise,
+    Swaption::Swaption(std::shared_ptr<VanillaSwap> swap,
+                       const std::shared_ptr<Exercise>& exercise,
                        Settlement::Type delivery,
                        Settlement::Method settlementMethod)
-    : Option(ext::shared_ptr<Payoff>(), exercise), swap_(std::move(swap)),
+    : Option(std::shared_ptr<Payoff>(), exercise), swap_(std::move(swap)),
       settlementType_(delivery), settlementMethod_(settlementMethod) {
         registerWith(swap_);
         registerWithObservables(swap_);

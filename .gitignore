@@ -112,5 +112,6 @@ cmake-build-debug
 nbproject
 .cproject
 
-# ccls cache
-.ccls-cache/*
+# cache
+.ccls-cache/
+.clangd/

@@ -43,17 +43,17 @@ namespace QuantLib {
     */
     class YoYInflationCapFloorEngine : public YoYInflationCapFloor::engine {
       public:
-        YoYInflationCapFloorEngine(ext::shared_ptr<YoYInflationIndex>,
+        YoYInflationCapFloorEngine(std::shared_ptr<YoYInflationIndex>,
                                    Handle<YoYOptionletVolatilitySurface> vol,
                                    Handle<YieldTermStructure> nominalTermStructure);
         /*! \deprecated Use the constructor with an explicit nominal curve.
                         Deprecated in version 1.15.
         */
         QL_DEPRECATED
-        YoYInflationCapFloorEngine(ext::shared_ptr<YoYInflationIndex>,
+        YoYInflationCapFloorEngine(std::shared_ptr<YoYInflationIndex>,
                                    Handle<YoYOptionletVolatilitySurface> vol);
 
-        ext::shared_ptr<YoYInflationIndex> index() const { return index_;}
+        std::shared_ptr<YoYInflationIndex> index() const { return index_;}
         Handle<YoYOptionletVolatilitySurface> volatility() const { return volatility_; }
 
         void setVolatility(const Handle<YoYOptionletVolatilitySurface>& vol);
@@ -65,7 +65,7 @@ namespace QuantLib {
                                    Rate forward, Real stdDev,
                                    Real d) const = 0;
 
-        ext::shared_ptr<YoYInflationIndex> index_;
+        std::shared_ptr<YoYInflationIndex> index_;
         Handle<YoYOptionletVolatilitySurface> volatility_;
         Handle<YieldTermStructure> nominalTermStructure_;
     };
@@ -76,14 +76,14 @@ namespace QuantLib {
     class YoYInflationBlackCapFloorEngine
     : public YoYInflationCapFloorEngine {
       public:
-        YoYInflationBlackCapFloorEngine(const ext::shared_ptr<YoYInflationIndex>&,
+        YoYInflationBlackCapFloorEngine(const std::shared_ptr<YoYInflationIndex>&,
                                         const Handle<YoYOptionletVolatilitySurface>& vol,
                                         const Handle<YieldTermStructure>& nominalTermStructure);
         /*! \deprecated Use the constructor with an explicit nominal curve.
                         Deprecated in version 1.15.
         */
         QL_DEPRECATED
-        YoYInflationBlackCapFloorEngine(const ext::shared_ptr<YoYInflationIndex>&,
+        YoYInflationBlackCapFloorEngine(const std::shared_ptr<YoYInflationIndex>&,
                                         const Handle<YoYOptionletVolatilitySurface>&);
 
       protected:
@@ -98,7 +98,7 @@ namespace QuantLib {
     : public YoYInflationCapFloorEngine {
       public:
         YoYInflationUnitDisplacedBlackCapFloorEngine(
-                    const ext::shared_ptr<YoYInflationIndex>&,
+                    const std::shared_ptr<YoYInflationIndex>&,
                     const Handle<YoYOptionletVolatilitySurface>& vol,
                     const Handle<YieldTermStructure>& nominalTermStructure);
         /*! \deprecated Use the constructor with an explicit nominal curve.
@@ -106,7 +106,7 @@ namespace QuantLib {
         */
         QL_DEPRECATED
         YoYInflationUnitDisplacedBlackCapFloorEngine(
-                    const ext::shared_ptr<YoYInflationIndex>&,
+                    const std::shared_ptr<YoYInflationIndex>&,
                     const Handle<YoYOptionletVolatilitySurface>&);
       protected:
         Real optionletImpl(Option::Type, Real strike,
@@ -120,7 +120,7 @@ namespace QuantLib {
     : public YoYInflationCapFloorEngine {
       public:
         YoYInflationBachelierCapFloorEngine(
-                    const ext::shared_ptr<YoYInflationIndex>&,
+                    const std::shared_ptr<YoYInflationIndex>&,
                     const Handle<YoYOptionletVolatilitySurface>& vol,
                     const Handle<YieldTermStructure>& nominalTermStructure);
         /*! \deprecated Use the constructor with an explicit nominal curve.
@@ -128,7 +128,7 @@ namespace QuantLib {
         */
         QL_DEPRECATED
         YoYInflationBachelierCapFloorEngine(
-                    const ext::shared_ptr<YoYInflationIndex>&,
+                    const std::shared_ptr<YoYInflationIndex>&,
                     const Handle<YoYOptionletVolatilitySurface>&);
       protected:
         Real optionletImpl(Option::Type, Real strike,

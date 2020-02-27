@@ -48,7 +48,7 @@ namespace QuantLib {
         */
         bool hasOccurred(
                     const Date& refDate = Date(),
-                    boost::optional<bool> includeRefDate = boost::none) const override;
+                    std::optional<bool> includeRefDate = std::nullopt) const override;
         //@}
         //! \name CashFlow interface
         //@{
@@ -70,7 +70,7 @@ namespace QuantLib {
     };
 
     //! Sequence of cash-flows
-    typedef std::vector<ext::shared_ptr<CashFlow> > Leg;
+    typedef std::vector<std::shared_ptr<CashFlow> > Leg;
 
     template <>
     struct earlier_than<CashFlow> {

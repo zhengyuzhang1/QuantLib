@@ -32,7 +32,7 @@
 #include <ql/instruments/swap.hpp>
 #include <ql/time/daycounter.hpp>
 #include <ql/time/schedule.hpp>
-#include <boost/optional.hpp>
+#include <optional>
 
 namespace QuantLib {
 

@@ -66,13 +66,13 @@ namespace QuantLib {
       public:
         // see AnalticHestonEninge for usage of different constructors
         AnalyticHestonHullWhiteEngine(
-                        const ext::shared_ptr<HestonModel>& hestonModel,
-                        ext::shared_ptr<HullWhite>  hullWhiteModel,
+                        const std::shared_ptr<HestonModel>& hestonModel,
+                        std::shared_ptr<HullWhite>  hullWhiteModel,
                         Size integrationOrder = 144);
 
         AnalyticHestonHullWhiteEngine(
-                        const ext::shared_ptr<HestonModel>& model,
-                        ext::shared_ptr<HullWhite>  hullWhiteModel,
+                        const std::shared_ptr<HestonModel>& model,
+                        std::shared_ptr<HullWhite>  hullWhiteModel,
                         Real relTolerance, Size maxEvaluations);
 
 
@@ -82,7 +82,7 @@ namespace QuantLib {
       protected:
         std::complex<Real> addOnTerm(Real phi, Time t, Size j) const override;
 
-        const ext::shared_ptr<HullWhite> hullWhiteModel_;
+        const std::shared_ptr<HullWhite> hullWhiteModel_;
 
       private:
         mutable Real m_;

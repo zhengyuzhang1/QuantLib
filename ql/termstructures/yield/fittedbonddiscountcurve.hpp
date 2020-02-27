@@ -89,7 +89,7 @@ namespace QuantLib {
         FittedBondDiscountCurve(
                  Natural settlementDays,
                  const Calendar& calendar,
-                 std::vector<ext::shared_ptr<BondHelper> >  bonds,
+                 std::vector<std::shared_ptr<BondHelper> >  bonds,
                  const DayCounter& dayCounter,
                  const FittingMethod& fittingMethod,
                  Real accuracy = 1.0e-10,
@@ -100,7 +100,7 @@ namespace QuantLib {
         //! curve reference date fixed for life of curve
         FittedBondDiscountCurve(
                  const Date &referenceDate,
-                 std::vector<ext::shared_ptr<BondHelper> >  bonds,
+                 std::vector<std::shared_ptr<BondHelper> >  bonds,
                  const DayCounter& dayCounter,
                  const FittingMethod& fittingMethod,
                  Real accuracy = 1.0e-10,
@@ -140,7 +140,7 @@ namespace QuantLib {
         // a guess solution may be passed into the constructor to speed calcs
         Array guessSolution_;
         mutable Date maxDate_;
-        std::vector<ext::shared_ptr<BondHelper> > bondHelpers_;
+        std::vector<std::shared_ptr<BondHelper> > bondHelpers_;
         Clone<FittingMethod> fittingMethod_;
     };
 
@@ -203,14 +203,14 @@ namespace QuantLib {
         //! return l2 penalties being used
         Array l2() const;
         //! return optimization method being used
-        ext::shared_ptr<OptimizationMethod> optimizationMethod() const;
+        std::shared_ptr<OptimizationMethod> optimizationMethod() const;
         //! open discountFunction to public
         DiscountFactor discount(const Array& x, Time t) const;
       protected:
         //! constructors
         FittingMethod(bool constrainAtZero = true, const Array& weights = Array(),
-                      ext::shared_ptr<OptimizationMethod> optimizationMethod
-                                          = ext::shared_ptr<OptimizationMethod>(),
+                      std::shared_ptr<OptimizationMethod> optimizationMethod
+                                          = std::shared_ptr<OptimizationMethod>(),
                       const Array& l2 = Array());
         //! rerun every time instruments/referenceDate changes
         virtual void init();
@@ -230,7 +230,7 @@ namespace QuantLib {
         */
         Array guessSolution_;
         //! base class sets this cost function used in the optimization routine
-        ext::shared_ptr<FittingCost> costFunction_;
+        std::shared_ptr<FittingCost> costFunction_;
       private:
         // curve optimization called here- adjust optimization parameters here
         void calculate();
@@ -246,7 +246,7 @@ namespace QuantLib {
         // final value for the minimized cost function
         Real costValue_;
         // optimization method to be used, if none provided use Simplex
-        ext::shared_ptr<OptimizationMethod> optimizationMethod_;
+        std::shared_ptr<OptimizationMethod> optimizationMethod_;
     };
 
     // inline
@@ -307,7 +307,7 @@ namespace QuantLib {
         return l2_;
     }
 
-    inline ext::shared_ptr<OptimizationMethod> 
+    inline std::shared_ptr<OptimizationMethod> 
     FittedBondDiscountCurve::FittingMethod::optimizationMethod() const {
         return optimizationMethod_;
     }

@@ -46,8 +46,8 @@ namespace QuantLib {
       public:
 
         FdmSabrOp(
-            const ext::shared_ptr<FdmMesher>& mesher,
-            const ext::shared_ptr<YieldTermStructure>& rTS,
+            const std::shared_ptr<FdmMesher>& mesher,
+            const std::shared_ptr<YieldTermStructure>& rTS,
             Real f0, Real alpha, Real beta, Real nu, Real rho);
 
         Size size() const;
@@ -64,7 +64,7 @@ namespace QuantLib {
         Disposable<std::vector<SparseMatrix> > toMatrixDecomp() const;
 #endif
       private:
-        const ext::shared_ptr<YieldTermStructure> rTS_;
+        const std::shared_ptr<YieldTermStructure> rTS_;
 
         const TripleBandLinearOp dffMap_;
         const TripleBandLinearOp dxMap_, dxxMap_;

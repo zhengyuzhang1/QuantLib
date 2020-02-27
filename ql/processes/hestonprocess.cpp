@@ -28,7 +28,7 @@
 #include <ql/quotes/simplequote.hpp>
 #include <ql/processes/hestonprocess.hpp>
 #include <ql/processes/eulerdiscretization.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 #include <boost/math/distributions/non_central_chi_squared.hpp>
 #include <complex>
 #include <utility>
@@ -42,7 +42,7 @@ namespace QuantLib {
                               Real v0, Real kappa,
                               Real theta, Real sigma, Real rho,
                               Discretization d)
-    : StochasticProcess(ext::shared_ptr<discretization>(
+    : StochasticProcess(std::shared_ptr<discretization>(
                                                     new EulerDiscretization)),
       riskFreeRate_(std::move(riskFreeRate)), dividendYield_(std::move(dividendYield)), s0_(std::move(s0)),
       v0_(v0), kappa_(kappa), theta_(theta), sigma_(sigma), rho_(rho),

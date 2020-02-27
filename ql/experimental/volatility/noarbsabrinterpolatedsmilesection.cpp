@@ -35,8 +35,8 @@ namespace QuantLib {
                 bool isAlphaFixed, bool isBetaFixed,
                 bool isNuFixed, bool isRhoFixed,
                 bool vegaWeighted,
-                ext::shared_ptr<EndCriteria>  endCriteria,
-                ext::shared_ptr<OptimizationMethod>  method,
+                std::shared_ptr<EndCriteria>  endCriteria,
+                std::shared_ptr<OptimizationMethod>  method,
                 const DayCounter& dc)
          : SmileSection(optionDate, dc),
            forward_(std::move(forward)), atmVolatility_(std::move(atmVolatility)),
@@ -65,12 +65,12 @@ namespace QuantLib {
                bool isAlphaFixed, bool isBetaFixed,
                bool isNuFixed, bool isRhoFixed,
                bool vegaWeighted,
-               ext::shared_ptr<EndCriteria>  endCriteria,
-               ext::shared_ptr<OptimizationMethod>  method,
+               std::shared_ptr<EndCriteria>  endCriteria,
+               std::shared_ptr<OptimizationMethod>  method,
                const DayCounter& dc)
          : SmileSection(optionDate, dc),
-           forward_(Handle<Quote>(ext::shared_ptr<Quote>(new SimpleQuote(forward)))),
-           atmVolatility_(Handle<Quote>(ext::shared_ptr<Quote>(new SimpleQuote(atmVolatility)))),
+           forward_(Handle<Quote>(std::shared_ptr<Quote>(new SimpleQuote(forward)))),
+           atmVolatility_(Handle<Quote>(std::shared_ptr<Quote>(new SimpleQuote(atmVolatility)))),
            volHandles_(volHandles.size()), strikes_(strikes), actualStrikes_(strikes),
            hasFloatingStrikes_(hasFloatingStrikes), vols_(volHandles.size()),
            alpha_(alpha), beta_(beta), nu_(nu), rho_(rho),
@@ -80,13 +80,13 @@ namespace QuantLib {
            endCriteria_(std::move(endCriteria)), method_(std::move(method)) {
 
             for (Size i=0; i<volHandles_.size(); ++i)
-                volHandles_[i] = Handle<Quote>(ext::shared_ptr<Quote>(new
+                volHandles_[i] = Handle<Quote>(std::shared_ptr<Quote>(new
                                         SimpleQuote(volHandles[i])));
 
     }
 
     void NoArbSabrInterpolatedSmileSection::createInterpolation() const {
-         ext::shared_ptr<NoArbSabrInterpolation> tmp(new NoArbSabrInterpolation(
+         std::shared_ptr<NoArbSabrInterpolation> tmp(new NoArbSabrInterpolation(
                      actualStrikes_.begin(), actualStrikes_.end(), vols_.begin(),
                      exerciseTime(), forwardValue_,
                      alpha_, beta_, nu_, rho_,

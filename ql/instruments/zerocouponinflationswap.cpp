@@ -40,7 +40,7 @@ namespace QuantLib {
         BusinessDayConvention fixConvention,
         DayCounter  dayCounter,
         Rate fixedRate,
-        const ext::shared_ptr<ZeroInflationIndex> &infIndex,
+        const std::shared_ptr<ZeroInflationIndex> &infIndex,
         const Period& observationLag,
         bool adjustInfObsDates,
         Calendar infCalendar,
@@ -90,10 +90,10 @@ namespace QuantLib {
         // N.B. the -1.0 is because swaps only exchange growth, not notionals as well
         Real fixedAmount = nominal * ( std::pow(1.0 + fixedRate, T) - 1.0 );
 
-        legs_[0].push_back(ext::shared_ptr<CashFlow>(
+        legs_[0].push_back(std::shared_ptr<CashFlow>(
             new SimpleCashFlow(fixedAmount, fixedPayDate)));
         bool growthOnly = true;
-        legs_[1].push_back(ext::shared_ptr<CashFlow>(
+        legs_[1].push_back(std::shared_ptr<CashFlow>(
             new IndexedCashFlow(nominal,infIndex,baseDate_,obsDate_,infPayDate,growthOnly)));
 
         for (Size j=0; j<2; ++j) {
@@ -139,8 +139,8 @@ namespace QuantLib {
         // if it was created with _this_ rate
         // _knowing_ the time from base to obs (etc).
 
-        ext::shared_ptr<IndexedCashFlow> icf =
-        ext::dynamic_pointer_cast<IndexedCashFlow>(legs_[1].at(0));
+        std::shared_ptr<IndexedCashFlow> icf =
+        std::dynamic_pointer_cast<IndexedCashFlow>(legs_[1].at(0));
         QL_REQUIRE(icf,"failed to downcast to IndexedCashFlow in ::fairRate()");
 
         // +1 because the IndexedCashFlow has growthOnly=true

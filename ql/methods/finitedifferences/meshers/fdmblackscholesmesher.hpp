@@ -40,7 +40,7 @@ namespace QuantLib {
       public:
         FdmBlackScholesMesher(
             Size size,
-            const ext::shared_ptr<GeneralizedBlackScholesProcess>& process,
+            const std::shared_ptr<GeneralizedBlackScholesProcess>& process,
             Time maturity, Real strike,
             Real xMinConstraint = Null<Real>(),
             Real xMaxConstraint = Null<Real>(),
@@ -49,11 +49,11 @@ namespace QuantLib {
             const std::pair<Real, Real>& cPoint
                 = (std::pair<Real, Real>(Null<Real>(), Null<Real>())),
             const DividendSchedule& dividendSchedule = DividendSchedule(),
-            const ext::shared_ptr<FdmQuantoHelper>& fdmQuantoHelper
-                = ext::shared_ptr<FdmQuantoHelper>(),
+            const std::shared_ptr<FdmQuantoHelper>& fdmQuantoHelper
+                = std::shared_ptr<FdmQuantoHelper>(),
             Real spotAdjustment = 0.0);
 
-        static ext::shared_ptr<GeneralizedBlackScholesProcess> processHelper(
+        static std::shared_ptr<GeneralizedBlackScholesProcess> processHelper(
              const Handle<Quote>& s0,
              const Handle<YieldTermStructure>& rTS,
              const Handle<YieldTermStructure>& qTS,

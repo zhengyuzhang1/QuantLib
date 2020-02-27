@@ -27,7 +27,7 @@
 
 #include <ql/time/date.hpp>
 #include <ql/patterns/observable.hpp>
-#include <boost/optional.hpp>
+#include <optional>
 
 namespace QuantLib {
 
@@ -52,7 +52,7 @@ namespace QuantLib {
         */
         virtual bool hasOccurred(
                     const Date& refDate = Date(),
-                    boost::optional<bool> includeRefDate = boost::none) const;
+                    std::optional<bool> includeRefDate = std::nullopt) const;
         //@}
 
         //! \name Visitability

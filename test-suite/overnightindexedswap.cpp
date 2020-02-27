@@ -50,7 +50,7 @@ using namespace boost::unit_test_framework;
 
 using std::exp;
 
-using ext::shared_ptr;
+using std::shared_ptr;
 
 typedef PiecewiseYieldCurve<Discount,LogLinear> PiecewiseFlatForward;
 
@@ -160,7 +160,7 @@ namespace {
             fixedEoniaPeriod = 1*Years;
             floatingEoniaPeriod = 1*Years;
             fixedEoniaDayCount = Actual360();
-            eoniaIndex = ext::make_shared<Eonia>(eoniaTermStructure);
+            eoniaIndex = std::make_shared<Eonia>(eoniaTermStructure);
             fixedSwapConvention = ModifiedFollowing;
             fixedSwapFrequency = Annual;
             fixedSwapDayCount = Thirty360();
@@ -322,7 +322,7 @@ void testBootstrap(bool telescopicValueDates) {
 
     for (auto & i : depositData) {
         Real rate = 0.01 * i.rate;
-        shared_ptr<SimpleQuote> simple = ext::make_shared<SimpleQuote>(rate);
+        shared_ptr<SimpleQuote> simple = std::make_shared<SimpleQuote>(rate);
         shared_ptr<Quote> quote (simple);
         Period term = i.n * i.unit;
         shared_ptr<RateHelper> helper(new
@@ -340,7 +340,7 @@ void testBootstrap(bool telescopicValueDates) {
 
     for (auto & i : eoniaSwapData) {
         Real rate = 0.01 * i.rate;
-        shared_ptr<SimpleQuote> simple = ext::make_shared<SimpleQuote>(rate);
+        shared_ptr<SimpleQuote> simple = std::make_shared<SimpleQuote>(rate);
         shared_ptr<Quote> quote (simple);
         Period term = i.n * i.unit;
         shared_ptr<RateHelper> helper(new
@@ -462,11 +462,11 @@ void OvernightIndexedSwapTest::testBootstrapRegression() {
 
     Settings::instance().evaluationDate() = Date(21, February, 2017);
 
-    std::vector<ext::shared_ptr<RateHelper> > helpers;
-    ext::shared_ptr<FedFunds> index(new FedFunds);
+    std::vector<std::shared_ptr<RateHelper> > helpers;
+    std::shared_ptr<FedFunds> index(new FedFunds);
 
     helpers.push_back(
-        ext::make_shared<DepositRateHelper>(data[0].rate,
+        std::make_shared<DepositRateHelper>(data[0].rate,
                                             Period(data[0].n, data[0].unit),
                                             index->fixingDays(),
                                             index->fixingCalendar(),
@@ -476,10 +476,10 @@ void OvernightIndexedSwapTest::testBootstrapRegression() {
 
     for (Size i=1; i<data.size(); ++i) {
         helpers.push_back(
-            ext::shared_ptr<RateHelper>(
+            std::shared_ptr<RateHelper>(
                 new OISRateHelper(data[i].settlementDays,
                                   Period(data[i].n, data[i].unit),
-                                  Handle<Quote>(ext::make_shared<SimpleQuote>(data[i].rate)),
+                                  Handle<Quote>(std::make_shared<SimpleQuote>(data[i].rate)),
                                   index,
                                   Handle<YieldTermStructure>(),
                                   false, 2,

@@ -36,7 +36,7 @@ namespace QuantLib {
         DiscountingSwapEngine(
                Handle<YieldTermStructure>  discountCurve =
                                                  Handle<YieldTermStructure>(),
-               boost::optional<bool> includeSettlementDateFlows = boost::none,
+               std::optional<bool> includeSettlementDateFlows = std::nullopt,
                Date settlementDate = Date(),
                Date npvDate = Date());
         void calculate() const override;
@@ -45,7 +45,7 @@ namespace QuantLib {
         }
       private:
         Handle<YieldTermStructure> discountCurve_;
-        boost::optional<bool> includeSettlementDateFlows_;
+        std::optional<bool> includeSettlementDateFlows_;
         Date settlementDate_, npvDate_;
     };
 

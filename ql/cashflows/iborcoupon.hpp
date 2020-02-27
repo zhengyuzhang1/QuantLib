@@ -43,7 +43,7 @@ namespace QuantLib {
                    const Date& startDate,
                    const Date& endDate,
                    Natural fixingDays,
-                   const ext::shared_ptr<IborIndex>& index,
+                   const std::shared_ptr<IborIndex>& index,
                    Real gearing = 1.0,
                    Spread spread = 0.0,
                    const Date& refPeriodStart = Date(),
@@ -53,7 +53,7 @@ namespace QuantLib {
                    const Date& exCouponDate = Date());
         //! \name Inspectors
         //@{
-        const ext::shared_ptr<IborIndex>& iborIndex() const { return iborIndex_; }
+        const std::shared_ptr<IborIndex>& iborIndex() const { return iborIndex_; }
         //! this is dependent on usingAtParCoupons()
         const Date& fixingEndDate() const { return fixingEndDate_; }
         //@}
@@ -67,7 +67,7 @@ namespace QuantLib {
         void accept(AcyclicVisitor&) override;
         //@}
       private:
-        ext::shared_ptr<IborIndex> iborIndex_;
+        std::shared_ptr<IborIndex> iborIndex_;
         Date fixingDate_, fixingValueDate_, fixingEndDate_;
         Time spanningTime_;
 
@@ -97,7 +97,7 @@ namespace QuantLib {
     //! helper class building a sequence of capped/floored ibor-rate coupons
     class IborLeg {
       public:
-        IborLeg(Schedule schedule, ext::shared_ptr<IborIndex> index);
+        IborLeg(Schedule schedule, std::shared_ptr<IborIndex> index);
         IborLeg& withNotionals(Real notional);
         IborLeg& withNotionals(const std::vector<Real>& notionals);
         IborLeg& withPaymentDayCounter(const DayCounter&);
@@ -124,7 +124,7 @@ namespace QuantLib {
 
       private:
         Schedule schedule_;
-        ext::shared_ptr<IborIndex> index_;
+        std::shared_ptr<IborIndex> index_;
         std::vector<Real> notionals_;
         DayCounter paymentDayCounter_;
         BusinessDayConvention paymentAdjustment_;

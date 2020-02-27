@@ -148,7 +148,7 @@ namespace QuantLib {
             type.  typically used from Issuer
         */
         virtual bool matchesEventType(
-                 const ext::shared_ptr<DefaultType>& contractEvType) const {
+                 const std::shared_ptr<DefaultType>& contractEvType) const {
             // remember we are made of an atomic type.
             // behaviour by default...
             return
@@ -213,7 +213,7 @@ namespace QuantLib {
                           Real recoveryRates);
         Real amountDefaulted() const {return defaultedAmount_;}
         bool matchesEventType(
-            const ext::shared_ptr<DefaultType>& contractEvType) const override;
+            const std::shared_ptr<DefaultType>& contractEvType) const override;
       private:
         Real defaultedAmount_;
     };
@@ -237,7 +237,7 @@ namespace QuantLib {
                         // means same for all
                         Real recoveryRates);
         //! This is a stronger than all event and will trigger all of them.
-        bool matchesEventType(const ext::shared_ptr<DefaultType>&) const override {
+        bool matchesEventType(const std::shared_ptr<DefaultType>&) const override {
             return true;
         }
     };

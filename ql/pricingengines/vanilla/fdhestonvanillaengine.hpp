@@ -52,21 +52,21 @@ namespace QuantLib {
       public:
         // Constructor
         FdHestonVanillaEngine(
-            const ext::shared_ptr<HestonModel>& model,
+            const std::shared_ptr<HestonModel>& model,
             Size tGrid = 100, Size xGrid = 100, 
             Size vGrid = 50, Size dampingSteps = 0,
             const FdmSchemeDesc& schemeDesc = FdmSchemeDesc::Hundsdorfer(),
-            ext::shared_ptr<LocalVolTermStructure> leverageFct
-                = ext::shared_ptr<LocalVolTermStructure>());
+            std::shared_ptr<LocalVolTermStructure> leverageFct
+                = std::shared_ptr<LocalVolTermStructure>());
 
         FdHestonVanillaEngine(
-            const ext::shared_ptr<HestonModel>& model,
-            const ext::shared_ptr<FdmQuantoHelper>& quantoHelper,
+            const std::shared_ptr<HestonModel>& model,
+            const std::shared_ptr<FdmQuantoHelper>& quantoHelper,
             Size tGrid = 100, Size xGrid = 100,
             Size vGrid = 50, Size dampingSteps = 0,
             const FdmSchemeDesc& schemeDesc = FdmSchemeDesc::Hundsdorfer(),
-            ext::shared_ptr<LocalVolTermStructure> leverageFct
-                = ext::shared_ptr<LocalVolTermStructure>());
+            std::shared_ptr<LocalVolTermStructure> leverageFct
+                = std::shared_ptr<LocalVolTermStructure>());
 
         void calculate() const override;
         
@@ -80,8 +80,8 @@ namespace QuantLib {
       private:
         const Size tGrid_, xGrid_, vGrid_, dampingSteps_;
         const FdmSchemeDesc schemeDesc_;
-        const ext::shared_ptr<LocalVolTermStructure> leverageFct_;
-        const ext::shared_ptr<FdmQuantoHelper> quantoHelper_;
+        const std::shared_ptr<LocalVolTermStructure> leverageFct_;
+        const std::shared_ptr<FdmQuantoHelper> quantoHelper_;
         
         std::vector<Real> strikes_;
         mutable std::vector<std::pair<DividendVanillaOption::arguments,
@@ -92,10 +92,10 @@ namespace QuantLib {
     class MakeFdHestonVanillaEngine {
       public:
         explicit MakeFdHestonVanillaEngine(
-            const ext::shared_ptr<HestonModel>& hestonModel);
+            const std::shared_ptr<HestonModel>& hestonModel);
 
         MakeFdHestonVanillaEngine& withQuantoHelper(
-            const ext::shared_ptr<FdmQuantoHelper>& quantoHelper);
+            const std::shared_ptr<FdmQuantoHelper>& quantoHelper);
 
         MakeFdHestonVanillaEngine& withTGrid(Size tGrid);
         MakeFdHestonVanillaEngine& withXGrid(Size xGrid);
@@ -107,16 +107,16 @@ namespace QuantLib {
             const FdmSchemeDesc& schemeDesc);
 
         MakeFdHestonVanillaEngine& withLeverageFunction(
-            ext::shared_ptr<LocalVolTermStructure>& leverageFct);
+            std::shared_ptr<LocalVolTermStructure>& leverageFct);
 
-        operator ext::shared_ptr<PricingEngine>() const;
+        operator std::shared_ptr<PricingEngine>() const;
 
       private:
-        ext::shared_ptr<HestonModel> hestonModel_;
+        std::shared_ptr<HestonModel> hestonModel_;
         Size tGrid_, xGrid_, vGrid_, dampingSteps_;
-        ext::shared_ptr<FdmSchemeDesc> schemeDesc_;
-        ext::shared_ptr<LocalVolTermStructure> leverageFct_;
-        ext::shared_ptr<FdmQuantoHelper> quantoHelper_;
+        std::shared_ptr<FdmSchemeDesc> schemeDesc_;
+        std::shared_ptr<LocalVolTermStructure> leverageFct_;
+        std::shared_ptr<FdmQuantoHelper> quantoHelper_;
     };
 }
 

@@ -63,7 +63,7 @@ namespace QuantLib {
             stats_type;
         // constructor
         MCDiscreteAveragingAsianEngine(
-             const ext::shared_ptr<GeneralizedBlackScholesProcess>& process,
+             const std::shared_ptr<GeneralizedBlackScholesProcess>& process,
              bool brownianBridge,
              bool antitheticVariate,
              bool controlVariate,
@@ -100,18 +100,18 @@ namespace QuantLib {
       protected:
         // McSimulation implementation
         TimeGrid timeGrid() const override;
-        ext::shared_ptr<path_generator_type> pathGenerator() const override {
+        std::shared_ptr<path_generator_type> pathGenerator() const override {
 
             TimeGrid grid = this->timeGrid();
             typename RNG::rsg_type gen =
                 RNG::make_sequence_generator(grid.size()-1,seed_);
-            return ext::shared_ptr<path_generator_type>(
+            return std::shared_ptr<path_generator_type>(
                          new path_generator_type(process_, grid,
                                                  gen, brownianBridge_));
         }
         Real controlVariateValue() const override;
         // data members
-        ext::shared_ptr<GeneralizedBlackScholesProcess> process_;
+        std::shared_ptr<GeneralizedBlackScholesProcess> process_;
         Size requiredSamples_, maxSamples_;
         Real requiredTolerance_;
         bool brownianBridge_;
@@ -124,7 +124,7 @@ namespace QuantLib {
     template<class RNG, class S>
     inline
     MCDiscreteAveragingAsianEngine<RNG,S>::MCDiscreteAveragingAsianEngine(
-             const ext::shared_ptr<GeneralizedBlackScholesProcess>& process,
+             const std::shared_ptr<GeneralizedBlackScholesProcess>& process,
              bool brownianBridge,
              bool antitheticVariate,
              bool controlVariate,
@@ -165,7 +165,7 @@ namespace QuantLib {
     inline
     Real MCDiscreteAveragingAsianEngine<RNG,S>::controlVariateValue() const {
 
-        ext::shared_ptr<PricingEngine> controlPE =
+        std::shared_ptr<PricingEngine> controlPE =
                 this->controlPricingEngine();
             QL_REQUIRE(controlPE,
                        "engine does not provide "

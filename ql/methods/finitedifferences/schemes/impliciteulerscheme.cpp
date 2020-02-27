@@ -22,18 +22,18 @@
 #include <ql/math/matrixutilities/gmres.hpp>
 #include <ql/math/matrixutilities/bicgstab.hpp>
 #include <ql/methods/finitedifferences/schemes/impliciteulerscheme.hpp>
-#include <ql/functional.hpp>
+#include <functional>
 #include <utility>
 
 namespace QuantLib {
 
     ImplicitEulerScheme::ImplicitEulerScheme(
-        ext::shared_ptr<FdmLinearOpComposite>  map,
+        std::shared_ptr<FdmLinearOpComposite>  map,
         const bc_set& bcSet,
         Real relTol,
         SolverType solverType)
     : dt_        (Null<Real>()),
-      iterations_(ext::make_shared<Size>(0u)),
+      iterations_(std::make_shared<Size>(0u)),
       relTol_    (relTol),
       map_       (std::move(map)),
       bcSet_     (bcSet),
@@ -49,7 +49,7 @@ namespace QuantLib {
     }
 
     void ImplicitEulerScheme::step(array_type& a, Time t, Real theta) {
-        using namespace ext::placeholders;
+        using namespace std::placeholders;
         QL_REQUIRE(t-dt_ > -1e-8, "a step towards negative time given");
         map_->setTime(std::max(0.0, t-dt_), t);
         bcSet_.setTime(std::max(0.0, t-dt_));
@@ -60,12 +60,12 @@ namespace QuantLib {
             a = map_->solve_splitting(0, a, -theta*dt_);
         }
         else {
-            const ext::function<Disposable<Array>(const Array&)>
-                preconditioner(ext::bind(
+            const std::function<Disposable<Array>(const Array&)>
+                preconditioner(std::bind(
                     &FdmLinearOpComposite::preconditioner, map_, _1, -theta*dt_));
 
-            const ext::function<Disposable<Array>(const Array&)> applyF(
-                ext::bind(&ImplicitEulerScheme::apply, this, _1, theta));
+            const std::function<Disposable<Array>(const Array&)> applyF(
+                std::bind(&ImplicitEulerScheme::apply, this, _1, theta));
 
             if (solverType_ == BiCGstab) {
                 const BiCGStabResult result =

@@ -27,7 +27,7 @@
 #define quantlib_bsm_risk_neutral_density_calculator_hpp
 
 #include <ql/methods/finitedifferences/utilities/riskneutraldensitycalculator.hpp>
-#include <ql/shared_ptr.hpp>
+#include <memory>
 
 namespace QuantLib {
     class GeneralizedBlackScholesProcess;
@@ -35,7 +35,7 @@ namespace QuantLib {
     class BSMRNDCalculator : public RiskNeutralDensityCalculator {
     public:
         explicit BSMRNDCalculator(
-            ext::shared_ptr<GeneralizedBlackScholesProcess>  process);
+            std::shared_ptr<GeneralizedBlackScholesProcess>  process);
 
         // x = ln(S)
         Real pdf(Real x, Time t) const override;
@@ -45,7 +45,7 @@ namespace QuantLib {
     private:
         std::pair<Real, Volatility> distributionParams(Real x, Time t) const;
 
-        const ext::shared_ptr<GeneralizedBlackScholesProcess> process_;
+        const std::shared_ptr<GeneralizedBlackScholesProcess> process_;
     };
 }
 

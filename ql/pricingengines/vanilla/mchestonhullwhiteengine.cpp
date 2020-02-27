@@ -27,8 +27,8 @@ namespace QuantLib {
 
     HestonHullWhitePathPricer::HestonHullWhitePathPricer(
               Time exerciseTime,
-              const ext::shared_ptr<Payoff> & payoff,
-              const ext::shared_ptr<HybridHestonHullWhiteProcess> & process)
+              const std::shared_ptr<Payoff> & payoff,
+              const std::shared_ptr<HybridHestonHullWhiteProcess> & process)
     : exerciseTime_(exerciseTime),
       payoff_(payoff),
       process_(process) {

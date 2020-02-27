@@ -23,52 +23,47 @@
 
 #include <ql/cashflows/fixedratecoupon.hpp>
 #include <ql/event.hpp>
-#include <ql/math/solvers1d/brent.hpp>
-#include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/experimental/credit/gaussianlhplossmodel.hpp>
 #include <ql/experimental/credit/midpointcdoengine.hpp>
+#include <ql/math/solvers1d/brent.hpp>
+#include <ql/termstructures/yieldtermstructure.hpp>
 
 using namespace std;
 
 namespace QuantLib {
 
-    SyntheticCDO::SyntheticCDO(const ext::shared_ptr<Basket>& basket,
+    SyntheticCDO::SyntheticCDO(const std::shared_ptr<Basket>& basket,
                                Protection::Side side,
                                const Schedule& schedule,
                                Rate upfrontRate,
                                Rate runningRate,
                                const DayCounter& dayCounter,
                                BusinessDayConvention paymentConvention,
-                               boost::optional<Real> notional)
-    : basket_(basket),
-      side_(side),
-      upfrontRate_(upfrontRate),
-      runningRate_(runningRate),
-      leverageFactor_(notional ? notional.get()/basket->trancheNotional() : 1.),
-      dayCounter_(dayCounter),
-      paymentConvention_(paymentConvention)
-    {
-        QL_REQUIRE (basket->names().size() > 0, "basket is empty");
+                               std::optional<Real> notional)
+    : basket_(basket), side_(side), upfrontRate_(upfrontRate), runningRate_(runningRate),
+      leverageFactor_(notional ? notional.value() / basket->trancheNotional() : 1.),
+      dayCounter_(dayCounter), paymentConvention_(paymentConvention) {
+        QL_REQUIRE(basket->names().size() > 0, "basket is empty");
         // Basket inception must lie before contract protection start.
         QL_REQUIRE(basket->refDate() <= schedule.startDate(),
-        //using the start date of the schedule might be wrong, think of the 
-        //  CDS rule
-            "Basket did not exist before contract start.");
+                   // using the start date of the schedule might be wrong, think of the
+                   //  CDS rule
+                   "Basket did not exist before contract start.");
 
-        // Notice the notional is that of the basket at basket inception, some 
+        // Notice the notional is that of the basket at basket inception, some
         //   names might have defaulted in between
         normalizedLeg_ = FixedRateLeg(schedule)
-            .withNotionals(basket_->trancheNotional() * leverageFactor_)
-            .withCouponRates(runningRate, dayCounter)
-            .withPaymentAdjustment(paymentConvention);
+                             .withNotionals(basket_->trancheNotional() * leverageFactor_)
+                             .withCouponRates(runningRate, dayCounter)
+                             .withPaymentAdjustment(paymentConvention);
 
         // Date today = Settings::instance().evaluationDate();
-        
+
         // register with probabilities if the corresponding issuer is, baskets
         //   are not registered with the DTS
         for (Size i = 0; i < basket->names().size(); i++) {
-            /* This turns out to be a problem: depends on today but I am not 
-            modifying the registrations, if we go back in time in the 
+            /* This turns out to be a problem: depends on today but I am not
+            modifying the registrations, if we go back in time in the
             calculations this would left me unregistered to some. Not impossible
             to de-register and register when updating but i am dropping it.
 
@@ -78,8 +73,9 @@ namespace QuantLib {
             */
             // registers with the associated curve (issuer and event type)
             // \todo make it possible to access them by name instead of index
-            registerWith(basket->pool()->get(basket->names()[i]).
-                defaultProbability(basket->pool()->defaultKeys()[i]));
+            registerWith(basket->pool()
+                             ->get(basket->names()[i])
+                             .defaultProbability(basket->pool()->defaultKeys()[i]));
             /* \todo Issuers should be observables/obsrvr and they would in turn
             regiter with the DTS; only we might get updates from curves we do
             not use.
@@ -88,36 +84,38 @@ namespace QuantLib {
         registerWith(basket_);
     }
 
-    Rate SyntheticCDO::premiumValue () const {
+    Rate SyntheticCDO::premiumValue() const {
         calculate();
         return premiumValue_;
     }
 
-    Rate SyntheticCDO::protectionValue () const {
+    Rate SyntheticCDO::protectionValue() const {
         calculate();
         return protectionValue_;
     }
 
     Real SyntheticCDO::premiumLegNPV() const {
         calculate();
-        if(side_ == Protection::Buyer) return premiumValue_;
+        if (side_ == Protection::Buyer)
+            return premiumValue_;
         return -premiumValue_;
     }
 
     Real SyntheticCDO::protectionLegNPV() const {
         calculate();
-        if(side_ == Protection::Buyer) return -protectionValue_;
+        if (side_ == Protection::Buyer)
+            return -protectionValue_;
         return protectionValue_;
     }
 
-    Rate SyntheticCDO::fairPremium () const {
+    Rate SyntheticCDO::fairPremium() const {
         calculate();
-        QL_REQUIRE(premiumValue_ != 0, "Attempted divide by zero while calculating syntheticCDO premium.");
-        return runningRate_
-            * (protectionValue_ - upfrontPremiumValue_) / premiumValue_;
+        QL_REQUIRE(premiumValue_ != 0,
+                   "Attempted divide by zero while calculating syntheticCDO premium.");
+        return runningRate_ * (protectionValue_ - upfrontPremiumValue_) / premiumValue_;
     }
 
-    Rate SyntheticCDO::fairUpfrontPremium () const {
+    Rate SyntheticCDO::fairUpfrontPremium() const {
         calculate();
         return (protectionValue_ - premiumValue_) / remainingNotional_;
     }
@@ -127,16 +125,15 @@ namespace QuantLib {
         return expectedTrancheLoss_;
     }
 
-    Size SyntheticCDO::error () const {
+    Size SyntheticCDO::error() const {
         calculate();
         return error_;
     }
 
-    bool SyntheticCDO::isExpired () const {
+    bool SyntheticCDO::isExpired() const {
         // FIXME: it could have also expired (knocked out) because theres
         //   no remaining tranche notional.
-        return detail::simple_event(normalizedLeg_.back()->date())
-               .hasOccurred();
+        return detail::simple_event(normalizedLeg_.back()->date()).hasOccurred();
     }
 
     Real SyntheticCDO::remainingNotional() const {
@@ -145,8 +142,7 @@ namespace QuantLib {
     }
 
     void SyntheticCDO::setupArguments(PricingEngine::arguments* args) const {
-        auto* arguments
-            = dynamic_cast<SyntheticCDO::arguments*>(args);
+        auto* arguments = dynamic_cast<SyntheticCDO::arguments*>(args);
         QL_REQUIRE(arguments != nullptr, "wrong argument type");
         arguments->basket = basket_;
         arguments->side = side_;
@@ -162,8 +158,7 @@ namespace QuantLib {
     void SyntheticCDO::fetchResults(const PricingEngine::results* r) const {
         Instrument::fetchResults(r);
 
-        const auto* results
-            = dynamic_cast<const SyntheticCDO::results*>(r);
+        const auto* results = dynamic_cast<const SyntheticCDO::results*>(r);
         QL_REQUIRE(results != nullptr, "wrong result type");
 
         premiumValue_ = results->premiumValue;
@@ -202,9 +197,6 @@ namespace QuantLib {
     }
 
 
-
-
-
     namespace {
 
         class ObjectiveFunction {
@@ -213,14 +205,14 @@ namespace QuantLib {
                               SimpleQuote& quote,
                               PricingEngine& engine,
                               const SyntheticCDO::results* results)
-            : target_(target), quote_(quote),
-              engine_(engine), results_(results) {}
+            : target_(target), quote_(quote), engine_(engine), results_(results) {}
 
             Real operator()(Real guess) const {
                 quote_.setValue(guess);
                 engine_.calculate();
                 return results_->value - target_;
             }
+
           private:
             Real target_;
             SimpleQuote& quote_;
@@ -232,23 +224,21 @@ namespace QuantLib {
 
     // untested, not sure this is not messing up, once it comes out of this
     //   the basket model is different.....
-    Real SyntheticCDO::implicitCorrelation(const std::vector<Real>& recoveries, 
-        const Handle<YieldTermStructure>& discountCurve, 
-        Real targetNPV,
-        Real accuracy) const 
-    {
-        ext::shared_ptr<SimpleQuote> correl(new SimpleQuote(0.0));
+    Real SyntheticCDO::implicitCorrelation(const std::vector<Real>& recoveries,
+                                           const Handle<YieldTermStructure>& discountCurve,
+                                           Real targetNPV,
+                                           Real accuracy) const {
+        std::shared_ptr<SimpleQuote> correl(new SimpleQuote(0.0));
 
-        ext::shared_ptr<GaussianLHPLossModel> lhp(new 
-            GaussianLHPLossModel(Handle<Quote>(correl), recoveries));
+        std::shared_ptr<GaussianLHPLossModel> lhp(
+            new GaussianLHPLossModel(Handle<Quote>(correl), recoveries));
 
         // lock
         basket_->setLossModel(lhp);
 
         MidPointCDOEngine engineIC(discountCurve);
         setupArguments(engineIC.getArguments());
-        const auto* results = 
-            dynamic_cast<const SyntheticCDO::results*>(engineIC.getResults());
+        const auto* results = dynamic_cast<const SyntheticCDO::results*>(engineIC.getResults());
 
         // aviod recal of the basket on engine updates through the quote
         basket_->recalculate();
@@ -259,7 +249,7 @@ namespace QuantLib {
         //  Rate step = guess*0.1;
 
         // wrap/catch to be able to unfreeze the basket:
-        Real solution = Brent().solve(f, accuracy, guess, QL_EPSILON, 1.-QL_EPSILON);
+        Real solution = Brent().solve(f, accuracy, guess, QL_EPSILON, 1. - QL_EPSILON);
         basket_->unfreeze();
         return solution;
     }

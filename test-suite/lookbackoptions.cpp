@@ -123,34 +123,34 @@ void LookbackOptionTest::testAnalyticContinuousFloatingLookback() {
     DayCounter dc = Actual360();
     Date today = Date::todaysDate();
 
-    ext::shared_ptr<SimpleQuote> spot(new SimpleQuote(0.0));
-    ext::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.0));
-    ext::shared_ptr<YieldTermStructure> qTS = flatRate(today, qRate, dc);
-    ext::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
-    ext::shared_ptr<YieldTermStructure> rTS = flatRate(today, rRate, dc);
-    ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
-    ext::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
+    std::shared_ptr<SimpleQuote> spot(new SimpleQuote(0.0));
+    std::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.0));
+    std::shared_ptr<YieldTermStructure> qTS = flatRate(today, qRate, dc);
+    std::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
+    std::shared_ptr<YieldTermStructure> rTS = flatRate(today, rRate, dc);
+    std::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
+    std::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
 
     for (auto & value : values) {
         Date exDate = today + Integer(value.t*360+0.5);
-        ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
+        std::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
         spot ->setValue(value.s);
         qRate->setValue(value.q);
         rRate->setValue(value.r);
         vol  ->setValue(value.v);
 
-        ext::shared_ptr<FloatingTypePayoff> payoff(
+        std::shared_ptr<FloatingTypePayoff> payoff(
                                       new FloatingTypePayoff(value.type));
 
-        ext::shared_ptr<BlackScholesMertonProcess> stochProcess(
+        std::shared_ptr<BlackScholesMertonProcess> stochProcess(
                             new BlackScholesMertonProcess(
                                        Handle<Quote>(spot),
                                        Handle<YieldTermStructure>(qTS),
                                        Handle<YieldTermStructure>(rTS),
                                        Handle<BlackVolTermStructure>(volTS)));
 
-        ext::shared_ptr<PricingEngine> engine(
+        std::shared_ptr<PricingEngine> engine(
                   new AnalyticContinuousFloatingLookbackEngine(stochProcess));
 
         ContinuousFloatingLookbackOption option(value.minmax,
@@ -223,34 +223,34 @@ void LookbackOptionTest::testAnalyticContinuousFixedLookback() {
     DayCounter dc = Actual360();
     Date today = Date::todaysDate();
 
-    ext::shared_ptr<SimpleQuote> spot(new SimpleQuote(0.0));
-    ext::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.0));
-    ext::shared_ptr<YieldTermStructure> qTS = flatRate(today, qRate, dc);
-    ext::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
-    ext::shared_ptr<YieldTermStructure> rTS = flatRate(today, rRate, dc);
-    ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
-    ext::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
+    std::shared_ptr<SimpleQuote> spot(new SimpleQuote(0.0));
+    std::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.0));
+    std::shared_ptr<YieldTermStructure> qTS = flatRate(today, qRate, dc);
+    std::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
+    std::shared_ptr<YieldTermStructure> rTS = flatRate(today, rRate, dc);
+    std::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
+    std::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
 
     for (auto & value : values) {
         Date exDate = today + Integer(value.t*360+0.5);
-        ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
+        std::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
         spot ->setValue(value.s);
         qRate->setValue(value.q);
         rRate->setValue(value.r);
         vol  ->setValue(value.v);
 
-        ext::shared_ptr<StrikedTypePayoff> payoff(
+        std::shared_ptr<StrikedTypePayoff> payoff(
                      new PlainVanillaPayoff(value.type, value.strike));
 
-        ext::shared_ptr<BlackScholesMertonProcess> stochProcess(
+        std::shared_ptr<BlackScholesMertonProcess> stochProcess(
                             new BlackScholesMertonProcess(
                                        Handle<Quote>(spot),
                                        Handle<YieldTermStructure>(qTS),
                                        Handle<YieldTermStructure>(rTS),
                                        Handle<BlackVolTermStructure>(volTS)));
 
-        ext::shared_ptr<PricingEngine> engine(
+        std::shared_ptr<PricingEngine> engine(
                      new AnalyticContinuousFixedLookbackEngine(stochProcess));
 
         ContinuousFixedLookbackOption option(value.minmax,
@@ -333,34 +333,34 @@ void LookbackOptionTest::testAnalyticContinuousPartialFloatingLookback() {
     DayCounter dc = Actual360();
     Date today = Date::todaysDate();
 
-    ext::shared_ptr<SimpleQuote> spot(new SimpleQuote(0.0));
-    ext::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.0));
-    ext::shared_ptr<YieldTermStructure> qTS = flatRate(today, qRate, dc);
-    ext::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
-    ext::shared_ptr<YieldTermStructure> rTS = flatRate(today, rRate, dc);
-    ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
-    ext::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
+    std::shared_ptr<SimpleQuote> spot(new SimpleQuote(0.0));
+    std::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.0));
+    std::shared_ptr<YieldTermStructure> qTS = flatRate(today, qRate, dc);
+    std::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
+    std::shared_ptr<YieldTermStructure> rTS = flatRate(today, rRate, dc);
+    std::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
+    std::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
 
     for (auto & value : values) {
         Date exDate = today + Integer(value.t*360+0.5);
-        ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
+        std::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
         spot ->setValue(value.s);
         qRate->setValue(value.q);
         rRate->setValue(value.r);
         vol  ->setValue(value.v);
 
-        ext::shared_ptr<FloatingTypePayoff> payoff(
+        std::shared_ptr<FloatingTypePayoff> payoff(
                                       new FloatingTypePayoff(value.type));
 
-        ext::shared_ptr<BlackScholesMertonProcess> stochProcess(
+        std::shared_ptr<BlackScholesMertonProcess> stochProcess(
                             new BlackScholesMertonProcess(
                                        Handle<Quote>(spot),
                                        Handle<YieldTermStructure>(qTS),
                                        Handle<YieldTermStructure>(rTS),
                                        Handle<BlackVolTermStructure>(volTS)));
 
-        ext::shared_ptr<PricingEngine> engine(
+        std::shared_ptr<PricingEngine> engine(
                   new AnalyticContinuousPartialFloatingLookbackEngine(stochProcess));
 
         Date lookbackEnd = today + Integer(value.t1*360+0.5);
@@ -444,34 +444,34 @@ void LookbackOptionTest::testAnalyticContinuousPartialFixedLookback() {
     DayCounter dc = Actual360();
     Date today = Date::todaysDate();
 
-    ext::shared_ptr<SimpleQuote> spot(new SimpleQuote(0.0));
-    ext::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.0));
-    ext::shared_ptr<YieldTermStructure> qTS = flatRate(today, qRate, dc);
-    ext::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
-    ext::shared_ptr<YieldTermStructure> rTS = flatRate(today, rRate, dc);
-    ext::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
-    ext::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
+    std::shared_ptr<SimpleQuote> spot(new SimpleQuote(0.0));
+    std::shared_ptr<SimpleQuote> qRate(new SimpleQuote(0.0));
+    std::shared_ptr<YieldTermStructure> qTS = flatRate(today, qRate, dc);
+    std::shared_ptr<SimpleQuote> rRate(new SimpleQuote(0.0));
+    std::shared_ptr<YieldTermStructure> rTS = flatRate(today, rRate, dc);
+    std::shared_ptr<SimpleQuote> vol(new SimpleQuote(0.0));
+    std::shared_ptr<BlackVolTermStructure> volTS = flatVol(today, vol, dc);
 
     for (auto & value : values) {
         Date exDate = today + Integer(value.t*360+0.5);
-        ext::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
+        std::shared_ptr<Exercise> exercise(new EuropeanExercise(exDate));
 
         spot ->setValue(value.s);
         qRate->setValue(value.q);
         rRate->setValue(value.r);
         vol  ->setValue(value.v);
 
-        ext::shared_ptr<StrikedTypePayoff> payoff(
+        std::shared_ptr<StrikedTypePayoff> payoff(
                      new PlainVanillaPayoff(value.type, value.strike));
 
-        ext::shared_ptr<BlackScholesMertonProcess> stochProcess(
+        std::shared_ptr<BlackScholesMertonProcess> stochProcess(
                             new BlackScholesMertonProcess(
                                        Handle<Quote>(spot),
                                        Handle<YieldTermStructure>(qTS),
                                        Handle<YieldTermStructure>(rTS),
                                        Handle<BlackVolTermStructure>(volTS)));
 
-        ext::shared_ptr<PricingEngine> engine(
+        std::shared_ptr<PricingEngine> engine(
                      new AnalyticContinuousPartialFixedLookbackEngine(stochProcess));
 
         Date lookbackStart = today + Integer(value.t1*360+0.5);

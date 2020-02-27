@@ -78,9 +78,9 @@ namespace QuantLib {
 
         Date startDate() const;
         Date maturityDate() const;
-        ext::shared_ptr<YoYInflationCoupon> lastYoYInflationCoupon() const;
+        std::shared_ptr<YoYInflationCoupon> lastYoYInflationCoupon() const;
         //! Returns the n-th optionlet as a cap/floor with only one cash flow.
-        ext::shared_ptr<YoYInflationCapFloor> optionlet(const Size n) const;
+        std::shared_ptr<YoYInflationCapFloor> optionlet(const Size n) const;
         //@}
         virtual Rate atmRate(const YieldTermStructure& discountCurve) const;
         //! implied term volatility
@@ -137,7 +137,7 @@ namespace QuantLib {
       public:
         arguments() : type(YoYInflationCapFloor::Type(-1)) {}
         YoYInflationCapFloor::Type type;
-        ext::shared_ptr<YoYInflationIndex> index;
+        std::shared_ptr<YoYInflationIndex> index;
         Period observationLag;
         std::vector<Date> startDates;
         std::vector<Date> fixingDates;

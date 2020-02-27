@@ -195,8 +195,8 @@ namespace QuantLib {
         return cmSwapRates_;
     }
 
-    QL_UNIQUE_OR_AUTO_PTR<CurveState> LMMCurveState::clone() const {
-        return QL_UNIQUE_OR_AUTO_PTR<CurveState>(new LMMCurveState(*this));
+    std::unique_ptr<CurveState> LMMCurveState::clone() const {
+        return std::unique_ptr<CurveState>(new LMMCurveState(*this));
     }
 
 }

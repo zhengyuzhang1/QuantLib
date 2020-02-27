@@ -49,12 +49,12 @@ namespace QuantLib {
       public:
         AnalyticBSMHullWhiteEngine(
                      Real equityShortRateCorrelation,
-                     ext::shared_ptr<GeneralizedBlackScholesProcess> ,
-                     const ext::shared_ptr<HullWhite>&);
+                     std::shared_ptr<GeneralizedBlackScholesProcess> ,
+                     const std::shared_ptr<HullWhite>&);
         void calculate() const override;
       private:
         Real rho_;
-        ext::shared_ptr<GeneralizedBlackScholesProcess> process_;
+        std::shared_ptr<GeneralizedBlackScholesProcess> process_;
     };
 
 }

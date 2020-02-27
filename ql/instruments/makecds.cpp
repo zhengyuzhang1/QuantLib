@@ -36,12 +36,12 @@ namespace QuantLib {
           couponTenor_(3 * Months), couponRate_(couponRate), upfrontRate_(0.0),
           dayCounter_(Actual360()), lastPeriodDayCounter_(Actual360(true)) {}
     MakeCreditDefaultSwap::operator CreditDefaultSwap() const {
-        ext::shared_ptr<CreditDefaultSwap> swap = *this;
+        std::shared_ptr<CreditDefaultSwap> swap = *this;
         return *swap;
     }
 
     MakeCreditDefaultSwap::
-    operator ext::shared_ptr<CreditDefaultSwap>() const {
+    operator std::shared_ptr<CreditDefaultSwap>() const {
 
         Date evaluation = Settings::instance().evaluationDate();
         Date start = evaluation + 1;
@@ -57,11 +57,11 @@ namespace QuantLib {
                           Unadjusted, DateGeneration::CDS, false, Date(),
                           Date());
 
-        ext::shared_ptr<CreditDefaultSwap> cds =
-            ext::shared_ptr<CreditDefaultSwap>(new CreditDefaultSwap(
+        std::shared_ptr<CreditDefaultSwap> cds =
+            std::shared_ptr<CreditDefaultSwap>(new CreditDefaultSwap(
                 side_, nominal_, upfrontRate_, couponRate_, schedule, Following,
                 dayCounter_, true, true, start, upfrontDate,
-                ext::shared_ptr<Claim>(), lastPeriodDayCounter_, true));
+                std::shared_ptr<Claim>(), lastPeriodDayCounter_, true));
 
         cds->setPricingEngine(engine_);
         return cds;
@@ -104,7 +104,7 @@ namespace QuantLib {
     }
 
     MakeCreditDefaultSwap &MakeCreditDefaultSwap::withPricingEngine(
-        const ext::shared_ptr<PricingEngine> &engine) {
+        const std::shared_ptr<PricingEngine> &engine) {
         engine_ = engine;
         return *this;
     }

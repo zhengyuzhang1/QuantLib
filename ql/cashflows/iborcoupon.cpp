@@ -56,7 +56,7 @@ namespace QuantLib {
                            const Date& startDate,
                            const Date& endDate,
                            Natural fixingDays,
-                           const ext::shared_ptr<IborIndex>& iborIndex,
+                           const std::shared_ptr<IborIndex>& iborIndex,
                            Real gearing,
                            Spread spread,
                            const Date& refPeriodStart,
@@ -152,7 +152,7 @@ namespace QuantLib {
 
 
     IborLeg::IborLeg(Schedule  schedule,
-                     ext::shared_ptr<IborIndex>  index)
+                     std::shared_ptr<IborIndex>  index)
     : schedule_(std::move(schedule)), index_(std::move(index)),
       paymentAdjustment_(Following),
       paymentLag_(0), paymentCalendar_(Calendar()),
@@ -270,7 +270,7 @@ namespace QuantLib {
 			             exCouponPeriod_, exCouponCalendar_, exCouponAdjustment_, exCouponEndOfMonth_);
 
         if (caps_.empty() && floors_.empty() && !inArrears_) {
-            ext::shared_ptr<IborCouponPricer> pricer(new BlackIborCouponPricer);
+            std::shared_ptr<IborCouponPricer> pricer(new BlackIborCouponPricer);
             setCouponPricer(leg, pricer);
         }
 

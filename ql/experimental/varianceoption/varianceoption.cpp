@@ -24,7 +24,7 @@
 namespace QuantLib {
 
     VarianceOption::VarianceOption(
-                          ext::shared_ptr<Payoff>  payoff,
+                          std::shared_ptr<Payoff>  payoff,
                           Real notional,
                           const Date& startDate,
                           const Date& maturityDate)
