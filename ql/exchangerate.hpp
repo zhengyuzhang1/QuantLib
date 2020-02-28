@@ -27,6 +27,7 @@
 
 #include <ql/money.hpp>
 #include <ql/utilities/null.hpp>
+#include <optional>
 #include <utility>
 
 namespace QuantLib {
@@ -37,9 +38,10 @@ namespace QuantLib {
     */
     class ExchangeRate {
       public:
-        enum Type { Direct,  /*!< given directly by the user */
-                    Derived  /*!< derived from exchange rates between
-                                  other currencies */
+        enum Type {
+            Direct, /*!< given directly by the user */
+            Derived /*!< derived from exchange rates between
+                         other currencies */
         };
         //! \name Constructors
         //@{
@@ -47,9 +49,7 @@ namespace QuantLib {
         /*! the rate \f$ r \f$ is given with the convention that a
             unit of the source is worth \f$ r \f$ units of the target.
         */
-        ExchangeRate(Currency  source,
-                     Currency  target,
-                     Decimal rate);
+        ExchangeRate(Currency source, Currency target, Decimal rate);
         //@}
 
         //! \name Inspectors
@@ -69,43 +69,35 @@ namespace QuantLib {
         //! apply the exchange rate to a cash amount
         Money exchange(const Money& amount) const;
         //! chain two exchange rates
-        static ExchangeRate chain(const ExchangeRate& r1,
-                                  const ExchangeRate& r2);
+        static ExchangeRate chain(const ExchangeRate& r1, const ExchangeRate& r2);
         //@}
+      private:
+        ExchangeRate(const ExchangeRate& r1, const ExchangeRate& r2);
+
       private:
         Currency source_, target_;
         Decimal rate_;
         Type type_;
-        std::pair<std::shared_ptr<ExchangeRate>,
-                  std::shared_ptr<ExchangeRate> > rateChain_;
+        std::optional<std::pair<std::shared_ptr<ExchangeRate>, std::shared_ptr<ExchangeRate> > >
+            rateChain_;
     };
 
 
     // inline definitions
 
-    inline ExchangeRate::ExchangeRate()
-    : rate_(Null<Decimal>()) {}
+    inline ExchangeRate::ExchangeRate() : rate_(Null<Decimal>()) {}
 
-    inline ExchangeRate::ExchangeRate(Currency  source,
-                                      Currency  target,
-                                      Decimal rate)
-    : source_(std::move(source)), target_(std::move(target)), rate_(rate), type_(Direct) {}
+    inline ExchangeRate::ExchangeRate(Currency source, Currency target, Decimal rate)
+    : source_(std::move(source)), target_(std::move(target)), rate_(rate), type_(Direct),
+      rateChain_(std::nullopt) {}
 
-    inline const Currency& ExchangeRate::source() const {
-        return source_;
-    }
+    inline const Currency& ExchangeRate::source() const { return source_; }
 
-    inline const Currency& ExchangeRate::target() const {
-        return target_;
-    }
+    inline const Currency& ExchangeRate::target() const { return target_; }
 
-    inline ExchangeRate::Type ExchangeRate::type() const {
-        return type_;
-    }
+    inline ExchangeRate::Type ExchangeRate::type() const { return type_; }
 
-    inline Decimal ExchangeRate::rate() const {
-        return rate_;
-    }
+    inline Decimal ExchangeRate::rate() const { return rate_; }
 
 }
 

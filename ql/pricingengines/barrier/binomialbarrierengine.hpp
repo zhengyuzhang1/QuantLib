@@ -24,13 +24,14 @@
 #ifndef quantlib_binomial_barrier_engine_hpp
 #define quantlib_binomial_barrier_engine_hpp
 
+#include <ql/math/distributions/normaldistribution.hpp>
 #include <ql/methods/lattices/binomialtree.hpp>
 #include <ql/methods/lattices/bsmlattice.hpp>
-#include <ql/math/distributions/normaldistribution.hpp>
 #include <ql/pricingengines/barrier/discretizedbarrieroption.hpp>
 #include <ql/processes/blackscholesprocess.hpp>
-#include <ql/termstructures/yield/flatforward.hpp>
 #include <ql/termstructures/volatility/equityfx/blackconstantvol.hpp>
+#include <ql/termstructures/yield/flatforward.hpp>
+#include <type_traits>
 #include <utility>
 
 namespace QuantLib {
@@ -57,23 +58,22 @@ namespace QuantLib {
             CoxRossRubinstein Boyle-Lau is disabled and maxTimeSteps
             ignored.
         */
-        BinomialBarrierEngine(
-             std::shared_ptr<GeneralizedBlackScholesProcess>  process,
-             Size timeSteps,
-             Size maxTimeSteps=0)
+        BinomialBarrierEngine(std::shared_ptr<GeneralizedBlackScholesProcess> process,
+                              Size timeSteps,
+                              Size maxTimeSteps = 0)
         : process_(std::move(process)), timeSteps_(timeSteps), maxTimeSteps_(maxTimeSteps) {
-            QL_REQUIRE(timeSteps>0,
-                       "timeSteps must be positive, " << timeSteps <<
-                       " not allowed");
-            QL_REQUIRE(maxTimeSteps==0 || maxTimeSteps>=timeSteps,
+            QL_REQUIRE(timeSteps > 0,
+                       "timeSteps must be positive, " << timeSteps << " not allowed");
+            QL_REQUIRE(maxTimeSteps == 0 || maxTimeSteps >= timeSteps,
                        "maxTimeSteps must be zero or "
                        "greater than or equal to timeSteps, "
-                       << maxTimeSteps << " not allowed");
-            if (maxTimeSteps_==0)
-               maxTimeSteps_ = std::max( (Size)1000, timeSteps_*5);
+                           << maxTimeSteps << " not allowed");
+            if (maxTimeSteps_ == 0)
+                maxTimeSteps_ = std::max((Size)1000, timeSteps_ * 5);
             registerWith(process_);
         }
         void calculate() const override;
+
       private:
         std::shared_ptr<GeneralizedBlackScholesProcess> process_;
         Size timeSteps_;
@@ -84,34 +84,28 @@ namespace QuantLib {
     // template definitions
 
     template <class T, class D>
-    void BinomialBarrierEngine<T,D>::calculate() const {
+    void BinomialBarrierEngine<T, D>::calculate() const {
 
-        DayCounter rfdc  = process_->riskFreeRate()->dayCounter();
+        DayCounter rfdc = process_->riskFreeRate()->dayCounter();
         DayCounter divdc = process_->dividendYield()->dayCounter();
         DayCounter voldc = process_->blackVolatility()->dayCounter();
         Calendar volcal = process_->blackVolatility()->calendar();
 
         Real s0 = process_->stateVariable()->value();
         QL_REQUIRE(s0 > 0.0, "negative or null underlying given");
-        Volatility v = process_->blackVolatility()->blackVol(
-            arguments_.exercise->lastDate(), s0);
+        Volatility v = process_->blackVolatility()->blackVol(arguments_.exercise->lastDate(), s0);
         Date maturityDate = arguments_.exercise->lastDate();
-        Rate r = process_->riskFreeRate()->zeroRate(maturityDate,
-            rfdc, Continuous, NoFrequency);
-        Rate q = process_->dividendYield()->zeroRate(maturityDate,
-            divdc, Continuous, NoFrequency);
+        Rate r = process_->riskFreeRate()->zeroRate(maturityDate, rfdc, Continuous, NoFrequency);
+        Rate q = process_->dividendYield()->zeroRate(maturityDate, divdc, Continuous, NoFrequency);
         Date referenceDate = process_->riskFreeRate()->referenceDate();
 
         // binomial trees with constant coefficient
         Handle<YieldTermStructure> flatRiskFree(
-            std::shared_ptr<YieldTermStructure>(
-                new FlatForward(referenceDate, r, rfdc)));
+            std::shared_ptr<YieldTermStructure>(new FlatForward(referenceDate, r, rfdc)));
         Handle<YieldTermStructure> flatDividends(
-            std::shared_ptr<YieldTermStructure>(
-                new FlatForward(referenceDate, q, divdc)));
-        Handle<BlackVolTermStructure> flatVol(
-            std::shared_ptr<BlackVolTermStructure>(
-                new BlackConstantVol(referenceDate, volcal, v, voldc)));
+            std::shared_ptr<YieldTermStructure>(new FlatForward(referenceDate, q, divdc)));
+        Handle<BlackVolTermStructure> flatVol(std::shared_ptr<BlackVolTermStructure>(
+            new BlackConstantVol(referenceDate, volcal, v, voldc)));
 
         std::shared_ptr<StrikedTypePayoff> payoff =
             std::dynamic_pointer_cast<StrikedTypePayoff>(arguments_.payoff);
@@ -119,10 +113,8 @@ namespace QuantLib {
 
         Time maturity = rfdc.yearFraction(referenceDate, maturityDate);
 
-        std::shared_ptr<StochasticProcess1D> bs(
-                         new GeneralizedBlackScholesProcess(
-                                      process_->stateVariable(),
-                                      flatDividends, flatRiskFree, flatVol));
+        std::shared_ptr<StochasticProcess1D> bs(new GeneralizedBlackScholesProcess(
+            process_->stateVariable(), flatDividends, flatRiskFree, flatVol));
 
         // correct timesteps to ensure a (local) minimum, using Boyle and Lau
         // approach. See Journal of Derivatives, 1/1994,
@@ -130,16 +122,16 @@ namespace QuantLib {
         // Note: this approach works only for CoxRossRubinstein lattices, so
         // is disabled if T is not a CoxRossRubinstein or derived from it.
         Size optimum_steps = timeSteps_;
-        if (boost::is_base_of<CoxRossRubinstein, T>::value && 
-            maxTimeSteps_ > timeSteps_ && s0 > 0 && arguments_.barrier > 0) {
+        if (std::is_base_of_v<CoxRossRubinstein, T> && maxTimeSteps_ > timeSteps_ && s0 > 0 &&
+            arguments_.barrier > 0) {
             Real divisor;
             if (s0 > arguments_.barrier)
-               divisor = std::pow(std::log(s0 / arguments_.barrier), 2);
+                divisor = std::pow(std::log(s0 / arguments_.barrier), 2);
             else
-               divisor = std::pow(std::log(arguments_.barrier / s0), 2);
-            if (!close(divisor,0)) {
-                for (Size i=1; i < timeSteps_ ; ++i) {
-                    Size optimum = Size(( i*i * v*v * maturity) / divisor);
+                divisor = std::pow(std::log(arguments_.barrier / s0), 2);
+            if (!close(divisor, 0)) {
+                for (Size i = 1; i < timeSteps_; ++i) {
+                    Size optimum = Size((i * i * v * v * maturity) / divisor);
                     if (timeSteps_ < optimum) {
                         optimum_steps = optimum;
                         break; // found first minimum with iterations>=timesteps
@@ -147,14 +139,13 @@ namespace QuantLib {
                 }
             }
 
-            if (optimum_steps > maxTimeSteps_) 
-               optimum_steps = maxTimeSteps_; // too high, limit
+            if (optimum_steps > maxTimeSteps_)
+                optimum_steps = maxTimeSteps_; // too high, limit
         }
 
         TimeGrid grid(maturity, optimum_steps);
 
-        std::shared_ptr<T> tree(new T(bs, maturity, optimum_steps,
-                                        payoff->strike()));
+        std::shared_ptr<T> tree(new T(bs, maturity, optimum_steps, payoff->strike()));
 
         std::shared_ptr<BlackScholesLattice<T> > lattice(
             new BlackScholesLattice<T>(tree, r, maturity, optimum_steps));
@@ -163,7 +154,7 @@ namespace QuantLib {
         option.initialize(lattice, maturity);
 
         // Partial derivatives calculated from various points in the
-        // binomial tree 
+        // binomial tree
         // (see J.C.Hull, "Options, Futures and other derivatives", 6th edition, pp 397/398)
 
         // Rollback to third-last step, and get underlying prices (s2) &
@@ -171,17 +162,17 @@ namespace QuantLib {
         option.rollback(grid[2]);
         Array va2(option.values());
         QL_ENSURE(va2.size() == 3, "Expect 3 nodes in grid at second step");
-        Real p2u = va2[2]; // up
-        Real p2m = va2[1]; // mid
-        Real p2d = va2[0]; // down (low)
+        Real p2u = va2[2];                    // up
+        Real p2m = va2[1];                    // mid
+        Real p2d = va2[0];                    // down (low)
         Real s2u = lattice->underlying(2, 2); // up price
         Real s2m = lattice->underlying(2, 1); // middle price
         Real s2d = lattice->underlying(2, 0); // down (low) price
 
         // calculate gamma by taking the first derivate of the two deltas
-        Real delta2u = (p2u - p2m)/(s2u-s2m);
-        Real delta2d = (p2m-p2d)/(s2m-s2d);
-        Real gamma = (delta2u - delta2d) / ((s2u-s2d)/2);
+        Real delta2u = (p2u - p2m) / (s2u - s2m);
+        Real delta2d = (p2m - p2d) / (s2m - s2d);
+        Real gamma = (delta2u - delta2d) / ((s2u - s2d) / 2);
 
         // Rollback to second-last step, and get option values (p1) at
         // this point

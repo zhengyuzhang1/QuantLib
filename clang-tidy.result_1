@@ -1,0 +1,1194 @@
+
+/home/zzy/Documents/Cpp/QuantLib/ql/cashflows/capflooredinflationcoupon.cpp:74:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        setCommon(cap, floor);
+        ^
+
+/home/zzy/Documents/Cpp/QuantLib/ql/experimental/averageois/arithmeticoisratehelper.cpp:53:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bicubicsplineinterpolation.hpp:56:17: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/experimental/credit/basecorrelationstructure.cpp:44:14: note: Calling constructor for 'BicubicSpline'
+             BicubicSpline(trancheTimes_.begin(), 
+             ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bicubicsplineinterpolation.hpp:171:23: note: Calling constructor for 'BicubicSplineImpl<__gnu_cxx::__normal_iterator<double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<double *, std::vector<double, std::allocator<double> > >, QuantLib::Matrix>'
+                  new detail::BicubicSplineImpl<I1,I2,M>(xBegin, xEnd,
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bicubicsplineinterpolation.hpp:56:17: note: This constructor of an object of type 'BicubicSplineImpl' has not returned when the virtual method was called
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bicubicsplineinterpolation.hpp:56:17: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:44:17: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/experimental/credit/basecorrelationstructure.cpp:32:14: note: Calling constructor for 'BilinearInterpolation'
+             BilinearInterpolation(trancheTimes_.begin(), 
+             ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:80:23: note: Calling constructor for 'BilinearInterpolationImpl<__gnu_cxx::__normal_iterator<double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<double *, std::vector<double, std::allocator<double> > >, QuantLib::Matrix>'
+                  new detail::BilinearInterpolationImpl<I1,I2,M>(xBegin, xEnd,
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:44:17: note: This constructor of an object of type 'BilinearInterpolationImpl' has not returned when the virtual method was called
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:44:17: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/experimental/lattices/extendedbinomialtree.cpp:93:46: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        pu_ = 0.5 + 0.5*this->driftStep(0.0)/this->dxStep(0.0);
+                                             ^
+/home/zzy/Documents/Cpp/QuantLib/ql/experimental/lattices/extendedbinomialtree.cpp:93:46: note: This constructor of an object of type 'ExtendedTrigeorgis' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/experimental/lattices/extendedbinomialtree.cpp:93:46: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/experimental/processes/hestonslvprocess.cpp:39:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        update();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/experimental/processes/hestonslvprocess.cpp:39:9: note: This constructor of an object of type 'HestonSLVProcess' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/experimental/processes/hestonslvprocess.cpp:39:9: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:44:17: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/experimental/models/hestonslvfdmmodel.cpp:484:9: note: Calling 'HestonSLVFDMModel::performCalculations'
+        performCalculations();
+        ^
+
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:93:20: note: Calling constructor for 'BilinearInterpolation'
+            return BilinearInterpolation(xBegin,xEnd,yBegin,yEnd,z);
+                   ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:80:23: note: Calling constructor for 'BilinearInterpolationImpl<__gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, QuantLib::Matrix>'
+                  new detail::BilinearInterpolationImpl<I1,I2,M>(xBegin, xEnd,
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:44:17: note: This constructor of an object of type 'BilinearInterpolationImpl' has not returned when the virtual method was called
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:44:17: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/experimental/variancegamma/variancegammamodel.cpp:35:13: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+            generateArguments();
+            ^
+/home/zzy/Documents/Cpp/QuantLib/ql/experimental/variancegamma/variancegammamodel.cpp:35:13: note: This constructor of an object of type 'VarianceGammaModel' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/experimental/variancegamma/variancegammamodel.cpp:35:13: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/indexes/interestrateindex.cpp:59:56: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        registerWith(IndexManager::instance().notifier(name()));
+                                                       ^
+/home/zzy/Documents/Cpp/QuantLib/ql/indexes/interestrateindex.cpp:59:56: note: This constructor of an object of type 'InterestRateIndex' has not returned when the virtual method was called
+        registerWith(IndexManager::instance().notifier(name()));
+                                                       ^
+/home/zzy/Documents/Cpp/QuantLib/ql/indexes/interestrateindex.cpp:59:56: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/indexes/inflationindex.cpp:40:56: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        registerWith(IndexManager::instance().notifier(name()));
+                                                       ^
+/home/zzy/Documents/Cpp/QuantLib/ql/indexes/inflationindex.cpp:337:16: note: Calling 'make_shared<QuantLib::YoYInflationIndex, const std::__cxx11::basic_string<char> &, const QuantLib::Region &, const bool &, const bool &, const bool &, const QuantLib::Frequency &, const QuantLib::Period &, const QuantLib::Currency &, const QuantLib::Handle<QuantLib::YoYInflationTermStructure> &>'
+        return std::make_shared<YoYInflationIndex>(
+               ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/shared_ptr.h:717:14: note: Calling 'allocate_shared<QuantLib::YoYInflationIndex, std::allocator<QuantLib::YoYInflationIndex>, const std::__cxx11::basic_string<char> &, const QuantLib::Region &, const bool &, const bool &, const bool &, const QuantLib::Frequency &, const QuantLib::Period &, const QuantLib::Currency &, const QuantLib::Handle<QuantLib::YoYInflationTermStructure> &>'
+      return std::allocate_shared<_Tp>(std::allocator<_Tp_nc>(),
+             ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/shared_ptr.h:701:14: note: Calling constructor for 'shared_ptr<QuantLib::YoYInflationIndex>'
+      return shared_ptr<_Tp>(_Sp_alloc_shared_tag<_Alloc>{__a},
+             ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/shared_ptr.h:359:4: note: Calling constructor for '__shared_ptr<QuantLib::YoYInflationIndex, __gnu_cxx::_S_atomic>'
+        : __shared_ptr<_Tp>(__tag, std::forward<_Args>(__args)...)
+          ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/shared_ptr_base.h:1344:14: note: Calling constructor for '__shared_count<__gnu_cxx::_S_atomic>'
+        : _M_ptr(), _M_refcount(_M_ptr, __tag, std::forward<_Args>(__args)...)
+                    ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/shared_ptr_base.h:680:6: note: Calling constructor for '_Sp_counted_ptr_inplace<QuantLib::YoYInflationIndex, std::allocator<QuantLib::YoYInflationIndex>, __gnu_cxx::_S_atomic>'
+            _Sp_cp_type(__a._M_a, std::forward<_Args>(__args)...);
+            ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/shared_ptr_base.h:548:4: note: Calling 'allocator_traits::construct'
+          allocator_traits<_Alloc>::construct(__a, _M_ptr(),
+          ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/alloc_traits.h:484:4: note: Calling 'new_allocator::construct'
+        { __a.construct(__p, std::forward<_Args>(__args)...); }
+          ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/ext/new_allocator.h:147:23: note: Calling constructor for 'YoYInflationIndex'
+        { ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
+                             ^
+/home/zzy/Documents/Cpp/QuantLib/ql/indexes/inflationindex.cpp:203:7: note: Calling constructor for 'InflationIndex'
+    : InflationIndex(familyName, region, revised, interpolated,
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/indexes/inflationindex.cpp:40:56: note: This constructor of an object of type 'InflationIndex' has not returned when the virtual method was called
+        registerWith(IndexManager::instance().notifier(name()));
+                                                       ^
+/home/zzy/Documents/Cpp/QuantLib/ql/indexes/inflationindex.cpp:40:56: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/legacy/libormarketmodels/lmlinexpcorrmodel.cpp:32:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        generateArguments();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/legacy/libormarketmodels/lmlinexpcorrmodel.cpp:29:16: note: Assuming the condition is false
+     factors_((factors != Null<Size>()) ? factors : size) {
+               ^
+/home/zzy/Documents/Cpp/QuantLib/ql/legacy/libormarketmodels/lmlinexpcorrmodel.cpp:29:15: note: '?' condition is false
+     factors_((factors != Null<Size>()) ? factors : size) {
+              ^
+/home/zzy/Documents/Cpp/QuantLib/ql/legacy/libormarketmodels/lmlinexpcorrmodel.cpp:32:9: note: This constructor of an object of type 'LmLinearExponentialCorrelationModel' has not returned when the virtual method was called
+        generateArguments();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/legacy/libormarketmodels/lmlinexpcorrmodel.cpp:32:9: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bicubicsplineinterpolation.hpp:56:17: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/methods/finitedifferences/solvers/fdm2dimsolver.cpp:82:26: note: Calling 'make_shared<QuantLib::BicubicSpline, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, QuantLib::Matrix &>'
+        interpolation_ = std::make_shared<BicubicSpline>(x_.begin(), x_.end(),
+                         ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/shared_ptr.h:717:14: note: Calling 'allocate_shared<QuantLib::BicubicSpline, std::allocator<QuantLib::BicubicSpline>, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, QuantLib::Matrix &>'
+      return std::allocate_shared<_Tp>(std::allocator<_Tp_nc>(),
+             ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/shared_ptr.h:701:14: note: Calling constructor for 'shared_ptr<QuantLib::BicubicSpline>'
+      return shared_ptr<_Tp>(_Sp_alloc_shared_tag<_Alloc>{__a},
+             ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/shared_ptr.h:359:4: note: Calling constructor for '__shared_ptr<QuantLib::BicubicSpline, __gnu_cxx::_S_atomic>'
+        : __shared_ptr<_Tp>(__tag, std::forward<_Args>(__args)...)
+          ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/shared_ptr_base.h:1344:14: note: Calling constructor for '__shared_count<__gnu_cxx::_S_atomic>'
+        : _M_ptr(), _M_refcount(_M_ptr, __tag, std::forward<_Args>(__args)...)
+                    ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/shared_ptr_base.h:680:6: note: Calling constructor for '_Sp_counted_ptr_inplace<QuantLib::BicubicSpline, std::allocator<QuantLib::BicubicSpline>, __gnu_cxx::_S_atomic>'
+            _Sp_cp_type(__a._M_a, std::forward<_Args>(__args)...);
+            ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/shared_ptr_base.h:548:4: note: Calling 'allocator_traits::construct'
+          allocator_traits<_Alloc>::construct(__a, _M_ptr(),
+          ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/alloc_traits.h:484:4: note: Calling 'new_allocator::construct'
+        { __a.construct(__p, std::forward<_Args>(__args)...); }
+          ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/ext/new_allocator.h:147:23: note: Calling constructor for 'BicubicSpline'
+        { ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
+                             ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bicubicsplineinterpolation.hpp:171:23: note: Calling constructor for 'BicubicSplineImpl<__gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, QuantLib::Matrix>'
+                  new detail::BicubicSplineImpl<I1,I2,M>(xBegin, xEnd,
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bicubicsplineinterpolation.hpp:56:17: note: This constructor of an object of type 'BicubicSplineImpl' has not returned when the virtual method was called
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bicubicsplineinterpolation.hpp:56:17: note: Call to virtual function during construction
+clang-tidy -p=/home/zzy/Documents/Cpp/QuantLib /home/zzy/Documents/Cpp/QuantLib/ql/methods/finitedifferences/stepconditions/fdmsimplestoragecondition.cpp
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:44:17: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/methods/finitedifferences/stepconditions/fdmsimplestoragecondition.cpp:65:35: note: Calling constructor for 'BilinearInterpolation'
+            BilinearInterpolation interpl(x_.begin(), x_.end(),
+                                  ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:80:23: note: Calling constructor for 'BilinearInterpolationImpl<__gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, QuantLib::Matrix>'
+                  new detail::BilinearInterpolationImpl<I1,I2,M>(xBegin, xEnd,
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:44:17: note: This constructor of an object of type 'BilinearInterpolationImpl' has not returned when the virtual method was called
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:44:17: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bicubicsplineinterpolation.hpp:56:17: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/methods/finitedifferences/solvers/fdm3dimsolver.cpp:88:24: note: Assuming the condition is true
+        for (Size i=0; i < z_.size(); ++i) {
+                       ^
+/home/zzy/Documents/Cpp/QuantLib/ql/methods/finitedifferences/solvers/fdm3dimsolver.cpp:88:9: note: Loop condition is true.  Entering loop body
+        for (Size i=0; i < z_.size(); ++i) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/methods/finitedifferences/solvers/fdm3dimsolver.cpp:93:33: note: Calling 'make_shared<QuantLib::BicubicSpline, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, QuantLib::Matrix &>'
+            interpolation_[i] = std::make_shared<BicubicSpline>(x_.begin(), x_.end(),
+                                ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/shared_ptr.h:717:14: note: Calling 'allocate_shared<QuantLib::BicubicSpline, std::allocator<QuantLib::BicubicSpline>, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, QuantLib::Matrix &>'
+      return std::allocate_shared<_Tp>(std::allocator<_Tp_nc>(),
+             ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/shared_ptr.h:701:14: note: Calling constructor for 'shared_ptr<QuantLib::BicubicSpline>'
+      return shared_ptr<_Tp>(_Sp_alloc_shared_tag<_Alloc>{__a},
+             ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/shared_ptr.h:359:4: note: Calling constructor for '__shared_ptr<QuantLib::BicubicSpline, __gnu_cxx::_S_atomic>'
+        : __shared_ptr<_Tp>(__tag, std::forward<_Args>(__args)...)
+          ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/shared_ptr_base.h:1344:14: note: Calling constructor for '__shared_count<__gnu_cxx::_S_atomic>'
+        : _M_ptr(), _M_refcount(_M_ptr, __tag, std::forward<_Args>(__args)...)
+                    ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/shared_ptr_base.h:680:6: note: Calling constructor for '_Sp_counted_ptr_inplace<QuantLib::BicubicSpline, std::allocator<QuantLib::BicubicSpline>, __gnu_cxx::_S_atomic>'
+            _Sp_cp_type(__a._M_a, std::forward<_Args>(__args)...);
+            ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/shared_ptr_base.h:548:4: note: Calling 'allocator_traits::construct'
+          allocator_traits<_Alloc>::construct(__a, _M_ptr(),
+          ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/bits/alloc_traits.h:484:4: note: Calling 'new_allocator::construct'
+        { __a.construct(__p, std::forward<_Args>(__args)...); }
+          ^
+/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/ext/new_allocator.h:147:23: note: Calling constructor for 'BicubicSpline'
+        { ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
+                             ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bicubicsplineinterpolation.hpp:171:23: note: Calling constructor for 'BicubicSplineImpl<__gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<const double *, std::vector<double, std::allocator<double> > >, QuantLib::Matrix>'
+                  new detail::BicubicSplineImpl<I1,I2,M>(xBegin, xEnd,
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bicubicsplineinterpolation.hpp:56:17: note: This constructor of an object of type 'BicubicSplineImpl' has not returned when the virtual method was called
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bicubicsplineinterpolation.hpp:56:17: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/models/equity/gjrgarchmodel.cpp:60:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        generateArguments();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/models/equity/gjrgarchmodel.cpp:60:9: note: This constructor of an object of type 'GJRGARCHModel' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/models/equity/gjrgarchmodel.cpp:60:9: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/models/equity/hestonmodel.cpp:37:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        generateArguments();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/models/equity/hestonmodel.cpp:37:9: note: This constructor of an object of type 'HestonModel' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/models/equity/hestonmodel.cpp:37:9: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/models/equity/batesmodel.cpp:35:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        generateArguments();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/models/equity/batesmodel.cpp:49:7: note: Calling constructor for 'BatesModel'
+    : BatesModel(process) {
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/models/equity/batesmodel.cpp:24:5: note: Virtual base initialization skipped because it has already been handled by the most derived class
+    BatesModel::BatesModel(const std::shared_ptr<BatesProcess> & process)
+    ^
+/home/zzy/Documents/Cpp/QuantLib/ql/models/equity/batesmodel.cpp:35:9: note: This constructor of an object of type 'BatesModel' has not returned when the virtual method was called
+        generateArguments();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/models/equity/batesmodel.cpp:35:9: note: Call to virtual function during construction
+
+
+/home/zzy/Documents/Cpp/QuantLib/ql/models/shortrate/onefactormodels/extendedcoxingersollross.cpp:32:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        generateArguments();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/models/shortrate/onefactormodels/extendedcoxingersollross.cpp:32:9: note: This constructor of an object of type 'ExtendedCoxIngersollRoss' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/models/shortrate/onefactormodels/extendedcoxingersollross.cpp:32:9: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/models/shortrate/onefactormodels/hullwhite.cpp:38:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        generateArguments();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/models/shortrate/onefactormodels/hullwhite.cpp:38:9: note: This constructor of an object of type 'HullWhite' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/models/shortrate/onefactormodels/hullwhite.cpp:38:9: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/models/shortrate/twofactormodels/g2.cpp:41:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        generateArguments();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/models/shortrate/twofactormodels/g2.cpp:41:9: note: This constructor of an object of type 'G2' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/models/shortrate/twofactormodels/g2.cpp:41:9: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/pricingengines/vanilla/analytichestonhullwhiteengine.cpp:33:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        update();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/pricingengines/vanilla/analytichestonhullwhiteengine.cpp:33:9: note: This constructor of an object of type 'AnalyticHestonHullWhiteEngine' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/pricingengines/vanilla/analytichestonhullwhiteengine.cpp:33:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/pricingengines/vanilla/analytichestonhullwhiteengine.cpp:44:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        update();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/pricingengines/vanilla/analytichestonhullwhiteengine.cpp:44:9: note: This constructor of an object of type 'AnalyticHestonHullWhiteEngine' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/pricingengines/vanilla/analytichestonhullwhiteengine.cpp:44:9: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:41:17: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        switch (this->frequency()) {
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: This constructor of an object of type 'MultiplicativePriceSeasonality' has not returned when the virtual method was called
+        set(seasonalityBaseDate, frequency, seasonalityFactors);
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: Calling 'MultiplicativePriceSeasonality::set'
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:103:23: note: Assuming the condition is false
+        for(Size i=0; i<seasonalityFactors.size(); i++) {
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:103:9: note: Loop condition is false. Execution continues on line 106
+        for(Size i=0; i<seasonalityFactors.size(); i++) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:107:9: note: Calling 'MultiplicativePriceSeasonality::validate'
+        validate();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:41:17: note: Call to virtual function during construction
+        switch (this->frequency()) {
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:50:29: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                QL_REQUIRE(!this->seasonalityFactors().empty(), "no seasonality factors given");
+                            ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: This constructor of an object of type 'MultiplicativePriceSeasonality' has not returned when the virtual method was called
+        set(seasonalityBaseDate, frequency, seasonalityFactors);
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: Calling 'MultiplicativePriceSeasonality::set'
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:103:23: note: Assuming the condition is false
+        for(Size i=0; i<seasonalityFactors.size(); i++) {
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:103:9: note: Loop condition is false. Execution continues on line 106
+        for(Size i=0; i<seasonalityFactors.size(); i++) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:107:9: note: Calling 'MultiplicativePriceSeasonality::validate'
+        validate();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:41:9: note: Control jumps to 'case Daily:'  at line 49
+        switch (this->frequency()) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:50:29: note: Call to virtual function during construction
+                QL_REQUIRE(!this->seasonalityFactors().empty(), "no seasonality factors given");
+                            ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:51:30: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                QL_REQUIRE( (this->seasonalityFactors().size() %
+                             ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: This constructor of an object of type 'MultiplicativePriceSeasonality' has not returned when the virtual method was called
+        set(seasonalityBaseDate, frequency, seasonalityFactors);
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: Calling 'MultiplicativePriceSeasonality::set'
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:103:23: note: Assuming the condition is false
+        for(Size i=0; i<seasonalityFactors.size(); i++) {
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:103:9: note: Loop condition is false. Execution continues on line 106
+        for(Size i=0; i<seasonalityFactors.size(); i++) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:107:9: note: Calling 'MultiplicativePriceSeasonality::validate'
+        validate();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:41:9: note: Control jumps to 'case Daily:'  at line 49
+        switch (this->frequency()) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:50:28: note: Assuming the condition is true
+                QL_REQUIRE(!this->seasonalityFactors().empty(), "no seasonality factors given");
+                           ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:50:17: note: Taking false branch
+                QL_REQUIRE(!this->seasonalityFactors().empty(), "no seasonality factors given");
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:104:39: note: expanded from macro 'QL_REQUIRE'
+#define QL_REQUIRE(condition,message) \
+                                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:51:30: note: Call to virtual function during construction
+                QL_REQUIRE( (this->seasonalityFactors().size() %
+                             ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:52:30: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                             this->frequency()) == 0,
+                             ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: This constructor of an object of type 'MultiplicativePriceSeasonality' has not returned when the virtual method was called
+        set(seasonalityBaseDate, frequency, seasonalityFactors);
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: Calling 'MultiplicativePriceSeasonality::set'
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:103:23: note: Assuming the condition is false
+        for(Size i=0; i<seasonalityFactors.size(); i++) {
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:103:9: note: Loop condition is false. Execution continues on line 106
+        for(Size i=0; i<seasonalityFactors.size(); i++) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:107:9: note: Calling 'MultiplicativePriceSeasonality::validate'
+        validate();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:41:9: note: Control jumps to 'case Daily:'  at line 49
+        switch (this->frequency()) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:50:28: note: Assuming the condition is true
+                QL_REQUIRE(!this->seasonalityFactors().empty(), "no seasonality factors given");
+                           ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:50:17: note: Taking false branch
+                QL_REQUIRE(!this->seasonalityFactors().empty(), "no seasonality factors given");
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:104:39: note: expanded from macro 'QL_REQUIRE'
+#define QL_REQUIRE(condition,message) \
+                                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:52:30: note: Call to virtual function during construction
+                             this->frequency()) == 0,
+                             ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:53:48: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                           "For frequency " << this->frequency()
+                                               ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: This constructor of an object of type 'MultiplicativePriceSeasonality' has not returned when the virtual method was called
+        set(seasonalityBaseDate, frequency, seasonalityFactors);
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: Calling 'MultiplicativePriceSeasonality::set'
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:103:23: note: Assuming the condition is false
+        for(Size i=0; i<seasonalityFactors.size(); i++) {
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:103:9: note: Loop condition is false. Execution continues on line 106
+        for(Size i=0; i<seasonalityFactors.size(); i++) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:107:9: note: Calling 'MultiplicativePriceSeasonality::validate'
+        validate();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:41:9: note: Control jumps to 'case Daily:'  at line 49
+        switch (this->frequency()) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:50:28: note: Assuming the condition is true
+                QL_REQUIRE(!this->seasonalityFactors().empty(), "no seasonality factors given");
+                           ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:50:17: note: Taking false branch
+                QL_REQUIRE(!this->seasonalityFactors().empty(), "no seasonality factors given");
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:104:39: note: expanded from macro 'QL_REQUIRE'
+#define QL_REQUIRE(condition,message) \
+                                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:51:29: note: Assuming the condition is false
+                QL_REQUIRE( (this->seasonalityFactors().size() %
+                            ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:51:17: note: Taking true branch
+                QL_REQUIRE( (this->seasonalityFactors().size() %
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:104:39: note: expanded from macro 'QL_REQUIRE'
+#define QL_REQUIRE(condition,message) \
+                                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:53:48: note: Call to virtual function during construction
+                           "For frequency " << this->frequency()
+                                               ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:107:23: note: expanded from macro 'QL_REQUIRE'
+    _ql_msg_stream << message; \
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:54:64: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                           << " require multiple of " << ((int)this->frequency()) << " factors "
+                                                               ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: This constructor of an object of type 'MultiplicativePriceSeasonality' has not returned when the virtual method was called
+        set(seasonalityBaseDate, frequency, seasonalityFactors);
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: Calling 'MultiplicativePriceSeasonality::set'
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:103:23: note: Assuming the condition is false
+        for(Size i=0; i<seasonalityFactors.size(); i++) {
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:103:9: note: Loop condition is false. Execution continues on line 106
+        for(Size i=0; i<seasonalityFactors.size(); i++) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:107:9: note: Calling 'MultiplicativePriceSeasonality::validate'
+        validate();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:41:9: note: Control jumps to 'case Daily:'  at line 49
+        switch (this->frequency()) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:50:28: note: Assuming the condition is true
+                QL_REQUIRE(!this->seasonalityFactors().empty(), "no seasonality factors given");
+                           ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:50:17: note: Taking false branch
+                QL_REQUIRE(!this->seasonalityFactors().empty(), "no seasonality factors given");
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:104:39: note: expanded from macro 'QL_REQUIRE'
+#define QL_REQUIRE(condition,message) \
+                                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:51:29: note: Assuming the condition is false
+                QL_REQUIRE( (this->seasonalityFactors().size() %
+                            ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:51:17: note: Taking true branch
+                QL_REQUIRE( (this->seasonalityFactors().size() %
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:104:39: note: expanded from macro 'QL_REQUIRE'
+#define QL_REQUIRE(condition,message) \
+                                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:54:64: note: Call to virtual function during construction
+                           << " require multiple of " << ((int)this->frequency()) << " factors "
+                                                               ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:107:23: note: expanded from macro 'QL_REQUIRE'
+    _ql_msg_stream << message; \
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:55:31: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                           << this->seasonalityFactors().size() << " were given.");
+                              ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: This constructor of an object of type 'MultiplicativePriceSeasonality' has not returned when the virtual method was called
+        set(seasonalityBaseDate, frequency, seasonalityFactors);
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: Calling 'MultiplicativePriceSeasonality::set'
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:103:23: note: Assuming the condition is false
+        for(Size i=0; i<seasonalityFactors.size(); i++) {
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:103:9: note: Loop condition is false. Execution continues on line 106
+        for(Size i=0; i<seasonalityFactors.size(); i++) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:107:9: note: Calling 'MultiplicativePriceSeasonality::validate'
+        validate();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:41:9: note: Control jumps to 'case Daily:'  at line 49
+        switch (this->frequency()) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:50:28: note: Assuming the condition is true
+                QL_REQUIRE(!this->seasonalityFactors().empty(), "no seasonality factors given");
+                           ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:50:17: note: Taking false branch
+                QL_REQUIRE(!this->seasonalityFactors().empty(), "no seasonality factors given");
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:104:39: note: expanded from macro 'QL_REQUIRE'
+#define QL_REQUIRE(condition,message) \
+                                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:51:29: note: Assuming the condition is false
+                QL_REQUIRE( (this->seasonalityFactors().size() %
+                            ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:51:17: note: Taking true branch
+                QL_REQUIRE( (this->seasonalityFactors().size() %
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:104:39: note: expanded from macro 'QL_REQUIRE'
+#define QL_REQUIRE(condition,message) \
+                                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:55:31: note: Call to virtual function during construction
+                           << this->seasonalityFactors().size() << " were given.");
+                              ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:107:23: note: expanded from macro 'QL_REQUIRE'
+    _ql_msg_stream << message; \
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:58:56: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                QL_FAIL("bad frequency specified: " << this->frequency()
+                                                       ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: This constructor of an object of type 'MultiplicativePriceSeasonality' has not returned when the virtual method was called
+        set(seasonalityBaseDate, frequency, seasonalityFactors);
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: Calling 'MultiplicativePriceSeasonality::set'
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:103:23: note: Assuming the condition is false
+        for(Size i=0; i<seasonalityFactors.size(); i++) {
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:103:9: note: Loop condition is false. Execution continues on line 106
+        for(Size i=0; i<seasonalityFactors.size(); i++) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:107:9: note: Calling 'MultiplicativePriceSeasonality::validate'
+        validate();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:41:9: note: Control jumps to the 'default' case at line 57
+        switch (this->frequency()) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:58:56: note: Call to virtual function during construction
+                QL_FAIL("bad frequency specified: " << this->frequency()
+                                                       ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:83:23: note: expanded from macro 'QL_FAIL'
+    _ql_msg_stream << message; \
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        set(seasonalityBaseDate, frequency, seasonalityFactors);
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: This constructor of an object of type 'MultiplicativePriceSeasonality' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:107:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        validate();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: This constructor of an object of type 'MultiplicativePriceSeasonality' has not returned when the virtual method was called
+        set(seasonalityBaseDate, frequency, seasonalityFactors);
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:95:9: note: Calling 'MultiplicativePriceSeasonality::set'
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:103:23: note: Assuming the condition is false
+        for(Size i=0; i<seasonalityFactors.size(); i++) {
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:103:9: note: Loop condition is false. Execution continues on line 106
+        for(Size i=0; i<seasonalityFactors.size(); i++) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/inflation/seasonality.cpp:107:9: note: Call to virtual function during construction
+        validate();
+        ^
+clang-tidy -p=/home/zzy/Documents/Cpp/QuantLib /home/zzy/Documents/Cpp/QuantLib/ql/processes/gsrprocesscore.cpp
+clang-tidy -p=/home/zzy/Documents/Cpp/QuantLib /home/zzy/Documents/Cpp/QuantLib/ql/termstructures/credit/defaultprobabilityhelpers.cpp
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/credit/defaultprobabilityhelpers.cpp:52:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/credit/defaultprobabilityhelpers.cpp:223:7: note: Calling constructor for 'CdsHelper'
+    : CdsHelper(upfront, tenor, settlementDays, calendar,
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/credit/defaultprobabilityhelpers.cpp:52:9: note: This constructor of an object of type 'CdsHelper' has not returned when the virtual method was called
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/credit/defaultprobabilityhelpers.cpp:52:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/credit/defaultprobabilityhelpers.cpp:78:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/credit/defaultprobabilityhelpers.cpp:251:7: note: Calling constructor for 'CdsHelper'
+    : CdsHelper(upfrontSpread, tenor, settlementDays, calendar,
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/credit/defaultprobabilityhelpers.cpp:78:9: note: This constructor of an object of type 'CdsHelper' has not returned when the virtual method was called
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/credit/defaultprobabilityhelpers.cpp:78:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/credit/defaultprobabilityhelpers.cpp:229:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/credit/defaultprobabilityhelpers.cpp:229:9: note: This constructor of an object of type 'UpfrontCdsHelper' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/credit/defaultprobabilityhelpers.cpp:229:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/credit/defaultprobabilityhelpers.cpp:257:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/credit/defaultprobabilityhelpers.cpp:257:9: note: This constructor of an object of type 'UpfrontCdsHelper' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/credit/defaultprobabilityhelpers.cpp:257:9: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/equityfx/gridmodellocalvolsurface.cpp:59:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        generateArguments();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/equityfx/gridmodellocalvolsurface.cpp:47:24: note: Assuming the condition is false
+        for (Size i=1; i < strikes_.size(); ++i) {
+                       ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/equityfx/gridmodellocalvolsurface.cpp:47:9: note: Loop condition is false. Execution continues on line 52
+        for (Size i=1; i < strikes_.size(); ++i) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/equityfx/gridmodellocalvolsurface.cpp:55:24: note: Assuming the condition is false
+        for (Size i=0; i < dates.size(); ++i) {
+                       ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/equityfx/gridmodellocalvolsurface.cpp:55:9: note: Loop condition is false. Execution continues on line 59
+        for (Size i=0; i < dates.size(); ++i) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/equityfx/gridmodellocalvolsurface.cpp:59:9: note: This constructor of an object of type 'GridModelLocalVolSurface' has not returned when the virtual method was called
+        generateArguments();
+        ^
+
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:55:18: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+            i += shift();
+                 ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:39:20: note: Assuming the condition is true
+        QL_REQUIRE(source->volatilityType() == ShiftedLognormal,
+                   ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:39:9: note: Taking false branch
+        QL_REQUIRE(source->volatilityType() == ShiftedLognormal,
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:104:39: note: expanded from macro 'QL_REQUIRE'
+#define QL_REQUIRE(condition,message) \
+                                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:55:18: note: This constructor of an object of type 'KahaleSmileSection' has not returned when the virtual method was called
+            i += shift();
+                 ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:55:18: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:58:15: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        f_ += shift();
+              ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:39:20: note: Assuming the condition is true
+        QL_REQUIRE(source->volatilityType() == ShiftedLognormal,
+                   ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:39:9: note: Taking false branch
+        QL_REQUIRE(source->volatilityType() == ShiftedLognormal,
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:104:39: note: expanded from macro 'QL_REQUIRE'
+#define QL_REQUIRE(condition,message) \
+                                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:58:15: note: This constructor of an object of type 'KahaleSmileSection' has not returned when the virtual method was called
+        f_ += shift();
+              ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:58:15: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:92:30: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                        k1 - shift() + gap_ / 2.0, Option::Call, 1.0, gap_);
+                             ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:39:20: note: Assuming the condition is true
+        QL_REQUIRE(source->volatilityType() == ShiftedLognormal,
+                   ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:39:9: note: Taking false branch
+        QL_REQUIRE(source->volatilityType() == ShiftedLognormal,
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:104:39: note: expanded from macro 'QL_REQUIRE'
+#define QL_REQUIRE(condition,message) \
+                                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:60:9: note: This constructor of an object of type 'KahaleSmileSection' has not returned when the virtual method was called
+        compute();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:60:9: note: Calling 'KahaleSmileSection::compute'
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:88:21: note: Assuming field 'interpolate_' is false
+                if (interpolate_)
+                    ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:88:17: note: Taking false branch
+                if (interpolate_)
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:92:30: note: Call to virtual function during construction
+                        k1 - shift() + gap_ / 2.0, Option::Call, 1.0, gap_);
+                             ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:109:53: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                Real dig = digitalOptionPrice((k1 - shift()) / 2.0, Option::Call,
+                                                    ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:39:20: note: Assuming the condition is true
+        QL_REQUIRE(source->volatilityType() == ShiftedLognormal,
+                   ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:39:9: note: Taking false branch
+        QL_REQUIRE(source->volatilityType() == ShiftedLognormal,
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:104:39: note: expanded from macro 'QL_REQUIRE'
+#define QL_REQUIRE(condition,message) \
+                                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:60:9: note: This constructor of an object of type 'KahaleSmileSection' has not returned when the virtual method was called
+        compute();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:60:9: note: Calling 'KahaleSmileSection::compute'
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:88:21: note: Assuming field 'interpolate_' is true
+                if (interpolate_)
+                    ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:88:17: note: Taking true branch
+                if (interpolate_)
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:109:53: note: Call to virtual function during construction
+                Real dig = digitalOptionPrice((k1 - shift()) / 2.0, Option::Call,
+                                                    ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.hpp:122:57: warning: 2 uninitialized fields at the end of the constructor call [clang-analyzer-optin.cplusplus.UninitializedObject]
+                : k1_(k1), c0_(c0), c1_(c1), c1p_(c1p) {}
+                                                        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.hpp:134:26: note: uninitialized field 'this->f_'
+            mutable Real f_, b_;
+                         ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.hpp:134:30: note: uninitialized field 'this->b_'
+            mutable Real f_, b_;
+                             ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:39:20: note: Assuming the condition is true
+        QL_REQUIRE(source->volatilityType() == ShiftedLognormal,
+                   ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:39:9: note: Taking false branch
+        QL_REQUIRE(source->volatilityType() == ShiftedLognormal,
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:104:39: note: expanded from macro 'QL_REQUIRE'
+#define QL_REQUIRE(condition,message) \
+                                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:60:9: note: Calling 'KahaleSmileSection::compute'
+        compute();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:88:21: note: Assuming field 'interpolate_' is true
+                if (interpolate_)
+                    ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:88:17: note: Taking true branch
+                if (interpolate_)
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.cpp:97:26: note: Calling constructor for 'sHelper1'
+                sHelper1 sh1(k1, c0, c1, c1p);
+                         ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/kahalesmilesection.hpp:122:57: note: 2 uninitialized fields at the end of the constructor call
+                : k1_(k1), c0_(c0), c1_(c1), c1p_(c1p) {}
+                                                        ^
+clang-tidy -p=/home/zzy/Documents/Cpp/QuantLib /home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/smilesection.cpp
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/smilesection.cpp:58:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeExerciseTime();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/smilesection.cpp:53:13: note: Field 'isFloating_' is false
+        if (isFloating_) {
+            ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/smilesection.cpp:53:9: note: Taking false branch
+        if (isFloating_) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/smilesection.cpp:58:9: note: This constructor of an object of type 'SmileSection' has not returned when the virtual method was called
+        initializeExerciseTime();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/smilesection.cpp:58:9: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bicubicsplineinterpolation.hpp:56:17: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/capfloor/capfloortermvolsurface.cpp:145:24: note: Assuming 'i' is >= field 'nOptionTenors_'
+        for (Size i=0; i<nOptionTenors_; ++i) {
+                       ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/capfloor/capfloortermvolsurface.cpp:145:9: note: Loop condition is false. Execution continues on line 151
+        for (Size i=0; i<nOptionTenors_; ++i) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/capfloor/capfloortermvolsurface.cpp:151:9: note: Calling 'CapFloorTermVolSurface::interpolate'
+        interpolate();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/capfloor/capfloortermvolsurface.cpp:188:26: note: Calling constructor for 'BicubicSpline'
+        interpolation_ = BicubicSpline(strikes_.begin(),
+                         ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bicubicsplineinterpolation.hpp:171:23: note: Calling constructor for 'BicubicSplineImpl<__gnu_cxx::__normal_iterator<double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<double *, std::vector<double, std::allocator<double> > >, QuantLib::Matrix>'
+                  new detail::BicubicSplineImpl<I1,I2,M>(xBegin, xEnd,
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bicubicsplineinterpolation.hpp:56:17: note: This constructor of an object of type 'BicubicSplineImpl' has not returned when the virtual method was called
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bicubicsplineinterpolation.hpp:56:17: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/cmsmarket.cpp:116:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        performCalculations();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/cmsmarket.cpp:74:20: note: Assuming the condition is true
+        QL_REQUIRE(2 * nSwapIndexes_ == bidAskSpreads[0].size(),
+                   ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/cmsmarket.cpp:74:9: note: Taking false branch
+        QL_REQUIRE(2 * nSwapIndexes_ == bidAskSpreads[0].size(),
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:104:39: note: expanded from macro 'QL_REQUIRE'
+#define QL_REQUIRE(condition,message) \
+                                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/cmsmarket.cpp:78:20: note: Assuming the condition is true
+        QL_REQUIRE(nExercise_ == bidAskSpreads.size(),
+                   ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/cmsmarket.cpp:78:9: note: Taking false branch
+        QL_REQUIRE(nExercise_ == bidAskSpreads.size(),
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:104:39: note: expanded from macro 'QL_REQUIRE'
+#define QL_REQUIRE(condition,message) \
+                                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/cmsmarket.cpp:81:20: note: Assuming the condition is true
+        QL_REQUIRE(nSwapIndexes_ == pricers.size(),
+                   ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/cmsmarket.cpp:81:9: note: Taking false branch
+        QL_REQUIRE(nSwapIndexes_ == pricers.size(),
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:104:39: note: expanded from macro 'QL_REQUIRE'
+#define QL_REQUIRE(condition,message) \
+                                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/cmsmarket.cpp:85:24: note: Assuming 'j' is >= field 'nSwapIndexes_'
+        for (Size j=0; j<nSwapIndexes_; ++j) {
+                       ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/cmsmarket.cpp:85:9: note: Loop condition is false. Execution continues on line 96
+        for (Size j=0; j<nSwapIndexes_; ++j) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/cmsmarket.cpp:97:24: note: Assuming 'i' is >= field 'nExercise_'
+        for (Size i=0; i<nExercise_; ++i) {
+                       ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/cmsmarket.cpp:97:9: note: Loop condition is false. Execution continues on line 116
+        for (Size i=0; i<nExercise_; ++i) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/cmsmarket.cpp:116:9: note: This constructor of an object of type 'CmsMarket' has not returned when the virtual method was called
+        performCalculations();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/cmsmarket.cpp:116:9: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/forwardstructure.cpp:55:9: warning: Variable 'i' with floating point type 'QuantLib::Time' should not be used as a loop counter [clang-analyzer-security.FloatLoopCounter]
+        for (Time i=dt; i<t; i+=dt)
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/forwardstructure.cpp:55:9: note: Variable 'i' with floating point type 'QuantLib::Time' should not be used as a loop counter
+
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:44:17: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/swaptionvolcube2.cpp:51:24: note: Assuming 'i' is < field 'nStrikes_'
+        for (Size i=0; i<nStrikes_; i++) 
+                       ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/swaptionvolcube2.cpp:51:9: note: Loop condition is true.  Entering loop body
+        for (Size i=0; i<nStrikes_; i++) 
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/swaptionvolcube2.cpp:52:28: note: Assuming 'j' is >= field 'nOptionTenors_'
+            for (Size j=0; j<nOptionTenors_; j++)
+                           ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/swaptionvolcube2.cpp:52:13: note: Loop condition is false. Execution continues on line 51
+            for (Size j=0; j<nOptionTenors_; j++)
+            ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/swaptionvolcube2.cpp:51:24: note: Assuming 'i' is >= field 'nStrikes_'
+        for (Size i=0; i<nStrikes_; i++) 
+                       ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/swaptionvolcube2.cpp:51:9: note: Loop condition is false. Execution continues on line 58
+        for (Size i=0; i<nStrikes_; i++) 
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/swaptionvolcube2.cpp:58:9: note: Loop condition is true.  Entering loop body
+        for (Size i=0; i<nStrikes_; i++) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/swaptionvolcube2.cpp:59:42: note: Calling constructor for 'BilinearInterpolation'
+            volSpreadsInterpolator_[i] = BilinearInterpolation(
+                                         ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:80:23: note: Calling constructor for 'BilinearInterpolationImpl<__gnu_cxx::__normal_iterator<double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<double *, std::vector<double, std::allocator<double> > >, QuantLib::Matrix>'
+                  new detail::BilinearInterpolationImpl<I1,I2,M>(xBegin, xEnd,
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:44:17: note: This constructor of an object of type 'BilinearInterpolationImpl' has not returned when the virtual method was called
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:44:17: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/oisratehelper.cpp:57:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/oisratehelper.cpp:57:9: note: This constructor of an object of type 'OISRateHelper' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/oisratehelper.cpp:57:9: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:303:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:303:9: note: This constructor of an object of type 'DepositRateHelper' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:303:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:318:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:318:9: note: This constructor of an object of type 'DepositRateHelper' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:318:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:325:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:325:9: note: This constructor of an object of type 'DepositRateHelper' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:325:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:332:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:332:9: note: This constructor of an object of type 'DepositRateHelper' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:332:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:399:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:387:20: note: Assuming 'monthsToEnd' is > 'monthsToStart'
+        QL_REQUIRE(monthsToEnd>monthsToStart,
+                   ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:387:9: note: Taking false branch
+        QL_REQUIRE(monthsToEnd>monthsToStart,
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:104:39: note: expanded from macro 'QL_REQUIRE'
+#define QL_REQUIRE(condition,message) \
+                                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:399:9: note: This constructor of an object of type 'FraRateHelper' has not returned when the virtual method was called
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:399:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:427:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:415:20: note: Assuming 'monthsToEnd' is > 'monthsToStart'
+        QL_REQUIRE(monthsToEnd>monthsToStart,
+                   ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:105:7: note: expanded from macro 'QL_REQUIRE'
+if (!(condition)) { \
+      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:415:9: note: Taking false branch
+        QL_REQUIRE(monthsToEnd>monthsToStart,
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/errors.hpp:104:39: note: expanded from macro 'QL_REQUIRE'
+#define QL_REQUIRE(condition,message) \
+                                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:427:9: note: This constructor of an object of type 'FraRateHelper' has not returned when the virtual method was called
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:427:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:446:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:446:9: note: This constructor of an object of type 'FraRateHelper' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:446:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:463:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:463:9: note: This constructor of an object of type 'FraRateHelper' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:463:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:487:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:487:9: note: This constructor of an object of type 'FraRateHelper' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:487:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:511:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:511:9: note: This constructor of an object of type 'FraRateHelper' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:511:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:528:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:528:9: note: This constructor of an object of type 'FraRateHelper' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:528:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:545:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:545:9: note: This constructor of an object of type 'FraRateHelper' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:545:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:662:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:662:9: note: This constructor of an object of type 'SwapRateHelper' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:662:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:704:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:689:13: note: Assuming the condition is false
+        if (settlementDays_==Null<Natural>())
+            ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:689:9: note: Taking false branch
+        if (settlementDays_==Null<Natural>())
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:704:9: note: This constructor of an object of type 'SwapRateHelper' has not returned when the virtual method was called
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:704:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:736:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:736:9: note: This constructor of an object of type 'SwapRateHelper' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:736:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:778:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:763:13: note: Assuming the condition is false
+        if (settlementDays_==Null<Natural>())
+            ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:763:9: note: Taking false branch
+        if (settlementDays_==Null<Natural>())
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:778:9: note: This constructor of an object of type 'SwapRateHelper' has not returned when the virtual method was called
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:778:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:893:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:893:9: note: This constructor of an object of type 'BMASwapRateHelper' has not returned when the virtual method was called
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:893:9: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:996:9: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:991:9: note: Taking true branch
+        if (tradingCalendar_.empty())
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:996:9: note: This constructor of an object of type 'FxSwapRateHelper' has not returned when the virtual method was called
+        initializeDates();
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/yield/ratehelpers.cpp:996:9: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:44:17: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/swaptionvolmatrix.cpp:275:24: note: Assuming the condition is false
+        for (Size i=0; i<vols.rows(); ++i) {
+                       ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/swaptionvolmatrix.cpp:275:9: note: Loop condition is false. Execution continues on line 284
+        for (Size i=0; i<vols.rows(); ++i) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/swaptionvolmatrix.cpp:284:13: note: Assuming 'flatExtrapolation' is false
+        if (flatExtrapolation) {
+            ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/swaptionvolmatrix.cpp:284:9: note: Taking false branch
+        if (flatExtrapolation) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/swaptionvolmatrix.cpp:294:30: note: Calling constructor for 'BilinearInterpolation'
+            interpolation_ = BilinearInterpolation(
+                             ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:80:23: note: Calling constructor for 'BilinearInterpolationImpl<__gnu_cxx::__normal_iterator<double *, std::vector<double, std::allocator<double> > >, __gnu_cxx::__normal_iterator<double *, std::vector<double, std::allocator<double> > >, QuantLib::Matrix>'
+                  new detail::BilinearInterpolationImpl<I1,I2,M>(xBegin, xEnd,
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:44:17: note: This constructor of an object of type 'BilinearInterpolationImpl' has not returned when the virtual method was called
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/bilinearinterpolation.hpp:44:17: note: Call to virtual function during construction
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/flatextrapolation2d.hpp:47:17: warning: Call to virtual function during construction [clang-analyzer-optin.cplusplus.VirtualCall]
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/swaptionvolmatrix.cpp:275:24: note: Assuming the condition is false
+        for (Size i=0; i<vols.rows(); ++i) {
+                       ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/swaptionvolmatrix.cpp:275:9: note: Loop condition is false. Execution continues on line 284
+        for (Size i=0; i<vols.rows(); ++i) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/swaptionvolmatrix.cpp:284:13: note: Assuming 'flatExtrapolation' is true
+        if (flatExtrapolation) {
+            ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/swaptionvolmatrix.cpp:284:9: note: Taking true branch
+        if (flatExtrapolation) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/ql/termstructures/volatility/swaption/swaptionvolmatrix.cpp:286:17: note: Calling constructor for 'FlatExtrapolator2D'
+                FlatExtrapolator2D(std::make_shared<BilinearInterpolation>(
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/flatextrapolation2d.hpp:40:23: note: Calling constructor for 'FlatExtrapolator2DImpl'
+                  new FlatExtrapolator2DImpl(decoratedInterpolation));
+                      ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/flatextrapolation2d.hpp:47:17: note: This constructor of an object of type 'FlatExtrapolator2DImpl' has not returned when the virtual method was called
+                calculate();
+                ^
+/home/zzy/Documents/Cpp/QuantLib/ql/math/interpolations/flatextrapolation2d.hpp:47:17: note: Call to virtual function during construction
+
+/home/zzy/Documents/Cpp/QuantLib/test-suite/fdheston.cpp:52:12: warning: Excessive padding in 'struct (anonymous namespace)::NewBarrierOptionData' (8 padding bytes, where 0 is optimal). 
+Optimal fields order: 
+barrier, 
+rebate, 
+strike, 
+s, 
+q, 
+r, 
+t, 
+v, 
+barrierType, 
+type, 
+consider reordering the fields or adding explicit padding members [clang-analyzer-optin.performance.Padding]
+    struct NewBarrierOptionData {
+           ^
+/home/zzy/Documents/Cpp/QuantLib/test-suite/fdheston.cpp:52:12: note: Excessive padding in 'struct (anonymous namespace)::NewBarrierOptionData' (8 padding bytes, where 0 is optimal). Optimal fields order: barrier, rebate, strike, s, q, r, t, v, barrierType, type, consider reordering the fields or adding explicit padding members
+/home/zzy/Documents/Cpp/QuantLib/test-suite/fdheston.cpp:877:9: warning: Variable 'x' with floating point type 'QuantLib::Real' should not be used as a loop counter [clang-analyzer-security.FloatLoopCounter]
+        for (Real x = 99; x < 101.001; x += 0.1) {
+        ^
+/home/zzy/Documents/Cpp/QuantLib/test-suite/fdheston.cpp:877:9: note: Variable 'x' with floating point type 'QuantLib::Real' should not be used as a loop counter
+clang-tidy -p=/home/zzy/Documents/Cpp/QuantLib /home/zzy/Documents/Cpp/QuantLib/test-suite/digitaloption.cpp
+/home/zzy/Documents/Cpp/QuantLib/test-suite/digitaloption.cpp:59:12: warning: Excessive padding in 'struct (anonymous namespace)::DigitalOptionData' (11 padding bytes, where 3 is optimal). 
+Optimal fields order: 
+strike, 
+s, 
+q, 
+r, 
+t, 
+v, 
+result, 
+tol, 
+type, 
+knockin, 
+consider reordering the fields or adding explicit padding members [clang-analyzer-optin.performance.Padding]
+    struct DigitalOptionData {
+           ^
+/home/zzy/Documents/Cpp/QuantLib/test-suite/digitaloption.cpp:59:12: note: Excessive padding in 'struct (anonymous namespace)::DigitalOptionData' (11 padding bytes, where 3 is optimal). Optimal fields order: strike, s, q, r, t, v, result, tol, type, knockin, consider reordering the fields or adding explicit padding members
+clang-tidy -p=/home/zzy/Documents/Cpp/QuantLib /home/zzy/Documents/Cpp/QuantLib/test-suite/americanoption.cpp
+clang-tidy -p=/home/zzy/Documents/Cpp/QuantLib /home/zzy/Documents/Cpp/QuantLib/test-suite/marketmodel_smm.cpp
+clang-tidy -p=/home/zzy/Documents/Cpp/QuantLib /home/zzy/Documents/Cpp/QuantLib/test-suite/barrieroption.cpp
+/home/zzy/Documents/Cpp/QuantLib/test-suite/barrieroption.cpp:145:12: warning: Excessive padding in 'struct (anonymous namespace)::BarrierFxOptionData' (8 padding bytes, where 0 is optimal). 
+Optimal fields order: 
+barrier, 
+rebate, 
+strike, 
+s, 
+q, 
+r, 
+t, 
+vol25Put, 
+volAtm, 
+vol25Call, 
+v, 
+result, 
+tol, 
+barrierType, 
+type, 
+consider reordering the fields or adding explicit padding members [clang-analyzer-optin.performance.Padding]
+    struct BarrierFxOptionData {
+           ^
+/home/zzy/Documents/Cpp/QuantLib/test-suite/barrieroption.cpp:145:12: note: Excessive padding in 'struct (anonymous namespace)::BarrierFxOptionData' (8 padding bytes, where 0 is optimal). Optimal fields order: barrier, rebate, strike, s, q, r, t, vol25Put, volAtm, vol25Call, v, result, tol, barrierType, type, consider reordering the fields or adding explicit padding members
+clang-tidy -p=/home/zzy/Documents/Cpp/QuantLib /home/zzy/Documents/Cpp/QuantLib/test-suite/jumpdiffusion.cpp
+clang-tidy -p=/home/zzy/Documents/Cpp/QuantLib /home/zzy/Documents/Cpp/QuantLib/test-suite/marketmodel_cms.cpp
+clang-tidy -p=/home/zzy/Documents/Cpp/QuantLib /home/zzy/Documents/Cpp/QuantLib/test-suite/dividendoption.cpp
+clang-tidy -p=/home/zzy/Documents/Cpp/QuantLib /home/zzy/Documents/Cpp/QuantLib/test-suite/asianoptions.cpp
+/home/zzy/Documents/Cpp/QuantLib/test-suite/asianoptions.cpp:516:12: warning: Excessive padding in 'struct (anonymous namespace)::DiscreteAverageData' (11 padding bytes, where 3 is optimal). 
+Optimal fields order: 
+underlying, 
+strike, 
+dividendYield, 
+riskFreeRate, 
+first, 
+length, 
+fixings, 
+volatility, 
+result, 
+type, 
+controlVariate, 
+consider reordering the fields or adding explicit padding members [clang-analyzer-optin.performance.Padding]
+    struct DiscreteAverageData {
+           ^
+/home/zzy/Documents/Cpp/QuantLib/test-suite/asianoptions.cpp:516:12: note: Excessive padding in 'struct (anonymous namespace)::DiscreteAverageData' (11 padding bytes, where 3 is optimal). Optimal fields order: underlying, strike, dividendYield, riskFreeRate, first, length, fixings, volatility, result, type, controlVariate, consider reordering the fields or adding explicit padding members
+
+/home/zzy/Documents/Cpp/QuantLib/ql/math/distributions/poissondistribution.hpp:105:5: warning: 1 uninitialized field at the end of the constructor call [clang-analyzer-optin.cplusplus.UninitializedObject]
+    }
+    ^

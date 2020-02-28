@@ -19,6 +19,11 @@ replace_dict = {
     "boost::tuples::tuple": "std::tuple",
     "boost::tuple": "std::tuple",
     "boost::make_tuple": "std::make_tuple",
+    # replace boost is_base_of
+    "boost::is_base_of": "std::is_base_of",
+    # replace boost reverse_iterator
+    "boost/iterator/reverse_iterator.hpp": "iterator",
+    "boost::reverse_iterator": "std::reverse_iterator",
 }
 
 removed_line = ["ql/auto_ptr.hpp", "using boost::none"]

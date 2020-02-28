@@ -64,12 +64,11 @@ namespace QuantLib {
         \f]
      */
     class CappedFlooredYoYInflationCoupon : public YoYInflationCoupon {
-    public:
+      public:
         // we may watch an underlying coupon ...
-        CappedFlooredYoYInflationCoupon(
-                const std::shared_ptr<YoYInflationCoupon>& underlying,
-                Rate cap = Null<Rate>(),
-                Rate floor = Null<Rate>());
+        CappedFlooredYoYInflationCoupon(const std::shared_ptr<YoYInflationCoupon>& underlying,
+                                        Rate cap = Null<Rate>(),
+                                        Rate floor = Null<Rate>());
 
         // ... or not
         CappedFlooredYoYInflationCoupon(const Date& paymentDate,
@@ -86,9 +85,18 @@ namespace QuantLib {
                                         const Rate floor = Null<Rate>(),
                                         const Date& refPeriodStart = Date(),
                                         const Date& refPeriodEnd = Date())
-        : YoYInflationCoupon(paymentDate, nominal, startDate, endDate,
-                             fixingDays, index, observationLag,  dayCounter,
-                             gearing, spread, refPeriodStart, refPeriodEnd),
+        : YoYInflationCoupon(paymentDate,
+                             nominal,
+                             startDate,
+                             endDate,
+                             fixingDays,
+                             index,
+                             observationLag,
+                             dayCounter,
+                             gearing,
+                             spread,
+                             refPeriodStart,
+                             refPeriodEnd),
           isFloored_(false), isCapped_(false) {
             setCommon(cap, floor);
         }
@@ -122,7 +130,7 @@ namespace QuantLib {
 
         void setPricer(const std::shared_ptr<YoYInflationCouponPricer>&);
 
-    protected:
+      protected:
         virtual void setCommon(Rate cap, Rate floor);
 
         // data, we only use underlying_ if it was constructed that way,
@@ -135,4 +143,3 @@ namespace QuantLib {
 }
 
 #endif
-

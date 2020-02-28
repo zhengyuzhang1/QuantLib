@@ -33,7 +33,7 @@
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #endif
 
-#include <boost/type_traits.hpp>
+#include <type_traits>
 
 #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
 #pragma GCC diagnostic pop
@@ -54,17 +54,13 @@ namespace QuantLib {
         // null value for floating-point types
         template <>
         struct FloatingPointNull<true> {
-            static float nullValue() {
-                return QL_NULL_REAL;
-            }
+            static float nullValue() { return QL_NULL_REAL; }
         };
 
         // null value for integer types
         template <>
         struct FloatingPointNull<false> {
-            static int nullValue() {
-                return QL_NULL_INTEGER;
-            }
+            static int nullValue() { return QL_NULL_INTEGER; }
         };
 
     }
@@ -75,8 +71,7 @@ namespace QuantLib {
       public:
         Null() = default;
         operator T() const {
-            return T(detail::FloatingPointNull<
-                         boost::is_floating_point<T>::value>::nullValue());
+            return T(detail::FloatingPointNull<std::is_floating_point_v<T> >::nullValue());
         }
     };
 

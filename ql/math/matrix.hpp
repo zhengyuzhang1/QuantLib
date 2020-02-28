@@ -53,7 +53,7 @@ namespace QuantLib {
         */
         template <class Iterator>
         Matrix(Size rows, Size columns, Iterator begin, Iterator end);
-        Matrix(const Matrix &);
+        Matrix(const Matrix&);
         Matrix(const Disposable<Matrix>&);
         Matrix& operator=(const Matrix&);
         Matrix& operator=(const Disposable<Matrix>&);
@@ -72,19 +72,16 @@ namespace QuantLib {
 
         typedef Real* iterator;
         typedef const Real* const_iterator;
-        typedef boost::reverse_iterator<iterator> reverse_iterator;
-        typedef boost::reverse_iterator<const_iterator> const_reverse_iterator;
+        typedef std::reverse_iterator<iterator> reverse_iterator;
+        typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
         typedef Real* row_iterator;
         typedef const Real* const_row_iterator;
-        typedef boost::reverse_iterator<row_iterator> reverse_row_iterator;
-        typedef boost::reverse_iterator<const_row_iterator>
-                                                const_reverse_row_iterator;
+        typedef std::reverse_iterator<row_iterator> reverse_row_iterator;
+        typedef std::reverse_iterator<const_row_iterator> const_reverse_row_iterator;
         typedef step_iterator<iterator> column_iterator;
         typedef step_iterator<const_iterator> const_column_iterator;
-        typedef boost::reverse_iterator<column_iterator>
-                                                   reverse_column_iterator;
-        typedef boost::reverse_iterator<const_column_iterator>
-                                             const_reverse_column_iterator;
+        typedef std::reverse_iterator<column_iterator> reverse_column_iterator;
+        typedef std::reverse_iterator<const_column_iterator> const_reverse_column_iterator;
         //! \name Iterator access
         //@{
         const_iterator begin() const;
@@ -173,9 +170,9 @@ namespace QuantLib {
     const Disposable<Matrix> outerProduct(const Array& v1, const Array& v2);
 
     /*! \relates Matrix */
-    template<class Iterator1, class Iterator2>
-    const Disposable<Matrix> outerProduct(Iterator1 v1begin, Iterator1 v1end,
-                                          Iterator2 v2begin, Iterator2 v2end);
+    template <class Iterator1, class Iterator2>
+    const Disposable<Matrix>
+    outerProduct(Iterator1 v1begin, Iterator1 v1end, Iterator2 v2begin, Iterator2 v2end);
 
     /*! \relates Matrix */
     void swap(Matrix&, Matrix&);
@@ -191,38 +188,35 @@ namespace QuantLib {
 
     // inline definitions
 
-    inline Matrix::Matrix()
-    : data_((Real*)nullptr) {}
+    inline Matrix::Matrix() : data_((Real*)nullptr) {}
 
     inline Matrix::Matrix(Size rows, Size columns)
-    : data_(rows*columns > 0 ? new Real[rows*columns] : (Real*)nullptr),
-      rows_(rows), columns_(columns) {}
+    : data_(rows * columns > 0 ? new Real[rows * columns] : (Real*)nullptr), rows_(rows),
+      columns_(columns) {}
 
     inline Matrix::Matrix(Size rows, Size columns, Real value)
-    : data_(rows*columns > 0 ? new Real[rows*columns] : (Real*)nullptr),
-      rows_(rows), columns_(columns) {
-        std::fill(begin(),end(),value);
+    : data_(rows * columns > 0 ? new Real[rows * columns] : (Real*)nullptr), rows_(rows),
+      columns_(columns) {
+        std::fill(begin(), end(), value);
     }
 
     template <class Iterator>
-    inline Matrix::Matrix(Size rows, Size columns,
-                          Iterator begin, Iterator end)
-        : data_(rows * columns > 0 ? new Real[rows * columns] : (Real *)nullptr),
-          rows_(rows), columns_(columns) {
+    inline Matrix::Matrix(Size rows, Size columns, Iterator begin, Iterator end)
+    : data_(rows * columns > 0 ? new Real[rows * columns] : (Real*)nullptr), rows_(rows),
+      columns_(columns) {
         std::copy(begin, end, this->begin());
     }
 
     inline Matrix::Matrix(const Matrix& from)
-    : data_(!from.empty() ? new Real[from.rows_*from.columns_] : (Real*)nullptr),
+    : data_(!from.empty() ? new Real[from.rows_ * from.columns_] : (Real*)nullptr),
       rows_(from.rows_), columns_(from.columns_) {
-        #if defined(QL_PATCH_MSVC) && defined(QL_DEBUG)
+#if defined(QL_PATCH_MSVC) && defined(QL_DEBUG)
         if (!from.empty())
-        #endif
-        std::copy(from.begin(),from.end(),begin());
+#endif
+            std::copy(from.begin(), from.end(), begin());
     }
 
-    inline Matrix::Matrix(const Disposable<Matrix>& from)
-    : data_((Real*)nullptr) {
+    inline Matrix::Matrix(const Disposable<Matrix>& from) : data_((Real*)nullptr) {
         swap(const_cast<Disposable<Matrix>&>(from));
     }
 
@@ -241,115 +235,93 @@ namespace QuantLib {
     inline void Matrix::swap(Matrix& from) {
         using std::swap;
         data_.swap(from.data_);
-        swap(rows_,from.rows_);
-        swap(columns_,from.columns_);
+        swap(rows_, from.rows_);
+        swap(columns_, from.columns_);
     }
 
     inline const Matrix& Matrix::operator+=(const Matrix& m) {
         QL_REQUIRE(rows_ == m.rows_ && columns_ == m.columns_,
-                   "matrices with different sizes (" <<
-                   m.rows_ << "x" << m.columns_ << ", " <<
-                   rows_ << "x" << columns_ << ") cannot be "
-                   "added");
-        std::transform(begin(),end(),m.begin(),
-                       begin(),std::plus<Real>());
+                   "matrices with different sizes (" << m.rows_ << "x" << m.columns_ << ", "
+                                                     << rows_ << "x" << columns_
+                                                     << ") cannot be "
+                                                        "added");
+        std::transform(begin(), end(), m.begin(), begin(), std::plus<Real>());
         return *this;
     }
 
     inline const Matrix& Matrix::operator-=(const Matrix& m) {
         QL_REQUIRE(rows_ == m.rows_ && columns_ == m.columns_,
-                   "matrices with different sizes (" <<
-                   m.rows_ << "x" << m.columns_ << ", " <<
-                   rows_ << "x" << columns_ << ") cannot be "
-                   "subtracted");
-        std::transform(begin(),end(),m.begin(),begin(),
-                       std::minus<Real>());
+                   "matrices with different sizes (" << m.rows_ << "x" << m.columns_ << ", "
+                                                     << rows_ << "x" << columns_
+                                                     << ") cannot be "
+                                                        "subtracted");
+        std::transform(begin(), end(), m.begin(), begin(), std::minus<Real>());
         return *this;
     }
 
     inline const Matrix& Matrix::operator*=(Real x) {
-        std::transform(begin(),end(),begin(),
-                       multiply_by<Real>(x));
+        std::transform(begin(), end(), begin(), multiply_by<Real>(x));
         return *this;
     }
 
     inline const Matrix& Matrix::operator/=(Real x) {
-        std::transform(begin(),end(),begin(),
-                       divide_by<Real>(x));
+        std::transform(begin(), end(), begin(), divide_by<Real>(x));
         return *this;
     }
 
-    inline Matrix::const_iterator Matrix::begin() const {
-        return data_.get();
-    }
+    inline Matrix::const_iterator Matrix::begin() const { return data_.get(); }
 
-    inline Matrix::iterator Matrix::begin() {
-        return data_.get();
-    }
+    inline Matrix::iterator Matrix::begin() { return data_.get(); }
 
-    inline Matrix::const_iterator Matrix::end() const {
-        return data_.get()+rows_*columns_;
-    }
+    inline Matrix::const_iterator Matrix::end() const { return data_.get() + rows_ * columns_; }
 
-    inline Matrix::iterator Matrix::end() {
-        return data_.get()+rows_*columns_;
-    }
+    inline Matrix::iterator Matrix::end() { return data_.get() + rows_ * columns_; }
 
     inline Matrix::const_reverse_iterator Matrix::rbegin() const {
         return const_reverse_iterator(end());
     }
 
-    inline Matrix::reverse_iterator Matrix::rbegin() {
-        return reverse_iterator(end());
-    }
+    inline Matrix::reverse_iterator Matrix::rbegin() { return reverse_iterator(end()); }
 
     inline Matrix::const_reverse_iterator Matrix::rend() const {
         return const_reverse_iterator(begin());
     }
 
-    inline Matrix::reverse_iterator Matrix::rend() {
-        return reverse_iterator(begin());
-    }
+    inline Matrix::reverse_iterator Matrix::rend() { return reverse_iterator(begin()); }
 
-    inline Matrix::const_row_iterator
-    Matrix::row_begin(Size i) const {
-        #if defined(QL_EXTRA_SAFETY_CHECKS)
-        QL_REQUIRE(i<rows_,
-                   "row index (" << i << ") must be less than " << rows_ <<
-                   ": matrix cannot be accessed out of range");
-        #endif
-        return data_.get()+columns_*i;
+    inline Matrix::const_row_iterator Matrix::row_begin(Size i) const {
+#if defined(QL_EXTRA_SAFETY_CHECKS)
+        QL_REQUIRE(i < rows_, "row index (" << i << ") must be less than " << rows_
+                                            << ": matrix cannot be accessed out of range");
+#endif
+        return data_.get() + columns_ * i;
     }
 
     inline Matrix::row_iterator Matrix::row_begin(Size i) {
-        #if defined(QL_EXTRA_SAFETY_CHECKS)
-        QL_REQUIRE(i<rows_,
-                   "row index (" << i << ") must be less than " << rows_ <<
-                   ": matrix cannot be accessed out of range");
-        #endif
-        return data_.get()+columns_*i;
+#if defined(QL_EXTRA_SAFETY_CHECKS)
+        QL_REQUIRE(i < rows_, "row index (" << i << ") must be less than " << rows_
+                                            << ": matrix cannot be accessed out of range");
+#endif
+        return data_.get() + columns_ * i;
     }
 
-    inline Matrix::const_row_iterator Matrix::row_end(Size i) const{
-        #if defined(QL_EXTRA_SAFETY_CHECKS)
-        QL_REQUIRE(i<rows_,
-                   "row index (" << i << ") must be less than " << rows_ <<
-                   ": matrix cannot be accessed out of range");
-        #endif
-        return data_.get()+columns_*(i+1);
+    inline Matrix::const_row_iterator Matrix::row_end(Size i) const {
+#if defined(QL_EXTRA_SAFETY_CHECKS)
+        QL_REQUIRE(i < rows_, "row index (" << i << ") must be less than " << rows_
+                                            << ": matrix cannot be accessed out of range");
+#endif
+        return data_.get() + columns_ * (i + 1);
     }
 
     inline Matrix::row_iterator Matrix::row_end(Size i) {
-        #if defined(QL_EXTRA_SAFETY_CHECKS)
-        QL_REQUIRE(i<rows_,
-                   "row index (" << i << ") must be less than " << rows_ <<
-                   ": matrix cannot be accessed out of range");
-        #endif
-        return data_.get()+columns_*(i+1);
+#if defined(QL_EXTRA_SAFETY_CHECKS)
+        QL_REQUIRE(i < rows_, "row index (" << i << ") must be less than " << rows_
+                                            << ": matrix cannot be accessed out of range");
+#endif
+        return data_.get() + columns_ * (i + 1);
     }
 
-    inline Matrix::const_reverse_row_iterator
-    Matrix::row_rbegin(Size i) const {
+    inline Matrix::const_reverse_row_iterator Matrix::row_rbegin(Size i) const {
         return const_reverse_row_iterator(row_end(i));
     }
 
@@ -357,8 +329,7 @@ namespace QuantLib {
         return reverse_row_iterator(row_end(i));
     }
 
-    inline Matrix::const_reverse_row_iterator
-    Matrix::row_rend(Size i) const {
+    inline Matrix::const_reverse_row_iterator Matrix::row_rend(Size i) const {
         return const_reverse_row_iterator(row_begin(i));
     }
 
@@ -366,78 +337,62 @@ namespace QuantLib {
         return reverse_row_iterator(row_begin(i));
     }
 
-    inline Matrix::const_column_iterator
-    Matrix::column_begin(Size i) const {
-        #if defined(QL_EXTRA_SAFETY_CHECKS)
-        QL_REQUIRE(i<columns_,
-                   "column index (" << i << ") must be less than " << columns_ <<
-                   ": matrix cannot be accessed out of range");
-        #endif
-        return const_column_iterator(data_.get()+i,columns_);
+    inline Matrix::const_column_iterator Matrix::column_begin(Size i) const {
+#if defined(QL_EXTRA_SAFETY_CHECKS)
+        QL_REQUIRE(i < columns_, "column index (" << i << ") must be less than " << columns_
+                                                  << ": matrix cannot be accessed out of range");
+#endif
+        return const_column_iterator(data_.get() + i, columns_);
     }
 
     inline Matrix::column_iterator Matrix::column_begin(Size i) {
-        #if defined(QL_EXTRA_SAFETY_CHECKS)
-        QL_REQUIRE(i<columns_,
-                   "column index (" << i << ") must be less than " << columns_ <<
-                   ": matrix cannot be accessed out of range");
-        #endif
-        return column_iterator(data_.get()+i,columns_);
+#if defined(QL_EXTRA_SAFETY_CHECKS)
+        QL_REQUIRE(i < columns_, "column index (" << i << ") must be less than " << columns_
+                                                  << ": matrix cannot be accessed out of range");
+#endif
+        return column_iterator(data_.get() + i, columns_);
     }
 
-    inline Matrix::const_column_iterator
-    Matrix::column_end(Size i) const {
-        #if defined(QL_EXTRA_SAFETY_CHECKS)
-        QL_REQUIRE(i<columns_,
-                   "column index (" << i << ") must be less than " << columns_ <<
-                   ": matrix cannot be accessed out of range");
-        #endif
-        return const_column_iterator(data_.get()+i+rows_*columns_,columns_);
+    inline Matrix::const_column_iterator Matrix::column_end(Size i) const {
+#if defined(QL_EXTRA_SAFETY_CHECKS)
+        QL_REQUIRE(i < columns_, "column index (" << i << ") must be less than " << columns_
+                                                  << ": matrix cannot be accessed out of range");
+#endif
+        return const_column_iterator(data_.get() + i + rows_ * columns_, columns_);
     }
 
     inline Matrix::column_iterator Matrix::column_end(Size i) {
-        #if defined(QL_EXTRA_SAFETY_CHECKS)
-        QL_REQUIRE(i<columns_,
-                   "column index (" << i << ") must be less than " << columns_ <<
-                   ": matrix cannot be accessed out of range");
-        #endif
-        return column_iterator(data_.get()+i+rows_*columns_,columns_);
+#if defined(QL_EXTRA_SAFETY_CHECKS)
+        QL_REQUIRE(i < columns_, "column index (" << i << ") must be less than " << columns_
+                                                  << ": matrix cannot be accessed out of range");
+#endif
+        return column_iterator(data_.get() + i + rows_ * columns_, columns_);
     }
 
-    inline Matrix::const_reverse_column_iterator
-    Matrix::column_rbegin(Size i) const {
+    inline Matrix::const_reverse_column_iterator Matrix::column_rbegin(Size i) const {
         return const_reverse_column_iterator(column_end(i));
     }
 
-    inline Matrix::reverse_column_iterator
-    Matrix::column_rbegin(Size i) {
+    inline Matrix::reverse_column_iterator Matrix::column_rbegin(Size i) {
         return reverse_column_iterator(column_end(i));
     }
 
-    inline Matrix::const_reverse_column_iterator
-    Matrix::column_rend(Size i) const {
+    inline Matrix::const_reverse_column_iterator Matrix::column_rend(Size i) const {
         return const_reverse_column_iterator(column_begin(i));
     }
 
-    inline Matrix::reverse_column_iterator
-    Matrix::column_rend(Size i) {
+    inline Matrix::reverse_column_iterator Matrix::column_rend(Size i) {
         return reverse_column_iterator(column_begin(i));
     }
 
-    inline Matrix::const_row_iterator
-    Matrix::operator[](Size i) const {
-        return row_begin(i);
-    }
+    inline Matrix::const_row_iterator Matrix::operator[](Size i) const { return row_begin(i); }
 
-    inline Matrix::const_row_iterator
-    Matrix::at(Size i) const {
+    inline Matrix::const_row_iterator Matrix::at(Size i) const {
         QL_REQUIRE(i < rows_, "matrix access out of range");
         return row_begin(i);
     }
 
-    inline Matrix::row_iterator Matrix::operator[](Size i) {
-        return row_begin(i);
-    }
+    inline Matrix::row_iterator Matrix::operator[](Size i) { return row_begin(i); }
 
     inline Matrix::row_iterator Matrix::at(Size i) {
         QL_REQUIRE(i < rows_, "matrix access out of range");
@@ -447,121 +402,94 @@ namespace QuantLib {
     inline Disposable<Array> Matrix::diagonal() const {
         Size arraySize = std::min<Size>(rows(), columns());
         Array tmp(arraySize);
-        for(Size i = 0; i < arraySize; i++)
+        for (Size i = 0; i < arraySize; i++)
             tmp[i] = (*this)[i][i];
         return tmp;
     }
 
-    inline Real &Matrix::operator()(Size i, Size j) const {
-        return data_[i*columns()+j];
-    }
+    inline Real& Matrix::operator()(Size i, Size j) const { return data_[i * columns() + j]; }
 
-    inline Size Matrix::rows() const {
-        return rows_;
-    }
+    inline Size Matrix::rows() const { return rows_; }
 
-    inline Size Matrix::columns() const {
-        return columns_;
-    }
+    inline Size Matrix::columns() const { return columns_; }
 
-    inline Size Matrix::size1() const {
-        return rows();
-    }
+    inline Size Matrix::size1() const { return rows(); }
 
-    inline Size Matrix::size2() const {
-        return columns();
-    }
+    inline Size Matrix::size2() const { return columns(); }
 
-    inline bool Matrix::empty() const {
-        return rows_ == 0 || columns_ == 0;
-    }
+    inline bool Matrix::empty() const { return rows_ == 0 || columns_ == 0; }
 
-    inline const Disposable<Matrix> operator+(const Matrix& m1,
-                                              const Matrix& m2) {
-        QL_REQUIRE(m1.rows() == m2.rows() &&
-                   m1.columns() == m2.columns(),
-                   "matrices with different sizes (" <<
-                   m1.rows() << "x" << m1.columns() << ", " <<
-                   m2.rows() << "x" << m2.columns() << ") cannot be "
-                   "added");
-        Matrix temp(m1.rows(),m1.columns());
-        std::transform(m1.begin(),m1.end(),m2.begin(),temp.begin(),
-                       std::plus<Real>());
+    inline const Disposable<Matrix> operator+(const Matrix& m1, const Matrix& m2) {
+        QL_REQUIRE(m1.rows() == m2.rows() && m1.columns() == m2.columns(),
+                   "matrices with different sizes (" << m1.rows() << "x" << m1.columns() << ", "
+                                                     << m2.rows() << "x" << m2.columns()
+                                                     << ") cannot be "
+                                                        "added");
+        Matrix temp(m1.rows(), m1.columns());
+        std::transform(m1.begin(), m1.end(), m2.begin(), temp.begin(), std::plus<Real>());
         return temp;
     }
 
-    inline const Disposable<Matrix> operator-(const Matrix& m1,
-                                              const Matrix& m2) {
-        QL_REQUIRE(m1.rows() == m2.rows() &&
-                   m1.columns() == m2.columns(),
-                   "matrices with different sizes (" <<
-                   m1.rows() << "x" << m1.columns() << ", " <<
-                   m2.rows() << "x" << m2.columns() << ") cannot be "
-                   "subtracted");
-        Matrix temp(m1.rows(),m1.columns());
-        std::transform(m1.begin(),m1.end(),m2.begin(),temp.begin(),
-                       std::minus<Real>());
+    inline const Disposable<Matrix> operator-(const Matrix& m1, const Matrix& m2) {
+        QL_REQUIRE(m1.rows() == m2.rows() && m1.columns() == m2.columns(),
+                   "matrices with different sizes (" << m1.rows() << "x" << m1.columns() << ", "
+                                                     << m2.rows() << "x" << m2.columns()
+                                                     << ") cannot be "
+                                                        "subtracted");
+        Matrix temp(m1.rows(), m1.columns());
+        std::transform(m1.begin(), m1.end(), m2.begin(), temp.begin(), std::minus<Real>());
         return temp;
     }
 
     inline const Disposable<Matrix> operator*(const Matrix& m, Real x) {
-        Matrix temp(m.rows(),m.columns());
-        std::transform(m.begin(),m.end(),temp.begin(),
-                       multiply_by<Real>(x));
+        Matrix temp(m.rows(), m.columns());
+        std::transform(m.begin(), m.end(), temp.begin(), multiply_by<Real>(x));
         return temp;
     }
 
     inline const Disposable<Matrix> operator*(Real x, const Matrix& m) {
-        Matrix temp(m.rows(),m.columns());
-        std::transform(m.begin(),m.end(),temp.begin(),
-                       multiply_by<Real>(x));
+        Matrix temp(m.rows(), m.columns());
+        std::transform(m.begin(), m.end(), temp.begin(), multiply_by<Real>(x));
         return temp;
     }
 
     inline const Disposable<Matrix> operator/(const Matrix& m, Real x) {
-        Matrix temp(m.rows(),m.columns());
-        std::transform(m.begin(),m.end(),temp.begin(),
-                       divide_by<Real>(x));
+        Matrix temp(m.rows(), m.columns());
+        std::transform(m.begin(), m.end(), temp.begin(), divide_by<Real>(x));
         return temp;
     }
 
     inline const Disposable<Array> operator*(const Array& v, const Matrix& m) {
-        QL_REQUIRE(v.size() == m.rows(),
-                   "vectors and matrices with different sizes ("
-                   << v.size() << ", " << m.rows() << "x" << m.columns() <<
-                   ") cannot be multiplied");
+        QL_REQUIRE(v.size() == m.rows(), "vectors and matrices with different sizes ("
+                                             << v.size() << ", " << m.rows() << "x" << m.columns()
+                                             << ") cannot be multiplied");
         Array result(m.columns());
-        for (Size i=0; i<result.size(); i++)
-            result[i] =
-                std::inner_product(v.begin(),v.end(),
-                                   m.column_begin(i),0.0);
+        for (Size i = 0; i < result.size(); i++)
+            result[i] = std::inner_product(v.begin(), v.end(), m.column_begin(i), 0.0);
         return result;
     }
 
     inline const Disposable<Array> operator*(const Matrix& m, const Array& v) {
-        QL_REQUIRE(v.size() == m.columns(),
-                   "vectors and matrices with different sizes ("
-                   << v.size() << ", " << m.rows() << "x" << m.columns() <<
-                   ") cannot be multiplied");
+        QL_REQUIRE(v.size() == m.columns(), "vectors and matrices with different sizes ("
+                                                << v.size() << ", " << m.rows() << "x"
+                                                << m.columns() << ") cannot be multiplied");
         Array result(m.rows());
-        for (Size i=0; i<result.size(); i++)
-            result[i] =
-                std::inner_product(v.begin(),v.end(),m.row_begin(i),0.0);
+        for (Size i = 0; i < result.size(); i++)
+            result[i] = std::inner_product(v.begin(), v.end(), m.row_begin(i), 0.0);
         return result;
     }
 
-    inline const Disposable<Matrix> operator*(const Matrix& m1,
-                                              const Matrix& m2) {
-        QL_REQUIRE(m1.columns() == m2.rows(),
-                   "matrices with different sizes (" <<
-                   m1.rows() << "x" << m1.columns() << ", " <<
-                   m2.rows() << "x" << m2.columns() << ") cannot be "
-                   "multiplied");
-        Matrix result(m1.rows(),m2.columns(),0.0);
-        for (Size i=0; i<result.rows(); ++i) {
-            for (Size k=0; k<m1.columns(); ++k) {
-                for (Size j=0; j<result.columns(); ++j) {
-                    result[i][j] += m1[i][k]*m2[k][j];
+    inline const Disposable<Matrix> operator*(const Matrix& m1, const Matrix& m2) {
+        QL_REQUIRE(m1.columns() == m2.rows(), "matrices with different sizes ("
+                                                  << m1.rows() << "x" << m1.columns() << ", "
+                                                  << m2.rows() << "x" << m2.columns()
+                                                  << ") cannot be "
+                                                     "multiplied");
+        Matrix result(m1.rows(), m2.columns(), 0.0);
+        for (Size i = 0; i < result.rows(); ++i) {
+            for (Size k = 0; k < m1.columns(); ++k) {
+                for (Size j = 0; j < result.columns(); ++j) {
+                    result[i][j] += m1[i][k] * m2[k][j];
                 }
             }
         }
@@ -569,50 +497,44 @@ namespace QuantLib {
     }
 
     inline const Disposable<Matrix> transpose(const Matrix& m) {
-        Matrix result(m.columns(),m.rows());
-        #if defined(QL_PATCH_MSVC) && defined(QL_DEBUG)
+        Matrix result(m.columns(), m.rows());
+#if defined(QL_PATCH_MSVC) && defined(QL_DEBUG)
         if (!m.empty())
-        #endif
-        for (Size i=0; i<m.rows(); i++)
-            std::copy(m.row_begin(i),m.row_end(i),result.column_begin(i));
+#endif
+            for (Size i = 0; i < m.rows(); i++)
+                std::copy(m.row_begin(i), m.row_end(i), result.column_begin(i));
         return result;
     }
 
-    inline const Disposable<Matrix> outerProduct(const Array& v1,
-                                                 const Array& v2) {
+    inline const Disposable<Matrix> outerProduct(const Array& v1, const Array& v2) {
         return outerProduct(v1.begin(), v1.end(), v2.begin(), v2.end());
     }
 
-    template<class Iterator1, class Iterator2>
-    inline const Disposable<Matrix> outerProduct(Iterator1 v1begin,
-                                                 Iterator1 v1end,
-                                                 Iterator2 v2begin,
-                                                 Iterator2 v2end) {
+    template <class Iterator1, class Iterator2>
+    inline const Disposable<Matrix>
+    outerProduct(Iterator1 v1begin, Iterator1 v1end, Iterator2 v2begin, Iterator2 v2end) {
 
         Size size1 = std::distance(v1begin, v1end);
-        QL_REQUIRE(size1>0, "null first vector");
+        QL_REQUIRE(size1 > 0, "null first vector");
 
         Size size2 = std::distance(v2begin, v2end);
-        QL_REQUIRE(size2>0, "null second vector");
+        QL_REQUIRE(size2 > 0, "null second vector");
 
         Matrix result(size1, size2);
 
-        for (Size i=0; v1begin!=v1end; i++, v1begin++)
-            std::transform(v2begin, v2end, result.row_begin(i),
-                           multiply_by<Real>(*v1begin));
+        for (Size i = 0; v1begin != v1end; i++, v1begin++)
+            std::transform(v2begin, v2end, result.row_begin(i), multiply_by<Real>(*v1begin));
 
         return result;
     }
 
-    inline void swap(Matrix& m1, Matrix& m2) {
-        m1.swap(m2);
-    }
+    inline void swap(Matrix& m1, Matrix& m2) { m1.swap(m2); }
 
     inline std::ostream& operator<<(std::ostream& out, const Matrix& m) {
         std::streamsize width = out.width();
-        for (Size i=0; i<m.rows(); i++) {
+        for (Size i = 0; i < m.rows(); i++) {
             out << "| ";
-            for (Size j=0; j<m.columns(); j++)
+            for (Size j = 0; j < m.columns(); j++)
                 out << std::setw(int(width)) << m[i][j] << " ";
             out << "|\n";
         }
