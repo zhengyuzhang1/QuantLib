@@ -44,9 +44,11 @@ namespace QuantLib {
                       ext::shared_ptr<ExtOUWithJumpsProcess>  process,
                       ext::shared_ptr<YieldTermStructure>  rTS,
                       Size tGrid, Size xGrid, Size yGrid,
+                      const ext::shared_ptr<Shape>& shape,
                       const FdmSchemeDesc& schemeDesc)
     : process_(std::move(process)),
       rTS_(std::move(rTS)),
+      shape_(shape),
       tGrid_(tGrid),
       xGrid_(xGrid),
       yGrid_(yGrid),
@@ -59,9 +61,9 @@ namespace QuantLib {
             = rTS_->dayCounter().yearFraction(rTS_->referenceDate(),
                                               arguments_.exercise->lastDate());
         const ext::shared_ptr<StochasticProcess1D> ouProcess(
-                              process_->getExtendedOrnsteinUhlenbeckProcess());
+            process_->getExtendedOrnsteinUhlenbeckProcess());
         const ext::shared_ptr<Fdm1dMesher> xMesher(
-                     new FdmSimpleProcess1dMesher(xGrid_, ouProcess,maturity));
+            new FdmSimpleProcess1dMesher(xGrid_, ouProcess,maturity));
 
         const ext::shared_ptr<Fdm1dMesher> yMesher(
             new ExponentialJump1dMesher(yGrid_, 
@@ -74,7 +76,7 @@ namespace QuantLib {
 
         // 2. Calculator
         const ext::shared_ptr<FdmInnerValueCalculator> calculator(
-                    new FdmExtOUJumpModelInnerValue(arguments_.payoff, mesher));
+            new FdmExtOUJumpModelInnerValue(arguments_.payoff, mesher, shape_));
 
         // 3. Step conditions
         const ext::shared_ptr<FdmStepConditionComposite> conditions =

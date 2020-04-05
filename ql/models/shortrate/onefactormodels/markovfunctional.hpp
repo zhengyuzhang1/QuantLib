@@ -337,17 +337,39 @@ namespace QuantLib {
         const Array &volatility() const { return sigma_.params(); }
 
         void calibrate(
-            const std::vector<ext::shared_ptr<BlackCalibrationHelper> > &helper,
+            const std::vector<ext::shared_ptr<CalibrationHelper> > &helpers,
             OptimizationMethod &method, const EndCriteria &endCriteria,
             const Constraint &constraint = Constraint(),
             const std::vector<Real> &weights = std::vector<Real>(),
             const std::vector<bool> &fixParameters = std::vector<bool>()) override {
 
-            CalibratedModel::calibrate(helper, method, endCriteria, constraint,
+            CalibratedModel::calibrate(helpers, method, endCriteria, constraint,
                                        weights, fixParameters.size() == 0
                                                     ? FixedFirstVolatility()
                                                     : fixParameters);
         }
+
+        // VC++ warns when overriding a deprecated method
+        #if defined(QL_PATCH_MSVC)
+        #pragma warning(push)
+        #pragma warning(disable:4996)
+        #endif
+        void calibrate(
+            const std::vector<ext::shared_ptr<BlackCalibrationHelper> > &helpers,
+            OptimizationMethod &method, const EndCriteria &endCriteria,
+            const Constraint &constraint = Constraint(),
+            const std::vector<Real> &weights = std::vector<Real>(),
+            const std::vector<bool> &fixParameters = std::vector<bool>()) override {
+
+            std::vector<ext::shared_ptr<CalibrationHelper> > tmp(helpers.size());
+            for (Size i=0; i<helpers.size(); ++i)
+                tmp[i] = ext::static_pointer_cast<CalibrationHelper>(helpers[i]);
+
+            calibrate(tmp, method, endCriteria, constraint, weights, fixParameters);
+        }
+        #if defined(QL_PATCH_MSVC)
+        #pragma warning(pop)
+        #endif
 
         void update() override {
             LazyObject::update();

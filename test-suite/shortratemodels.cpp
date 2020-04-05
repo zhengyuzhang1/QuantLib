@@ -77,7 +77,7 @@ void ShortRateModelTest::testCachedHullWhite() {
     ext::shared_ptr<PricingEngine> engine(
                                          new JamshidianSwaptionEngine(model));
 
-    std::vector<ext::shared_ptr<BlackCalibrationHelper> > swaptions;
+    std::vector<ext::shared_ptr<CalibrationHelper> > swaptions;
     for (auto & i : data) {
         ext::shared_ptr<Quote> vol(new SimpleQuote(i.volatility));
         ext::shared_ptr<BlackCalibrationHelper> helper(
@@ -154,7 +154,7 @@ void ShortRateModelTest::testCachedHullWhiteFixedReversion() {
     ext::shared_ptr<PricingEngine> engine(
                                          new JamshidianSwaptionEngine(model));
 
-    std::vector<ext::shared_ptr<BlackCalibrationHelper> > swaptions;
+    std::vector<ext::shared_ptr<CalibrationHelper> > swaptions;
     for (auto & i : data) {
         ext::shared_ptr<Quote> vol(new SimpleQuote(i.volatility));
         ext::shared_ptr<BlackCalibrationHelper> helper(
@@ -236,7 +236,7 @@ void ShortRateModelTest::testCachedHullWhite2() {
     ext::shared_ptr<PricingEngine> engine(
                                          new JamshidianSwaptionEngine(model));
 
-    std::vector<ext::shared_ptr<BlackCalibrationHelper> > swaptions;
+    std::vector<ext::shared_ptr<CalibrationHelper> > swaptions;
     for (auto & i : data) {
         ext::shared_ptr<Quote> vol(new SimpleQuote(i.volatility));
         ext::shared_ptr<BlackCalibrationHelper> helper(

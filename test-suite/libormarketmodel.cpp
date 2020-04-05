@@ -284,7 +284,7 @@ void LiborMarketModelTest::testCalibration() {
     DayCounter dayCounter=index->forwardingTermStructure()->dayCounter();
 
     // set-up calibration helper
-    std::vector<ext::shared_ptr<BlackCalibrationHelper> > calibrationHelper;
+    std::vector<ext::shared_ptr<CalibrationHelper> > calibrationHelpers;
 
     Size i;
     for (i=2; i < size; ++i) {
@@ -300,7 +300,7 @@ void LiborMarketModelTest::testCalibration() {
         caphelper->setPricingEngine(ext::shared_ptr<PricingEngine>(
                            new AnalyticCapFloorEngine(model, termStructure)));
 
-        calibrationHelper.push_back(caphelper);
+        calibrationHelpers.push_back(caphelper);
 
         if (i<= size/2) {
             // add a few swaptions to test swaption calibration as well
@@ -321,18 +321,18 @@ void LiborMarketModelTest::testCalibration() {
                      ext::shared_ptr<PricingEngine>(
                                  new LfmSwaptionEngine(model,termStructure)));
 
-                calibrationHelper.push_back(swaptionHelper);
+                calibrationHelpers.push_back(swaptionHelper);
             }
         }
     }
 
     LevenbergMarquardt om(1e-6, 1e-6, 1e-6);
-    model->calibrate(calibrationHelper, om, EndCriteria(2000, 100, 1e-6, 1e-6, 1e-6));
+    model->calibrate(calibrationHelpers, om, EndCriteria(2000, 100, 1e-6, 1e-6, 1e-6));
 
     // measure the calibration error
     Real calculated = 0.0;
-    for (i=0; i<calibrationHelper.size(); ++i) {
-        Real diff = calibrationHelper[i]->calibrationError();
+    for (i=0; i<calibrationHelpers.size(); ++i) {
+        Real diff = calibrationHelpers[i]->calibrationError();
         calculated += diff*diff;
     }
 

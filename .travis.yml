@@ -23,8 +23,6 @@ env:
 
 before_install:
   - docker pull ${DOCKER_IMAGE}
-  - git fetch origin master:master
-  - git merge --no-edit master || exit
 
 script:
   - docker run ${DOCKER_OPTS} ${DOCKER_IMAGE} ./autogen.sh
