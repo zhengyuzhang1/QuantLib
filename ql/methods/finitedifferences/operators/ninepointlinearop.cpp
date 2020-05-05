@@ -110,6 +110,15 @@ namespace QuantLib {
         std::copy(m.a22_.get(), m.a22_.get()+size, a22_.get());
     }
 
+    NinePointLinearOp::NinePointLinearOp(NinePointLinearOp&& from) {
+        swap(from);
+    }
+
+    NinePointLinearOp::NinePointLinearOp(
+        const Disposable<NinePointLinearOp>& from) {
+        swap(const_cast<Disposable<NinePointLinearOp>&>(from));
+    }
+
     NinePointLinearOp& NinePointLinearOp::operator=(
         const NinePointLinearOp& m) {
         NinePointLinearOp temp(m);
@@ -117,15 +126,15 @@ namespace QuantLib {
         return *this;
     }
 
+    NinePointLinearOp& NinePointLinearOp::operator=(NinePointLinearOp&& m) {
+        swap(m);
+        return *this;
+    }
+
     NinePointLinearOp& NinePointLinearOp::operator=(
         const Disposable<NinePointLinearOp>& m) {
         swap(const_cast<Disposable<NinePointLinearOp>&>(m));
         return *this;
-    }
-
-    NinePointLinearOp::NinePointLinearOp(
-        const Disposable<NinePointLinearOp>& from) {
-        swap(const_cast<Disposable<NinePointLinearOp>&>(from));
     }
 
     Disposable<Array> NinePointLinearOp::apply(const Array& u)
