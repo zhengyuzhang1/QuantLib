@@ -1521,14 +1521,11 @@ void HestonSLVModelTest::testFDMCalibration() {
           FdmSchemeDesc::ModifiedCraigSneyd()
         };
 
-
-    std::vector<HestonSLVTestCase> testCases = {
-        { {0.035, 0.01, 1.0, 0.06, -0.75, 0.1, 0.09}, plainParams},
-        { {0.035, 0.01, 1.0, 0.06, -0.75, std::sqrt(0.2), 0.09}, logParams },
-        { {0.035, 0.01, 1.0, 0.09, -0.75, std::sqrt(0.2), 0.06}, logParams },
-        { {0.035, 0.01, 1.0, 0.06, -0.75, 0.2, 0.09}, powerParams }
-    };
-
+    std::vector<HestonSLVTestCase> testCases;
+    testCases.push_back({ {0.035, 0.01, 1.0, 0.06, -0.75, 0.1, 0.09}, plainParams});
+    testCases.push_back({ {0.035, 0.01, 1.0, 0.06, -0.75, std::sqrt(0.2), 0.09}, logParams });
+    testCases.push_back({ {0.035, 0.01, 1.0, 0.09, -0.75, std::sqrt(0.2), 0.06}, logParams });
+    testCases.push_back({ {0.035, 0.01, 1.0, 0.06, -0.75, 0.2, 0.09}, powerParams });
 
     for (Size i=0; i < testCases.size(); ++i) {
         BOOST_TEST_MESSAGE("Testing stochastic local volatility calibration case " << i << " ...");

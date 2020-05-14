@@ -35,6 +35,13 @@
 
 namespace QuantLib {
 
+    #if defined(_MSC_VER) && _MSC_VER <= 1800
+    // VC++ 2013 doesn't support the noexcept keyword
+    #define QL_NOEXCEPT
+    #else
+    #define QL_NOEXCEPT noexcept
+    #endif
+
     //! Base error class
     class Error : public std::exception {
       public:
@@ -48,12 +55,17 @@ namespace QuantLib {
         /*! the automatically generated destructor would
             not have the throw specifier.
         */
-        ~Error() noexcept override = default;
+        ~Error() QL_NOEXCEPT override = default;
         //! returns the error message.
-        const char* what() const noexcept override;
+        const char* what() const QL_NOEXCEPT override {
+            return message_->c_str();
+        }
+
       private:
         ext::shared_ptr<std::string> message_;
     };
+
+    #undef QL_NOEXCEPT
 
 }
 

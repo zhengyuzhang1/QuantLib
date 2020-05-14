@@ -11,22 +11,87 @@ cache: ccache
 env:
   global:
     - DOCKER_OPTS="--rm -ti -v ${HOME}/.ccache:/root/.ccache -v ${TRAVIS_BUILD_DIR}:/build -w /build"
-  matrix:
-    # Latest Boost, gcc
-    - DOCKER_IMAGE=lballabio/quantlib-devenv:rolling
+  jobs:
+    #
+    - INFO="gcc 5.4 (Boost 1.66)"
+      DOCKER_IMAGE=lballabio/quantlib-devenv:xenial
       CACHEDCC="ccache gcc" CACHEDCXX="ccache g++"
-      CXXFLAGS="-O2 -std=c++11 -Wall -Wno-unknown-pragmas -Werror"
-    # Latest Boost, clang
-    - DOCKER_IMAGE=lballabio/quantlib-devenv:rolling
+      CXXFLAGS="-O2 -g0 -std=c++11 -Wall -Wno-unknown-pragmas -Wno-deprecated-declarations -Werror"
+    #
+    - INFO="gcc 6.3 (Boost 1.66)"
+      DOCKER_IMAGE=lballabio/quantlib-devenv:zesty
+      CACHEDCC="ccache gcc" CACHEDCXX="ccache g++"
+      CXXFLAGS="-O2 -g0 -Wall -Wno-unknown-pragmas -Wno-deprecated-declarations -Werror"
+    #
+    - INFO="gcc 7.4 (Boost 1.72)"
+      DOCKER_IMAGE=lballabio/quantlib-devenv:bionic
+      CACHEDCC="ccache gcc" CACHEDCXX="ccache g++"
+      CXXFLAGS="-O2 -g0 -Wall -Wno-unknown-pragmas -Wno-deprecated-declarations -Werror"
+    #
+    - INFO="gcc 8.3 (Boost 1.72)"
+      DOCKER_IMAGE=lballabio/quantlib-devenv:cosmic
+      CACHEDCC="ccache gcc" CACHEDCXX="ccache g++"
+      CXXFLAGS="-O2 -g0 -Wall -Wno-unknown-pragmas -Wno-deprecated-declarations -Werror"
+    #
+    - INFO="gcc 9.x"
+      DOCKER_IMAGE=lballabio/quantlib-devenv:eoan
+      CACHEDCC="ccache gcc" CACHEDCXX="ccache g++"
+      CXXFLAGS="-O2 -g0 -Wall -Wno-unknown-pragmas -Wno-deprecated-declarations -Werror"
+    #
+    - INFO="gcc 10.x"
+      DOCKER_IMAGE=lballabio/quantlib-devenv:focal
+      CACHEDCC="ccache gcc" CACHEDCXX="ccache g++"
+      CXXFLAGS="-O2 -g0 -Wall -Wno-unknown-pragmas -Wno-deprecated-declarations -Werror"
+    #
+    - INFO="Clang 6 (Boost 1.72)"
+      DOCKER_IMAGE=lballabio/quantlib-devenv:bionic
       CACHEDCC="ccache clang" CACHEDCXX="ccache clang++"
-      CXXFLAGS="-O2 -std=c++11 -Wall -Wno-unknown-pragmas -Werror"
+      CXXFLAGS="-O2 -g0 -Wall -Wno-unknown-pragmas -Wno-deprecated-declarations -Werror"
+    #
+    - INFO="Clang 7 (Boost 1.72)"
+      DOCKER_IMAGE=lballabio/quantlib-devenv:cosmic
+      CACHEDCC="ccache clang" CACHEDCXX="ccache clang++"
+      CXXFLAGS="-O2 -g0 -Wall -Wno-unknown-pragmas -Wno-deprecated-declarations -Werror"
+    #
+    - INFO="Clang 8 (Boost 1.72)"
+      DOCKER_IMAGE=lballabio/quantlib-devenv:disco
+      CACHEDCC="ccache clang" CACHEDCXX="ccache clang++"
+      CXXFLAGS="-O2 -g0 -Wall -Wno-unknown-pragmas -Wno-deprecated-declarations -Werror"
+    #
+    - INFO="Clang 9"
+      DOCKER_IMAGE=lballabio/quantlib-devenv:eoan
+      CACHEDCC="ccache clang" CACHEDCXX="ccache clang++"
+      CXXFLAGS="-O2 -g0 -Wall -Wno-unknown-pragmas -Wno-deprecated-declarations -Werror"
+    #
+    - INFO="Clang 10"
+      DOCKER_IMAGE=lballabio/quantlib-devenv:focal
+      CACHEDCC="ccache clang" CACHEDCXX="ccache clang++"
+      CXXFLAGS="-O2 -g0 -Wall -Wno-unknown-pragmas -Wno-deprecated-declarations -Werror"
+    #
+    - INFO="Unity build enabled"
+      DOCKER_IMAGE=lballabio/quantlib-devenv:rolling
+      CACHEDCC="ccache gcc" CACHEDCXX="ccache g++"
+      CONFIGURE_FLAGS="--enable-unity-build"
+      CXXFLAGS="-O2 -g0 -Wall -Wno-unknown-pragmas -Wno-deprecated-declarations -Werror"
+    #
+    - INFO="Intraday calculations enabled"
+      DOCKER_IMAGE=lballabio/quantlib-devenv:rolling
+      CACHEDCC="ccache gcc" CACHEDCXX="ccache g++"
+      CONFIGURE_FLAGS="--enable-intraday"
+      CXXFLAGS="-O2 -g0 -Wall -Wno-unknown-pragmas -Wno-deprecated-declarations -Werror"
+    #
+    - INFO="Indexed coupons enabled"
+      DOCKER_IMAGE=lballabio/quantlib-devenv:rolling
+      CACHEDCC="ccache gcc" CACHEDCXX="ccache g++"
+      CONFIGURE_FLAGS="--enable-indexed-coupons"
+      CXXFLAGS="-O2 -g0 -Wall -Wno-unknown-pragmas -Wno-deprecated-declarations -Werror"
 
 before_install:
   - docker pull ${DOCKER_IMAGE}
 
 script:
   - docker run ${DOCKER_OPTS} ${DOCKER_IMAGE} ./autogen.sh
-  - docker run ${DOCKER_OPTS} ${DOCKER_IMAGE} ./configure --disable-static --enable-std-classes CC="${CACHEDCC}" CXX="${CACHEDCXX}" CXXFLAGS="${CXXFLAGS}"
+  - docker run ${DOCKER_OPTS} ${DOCKER_IMAGE} ./configure --disable-static --enable-std-classes ${CONFIGURE_FLAGS} CC="${CACHEDCC}" CXX="${CACHEDCXX}" CXXFLAGS="${CXXFLAGS}"
   - docker run ${DOCKER_OPTS} ${DOCKER_IMAGE} ccache --zero-stats
   - docker run ${DOCKER_OPTS} ${DOCKER_IMAGE} ccache --max-size=2.5G
   - docker run ${DOCKER_OPTS} ${DOCKER_IMAGE} ccache --show-stats

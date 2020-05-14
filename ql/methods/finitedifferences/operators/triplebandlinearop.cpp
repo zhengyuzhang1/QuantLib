@@ -81,6 +81,10 @@ namespace QuantLib {
     }
 
 
+    TripleBandLinearOp::TripleBandLinearOp(TripleBandLinearOp&& from) {
+        swap(from);
+    }
+
     TripleBandLinearOp::TripleBandLinearOp(
         const Disposable<TripleBandLinearOp>& from) {
         swap(const_cast<Disposable<TripleBandLinearOp>&>(from));
@@ -96,6 +100,11 @@ namespace QuantLib {
     TripleBandLinearOp& TripleBandLinearOp::operator=(
         const Disposable<TripleBandLinearOp>& m) {
         swap(const_cast<Disposable<TripleBandLinearOp>&>(m));
+        return *this;
+    }
+
+    TripleBandLinearOp& TripleBandLinearOp::operator=(TripleBandLinearOp&& m) {
+        swap(m);
         return *this;
     }
 

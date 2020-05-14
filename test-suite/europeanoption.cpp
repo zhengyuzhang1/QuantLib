@@ -1338,12 +1338,16 @@ void EuropeanOptionTest::testLocalVolatility() {
     volTS->setInterpolation<Bicubic>();
     const ext::shared_ptr<GeneralizedBlackScholesProcess> process =
                                               makeProcess(s0, qTS, rTS,volTS);
-    
-    const std::vector<std::pair<FdmSchemeDesc, std::string>> schemeDescs = {
-        std::make_pair(FdmSchemeDesc::Douglas(), "Douglas"),
-        std::make_pair(FdmSchemeDesc::CrankNicolson(), "Crank-Nicolson"),
-        std::make_pair(FdmSchemeDesc::ModifiedCraigSneyd(), "Mod. Craig-Sneyd")
+
+    struct SchemeData {
+        const char* const name;
+        FdmSchemeDesc schemeDesc;
     };
+
+    std::vector<SchemeData> schemeDescs;
+    schemeDescs.push_back({"Douglas", FdmSchemeDesc::Douglas()});
+    schemeDescs.push_back({"Crank-Nicolson", FdmSchemeDesc::CrankNicolson()});
+    schemeDescs.push_back({"Mod. Craig-Sneyd", FdmSchemeDesc::ModifiedCraigSneyd()});
 
     for (Size i=2; i < dates.size(); i+=2) {
         for (Size j=3; j < strikes.size()-5; j+=5) {
@@ -1398,7 +1402,7 @@ void EuropeanOptionTest::testLocalVolatility() {
             for (Size i=0; i < schemeDescs.size(); ++i) {
                 option.setPricingEngine(
                     ext::make_shared<FdBlackScholesVanillaEngine>(
-                        process, 25, 100, 0, schemeDescs[i].first, true, 0.35));
+                        process, 25, 100, 0, schemeDescs[i].schemeDesc, true, 0.35));
 
                 calculatedNPV = option.NPV();
                 if (std::fabs(expectedNPV - calculatedNPV) > tol*expectedNPV) {
@@ -1407,7 +1411,7 @@ void EuropeanOptionTest::testLocalVolatility() {
                                << "\n    maturity:   " << exDate
                                << "\n    calculated: " << calculatedNPV
                                << "\n    expected:   " << expectedNPV
-                               << "\n    scheme:     " << schemeDescs[i].second);
+                               << "\n    scheme:     " << schemeDescs[i].name);
                 }
             }
         }

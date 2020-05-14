@@ -39,8 +39,10 @@ namespace QuantLib {
         NinePointLinearOp(Size d0, Size d1,
                 const ext::shared_ptr<FdmMesher>& mesher);
         NinePointLinearOp(const NinePointLinearOp& m);
+        NinePointLinearOp(NinePointLinearOp&& m);
         NinePointLinearOp(const Disposable<NinePointLinearOp>& m);
         NinePointLinearOp& operator=(const NinePointLinearOp& m);
+        NinePointLinearOp& operator=(NinePointLinearOp&& m);
         NinePointLinearOp& operator=(const Disposable<NinePointLinearOp>& m);
 
         Disposable<Array> apply(const Array& r) const override;

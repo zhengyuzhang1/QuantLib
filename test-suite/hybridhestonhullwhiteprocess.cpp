@@ -986,13 +986,17 @@ namespace {
         FdmSchemeDesc schemeDesc;
     };
 
-    std::vector<SchemeData> schemes = {
-        { "HV2", FdmSchemeDesc::Hundsdorfer() },
-        { "HV1", FdmSchemeDesc::ModifiedHundsdorfer() },
-        { "CS" , FdmSchemeDesc::CraigSneyd() },
-        { "MCS", FdmSchemeDesc::ModifiedCraigSneyd() },
-        { "DS" , FdmSchemeDesc::Douglas() }
-    };
+    std::vector<SchemeData> test_schemes() {
+        std::vector<SchemeData> v;
+        v.push_back({"HV2", FdmSchemeDesc::Hundsdorfer()});
+        v.push_back({"HV1", FdmSchemeDesc::ModifiedHundsdorfer()});
+        v.push_back({"CS" , FdmSchemeDesc::CraigSneyd()});
+        v.push_back({"MCS", FdmSchemeDesc::ModifiedCraigSneyd()});
+        v.push_back({"DS" , FdmSchemeDesc::Douglas()});
+        return v;
+    }
+
+    std::vector<SchemeData> schemes = test_schemes();
 
     struct VanillaOptionData {
         Real strike;
